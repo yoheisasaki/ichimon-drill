@@ -43,7 +43,7 @@ function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { co
 function pick(list, n) {
   return shuffle(list).map(q => [q, score(q)]).sort((a, b) => b[1] - a[1]).slice(0, n).map(p => p[0]);
 }
-function pool() { return qs().filter(q => filter === '全部' || (filter === 'ちず' ? !!q.map : q.subject === filter)); }
+function pool() { return qs().filter(q => filter === '全部' || (filter === 'ちず' ? !!q.map : filter === 'かく' ? q.type === 'input' : q.subject === filter)); }
 // 地図は地図問題が初めて出るときに1回だけ読む
 let mapsP = null;
 function loadMaps() {
@@ -59,7 +59,7 @@ function mapLabel(q) {
 function home() {
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
-  if (filter !== '全部' && filter !== 'ちず' && !subs.includes(filter)) filter = '全部';
+  if (filter !== '全部' && filter !== 'ちず' && filter !== 'かく' && !subs.includes(filter)) filter = '全部';
   const card = (label, list, cls, key) => {
     const c = counts(list);
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>にがて ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
@@ -68,7 +68,7 @@ function home() {
   app.innerHTML = `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
-    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}</div>
+    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
     <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
     <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
@@ -86,7 +86,8 @@ function start(list) {
 function question() {
   const q = S.queue[S.idx];
   S.locked = false; S.cur = q;
-  const opts = shuffle([q.a, ...q.choices]);
+  const isIn = q.type === 'input';
+  const opts = isIn ? [] : shuffle([q.a, ...q.choices]);
   S.opts = opts;
   app.innerHTML = `
     <div class="top">
@@ -95,14 +96,57 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card${q.map ? ' withmap' : ''}">${ruby(q.q)}</div>
-    ${q.map ? '<div class="map" id="map"></div>' : ''}
+    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div></div>
+    ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
+    ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わからない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>`;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
-  if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: 1.7 }); }).catch(() => {});
+  if (isIn) setupInput(q);
+  if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: isIn ? 2.4 : 1.7 }); }).catch(() => {});
+}
+// 入力問題：ひらがな・カタカナ・全角半角・空白・末尾の「。」をそろえて比べる
+function norm(t) {
+  return String(t).normalize('NFKC').replace(/\s+/g, '').replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)).replace(/[。.．]+$/, '');
+}
+function judge(q, text) { const n = norm(text); return !!n && q.accept.some(a => norm(a) === n); }
+function setupInput(q) {
+  const inp = document.getElementById('ans'), sub = document.getElementById('submit'), skip = document.getElementById('skip');
+  const sync = () => { sub.disabled = !norm(inp.value); };
+  inp.addEventListener('input', sync);
+  inp.addEventListener('focus', () => setTimeout(() => sub.scrollIntoView({ block: 'end', behavior: 'smooth' }), 350));
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229 && norm(inp.value)) { e.preventDefault(); answerInput(inp.value); } });
+  sub.onclick = () => { if (norm(inp.value)) answerInput(inp.value); };
+  skip.onclick = () => answerInput(null);
+}
+function answerInput(text) {
+  if (S.locked) return; S.locked = true;
+  const q = S.cur, skipped = text === null, ok = !skipped && judge(q, text);
+  const inp = document.getElementById('ans');
+  inp.blur(); inp.readOnly = true;
+  document.getElementById('submit').disabled = true; document.getElementById('skip').disabled = true;
+  record(q, ok, skipped ? 'わからない' : String(text).trim());
+  const nx = document.getElementById('next');
+  if (ok) {
+    if (!S.seen.has(q.id)) S.correct++;
+    S.seen.add(q.id);
+    inp.classList.add('ok');
+    nx.innerHTML = '<span class="okmsg">○ せいかい！</span>';
+    document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
+    S.timer = setTimeout(advance, 800);
+  } else {
+    S.seen.add(q.id);
+    if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
+    inp.classList.add('ng');
+    if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
+    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>';
+    S.timer = setTimeout(() => {
+      nx.insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>');
+      app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
+    }, 1100);
+  }
 }
 function answer(i) {
   if (S.locked) return; S.locked = true;

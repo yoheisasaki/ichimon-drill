@@ -15,12 +15,21 @@ for q in d['questions']:
     def e(m): errs.append(f'{i}: {m}')
     if i in ids: e('id重複')
     ids.add(i)
-    for k in ('id', 'test', 'subject', 'unit', 'q', 'a', 'choices', 'src', 'from', 'added'):
+    inp = q.get('type') == 'input'
+    if q.get('type') not in (None, 'input'): e('typeが不正')
+    for k in ('id', 'test', 'subject', 'unit', 'q', 'a', 'src', 'from', 'added') + (('accept',) if inp else ('choices',)):
         if not q.get(k): e(f'{k}が無い')
     if q.get('test') not in tests: e('testが tests に無い')
     if q.get('subject') not in SUBJ: e('教科が不正')
     ch = q.get('choices') or []
-    if len(ch) != 3: e(f'choices が{len(ch)}個')
+    if inp:
+        if ch: e('input型に choices がある')
+        acc = q.get('accept') or []
+        kana = re.sub(r'\{[^|{}]+\|([^{}]+)\}', lambda m: m.group(1), q.get('a', ''))
+        if plain(q.get('a', '')) not in acc: e('accept に a の漢字表記が無い')
+        if kana not in acc: e('accept に a のかな表記が無い')
+        if any(not isinstance(x, str) or not x.strip() for x in acc): e('accept に空/文字列でないものがある')
+    elif len(ch) != 3: e(f'choices が{len(ch)}個')
     allc = [plain(c) for c in ch] + [plain(q.get('a', ''))]
     if len(set(allc)) != len(allc): e('選択肢と答えが重なる')
     for s in [q.get('q', ''), q.get('a', ''), *ch]:

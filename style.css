@@ -10,6 +10,7 @@ rt{font-size:.45em;color:#77758a;font-weight:600}
 .bar{height:12px;background:#dcd8ee;border-radius:99px;overflow:hidden;margin-bottom:12px}
 .bar i{display:block;height:100%;background:#4aa8f0;border-radius:99px;transition:width .3s}
 .card{background:#fff;border-radius:26px;padding:22px 16px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:25px;font-weight:800;line-height:1.7;box-shadow:0 5px 0 #ddd8f0,0 0 0 3px #e3effc;margin-bottom:14px}
+.card .qt{min-width:0;max-width:100%}
 .choices{display:flex;flex-direction:column;gap:12px}
 .choice{display:flex;align-items:center;gap:14px;width:100%;min-height:68px;background:#fff;border:3px solid #e1ddf2;border-radius:22px;padding:8px 16px;font-size:24px;font-weight:800;text-align:left;box-shadow:0 4px 0 #ddd8f0;transition:transform .15s}
 .choice .dot{flex:none;width:30px;height:30px;border-radius:50%;border:3px solid #dcd8ee;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
@@ -52,3 +53,16 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .map svg{width:100%;height:100%}
 .wi .ml{display:block;font-size:13px;color:#2f9ad8;font-weight:800;line-height:1.4}
 .credit{text-align:center;font-size:11px;color:#8a88a0;margin-top:14px}
+
+.map.small{aspect-ratio:2.4/1;margin-bottom:10px}
+.inbox{display:flex;flex-direction:column;gap:10px}
+.ans{width:100%;min-height:68px;border:3px solid #e1ddf2;border-radius:22px;padding:8px 16px;font:inherit;font-size:24px;font-weight:800;text-align:center;background:#fff;color:#2b2a3a;box-shadow:0 4px 0 #ddd8f0;outline:none}
+.ans:focus{border-color:#4aa8f0}
+.ans.ok{background:#d9f5e3;border-color:#3cc07a}
+.ans.ng{background:#fde0e0;border-color:#e5584f}
+.inbox .big{margin-bottom:0}
+.skip{align-self:center;background:#fff;border:2px solid #e1ddf2;border-radius:999px;min-height:44px;padding:0 20px;font-size:16px;font-weight:700;color:#6d6b85}
+.skip:disabled{opacity:.45}
+.okmsg{color:#1f9a5a;font-size:22px}
+.correct{color:#1f9a5a;font-size:24px;font-weight:900;line-height:1.8}
+.tapnext{color:#e5584f}
