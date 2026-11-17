@@ -66,3 +66,6 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .okmsg{color:#1f9a5a;font-size:22px}
 .correct{color:#1f9a5a;font-size:24px;font-weight:900;line-height:1.8}
 .tapnext{color:#e5584f}
+.skipw{display:flex;justify-content:center;margin-top:14px}
+.skipw .skip{min-height:48px;padding:0 28px;font-size:17px}
+.skipcount{text-align:center;color:#6d6b85;font-weight:800;font-size:18px;margin:4px 0 8px}

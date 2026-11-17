@@ -80,7 +80,7 @@ function home() {
 // ---------- 回 ----------
 function start(list) {
   if (!list.length) return home();
-  S = { sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), seen: new Set(), locked: false, timer: null };
+  S = { sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), skips: 0, seen: new Set(), locked: false, timer: null };
   question();
 }
 function question() {
@@ -98,13 +98,14 @@ function question() {
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div></div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
-    ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わからない</button></div>` : ''}
+    ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
+    ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>`;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
-  if (isIn) setupInput(q);
+  if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
   if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: isIn ? 2.4 : 1.7 }); }).catch(() => {});
 }
 // 入力問題：ひらがな・カタカナ・全角半角・空白・末尾の「。」をそろえて比べる
@@ -126,8 +127,9 @@ function answerInput(text) {
   const q = S.cur, skipped = text === null, ok = !skipped && judge(q, text);
   const inp = document.getElementById('ans');
   inp.blur(); inp.readOnly = true;
-  document.getElementById('submit').disabled = true; document.getElementById('skip').disabled = true;
-  record(q, ok, skipped ? 'わからない' : String(text).trim());
+  document.getElementById('submit').disabled = true;
+  if (skipped) S.skips++;
+  record(q, ok, skipped ? 'わかんない' : String(text).trim(), skipped);
   const nx = document.getElementById('next');
   if (ok) {
     if (!S.seen.has(q.id)) S.correct++;
@@ -150,9 +152,10 @@ function answerInput(text) {
 }
 function answer(i) {
   if (S.locked) return; S.locked = true;
-  const q = S.cur, picked = S.opts[i], ok = picked === q.a;
+  const q = S.cur, skipped = i < 0, picked = skipped ? 'わかんない' : S.opts[i], ok = !skipped && picked === q.a;
   const btns = [...app.querySelectorAll('.choice')];
-  record(q, ok, picked);
+  if (skipped) { S.skips++; }
+  record(q, ok, picked, skipped);
   if (ok) {
     if (!S.seen.has(q.id)) S.correct++;
     S.seen.add(q.id);
@@ -162,7 +165,7 @@ function answer(i) {
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
-    btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×';
+    if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
     if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
     const nx = document.getElementById('next');
@@ -186,6 +189,7 @@ function result() {
   app.innerHTML = `
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
+    ${S.skips ? `<div class="skipcount">わかんない ${S.skips}こ</div>` : ''}
     ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
     <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
     <button class="big go" id="more">つぎの10もん</button>
@@ -203,12 +207,14 @@ function now() {
   const d = new Date(), p = n => String(n).padStart(2, '0'), o = -d.getTimezoneOffset(), a = Math.abs(o);
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}${o >= 0 ? '+' : '-'}${p(Math.floor(a / 60))}:${p(a % 60)}`;
 }
-function record(q, ok, picked) {
+function record(q, ok, picked, skipped) {
   const t = now(), x = Object.assign({ w: 0, c: 0, s: 0, l: '', t: '' }, stats[q.id]);
-  if (ok) { x.c++; x.s++; x.l = 'o'; } else { x.w++; x.s = 0; x.l = 'x'; }
+  if (ok) { x.c++; x.s++; x.l = 'o'; } else { x.w++; x.s = 0; x.l = 'x'; if (skipped) x.k = (x.k || 0) + 1; }
   x.t = t; stats[q.id] = x; save(LS_STATS, stats);
   queue.seq++;
-  queue.rows.push({ rid: dev + '-' + queue.seq, t, test: q.test, qid: q.id, ok, pick: plain(picked), sess: S.sess });
+  const row = { rid: dev + '-' + queue.seq, t, test: q.test, qid: q.id, ok, pick: plain(picked), sess: S.sess };
+  if (skipped) row.skip = 1;
+  queue.rows.push(row);
   save(LS_Q, queue);
 }
 let sending = false;
