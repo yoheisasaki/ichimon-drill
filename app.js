@@ -43,13 +43,23 @@ function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { co
 function pick(list, n) {
   return shuffle(list).map(q => [q, score(q)]).sort((a, b) => b[1] - a[1]).slice(0, n).map(p => p[0]);
 }
-function pool() { return qs().filter(q => filter === '全部' || q.subject === filter); }
+function pool() { return qs().filter(q => filter === '全部' || (filter === 'ちず' ? !!q.map : q.subject === filter)); }
+// 地図は地図問題が初めて出るときに1回だけ読む
+let mapsP = null;
+function loadMaps() {
+  if (!mapsP) mapsP = Promise.all([fetch('data/map_chubu_kanto.json').then(r => r.json()), fetch('data/features.json').then(r => r.json())]).catch(e => { mapsP = null; throw e; });
+  return mapsP;
+}
+function mapLabel(q) {
+  const m = q.map; if (!m) return '';
+  return '地図：' + (m.hl && m.mark ? m.hl + 'の' + m.mark : (m.hl || m.mark || ''));
+}
 
 // ---------- 画面：最初 ----------
 function home() {
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
-  if (filter !== '全部' && !subs.includes(filter)) filter = '全部';
+  if (filter !== '全部' && filter !== 'ちず' && !subs.includes(filter)) filter = '全部';
   const card = (label, list, cls, key) => {
     const c = counts(list);
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>にがて ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
@@ -58,9 +68,10 @@ function home() {
   app.innerHTML = `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
-    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}</div>
+    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}</div>
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>`;
+    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
+    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; home(); });
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
@@ -84,12 +95,14 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card">${ruby(q.q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}">${ruby(q.q)}</div>
+    ${q.map ? '<div class="map" id="map"></div>' : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>`;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
+  if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: 1.7 }); }).catch(() => {});
 }
 function answer(i) {
   if (S.locked) return; S.locked = true;
@@ -129,7 +142,7 @@ function result() {
   app.innerHTML = `
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
-    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
+    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
     <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;

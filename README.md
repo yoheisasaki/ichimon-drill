@@ -10,3 +10,6 @@
   3. 二重送信はサーバー側が `rid` で弾く（確実さ優先）。
 - 送信先は `app.js` 先頭の `SEND_URL`。`?nosend=1` で送信しない。`?send=<URL>` は送信先の差し替え（テスト用）。
 - 3連続で正解＝おぼえた。まちがえた問題は3問あとにもう一度（1回の延長は最大5問）。
+- 地図問題：問題に `"map":{"hl":"<県>","mark":"<地点>"}`。`map.js`（renderMap）・`data/map_chubu_kanto.json`・`data/features.json`。地図 JSON は地図問題が初めて出るときに1回だけ読む。「ちず」ボタンは map 付きの問題だけを出す（社会にも含む）。
+- 問題の検査：`python tools/check_questions.py`（id重複・choices3つ・答えと重複・`{|}`の形・map.mark/hl の存在）。問題を足したら必ず通す。
+- 出典：地図：国土数値情報（行政区域データ）を加工して作成（元データの整形：smartnews-smri/japan-topography）。最初の画面の下にも表示。
