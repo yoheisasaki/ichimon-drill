@@ -90,6 +90,10 @@ t('AI：HP40%以下なら回復技（守る65%・攻める25%）', () => {
   const mkp = (tac, hpf) => { const st = B.newBattle({ job: 'priest', jobLv: 10, advLv: 10, equip: {}, skills: ['p_heal', 'p_arrow', 'p_holy'], tactic: tac, enemyId: 'e_leafslime', enemyStats: { hp: 9999, atk: 5, def: 0 } }); st.hero.hp = Math.floor(st.hero.maxHp * hpf); st.hero.gauge = 3; return B.chooseAction(st); };
   eq(mkp('auto', 0.3).why, 'heal'); ok(mkp('auto', 0.5).why !== 'heal'); eq(mkp('guard', 0.6).why, 'heal'); ok(mkp('attack', 0.3).why !== 'heal' || true); ok(mkp('attack', 0.5).why !== 'heal');
 });
+t('AI：僧侶はHP70%以下で回復量を無駄にしない回復技を早めに使う／満タンでは使わない', () => {
+  const mk3 = hpf => { const st = B.newBattle({ job: 'priest', jobLv: 10, advLv: 10, equip: {}, skills: ['p_heal', 'p_arrow', 'p_holy'], tactic: 'auto', enemyId: 'e_leafslime', enemyStats: { hp: 9999, atk: 5, def: 0 } }); st.hero.hp = Math.floor(st.hero.maxHp * hpf); st.hero.gauge = 2; return B.chooseAction(st); };
+  eq(mk3(0.6).why, 'heal-early'); ok(mk3(1).why !== 'heal-early' && mk3(1).why !== 'heal');
+});
 t('AI：倒し切れる行動があれば最小消費で倒す', () => {
   const st = B.newBattle({ job: 'warrior', jobLv: 10, advLv: 10, equip: {}, skills: ['w_strike', 'w_rock', 'w_brave'], enemyId: 'e_leafslime', enemyStats: { hp: 30, atk: 5, def: 0 } }); st.hero.gauge = 6;
   const c = B.chooseAction(st); eq(c.why, 'kill'); ok(c.act.t === 'normal' || D.SKILLS[c.act.id].cost <= 2, JSON.stringify(c));

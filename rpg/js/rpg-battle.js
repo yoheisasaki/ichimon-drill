@@ -225,7 +225,7 @@
   }
 
   // ---------- 自動技選択 ----------
-  const TACTIC = { auto: { heal: 0.40, bigFrac: 0.40, pow: 1.0 }, attack: { heal: 0.25, bigFrac: 99, pow: 0.8 }, guard: { heal: 0.65, bigFrac: 0.25, pow: 1.0 } };
+  const TACTIC = { auto: { heal: 0.40, soft: 0.70, bigFrac: 0.40, pow: 1.0 }, attack: { heal: 0.25, soft: 0.50, bigFrac: 99, pow: 0.8 }, guard: { heal: 0.65, soft: 0.85, bigFrac: 0.25, pow: 1.0 } };
   function stackValue(h) {
     const p = h.p; return p.aim * 0.3 + p.shadow * 0.25 + p.shield * 0.4 + p.star * 0.3 + (p.seal ? 0.3 : 0) + (p.imbue ? 0.15 : 0) + (p.fly ? 0.2 : 0);
   }
@@ -260,9 +260,14 @@
       const hs = pv.filter(x => x.ev.heal > 0);
       if (hs.length) { hs.sort((a, b) => (b.ev.heal + b.ev.dmg * 0.3) - (a.ev.heal + a.ev.dmg * 0.3)); return { act: hs[0].act, why: 'heal' }; }
     }
+    // 3b. 回復量を無駄にしない範囲での早めの回復（僧侶などが回復技・守り技を使わないままになるのを防ぐ。HPが soft 以下で、技が最大HPの15%以上を実際に回復できるとき）
+    if (h.hp / h.maxHp <= T.soft) {
+      const hs = pv.filter(x => x.act.t === 'skill' && x.ev.heal >= 0.15 * h.maxHp);
+      if (hs.length) { hs.sort((a, b) => (b.ev.heal + b.ev.dmg * 0.3) - (a.ev.heal + a.ev.dmg * 0.3)); return { act: hs[0].act, why: 'heal-early' }; }
+    }
     // 4. 攻撃（ゲージ1あたりの上乗せが大きいもの。連携・蓄積も価値に含める）
     const unit = Math.max(1, h.atk * 100 / (100 + e.def)), base = pv[0];
-    const val = x => x.ev.dmg + stackValue(x.st.hero) * unit + x.ev.heal * 0.5 + guardValue(h, e, x.st.hero, unit);
+    const val = x => x.ev.dmg + stackValue(x.st.hero) * unit + x.ev.heal * 0.8 + guardValue(h, e, x.st.hero, unit);
     const baseV = val(base);
     if (h.gauge >= GAUGE_MAX) {  // ゲージが満タンなら、上乗せ分が最大のものを使う（取りこぼし防止）
       let top = null; pv.slice(1).forEach(x => { const g = val(x) - baseV; if (g > 0 && (!top || g > top.g)) top = { x, g }; });
@@ -289,7 +294,7 @@
   function guardValue(h0, e, h1, unit) {
     const g0 = h0.guard ? h0.guard.pct * h0.guard.left : 0, g1 = h1.guard ? h1.guard.pct * h1.guard.left : 0;
     const per = e.atk * 100 / (100 + h0.def);
-    return Math.max(0, g1 - g0) * per * 0.5;
+    return Math.max(0, g1 - g0) * per * 0.9;
   }
 
   // ---------- 回答1つ分の進行 ----------
