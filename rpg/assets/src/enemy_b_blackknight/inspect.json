@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_blackknight/enemy_b_blackknight.png",
+ "src_size": [
+  724,
+  724
+ ],
+ "trim_size": [
+  695,
+  633
+ ],
+ "out": "rpg/assets/chars/enemy_b_blackknight.png",
+ "out_size": [
+  211,
+  192
+ ],
+ "magenta_removed_px": 262489,
+ "fringe_removed_px": 3323,
+ "magenta_left_px": 13,
+ "opaque_px": 23756,
+ "colors": 15277
+}

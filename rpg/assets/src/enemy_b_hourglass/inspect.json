@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_hourglass/enemy_b_hourglass.png",
+ "src_size": [
+  724,
+  724
+ ],
+ "trim_size": [
+  694,
+  645
+ ],
+ "out": "rpg/assets/chars/enemy_b_hourglass.png",
+ "out_size": [
+  207,
+  192
+ ],
+ "magenta_removed_px": 202970,
+ "fringe_removed_px": 2094,
+ "magenta_left_px": 0,
+ "opaque_px": 28325,
+ "colors": 20385
+}
