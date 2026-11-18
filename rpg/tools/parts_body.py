@@ -22,10 +22,10 @@ GRIP_ANGLE = {'L': {'idle': 45, 'ready': 45, 'attack': 45, 'hit': -45, 'win': -4
               'S': {'idle': 45, 'attack': 45, 'hit': -45, 'walk': 45}}
 WEAPON_SCALE = {'L': 1.0, 'S': 0.5}
 
-job, size = sys.argv[1], sys.argv[2]
+job, size = sys.argv[1].replace(':', '_'), sys.argv[2]   # 衣装つきは 職:master / 職:alt1（部品名は body_<職>_<衣装>_<pose>_<size>）
 sheet = sys.argv[3] if len(sys.argv) > 3 else os.path.join(SRC, f'sheet_body_{job}_{size}.png')
 a = np.array(Image.open(sheet).convert('RGB')); H0, W0 = a.shape[:2]
-PAD = 80   # 頭の余白が元画像の上端を越えても切り出せるよう、マゼンタで周囲を足す
+PAD = 320   # 頭の余白が元画像の上端を越えても切り出せるよう、マゼンタで周囲を足す
 a = np.pad(a, ((PAD, PAD), (PAD, PAD), (0, 0)), constant_values=0); a[:PAD] = a[-PAD:] = (255, 0, 255); a[:, :PAD] = a[:, -PAD:] = (255, 0, 255); H, W = a.shape[:2]
 mag = magenta_mask(a); grn = green_mask(a); fg = ~mag; smsrc = skin_mask_src(a)
 cells = {}

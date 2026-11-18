@@ -86,3 +86,13 @@
 - 武器: parts.json の jobWeapon（影武者は短剣）。杖=w_staff_1・短剣=w_dagger_1・弓=w_bow_1（回転なし・胴の木の部分を握る）を登録。
 - S は weaponLayer=back（武器を身体の後ろ）。
 - 残る問題: S は26pxなので身体が粗く、実寸ではほぼ点。S の武器(0.5倍)はまだ大きめ。天翔騎士L攻撃に腰の位置へ小さな灰色の取り残しが1つ。魔法戦士の「魔法」の見た目は胸の紋章のみ。顔髪の差分は戦士ベースの1系統（髪型2〜4は似ている）。
+
+## 主人公の部品化 マスター衣装12職＋上級職の追加衣装6職 2026-11-18
+- 作ったもの: master 12職（warrior mage priest thief magicknight paladin shadow sage ninja ranger skyknight starseer）と alt1 6職（magicknight paladin shadow sage ninja ranger）の身体＋前の手。L 5ポーズ・S 4ポーズ。計162ポーズ（parts.json の body キー `<職>_master_<pose>_<size>` / `<職>_alt1_...`）。頭は共通部品。全部品 23色以内・透明は0/255のみ。
+- 方法: 新規チャット(Chatモード・入力欄が空なのを確認)に通常衣装のLシート(assets/src/parts/sheet_body_<職>_L.png をJPEG化)を添付 →「構図だけ引き継ぎ、衣装は別デザインに描き直す」と職ごとの衣装案を文章で指定 → Lシート → 同じチャットでSシート(添付なし)。ページ内JSで blob を `rpgparts_<職>_<衣装>_<L|S>.png` として保存 → `python rpg/tools/parts_take.py [タグ...]`（Downloads から src/parts へ移し parts_body.py を実行。mage/ninja/shadow/thief は PARTS_STRICT=1）。
+- parts_body.py: 引数を `職:master` / `職:alt1` で衣装つきにした。PAD 80→320（Sの頭の余白が元画像の上端を越えて失敗するため）。
+- 確認画像: shots/parts_pilot/h_costumes.png（職ごとに 通常/マスター/追加 の待機と勝利）、h_costumes_S.png（待機と攻撃）。`python rpg/tools/parts_costume_shots.py [職...]`。全ポーズの点検は tools/parts_costume_poses.py。
+- 衣装案: warrior=金縁青鎧+獅子紋+長い深紅マント／mage=藍の長ローブ+星空マント+月星の肩飾り／priest=白金の司教服+扇形の金の肩衣／thief=黒赤紫の長外套+毛皮肩+赤い長スカーフ／magicknight=銀胸甲+左肩の魔法陣肩当て+紫マント／paladin=純白金の全身鎧+長いマント／shadow=黒漆の胸当て+金家紋の長羽織+金赤の帯／sage=象牙白金のローブ+紺ケープ+宝珠3つ／ninja=漆黒+金+二本の赤い襟巻き／ranger=青緑の長マント+白毛皮襟+大きな矢筒／skyknight=金縁の大きな翼+金の翼形肩当て／starseer=夜空のローブ+銀の三日月肩飾り。追加衣装 alt1: magicknight=蒼炎の騎士コート（暗い青緑の長いコート）／paladin=紅の儀礼騎士（軽装の深紅サーコート）／shadow=月影の白装束／sage=旅の学者（ワイン色の膝丈コート）／ninja=紅蓮の装束（深紅+黒袴）／ranger=蒼天の旅人（青の羽織外套+狼毛皮）。
+- 失敗・気づき: (1) 盗賊のマスターを最初に作ったとき、生成完了前に保存して添付した元絵そのものを採用してしまった（完成画像は2枚目以降のblob。保存前に「blobが2つ以上／Sは1254px」で確かめるようにした）。作り直して採用。 (2) 帯用(S)は26pxで、金や白の飾りが多い衣装（天翔騎士の翼・僧侶・賢者・星詠み）は点が細かくなる。衣装の大きな塊（マント・肩・色）で見分けられる程度。 (3) 画面側は master/alt1 を `drawHeroLayered` の costume 引数で読む想定（rpg-sprites.js は別担当）。alt の costume 名は `alt1`。
+- 修正: 天翔騎士の L 攻撃で腰の左の灰色の取り残しを消した（body_skyknight_attack_L.png の孤立画素）。
+- ChatGPT のタブは閉じた。使用上限の表示は出なかった。
