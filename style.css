@@ -1,6 +1,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;background:#f1effc;color:#2b2a3a;font-family:"Hiragino Maru Gothic ProN","Yu Gothic UI","Meiryo",system-ui,sans-serif;overflow-x:hidden}
+html,body{margin:0;padding:0;background:#f1effc;color:#2b2a3a;font-family:"Klee One","Hiragino Maru Gothic ProN","Yu Gothic UI","Meiryo",system-ui,sans-serif;overflow-x:hidden}
 #app{max-width:480px;margin:0 auto;padding:12px 14px calc(20px + env(safe-area-inset-bottom));min-height:100vh}
+button,input{font-family:inherit;}
 button{font:inherit;color:inherit;cursor:pointer}
 rt{font-size:.45em;color:#77758a;font-weight:600}
 .top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
