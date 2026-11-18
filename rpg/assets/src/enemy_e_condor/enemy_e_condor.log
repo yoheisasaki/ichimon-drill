@@ -1,0 +1,20 @@
+seconds=138
+rc=0
+[enemy_e_condor.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_condor/enemy_e_condor.png)  
+1536 × 1024 px
+
+ser\\.codex\\generated_images\\01a1ed26-6019-7e21-a26d-209ecc71df6d\\exec-496d89bf-4be3-44cd-8ef0-99a2cfeb0096.png','C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\enemy_e_condor\\enemy_e_condor.png')
+"'$bmp=[System.Drawing.Bitmap]::new('"'C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\enemy_e_condor\\enemy_e_condor.png')
+Write-Output \""'$($bmp.Width)x$($bmp.Height) $($bmp.GetPixel(0,0).ToArgb())"
+$bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_condor
+ succeeded in 1405ms:
+1536x1024 -65281
+
+codex
+[enemy_e_condor.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_condor/enemy_e_condor.png)  
+1536 × 1024 px
+hook: Stop
+hook: Stop Completed
+tokens used
+26,316
+

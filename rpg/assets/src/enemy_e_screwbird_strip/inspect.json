@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_screwbird/enemy_e_screwbird.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  857,
+  864
+ ],
+ "out": "rpg/assets/chars/enemy_e_screwbird_strip.png",
+ "out_size": [
+  24,
+  24
+ ],
+ "magenta_removed_px": 1098889,
+ "fringe_removed_px": 1623,
+ "magenta_left_px": 0,
+ "opaque_px": 365,
+ "colors": 324
+}

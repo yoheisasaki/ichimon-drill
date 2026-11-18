@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_mushroom/enemy_e_mushroom.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  1024,
+  1099
+ ],
+ "out": "rpg/assets/chars/enemy_e_mushroom.png",
+ "out_size": [
+  52,
+  56
+ ],
+ "magenta_removed_px": 829815,
+ "fringe_removed_px": 2116,
+ "magenta_left_px": 0,
+ "opaque_px": 1911,
+ "colors": 898
+}

@@ -1,0 +1,20 @@
+seconds=157
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_sandlizard\enemy_e_sandlizard.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_sandlizard/enemy_e_sandlizard.png) — 1254 × 1254 ピクセル
+
+c.B -ge 150){$img.SetPixel($x,$y,$magenta);$count++}}}
+$img.Save($destination,[System.Drawing.Imaging.ImageFormat]::Png)
+Write-Output "$destination`n$($img.Width)x$($img.Height)`nbackground pixels normalized: $count"
+$img.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_sandlizard
+ succeeded in 11386ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_sandlizard\enemy_e_sandlizard.png
+1254x1254
+background pixels normalized: 1282760
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_sandlizard\enemy_e_sandlizard.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_sandlizard/enemy_e_sandlizard.png) — 1254 × 1254 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+24,041
+

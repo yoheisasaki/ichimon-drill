@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_icearmor/enemy_e_icearmor.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  587,
+  1021
+ ],
+ "out": "rpg/assets/chars/enemy_e_icearmor_strip.png",
+ "out_size": [
+  14,
+  24
+ ],
+ "magenta_removed_px": 1189625,
+ "fringe_removed_px": 2166,
+ "magenta_left_px": 0,
+ "opaque_px": 216,
+ "colors": 198
+}

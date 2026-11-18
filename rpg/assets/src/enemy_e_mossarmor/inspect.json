@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_mossarmor/enemy_e_mossarmor.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  795,
+  1113
+ ],
+ "out": "rpg/assets/chars/enemy_e_mossarmor.png",
+ "out_size": [
+  40,
+  56
+ ],
+ "magenta_removed_px": 929262,
+ "fringe_removed_px": 3360,
+ "magenta_left_px": 0,
+ "opaque_px": 1614,
+ "colors": 1301
+}

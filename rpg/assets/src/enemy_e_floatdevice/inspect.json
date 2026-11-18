@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_floatdevice/enemy_e_floatdevice.png",
+ "src_size": [
+  1287,
+  1222
+ ],
+ "trim_size": [
+  987,
+  853
+ ],
+ "out": "rpg/assets/chars/enemy_e_floatdevice.png",
+ "out_size": [
+  65,
+  56
+ ],
+ "magenta_removed_px": 1051736,
+ "fringe_removed_px": 2298,
+ "magenta_left_px": 0,
+ "opaque_px": 2243,
+ "colors": 1885
+}

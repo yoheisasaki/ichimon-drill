@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_icicle/enemy_e_icicle.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1364,
+  739
+ ],
+ "out": "rpg/assets/chars/enemy_e_icicle_strip.png",
+ "out_size": [
+  44,
+  24
+ ],
+ "magenta_removed_px": 1017229,
+ "fringe_removed_px": 2837,
+ "magenta_left_px": 0,
+ "opaque_px": 576,
+ "colors": 304
+}

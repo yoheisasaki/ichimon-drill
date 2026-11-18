@@ -1,0 +1,15 @@
+seconds=163
+rc=0
+[enemy_e_screwbird.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_screwbird/enemy_e_screwbird.png) — 1536 × 1024 ピクセル
+
+s[$i] -ge 140 -and $bytes[$i+1] -le 130){$bytes[$i]=255;$bytes[$i+1]=0;$bytes[$i+2]=255;$count++}}; [System.Runtime.InteropServices.Marshal]::Copy($bytes,0,$data.Scan0,$bytes.Length); $bmp.UnlockBits($data); $bmp.Save($path,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output ("{0}x{1} background pixels: {2}; corner: {3}" -f $bmp.Width,$bmp.Height,$count,$bmp.GetPixel(0,0).ToArgb().ToString('"'X8')); "'$bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_screwbird
+ succeeded in 8012ms:
+1536x1024 background pixels: 1098317; corner: FFFF00FF
+
+codex
+[enemy_e_screwbird.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_screwbird/enemy_e_screwbird.png) — 1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+43,507
+

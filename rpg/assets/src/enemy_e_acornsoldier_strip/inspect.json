@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_acornsoldier/enemy_e_acornsoldier.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  852,
+  871
+ ],
+ "out": "rpg/assets/chars/enemy_e_acornsoldier_strip.png",
+ "out_size": [
+  23,
+  24
+ ],
+ "magenta_removed_px": 1077602,
+ "fringe_removed_px": 2909,
+ "magenta_left_px": 0,
+ "opaque_px": 361,
+ "colors": 306
+}

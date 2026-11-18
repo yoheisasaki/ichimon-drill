@@ -1,0 +1,16 @@
+seconds=151
+rc=0
+[enemy_e_starjelly.png](<C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_starjelly\enemy_e_starjelly.png>) — 1312 × 1199 px
+
+sApps\\pwsh.exe" -Command '$path=Join-Path (Get-Location) '"'enemy_e_starjelly.png'; "'$tmp=$path+'"'.tmp.png'; if(Test-Path -LiteralPath "'$tmp){Copy-Item -LiteralPath $tmp -Destination $path -Force; Remove-Item -LiteralPath $tmp}; Add-Type -AssemblyName System.Drawing; $img=[System.Drawing.Bitmap]::new($path); $p=$img.GetPixel(0,0); Write-Output "Size=$($img.Width)x$($img.Height)"; Write-Output "Corner=$($p.R),$($p.G),$($p.B)"; $img.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_starjelly
+ succeeded in 486ms:
+Size=1312x1199
+Corner=255,0,255
+
+codex
+[enemy_e_starjelly.png](<C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_starjelly\enemy_e_starjelly.png>) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,840
+

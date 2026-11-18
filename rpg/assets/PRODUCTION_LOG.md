@@ -23,7 +23,9 @@
 - スライム左向きに作り直し（目が小さめ。要目視で不満なら再生成）。
 - 敵パイプライン: `tools/enemy_pipe.py <e_xxx|b_xxx...>`（説明は `tools/enemies_data.py`）。報酬56px・ボス128px、帯24px・ボス32px（同じ元絵を縮小）。ボスはspec192pxだが試作比（主人公96）で128にした。
 - 主人公は `tools/hero_pipe.py`、台帳は `tools/update_assets.py id|srcdir|use|display`、一覧画面は `tools/roster_shots.py`、目視用 `tools/sheet.py`。
-- 第1章の敵35体（草原〜空城）を `_logE1.txt/_logE2.txt` で生成中。完了分は台帳に反映する。
+- 第1章の通常敵30体を生成・台帳反映・画面 `rpg/shots/assets_enemies_ch1.png`。電源断(2026-11-18)の後、壊れた生成は再生成済み。
+- 担当変更: ボス（enemy_b_*）・第2/3章の敵・秘境・技効果はブラウザ側。ch1ボス3体（ancienttree/crystalturtle/silverdragon）の元絵は作成済みだが未コミット・未登録（ブラウザ側が決める）。
+- 背景: `tools/bg_pipe.py <名前>`（説明は `tools/bg_data.py`）。ch1の水郷・砂海・山脈を生成中、機工都市・空城が次。
 
 ## 残り（優先順）
 1. 12職の主人公（報酬用96px・帯用28px。待機→攻撃）: warrior以外11職（mage priest thief magicknight paladin shadow sage ninja ranger skyknight starseer）。参照=hero_warrior_chibi/ref。人型は2.3〜2.7頭身。

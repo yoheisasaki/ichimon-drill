@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_pipeslime/enemy_e_pipeslime.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1043,
+  904
+ ],
+ "out": "rpg/assets/chars/enemy_e_pipeslime.png",
+ "out_size": [
+  65,
+  56
+ ],
+ "magenta_removed_px": 962817,
+ "fringe_removed_px": 1348,
+ "magenta_left_px": 0,
+ "opaque_px": 2361,
+ "colors": 1194
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_hermit/enemy_e_hermit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  959,
+  838
+ ],
+ "out": "rpg/assets/chars/enemy_e_hermit_strip.png",
+ "out_size": [
+  27,
+  24
+ ],
+ "magenta_removed_px": 1033390,
+ "fringe_removed_px": 1737,
+ "magenta_left_px": 0,
+ "opaque_px": 430,
+ "colors": 363
+}

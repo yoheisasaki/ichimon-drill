@@ -1,0 +1,15 @@
+seconds=136
+rc=0
+[enemy_e_mossarmor.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mossarmor/enemy_e_mossarmor.png>) — 1312 × 1199 px
+
+\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command "Copy-Item -LiteralPath 'C:\\Users\\user\\.codex\\generated_images\\01a1ed06-518a-7451-a5ae-1b57aa0b4224\\exec-34960a0c-6cc5-4a8b-ad2e-d01a9c72eebe.png' -Destination '.\\enemy_e_mossarmor.png' -Force; Add-Type -AssemblyName System.Drawing; "'$im=[System.Drawing.Image]::FromFile((Resolve-Path -LiteralPath '"'.\\enemy_e_mossarmor.png').Path); Write-Output \""'$($im.Width)x$($im.Height)"; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_mossarmor
+ succeeded in 461ms:
+1312x1199
+
+codex
+[enemy_e_mossarmor.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mossarmor/enemy_e_mossarmor.png>) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,294
+

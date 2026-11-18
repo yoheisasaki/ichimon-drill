@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_jarmonster/enemy_e_jarmonster.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  935,
+  935
+ ],
+ "out": "rpg/assets/chars/enemy_e_jarmonster_strip.png",
+ "out_size": [
+  24,
+  24
+ ],
+ "magenta_removed_px": 1008622,
+ "fringe_removed_px": 2542,
+ "magenta_left_px": 0,
+ "opaque_px": 370,
+ "colors": 321
+}

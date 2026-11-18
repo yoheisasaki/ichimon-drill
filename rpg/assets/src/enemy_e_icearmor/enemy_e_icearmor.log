@@ -1,0 +1,17 @@
+seconds=200
+rc=0
+[enemy_e_icearmor.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_icearmor/enemy_e_icearmor.png) — 1312 × 1199 ピクセル
+
+]=0;$bytes[$i+2]=255;$count++}}; [System.Runtime.InteropServices.Marshal]::Copy($bytes,0,$d.Scan0,$n); $b.UnlockBits($d); $b.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "Path: $dst"; Write-Output "Size: $($b.Width)x$($b.Height)"; Write-Output "Background pixels normalized: $count"; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icearmor
+ succeeded in 6977ms:
+Path: C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icearmor\enemy_e_icearmor.png
+Size: 1312x1199
+Background pixels normalized: 1188879
+
+codex
+[enemy_e_icearmor.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_icearmor/enemy_e_icearmor.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+25,718
+

@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_sandlizard/enemy_e_sandlizard.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  1178,
+  537
+ ],
+ "out": "rpg/assets/chars/enemy_e_sandlizard_strip.png",
+ "out_size": [
+  53,
+  24
+ ],
+ "magenta_removed_px": 1283691,
+ "fringe_removed_px": 2515,
+ "magenta_left_px": 0,
+ "opaque_px": 565,
+ "colors": 456
+}

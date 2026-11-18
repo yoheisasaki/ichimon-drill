@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_lizard/enemy_e_lizard.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1141,
+  762
+ ],
+ "out": "rpg/assets/chars/enemy_e_lizard.png",
+ "out_size": [
+  84,
+  56
+ ],
+ "magenta_removed_px": 1046225,
+ "fringe_removed_px": 2042,
+ "magenta_left_px": 0,
+ "opaque_px": 2851,
+ "colors": 1246
+}

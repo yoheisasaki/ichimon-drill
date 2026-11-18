@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_cactus/enemy_e_cactus.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  901,
+  926
+ ],
+ "out": "rpg/assets/chars/enemy_e_cactus.png",
+ "out_size": [
+  54,
+  56
+ ],
+ "magenta_removed_px": 1040659,
+ "fringe_removed_px": 1827,
+ "magenta_left_px": 6,
+ "opaque_px": 1919,
+ "colors": 1309
+}
