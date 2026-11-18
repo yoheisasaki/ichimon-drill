@@ -1,0 +1,293 @@
+{
+ "checks": {
+  "chromium:home_card": true,
+  "chromium:home_learning_kept": true,
+  "chromium:home_nav4": true,
+  "chromium:home_bonus2": true,
+  "chromium:home_no_hscroll_44": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:adv_map6": true,
+  "chromium:adv_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:wish_saved": true,
+  "chromium:town_6spots": true,
+  "chromium:town_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:jobs_base4": true,
+  "chromium:jobs_adv6": true,
+  "chromium:jobs_top2": true,
+  "chromium:job_locked_before_first": true,
+  "chromium:buy_sword": {
+   "ok": true,
+   "v": 2760
+  },
+  "chromium:shop_refund_btn": true,
+  "chromium:shop_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:refund_needs_confirm": true,
+  "chromium:refund_ok": {
+   "ok": true,
+   "v": 2760
+  },
+  "chromium:equip_try_not_saved": true,
+  "chromium:equip_diff_shown": true,
+  "chromium:equip_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:equip_committed": true,
+  "chromium:enhance_1": {
+   "ok": true,
+   "v": 2712
+  },
+  "chromium:adv_locked": true,
+  "chromium:adv_req_progress": true,
+  "chromium:goal_saved": true,
+  "chromium:job_changed": {
+   "ok": true,
+   "v": [
+    "mage",
+    {
+     "weapon": "w_staff_1",
+     "armor": null,
+     "acc": null
+    }
+   ]
+  },
+  "chromium:loadout_rendered": true,
+  "chromium:loadout_saved": {
+   "ok": true,
+   "v": {
+    "skills": [],
+    "tactic": "guard"
+   }
+  },
+  "chromium:loadout_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:look_saved": {
+   "ok": true,
+   "v": [
+    "ゆうた",
+    {
+     "face": 2,
+     "hair": 4,
+     "skin": 3,
+     "hairColor": 0
+    }
+   ]
+  },
+  "chromium:look_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:me_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "chromium:codex_36": true,
+  "chromium:codex_items": true,
+  "chromium:ach_list": true,
+  "chromium:data_screen": true,
+  "chromium:reload_kept": true,
+  "chromium:home_shows_goal": true,
+  "chromium:question_has_no_nav": true,
+  "chromium:reward_equip_link": true,
+  "chromium:result_to_equip": true,
+  "chromium:equip_back_to_home": true,
+  "chromium:equip_locked_in_adventure": true,
+  "webkit:home_card": true,
+  "webkit:home_learning_kept": true,
+  "webkit:home_nav4": true,
+  "webkit:home_bonus2": true,
+  "webkit:home_no_hscroll_44": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:adv_map6": true,
+  "webkit:adv_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:wish_saved": true,
+  "webkit:town_6spots": true,
+  "webkit:town_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:jobs_base4": true,
+  "webkit:jobs_adv6": true,
+  "webkit:jobs_top2": true,
+  "webkit:job_locked_before_first": true,
+  "webkit:buy_sword": {
+   "ok": true,
+   "v": 2760
+  },
+  "webkit:shop_refund_btn": true,
+  "webkit:shop_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:refund_needs_confirm": true,
+  "webkit:refund_ok": {
+   "ok": true,
+   "v": 2760
+  },
+  "webkit:equip_try_not_saved": true,
+  "webkit:equip_diff_shown": true,
+  "webkit:equip_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:equip_committed": true,
+  "webkit:enhance_1": {
+   "ok": true,
+   "v": 2712
+  },
+  "webkit:adv_locked": true,
+  "webkit:adv_req_progress": true,
+  "webkit:goal_saved": true,
+  "webkit:job_changed": {
+   "ok": true,
+   "v": [
+    "mage",
+    {
+     "weapon": "w_staff_1",
+     "armor": null,
+     "acc": null
+    }
+   ]
+  },
+  "webkit:loadout_rendered": true,
+  "webkit:loadout_saved": {
+   "ok": true,
+   "v": {
+    "skills": [],
+    "tactic": "guard"
+   }
+  },
+  "webkit:loadout_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:look_saved": {
+   "ok": true,
+   "v": [
+    "ゆうた",
+    {
+     "face": 2,
+     "hair": 4,
+     "skin": 3,
+     "hairColor": 0
+    }
+   ]
+  },
+  "webkit:look_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:me_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "nav": true
+   }
+  },
+  "webkit:codex_36": true,
+  "webkit:codex_items": true,
+  "webkit:ach_list": true,
+  "webkit:data_screen": true,
+  "webkit:reload_kept": true,
+  "webkit:home_shows_goal": true,
+  "webkit:question_has_no_nav": true,
+  "webkit:reward_equip_link": true,
+  "webkit:result_to_equip": true,
+  "webkit:equip_back_to_home": true,
+  "webkit:equip_locked_in_adventure": true,
+  "w320:all_screens_fit": {
+   "ok": true,
+   "v": {}
+  },
+  "w375:all_screens_fit": {
+   "ok": true,
+   "v": {}
+  },
+  "w430:all_screens_fit": {
+   "ok": true,
+   "v": {}
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "blocked_send_requests": 0
+}

@@ -110,13 +110,15 @@ function home() {
   app.innerHTML = `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
+    ${window.RPG ? RPG.homeTop() : ''}
     <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
     <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
     ${window.RPG ? RPG.homeHtml() : ''}
-    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
-  if (window.RPG) RPG.bindHome();
+    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>
+    ${window.RPG ? RPG.navHtml('home') : ''}`;
+  if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
     const g = b.dataset.g, cur = units[filter] || [];

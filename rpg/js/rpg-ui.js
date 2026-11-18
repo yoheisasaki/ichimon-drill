@@ -1,7 +1,7 @@
 'use strict';
 // 画面側：下端の冒険帯・結果（報酬）画面・保存の失敗表示・バックアップ。app.js から window.RPG 経由で呼ばれる
 (function (root) {
-  const D = root.RPGData, C = root.RPGCore, A = root.RPGAdv, SP = root.RPGSprites;
+  const D = root.RPGData, C = root.RPGCore, A = root.RPGAdv, M = root.RPGMeta, SP = root.RPGSprites;
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const rb = s => (typeof root.ruby === 'function' ? root.ruby(s) : esc(s.replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1')));
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
@@ -17,7 +17,7 @@
     const io = { get: k => root.localStorage.getItem(k), set: (k, v) => root.localStorage.setItem(k, v) };
     RPG.io = io; RPG.store = C.makeStore(io);
     const r = RPG.store.load(NOW());
-    RPG.save = r.save;
+    RPG.save = M.ensure(r.save);
     if (!r.ok) { RPG.err = r.err; RPG.errDetail = r.detail || null; RPG.ok = false; return; }
     RPG.ok = true;
     if (r.fresh) { const w = RPG.store.save(RPG.save); if (!w.ok) { RPG.ok = false; RPG.err = w.err; } }
@@ -168,9 +168,11 @@
       </div>
       ${RPG.noticeHtml()}
       <div class="rw-btns"><button class="rw-btn" id="end">おわる</button><button class="rw-btn" id="more">つぎの10もん</button></div>
+      <button class="rw-link" id="rwEquip">そうびを みる</button>
     </div>`;
   };
   RPG.bindReward = function (res) {
+    const eqb = root.document.getElementById('rwEquip'); if (eqb) eqb.onclick = () => { if (RPG.open) RPG.open('equip', { from: 'result' }); };
     const w = root.document.getElementById('rwWrong'), box = root.document.getElementById('rwWrongBox');
     if (w) w.onclick = () => { const o = box.hidden; box.hidden = !o; w.setAttribute('aria-expanded', String(o)); w.textContent = (o ? '▼ ' : '▶ ') + 'まちがえた問題をみる'; };
     const c = root.document.getElementById('rwCanvas'); if (!c) return;
@@ -187,8 +189,8 @@
 
   // ---------- ホームの「ゲームのデータ」 ----------
   RPG.homeHtml = function () {
-    const note = RPG.progressNote(), n = RPG.noticeHtml();
-    return `${n}${note ? `<div class="rpg-note">ぼうけん ${note.n} / ${note.unit} もん（つづきから）</div>` : ''}
+    const note = RPG.progressNote();
+    return `${note ? `<div class="rpg-note">ぼうけん ${note.n} / ${note.unit} もん（つづきから）</div>` : ''}
     <details class="rpg-bk"><summary>ゲームのデータ（バックアップ）</summary>
       <p>かきだすと、がくしゅうの きろく・えらんだ設定・ぼうけんの すすみ を 1つの ファイルにできます。<b>おくる じゅんびの きろく（そうしんキュー）と たんまつの IDは ふくみません。</b>クラウドには ほぞんされません。ほかの たんまつとの 自動どうきは ありません。</p>
       <div class="rpg-bkb"><button id="rpgExport">かきだす</button><label class="rpg-file">よみこむ<input id="rpgImport" type="file" accept=".json,application/json"></label></div>

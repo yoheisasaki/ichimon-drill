@@ -1,0 +1,125 @@
+/* RPG 第2段：ホーム上部・下部ナビ・街・装備・店・鍛冶・転職・技設定・外見・図鑑・実績（絵は全て仮）。濃紺＋金枠 */
+body:has(.rs){background:#0b1329}
+.rs{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px 0;padding:12px 14px 8px;background:var(--navy);min-height:100vh;font-weight:700}
+.rs h1,.rs .rs-title{color:var(--gold)}
+.rs-head{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.rs-title{flex:1;text-align:center;font-size:21px;font-weight:900;letter-spacing:.04em;margin:0;padding:7px 4px;border:2px solid var(--gold);border-radius:12px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy),inset 0 0 0 4px #8a7036}
+.rs-back{min-width:76px;min-height:44px;background:none;border:2px solid #3a4a7a;border-radius:12px;color:var(--ink);font-weight:800;font-size:15px}
+.rs-back.sp{visibility:hidden;border:0}
+.rs-msg{background:#173a3c;border:2px solid #2fae8a;border-radius:12px;padding:8px 12px;margin:0 0 10px;font-size:16px}
+.rs-panel{margin:0 0 12px;border:2px solid var(--gold);border-radius:14px;padding:12px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy)}
+.rs-panel.c{text-align:center}
+.rs-h2{font-size:16px;color:#ffe27a;margin:6px 0 6px}
+.rs-p{font-size:14px;line-height:1.7;color:#cfd6ea;margin:4px 0;font-weight:600}
+.rs-p.c{text-align:center}
+.rs-note{margin:8px 0;text-align:center;font-size:15px;color:#ffe9a8}
+.rs-small{font-size:14px;color:#b6bfd8}
+.rs-coin{color:#ffe27a;font-weight:900}
+.rs-btn,.rs-big{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;border-radius:12px;border:2px solid var(--gold);background:#1b2c5c;color:var(--ink);font-size:17px;font-weight:800;margin:6px 0;text-align:center;line-height:1.3;padding:6px 10px}
+.rs-btn.sm{width:auto;min-height:44px;padding:0 16px;font-size:15px;margin:6px 0 2px}
+.rs-big{min-height:58px;font-size:20px;font-weight:900;background:linear-gradient(#1f9a95,#136e73);box-shadow:inset 0 0 0 2px #0d5058}
+.rs-big.alt{background:#1b2c5c;box-shadow:none}
+.rs-big.gold{background:linear-gradient(#f3d27a,#c99a2c);color:#2a2210;box-shadow:inset 0 0 0 2px #8a7036}
+.rs button:disabled,.rs-btn[disabled],.rs-big[disabled]{opacity:.45;filter:saturate(.4)}
+.rs-row2{display:flex;gap:8px}.rs-row2>*{flex:1}
+.rs-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.rs-item{display:block;width:100%;text-align:left;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;color:var(--ink);padding:10px 12px;font-size:16px;font-weight:800}
+.rs-item small{display:block;color:#b6bfd8;font-size:13px;font-weight:600;margin-top:2px;line-height:1.5}
+.rs-item.on{border-color:var(--gold);background:#1a2a5a}
+.rs-item.ng{opacity:.55}
+.rs-item .rs-btn.sm{margin-top:8px}
+.rs-why{color:#ffb0b0!important}
+.rs-rank,.rs-rare,.rs-prov,.rs-cat,.rs-cost,.rs-lv,.rs-now2{font-style:normal;font-size:12px;border-radius:7px;padding:2px 6px;margin-left:6px;font-weight:800;vertical-align:middle}
+.rs-rank,.rs-lv{background:#25366a;border:1px solid #4a5a8a}
+.rs-rare{background:#4a3a14;border:1px solid var(--gold);color:#ffe9a8}
+.rs-prov{background:#3a2a2a;border:1px solid #8a5a5a;color:#f0b8b8}
+.rs-cat{background:#183a3c;border:1px solid #2f8a8a}
+.rs-cost{background:#183a3c;border:1px solid #2f8a8a;color:#8fe6f2}
+.rs-now2{background:#173a2c;border:1px solid #2fae5a;color:#9ff0b8}
+.rs-tabs2{display:flex;gap:6px;margin:0 0 10px;flex-wrap:wrap}
+.rs-tab2{flex:1;min-width:72px;min-height:44px;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;color:var(--ink);font-weight:800;font-size:15px}
+.rs-tab2.on{background:#136e73;border-color:var(--gold)}
+.rs-chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+.rs-chip{min-width:48px;min-height:44px;padding:0 14px;border-radius:12px;border:2px solid #3a4a7a;background:#0f1b3e;color:var(--ink);font-weight:800;font-size:16px}
+.rs-chip.on{background:#136e73;border-color:var(--gold)}
+.rs-sw{width:44px;height:44px;border-radius:50%;border:3px solid #3a4a7a}
+.rs-sw.on{border-color:#fff;box-shadow:0 0 0 2px var(--gold)}
+.rs-input{width:100%;min-height:48px;border-radius:12px;border:2px solid var(--gold);background:#fff;color:#1d2547;font-size:20px;font-weight:800;padding:0 12px}
+.rs-bar{height:12px;border-radius:99px;background:#07102a;border:1px solid #3a4a7a;overflow:hidden;margin:6px 0}
+.rs-bar i{display:block;height:100%;background:linear-gradient(#6be08a,#2fae5a)}
+.rs-herocv,.rs-ecv,.rs .rs-jobcard canvas,.rs-jobhead canvas,.rs-cell canvas,.rs-fx canvas{image-rendering:pixelated;image-rendering:crisp-edges;flex:none}
+.rs-herocv{background:linear-gradient(#8fd3ff,#d2f0ff 60%,#5fae4a 60%);border-radius:12px;border:2px solid var(--gold)}
+.rs-ecv{background:linear-gradient(#8fd3ff,#d2f0ff 60%,#5fae4a 60%);border-radius:10px;border:2px solid #3a4a7a}
+/* ナビ */
+.rs-navspace{height:calc(64px + env(safe-area-inset-bottom))}
+.rs-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:6px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:#0d1630;border-top:2px solid var(--gold,#d4af5a)}
+.rs-tab{flex:1;min-height:48px;border-radius:12px;border:2px solid #3a4a7a;background:#0f1b3e;color:#f4f1e4;font-size:15px;font-weight:900}
+.rs-tab.on{background:#136e73;border-color:#d4af5a}
+/* ホーム上部（学習ホームの上） */
+.rs-homecard{--gold:#d4af5a;color:#f4f1e4;background:#0d1630;border:2px solid #d4af5a;border-radius:16px;padding:12px;margin:10px 0 14px;box-shadow:inset 0 0 0 3px #0d1630,inset 0 0 0 4px #8a7036;font-weight:700}
+.rs-hc-top,.rs-me{display:flex;gap:12px;align-items:center}
+.rs-hc-name{font-size:20px;font-weight:900}.rs-hc-job{font-size:17px;color:#ffe27a;font-weight:900}.rs-hc-sub{font-size:14px;color:#cfd6ea}
+.rs-hc-b{margin-top:10px;font-size:14px;color:#cfd6ea}
+.rs-bonuses{display:flex;gap:8px;margin-top:4px}
+.rs-bonus{flex:1;border:2px solid #d4af5a;border-radius:12px;background:#1a2a5a;text-align:center;padding:6px 4px}
+.rs-bonus b{display:block;font-size:16px;color:#ffe27a}.rs-bonus small{font-size:12px;color:#cfd6ea}
+.rs-bonus.used{opacity:.5;border-color:#3a4a7a}.rs-bonus.used b{color:#cfd6ea}
+.rs-resume{display:block;width:100%;min-height:52px;margin-top:10px;border-radius:12px;border:2px solid #d4af5a;background:linear-gradient(#1f9a95,#136e73);color:#fff;font-size:18px;font-weight:900}
+.rs-hc-line{margin-top:8px;font-size:14px;color:#f4f1e4;line-height:1.6}
+.rs-homecard .rs-coin{color:#ffe27a}
+/* ぼうけん */
+.rs-now{display:flex;gap:12px;align-items:center}.rs-now small{display:block;color:#b6bfd8;font-weight:600;font-size:13px}
+.rs-map{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rs-node{display:flex;gap:10px;align-items:center;border:2px solid #3a4a7a;border-radius:12px;padding:8px 10px;background:#0f1b3e}
+.rs-node small{display:block;color:#b6bfd8;font-weight:600;font-size:13px}
+.rs-node.cur{border-color:var(--gold);background:#1a2a5a}.rs-node.lock{opacity:.5}
+.rs-dot{flex:none;width:34px;height:34px;border-radius:50%;background:#25366a;display:flex;align-items:center;justify-content:center;font-weight:900}
+.rs-node.clear .rs-dot{background:#2fae5a;color:#06210f}
+.rs-next{margin-top:10px;font-size:13px;color:#b6bfd8;text-align:center}
+/* まち（仮絵：CSS） */
+.rs-town{position:relative;height:380px;border:2px solid var(--gold);border-radius:14px;overflow:hidden;background:linear-gradient(#8fd3ff 0,#d2f0ff 45%,#9ad07a 45%,#6fb55a 100%)}
+.rs-sea{position:absolute;left:0;right:0;bottom:0;height:60px;background:repeating-linear-gradient(90deg,#4fa8d8 0 14px,#68bde8 14px 28px)}
+.rs-spot{position:absolute;width:30%;min-width:96px;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:none;border:0;z-index:2;color:#fff}
+.rs-spot b{font-size:15px;background:#0d1630;border:2px solid var(--gold);border-radius:10px;padding:3px 8px;margin-top:2px;white-space:nowrap}
+.rs-bld{width:54px;height:44px;background:#c98a5a;border:3px solid #5a3a22;position:relative;border-radius:2px}
+.rs-bld:before{content:'';position:absolute;left:-8px;right:-8px;top:-22px;height:22px;background:#b0463a;clip-path:polygon(0 100%,50% 0,100% 100%)}
+.s-shop .rs-bld{background:#e0b86a}.s-forge .rs-bld{background:#7a7a86}.s-forge .rs-bld:before{background:#4a4a56}
+.s-temple .rs-bld{background:#e8e4d0}.s-temple .rs-bld:before{background:#6a8fd0}.s-room .rs-bld{background:#a8c8a0}.s-room .rs-bld:before{background:#7a6a4a}
+.s-ship .rs-bld{background:#8a5a32;border-radius:50% 50% 8px 8px;height:30px}.s-ship .rs-bld:before{background:#f4f1e4;top:-34px;height:34px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.s-guild .rs-bld{background:#6a8fd0}.s-guild .rs-bld:before{background:#2a3f8a}
+/* じぶん */
+.rs-stats{display:flex;gap:8px;text-align:center}.rs-stats>div{flex:1;background:#0f1b3e;border:1px solid #3a4a7a;border-radius:10px;padding:8px 4px;font-size:14px}.rs-stats b{display:block;font-size:22px;color:#ffe27a}
+.rs-eqrow{display:flex;justify-content:space-between;gap:8px;padding:6px 2px;border-bottom:1px solid #2a3a6a;font-size:15px}.rs-eqrow small{color:#b6bfd8}
+.rs-jls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}.rs-jl{display:flex;justify-content:space-between;background:#0f1b3e;border:1px solid #3a4a7a;border-radius:8px;padding:5px 8px;font-size:14px}.rs-jl.me{border-color:var(--gold);background:#1a2a5a}
+.rs-links .rs-btn{margin:6px 0}
+/* 装備 */
+.rs-eqhead{display:flex;gap:10px;align-items:center}
+.rs-cmp{flex:1;border-collapse:collapse;font-size:15px}.rs-cmp th{font-size:12px;color:#b6bfd8;font-weight:700}.rs-cmp td,.rs-cmp th{padding:3px 5px;text-align:right}.rs-cmp td:first-child{text-align:left}
+.rs-up{color:#7ff0a0;font-style:normal;font-weight:900}.rs-down{color:#ff9a9a;font-style:normal;font-weight:900}.rs-same{color:#b6bfd8;font-style:normal}
+.rs-mats{display:flex;flex-wrap:wrap;gap:6px}.rs-mat{background:#0f1b3e;border:1px solid #3a4a7a;border-radius:8px;padding:4px 8px;font-size:14px}
+/* 転職 */
+.rs-jobgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.rs-jobcard{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:120px;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;color:var(--ink);padding:8px;font-size:16px;font-weight:800;text-align:center}
+.rs-jobcard small{display:block;color:#b6bfd8;font-size:12px;font-weight:600}
+.rs-jobcard.me{border-color:var(--gold);background:#1a2a5a}.rs-jobcard.lock{opacity:.7}
+.rs-jobhead{display:flex;gap:12px;align-items:center}.rs-jobhead>div{flex:1}
+.rs-jobhead canvas,.rs-jobcard canvas{background:linear-gradient(#a8d8ff,#d8f0ff 60%,#5fae4a 60%);border-radius:10px}
+.rs-sk{display:block;width:100%;text-align:left;border:2px solid #3a4a7a;border-radius:10px;background:#0f1b3e;color:var(--ink);padding:8px 10px;margin:0 0 6px;font-size:15px;font-weight:800}
+.rs-sk small{display:block;color:#b6bfd8;font-size:13px;font-weight:600;margin-top:2px}
+.rs-sk.lock{opacity:.5}.rs-sk.btn{min-height:56px}.rs-sk.on{border-color:var(--gold);background:#1a2a5a}
+.rs-req{font-size:15px;padding:4px 0;color:#cfd6ea}.rs-req.ok{color:#9ff0b8}.rs-req span{display:inline-block;width:20px}
+/* 図鑑 */
+.rs-cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.rs-cell{border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;padding:8px;text-align:center;min-height:130px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:14px}
+.rs-cell small{font-size:12px;color:#b6bfd8;font-weight:600}.rs-cell.un{opacity:.6}.rs-q{width:54px;height:48px;font-size:34px;line-height:48px;color:#5a6a9a}
+.rs-cell canvas{background:linear-gradient(#a8d8ff,#d8f0ff 60%,#5fae4a 60%);border-radius:8px}
+/* 転職の演出 */
+.rs-fx{position:fixed;inset:0;z-index:50;background:rgba(5,10,30,.92);display:flex;align-items:center;justify-content:center;animation:rsfade .3s}
+.rs-fx-in{text-align:center;color:#f4f1e4;padding:20px;width:min(90vw,360px)}
+.rs-fx-t{font-size:26px;font-weight:900;color:#ffe27a;margin:12px 0}.rs-fx-gift{font-size:16px;margin-bottom:12px}
+.rs-fx canvas{background:radial-gradient(#3a6adf,#0d1630);border-radius:16px;animation:rspop .6s}
+.rs-fx.still,.rs-fx.still canvas{animation:none}
+@keyframes rsfade{from{opacity:0}to{opacity:1}}@keyframes rspop{from{transform:scale(.6)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.rs-fx,.rs-fx canvas{animation:none}}
+.rs-data .rpg-bk{background:#0f1b3e;border-color:#3a4a7a;color:#cfd6ea}.rs-data .rpg-bkb button,.rs-data .rpg-file{background:#1b2c5c;color:#f4f1e4;border-color:var(--gold)}
+.rs .rpg-notice{color:#6a4a00}

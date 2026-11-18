@@ -34,9 +34,24 @@
       ctx.fillStyle = tint || pal[ch] || '#f0f'; ctx.fillRect(x + i, y + j, 1, 1);
     }
   }
+  // 外見（顔4・髪6・肌・髪色）。仮絵：顔は目と口の形、髪は上の数行を差し替える
+  const FACE3 = ['...hsososh....', '...hosssoh....', '...hsoeosh....', '...hseosoh....'], FACE4 = ['....ssssss....', '....ssooss....', '....sssoss....', '....soosss....'];
+  const HAIR_TOP = [null, ['....hhhhh.....', '...hhhhhhh....'], ['....hhhhh.....', '...hhhhhhhh...'], ['..h.h.h.h.....', '...hhhhhhh....'], ['....hhhhh.....', '...hhhhhhh....'], ['....yyyyy.....', '...hhhhhhh....']];
+  function heroRows(look) {
+    const rows = HERO.slice();
+    if (!look) return rows;
+    rows[3] = FACE3[look.face % 4]; rows[4] = FACE4[look.face % 4];
+    const hs = look.hairStyle | 0, top = HAIR_TOP[hs];
+    if (top) { rows[0] = top[0]; rows[1] = top[1]; }
+    const put = (r, c, ch) => { rows[r] = rows[r].slice(0, c) + ch + rows[r].slice(c + 1); };
+    if (hs === 2) { [4, 5, 6].forEach(r => { put(r, 3, 'h'); put(r, 10, 'h'); }); }   // 長い髪
+    if (hs === 4) { [4, 5, 6].forEach(r => { put(r, 2, 'h'); put(r, 11, 'h'); }); }   // ふたつ結び
+    return rows;
+  }
   function drawHero(ctx, job, x, groundY, o) {
-    o = o || {}; const rows = HERO, y = groundY - rows.length;
-    draw(ctx, rows, palForHero(job), x, y, false, o.tint);
+    o = o || {}; const rows = heroRows(o.look), y = groundY - rows.length, pal = palForHero(job);
+    if (o.look) { pal.s = o.look.skin; pal.h = o.look.hair; }
+    draw(ctx, rows, pal, x, y, false, o.tint);
     if (o.guard) { ctx.fillStyle = '#7fd3ff'; ctx.fillRect(x + 11, y + 5, 2, 5); }
   }
   function drawEnemy(ctx, id, boss, x, groundY, o) {
@@ -74,6 +89,6 @@
   }
   // 小さな点（剣のきらめきなど）
   function px(ctx, x, y, col, n) { ctx.fillStyle = col; ctx.fillRect(x, y, n || 1, n || 1); }
-  root.RPGSprites = { PAL, JOB_COLOR, HERO, SHAPES, shapeOf, drawHero, drawEnemy, drawChest, drawBackground, px, REGION_COLOR, palForEnemy };
+  root.RPGSprites = { heroRows, PAL, JOB_COLOR, HERO, SHAPES, shapeOf, drawHero, drawEnemy, drawChest, drawBackground, px, REGION_COLOR, palForEnemy };
   if (typeof module === 'object' && module.exports) module.exports = root.RPGSprites;
 })(typeof self !== 'undefined' ? self : this);
