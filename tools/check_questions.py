@@ -26,7 +26,7 @@ for q in d['questions']:
         if ch: e('input型に choices がある')
         acc = q.get('accept') or []
         kana = re.sub(r'\{[^|{}]+\|([^{}]+)\}', lambda m: m.group(1), q.get('a', ''))
-        if plain(q.get('a', '')) not in acc: e('accept に a の漢字表記が無い')
+        if q.get('unit') != '漢字の読み' and plain(q.get('a', '')) not in acc: e('accept に a の漢字表記が無い')
         if kana not in acc: e('accept に a のかな表記が無い')
         if any(not isinstance(x, str) or not x.strip() for x in acc): e('accept に空/文字列でないものがある')
     elif len(ch) != 3: e(f'choices が{len(ch)}個')
