@@ -164,8 +164,9 @@ body:has(.rs){background:#0b1329}
 .rs-mn.boss.done .rs-mn-c{background:#2fae5a;color:#06210f}
 .rs-mn.sel .rs-mn-c{outline:3px solid #8fe6f2;outline-offset:3px}
 .rs-mhero{position:absolute;transform:translate(-50%,calc(-100% - 8px));image-rendering:pixelated;pointer-events:none;z-index:3;width:40px;height:36px}
-.rs-mchest{position:absolute;transform:translate(10px,-24px);image-rendering:pixelated;pointer-events:none;z-index:1;width:28px;height:22px}
-.rs-mchest:not(.open){filter:drop-shadow(0 0 3px #ffd75a)}
+.rs-mboss{position:absolute;transform:translate(8px,-22px);pointer-events:none;z-index:1;font-size:11px;font-weight:800;line-height:1;padding:3px 5px;border-radius:6px;background:#0d1630;color:#ffe27a;border:1px solid #d4af5a;white-space:nowrap}
+.rs-mboss.open{color:#9fe0b0;border-color:#5fae7a}
+.rs-chestbox{margin-top:10px;border-top:1px solid #3a4a7a;padding-top:6px}.rs-chestbox summary{font-size:14px;color:#ffe27a;min-height:36px;display:flex;align-items:center;cursor:pointer}
 .rs-mdet{display:flex;flex-direction:column;gap:3px;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;padding:8px 10px}
 .rs-mdet b{font-size:16px}.rs-mdet small{font-size:13px;color:#b6bfd8;font-weight:600}
 .rs-pips{display:inline-flex;gap:4px;margin-left:auto}.rs-pips i{width:9px;height:9px;border-radius:50%;background:#25366a;border:1px solid #6b7aa8}.rs-pips i.on{background:#ffd75a;border-color:#ffd75a}

@@ -166,7 +166,7 @@ function playAdv(save, ms, acc, tag) {
 }
 t('冒険：10基本回答＋復習で清算、XP/コインは清算時に一度だけ反映', () => {
   const s = C.newSave(0); playAdv(s, JST(2026, 11, 18, 10), 6, 'a'); eq(s.advXp, 0); eq(s.coins, 0); ok(A.canSettle(s));
-  const r = A.settle(s, JST(2026, 11, 18, 10)); eq(r.N, 10); eq(r.C, 6); eq(r.R, 4); eq(r.xpBase, 10 * 10 + 5 * 6 + 5 * 4);  eq(s.advXp, r.xp); eq(s.jobXp.warrior, r.xp); eq(s.coins, r.coin + ((r.chest && r.chest.coin) || 0)); ok(s.active === null);
+  const r = A.settle(s, JST(2026, 11, 18, 10)); eq(r.N, 10); eq(r.C, 6); eq(r.R, 4); eq(r.xpBase, 10 * 10 + 5 * 6 + 5 * 4);  eq(s.advXp, r.xp); eq(s.jobXp.warrior, r.xp); eq(s.coins, r.coin); ok(s.active === null);
   eq(r.coinWelcome, 160);
 });
 t('清算の二重実行・結果再表示は副作用なし', () => { const s = C.newSave(0); playAdv(s, JST(2026, 11, 18, 10), 8, 'b'); const r = A.settle(s, 0), coins = s.coins, xp = s.advXp; eq(A.settle(s, 0), r); eq(s.coins, coins); eq(s.advXp, xp); });
@@ -189,7 +189,7 @@ t('日次倍率は最初の基本回答で固定。日をまたいで再開し�
 });
 t('未回答の冒険開始だけでは枠を消費しない', () => { const s = C.newSave(0); A.begin(s, JST(2026, 11, 18, 10)); eq(Object.keys(s.daily.used).length, 0); });
 t('宝箱は日次1・2回目の冒険に1個ずつ（敗北でも）、3回目はなし', () => {
-  const s = C.newSave(0); const res = [0, 1, 2].map(i => { playAdv(s, JST(2026, 11, 18, 10 + i), 5, 'f' + i); return A.settle(s, JST(2026, 11, 18, 10 + i)); }); eq(res.map(r => !!r.chest), [true, true, false]);
+  const s = C.newSave(0); const res = [0, 1, 2].map(i => { playAdv(s, JST(2026, 11, 18, 10 + i), 5, 'f' + i); return A.settle(s, JST(2026, 11, 18, 10 + i)); }); eq(res.map(r => !!r.chestId), [true, true, false]);
 });
 t('勝利で道のりが進み、継続・撤退では敵HPを引き継ぐ', () => {
   const s = C.newSave(0); playAdv(s, 1, 10, 'g'); const r = A.settle(s, 1); if (r.outcome === 'victory') eq(s.progress.step, 1); else eq(s.progress.enemyHp.hp, r.enemy.hpLeft);

@@ -117,15 +117,15 @@
       }
     } else save.progress.enemyHp = { id: a.enemyId, hp: b.enemy.hp };
     const mainClear = !mainBefore && save.progress.step >= D.ROUTE.length;
-    // 宝箱（日次1・2枠。敗北でも付与）
-    let chest = null;
-    if (slot.chest) { const roll = C.rollChest(save, a.id + ':chest'); chest = C.applyChest(save, roll); chest.roll = roll; }
+    // 朝星の宝箱（日次1・2枠）：中身は抽選して保管するだけ。開封は後（残高は開封時）
+    let chestId = null;
+    if (slot.chest) { chestId = a.id + ':chest'; C.addSealedChest(save, chestId, C.rollChest(save, chestId), { slotKey: slot.key, slotNo: slot.no, got: slot.key }); }
     const result = {
       id: a.id, outcome, enemy: { id: ed.id, name: ed.name, boss: ed.boss, hpLeft: b.enemy.hp, hpMax: b.enemy.maxHp }, region: q && q.kind !== 'rematch' ? q.name : region.name, bg: bgId, quest: q ? { id: q.id, kind: q.kind, name: q.name } : null, clear: clearRep, mainClear, route: a.route,
       N, C: Cc, R, xpBase, xpMult: slot.xpMult, xp, slot: { no: slot.no, key: slot.key }, coinAnswers: coinAns, coinKill, coinWelcome, coin,
       adv: { lvFrom: advBefore.lv, lvTo: advAfter.lv }, job: { id: a.hero.job, lvFrom: jobBefore.lv, lvTo: jobAfter.lv, next: C.nextSkill(a.hero.job, save.jobXp[a.hero.job]) },
       newSkills: D.SKILLS_OF[a.hero.job].filter(s => s.lv > jobBefore.lv && s.lv <= jobAfter.lv).map(s => s.id),
-      drops, chest, hero: { hp: b.hero.hp, maxHp: b.hero.maxHp }, coinsAfter: save.coins, firstClear: outcome === 'victory' && ed.boss && (clearRep ? true : !q && save.progress.bossKills[ed.id] === 1)
+      drops, chestId, hero: { hp: b.hero.hp, maxHp: b.hero.maxHp }, coinsAfter: save.coins, firstClear: outcome === 'victory' && ed.boss && (clearRep ? true : !q && save.progress.bossKills[ed.id] === 1)
     };
     save.ledger.settled[a.id] = { xp, coin }; const ks = Object.keys(save.ledger.settled); while (ks.length > 30) delete save.ledger.settled[ks.shift()];
     save.lastResult = result; save.firstDone = true; save.stats.adventures = (save.stats.adventures || 0) + 1; save.active = null;

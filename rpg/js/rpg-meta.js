@@ -22,6 +22,7 @@
     s.quests = s.quests || {}; s.progress.quest = s.progress.quest || null;
     s.rewards = s.rewards || { titles: [], costumes: [], relics: [], lamp: false }; s.rewards.titles = s.rewards.titles || []; s.rewards.costumes = s.rewards.costumes || []; s.rewards.relics = s.rewards.relics || []; s.title = s.title || null; s.look.outfit = s.look.outfit || null;
     s.ending = s.ending || { seen: false }; s.chestView = s.chestView || {};
+    C.migrateChests(s);
     return s;
   }
 

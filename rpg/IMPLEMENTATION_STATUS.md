@@ -54,3 +54,10 @@ node run.js 95件＋meta.js 29件 全通過／画面 ui_test 38・ui_test2 21・
 - セッション途中の画面復元（再読込で今の問題に戻る）は未実装。冒険の状態・回答済みの基本問題・未完了の復習はセーブされ、再開時に復習から出る
 - 端末の時計を進める不正は防げない（巻き戻しは防ぐ。設計書どおり記録済み）
 - 外部待ち：なし（画像生成手段のみ）
+
+## 報酬と宝箱の作り直し（2026-11-18・修正指示書 5.）
+- 問題：報酬画面で宝箱へ斬撃を当てる演出・飾りの宝箱があり、箱の中身は清算時に残高へ付与済みで、開封は見せかけだった。探索地図のボス報酬も宝箱マークだった。
+- 変更：開封操作を持つのは朝星の宝箱のみ。清算時は箱を sealed で保存（ID・roll・日次枠・pity。残高は学習＋討伐のみ反映）。開封は付与と opened を同じ保存で確定してから演出（`C.openChestPersist`。保存失敗は巻き戻し、2タブは読み直して付与なし）。報酬画面は 06 の表順（上部は背景＋主人公のみ、箱は下の専用カード1か所、開封前合計＝学習＋討伐、開封後「学習・討伐N＋宝箱M＝合計」）。「おわる」「次の10問」は同一見た目。ホームに「受け取った宝箱」（期限なし・1個ずつ）。探索地図はボス印＋「初回報酬」。旧セーブは `C.migrateChests`（付与済みは opened/legacy、再加算なし、箱記録のないものは推測しない）。経験値式・復習件数・日次枠は未変更。
+- 確認：node tests run 95／meta 29／stage3 36／reward 31（新規。D03/D04/D06〜D09）全通過。ブラウザ（headless chromium・390px・nosend=1）rpg/tools/fix06_reward.py 24項目通過、既存 ui_test 38・ui_test2 21・ui_test3 93・ui_test4 109・ui_test_map 36 通過、コンソールエラー0。
+- 証拠：rpg/shots/fix06_reward/（victory_unopened/opened, continue_unopened, retreat_unopened, third_nochest, second_opened, home_with_sealed_chest, home_chest_opened, result.json）、rpg/tests/reward.js
+- 未了：勝利姿は既存の「win」絵（跳ねる笑顔）のまま＝主人公の絵は別担当。レア箱・重複レアの画面は node のみ（画面は未撮影）。実機未確認。

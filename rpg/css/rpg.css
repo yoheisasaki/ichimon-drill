@@ -43,6 +43,8 @@ body:has(.rw){background:#0b1329}
 .rw-drop{margin-top:10px;border:2px solid var(--gold);border-radius:12px;padding:10px;text-align:center;background:linear-gradient(#1a2a5a,#0f1a3c)}
 .rw-chest{font-size:14px;color:#ffe27a}
 .rw-dropline{text-wrap:balance;font-size:19px;font-weight:900;margin-top:4px;line-height:1.5}
+.rw-total{border-top:2px solid #6a5a2a;flex-wrap:wrap;gap:2px 10px}.rw-total span{flex:0 0 auto;white-space:nowrap}.rw-total b{font-size:19px;flex:1 1 auto;min-width:0;text-align:right}
+.rw-chestmsg{font-size:14px;color:#ffb0a0}
 .rw-btns{display:flex;gap:10px;margin-top:14px}
 .rw-btn{flex:1;min-height:60px;border-radius:14px;border:2px solid var(--gold);background:linear-gradient(#1f9a95,#136e73);color:#fff;font-size:21px;font-weight:900;box-shadow:inset 0 0 0 2px #0d5058}
 .rw-btn:active{transform:translateY(2px)}

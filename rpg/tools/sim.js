@@ -65,6 +65,7 @@ function playJourney(opts) {
         else if (!ok) { save.active.reviews.pending = save.active.reviews.pending.filter(p => p.origin !== o); }
       }
       const res = A.settle(save, ms);
+      C.sealedChests(save).forEach(c => C.openChest(save, c.id));   // 旧仕様と同じく即開封して経済を見る
       { const rg = stat.reg[res.region] = stat.reg[res.region] || { norm: 0, boss: 0, normKills: 0, cAtKill: [], dmg: 0, acts: 0, hp: 0, def: 0, atk: 0, n: 0 };
         if (res.enemy.boss) rg.boss++; else { rg.norm++; if (res.outcome === 'victory') { rg.normKills++; rg.cAtKill.push(killC); } } }
       stat.adv++; stat.coinsEarned += res.coin;

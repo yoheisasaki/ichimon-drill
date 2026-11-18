@@ -44,6 +44,12 @@
   // ---------- 報酬 ----------
   function rewardOf(o) { return { xpBase: 10 * o.N + 5 * o.C + 5 * o.R, coinBase: 4 * o.N + 2 * o.C }; }
 
+  // 報酬画面の合計表示。開封前＝学習＋討伐（res.coin）、開封後＝箱の増分を足す
+  function rewardTotals(res, chest) {
+    const base = res.coin, opened = !!(chest && chest.status === 'opened'), cc = opened && chest.result && chest.result.coin ? chest.result.coin : 0;
+    return { base, chestCoin: cc, total: base + cc, opened, text: opened ? '学習・討伐' + base + '＋宝箱' + cc + '＝合計' + (base + cc) : '合計 +' + base };
+  }
+
   // ---------- 乱数（再現できる） ----------
   function hashStr(s) { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
   function rngFrom(seed) { let a = hashStr(String(seed)) || 1; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -79,6 +85,7 @@
     else { r.coin = 40; r.mats = { [oreId(rank)]: 2 }; }
     return r;
   }
+  // 旧：抽選と同時に付与していた（テスト・移行用に残す）。新しい流れは addSealedChest / openChest
   function applyChest(save, r) {
     const out = { kind: r.kind, rank: r.rank };
     if (r.kind === 'rare') { save.chest.pity = 0; Object.assign(out, grantItem(save, r.item)); }
@@ -86,6 +93,53 @@
     if (r.coin) { save.coins += r.coin; out.coin = r.coin; }
     if (r.mats) { Object.keys(r.mats).forEach(k => addMat(save, k, r.mats[k])); out.mats = r.mats; }
     return out;
+  }
+  // 朝星の宝箱：清算時に中身を抽選して sealed で保管（残高は変えない）。pity は箱IDごとに一度だけ進める
+  function addSealedChest(save, id, roll, meta) {
+    save.chests = save.chests || [];
+    const ex = save.chests.find(c => c.id === id); if (ex) return ex;
+    const c = Object.assign({ id, status: 'sealed', roll, result: null }, meta || {});
+    save.chests.push(c);
+    save.chest.pity = roll.kind === 'rare' ? 0 : roll.pityBefore + 1;
+    return c;
+  }
+  function chestById(save, id) { return (save.chests || []).find(c => c.id === id) || null; }
+  function sealedChests(save) { return (save.chests || []).filter(c => c.status === 'sealed'); }
+  // 付与と opened を一度に確定する（メモリ上。保存は呼び出し側）。opened は何もしない
+  function openChest(save, id) {
+    const c = chestById(save, id); if (!c) return { ok: false, err: '宝箱が見つからない' };
+    if (c.status === 'opened') return { ok: true, already: true, chest: c, result: c.result };
+    const r = c.roll, out = { kind: r.kind, rank: r.rank };
+    if (r.kind === 'rare') Object.assign(out, grantItem(save, r.item));
+    if (r.coin) { save.coins += r.coin; out.coin = r.coin; }
+    if (r.mats) { Object.keys(r.mats).forEach(k => addMat(save, k, r.mats[k])); out.mats = r.mats; }
+    c.status = 'opened'; c.result = out;
+    return { ok: true, already: false, chest: c, result: out };
+  }
+  const replaceContents = (dst, src) => { Object.keys(dst).forEach(k => { delete dst[k]; }); Object.assign(dst, src); };
+  // 開封して保存まで。保存に失敗したら元に戻す（付与なし・sealed のまま）。別タブが先に進んでいたら読み直し、開封済みなら付与せず結果だけ返す
+  function openChestPersist(save, store, id, ms) {
+    const snap = JSON.stringify(save), r = openChest(save, id);
+    if (!r.ok || r.already) return r;
+    const w = store.save(save);
+    if (w.ok) return r;
+    replaceContents(save, JSON.parse(snap));
+    if (w.err === 'stale') {
+      const l = store.load(ms);
+      if (l.ok && !l.fresh) { replaceContents(save, l.save); const c = chestById(save, id); if (c && c.status === 'opened') return { ok: true, already: true, chest: c, result: c.result, reloaded: true }; }
+    }
+    return { ok: false, err: w.err };
+  }
+  // 旧セーブ移行：旧処理は抽選と同時に残高へ付与していた。残っているのは直近の結果の箱だけ。付与済みなので受取済み(opened,legacy)にし、再加算しない
+  function migrateChests(save) {
+    save.chests = Array.isArray(save.chests) ? save.chests : [];
+    const lr = save.lastResult;
+    if (lr && lr.chest && lr.id && !lr.chestId) {
+      const id = lr.id + ':chest';
+      if (!chestById(save, id)) save.chests.push({ id, status: 'opened', legacy: true, roll: null, result: lr.chest });
+      lr.chestId = id;
+    }
+    return save;
   }
 
   // ---------- 買い物・装備 ----------
@@ -131,7 +185,7 @@
       inv: { items: { w_start: 1 }, mats: {}, enhance: {}, fresh: {} }, equip: { weapon: 'w_start', armor: null, acc: null },
       loadout: { skills: null, tactic: 'auto' }, wish: 'sword',
       progress: { step: 0, enemyHp: null, clearedRegions: [], bossKills: {} },
-      daily: { maxKey: '', used: {} }, chest: { pity: 0 },
+      daily: { maxKey: '', used: {} }, chest: { pity: 0 }, chests: [],
       codex: { enemies: {}, items: {} }, goal: null, seen: {}, active: null, lastResult: null, ledger: { settled: {} }, trials: {}, stats: { adventures: 0 }, settings: { sound: false, vibrate: false }
     };
   }
@@ -200,5 +254,5 @@
     return { ok: true, backup };
   }
 
-  return { LS_RPG, LS_BACKUP, SAVE_VERSION, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rollChest, applyChest, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
+  return { LS_RPG, LS_BACKUP, SAVE_VERSION, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rewardTotals, rollChest, applyChest, addSealedChest, chestById, sealedChests, openChest, openChestPersist, migrateChests, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
 });

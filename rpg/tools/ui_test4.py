@@ -86,11 +86,11 @@ with sync_playwright() as p:
         pg.evaluate("() => { const s = JSON.parse(localStorage.getItem('ichimon.rpg.v1')); s.daily = { maxKey: '', used: {} }; localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }"); pg.reload(); pg.wait_for_selector('.subj')
         run_adv(pg)
         chk(E + 'chest_closed_first', pg.query_selector('#rwOpen') is not None and pg.query_selector('#rwChestLine').is_hidden())
-        chk(E + 'chest_result_already_saved', pg.evaluate(SAVE)['lastResult']['chest'] is not None)
+        chk(E + 'chest_sealed_saved', pg.evaluate(SAVE)['lastResult']['chestId'] is not None and pg.evaluate(SAVE)['chests'][-1]['status'] == 'sealed')
         if engine == 'chromium': shot(pg, 'p3_chest_closed')
         pg.click('#rwOpen'); pg.wait_for_selector('#rwChestLine', state='visible', timeout=3000)
         chk(E + 'chest_opened_shows_item', len(pg.inner_text('#rwChestLine')) > 3 and pg.query_selector('#rwOpen') is None)
-        sv = pg.evaluate(SAVE); chk(E + 'chest_open_no_reroll', sv['seen'].get('lastChest') == sv['lastResult']['id'])
+        sv = pg.evaluate(SAVE); chk(E + 'chest_open_no_reroll', sv['chests'][-1]['status'] == 'opened' and sv['chests'][-1]['id'] == sv['lastResult']['chestId'])
         if engine == 'chromium': shot(pg, 'p3_chest_open')
         pg.evaluate("() => RPG.go('me')"); pg.wait_for_selector('.rs-me')
         # ===== 本編末・クリア後のセーブ：クエスト・再戦・称号・エンディング・記念絵・図鑑 =====

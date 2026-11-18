@@ -62,11 +62,12 @@
       <div class="rs-hc-b"><span>きょうの ぼうけんボーナス</span><div class="rs-bonuses">${chip(1, 'けいけんち ×3')}${chip(2, 'けいけんち ×2')}</div></div>
       ${resume ? `<button class="rs-resume" id="rsResume">つづきから（${a.basic.n} / ${C.ADV_UNIT}）</button>` : ''}
       <div class="rs-hc-line">${nx ? `つぎの わざ：<b>${esc(nx.skill.name)}</b>（あと ${Math.max(0, nx.remain)}）` : 'この職業の わざは ぜんぶ おぼえた'}</div>
-      ${goalTxt ? `<div class="rs-hc-line">${goalTxt}</div>` : ''}</section>`;
+      ${goalTxt ? `<div class="rs-hc-line">${goalTxt}</div>` : ''}${RPG.homeChestHtml ? RPG.homeChestHtml() : ''}</section>`;
   };
   RPG.bindHomeTop = function () {
     const c = doc.getElementById('rsHomeHero'); if (c) hero(c, save().job, 4);
     const r = doc.getElementById('rsResume'); if (r) r.onclick = () => { const go = doc.getElementById('go'); if (go) go.click(); };
+    if (RPG.bindHomeChests) RPG.bindHomeChests();
     bindNav();
   };
 
@@ -619,11 +620,11 @@
         const p = md.nodes[i], pos = `left:${(p[0] / 2.4).toFixed(2)}%;top:${(p[1] / 2.4).toFixed(2)}%`;
         over += `<button class="rs-mn ${n.state}${n.boss ? ' boss' : ''}${i === sel ? ' sel' : ''}" style="${pos}" data-mn="${i}" aria-pressed="${i === sel}" aria-label="${n.boss ? 'ボス' : 'ちてん' + (i + 1)}：${esc(nm(n, i))}（${stTxt(n)}）"><span class="rs-mn-c">${n.state === 'done' ? '✓' : n.boss ? '★' : i + 1}</span></button>`;
         if (n.state === 'cur' && o.here) over += `<canvas class="rs-mhero" id="rsMapHero" aria-hidden="true" style="${pos}"></canvas>`;
-        if (n.boss) over += `<canvas class="rs-mchest${o.chestOpen ? ' open' : ''}" id="rsMapChest" aria-hidden="true" style="${pos}"></canvas>`;
+        if (n.boss) over += `<span class="rs-mboss${o.chestOpen ? ' open' : ''}" id="rsMapBoss" aria-hidden="true" style="${pos}">初回報酬${o.chestOpen ? '✓' : ''}</span>`;
       });
     }
     const n = o.nodes[sel];
-    const detail = `<div class="rs-mdet" id="rsMapDet" aria-live="polite"><b>${n.boss ? 'ボス：' : ''}${esc(nm(n, sel))}</b>${pips(n)}<small>${stTxt(n)}${n.state !== 'lock' || o.cleared ? `　${n.done} / ${n.n}` : ''}</small>${n.boss ? `<small>たから：${o.chestOpen ? 'あけた（はじめての とっぱで コインと ざいりょう）' : 'まだ（はじめて たおすと コインと ざいりょうが もらえる）'}</small>` : ''}${n.state === 'cur' && o.story ? `<small>${esc(o.story)}</small>` : ''}${o.rematch && n.boss ? '<small>さいせんちゅう（ほんぺんは すすみません）</small>' : ''}</div>`;
+    const detail = `<div class="rs-mdet" id="rsMapDet" aria-live="polite"><b>${n.boss ? 'ボス：' : ''}${esc(nm(n, sel))}</b>${pips(n)}<small>${stTxt(n)}${n.state !== 'lock' || o.cleared ? `　${n.done} / ${n.n}` : ''}</small>${n.boss ? `<small>初回報酬：${o.chestOpen ? '受け取り済み（コインと素材）' : 'まだ（初めて倒すとコインと素材がもらえる）'}</small>` : ''}${n.state === 'cur' && o.story ? `<small>${esc(o.story)}</small>` : ''}${o.rematch && n.boss ? '<small>さいせんちゅう（ほんぺんは すすみません）</small>' : ''}</div>`;
     const list = o.nodes.map((x, i) => `<li><button class="rs-mrow ${x.state}${i === sel ? ' sel' : ''}" data-mn="${i}" aria-pressed="${i === sel}"><span class="rs-dot">${x.state === 'done' ? '✓' : x.boss ? '★' : i + 1}</span><span class="rs-mrow-t"><b>${esc(nm(x, i))}</b><small>${stTxt(x)}</small></span>${pips(x)}</button></li>`).join('');
     const prog = o.cleared ? 'ぜんぶ とっぱ！' : o.lock ? o.lock : `${o.done} / ${o.total} くかん`;
     return frame('たんけんちず', `<div class="rs-panel rs-mp"><div class="rs-mp-h"><b>${esc(o.name)}</b><small>${esc(o.sub)}　${esc(prog)}</small></div>
@@ -635,7 +636,6 @@
     const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id);
     app().querySelectorAll('[data-mn]').forEach(b => b.onclick = () => { UI.mapSel = +b.dataset.mn; UI.mapKey = key; rerender(); });
     const h = doc.getElementById('rsMapHero'); if (h) hero(h, s.job, 2);
-    const c = doc.getElementById('rsMapChest'); if (c) { c.width = 14; c.height = 11; const g = c.getContext('2d'); g.clearRect(0, 0, 14, 11); SP.drawChest(g, 1, 10, c.classList.contains('open')); }
   };
   PARENT.regionmap = 'adv'; ROOT_OF.regionmap = 'adv';
 

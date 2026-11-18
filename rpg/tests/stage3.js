@@ -171,7 +171,7 @@ t('クエストの清算は一度だけ（再清算・再実行で報酬が二�
 });
 t('クエスト：冒険の途中は選び直せない。秘境の宝箱・日次枠は本編と同じ扱い', () => {
   const s = fresh(); strong(s); allRegions(s); A.begin(s, 1000); ok(!M.selectQuest(s, 'secret_garden').ok); s.active = null;
-  M.selectQuest(s, 'secret_garden'); A.begin(s, 1e12); for (let i = 0; i < 10; i++) A.recordAnswer(s, { rid: 'z' + i, kind: 'basic', correct: true, qid: 'q' }, 1e12); const r = A.settle(s, 1e12); eq(r.slot.no, 1); ok(r.chest, '1回目の枠は宝箱あり'); eq(r.bg, 'garden');
+  M.selectQuest(s, 'secret_garden'); A.begin(s, 1e12); for (let i = 0; i < 10; i++) A.recordAnswer(s, { rid: 'z' + i, kind: 'basic', correct: true, qid: 'q' }, 1e12); const r = A.settle(s, 1e12); eq(r.slot.no, 1); ok(r.chestId, '1回目の枠は宝箱あり'); eq(r.bg, 'garden');
 });
 t('本編クリア時に mainClear が立つ（エンディングへの導線）。クリア後の再戦は mainClear にならない', () => {
   const s = fresh(); strong(s); s.progress.clearedRegions = D.REGIONS.slice(0, 17).map(r => r.id); s.progress.step = D.REGION_START[17]; let last = null;
