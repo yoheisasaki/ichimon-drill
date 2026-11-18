@@ -83,7 +83,7 @@
  "b06_layout": {
   "320/home": {
    "hscroll": false,
-   "lastBottom": 691,
+   "lastBottom": 683,
    "navTop": 772
   },
   "320/equip": {
@@ -120,7 +120,7 @@
   },
   "375/home": {
    "hscroll": false,
-   "lastBottom": 691,
+   "lastBottom": 683,
    "navTop": 772
   },
   "375/equip": {
@@ -150,14 +150,14 @@
   },
   "375/quiz": {
    "hscroll": false,
-   "skipBottom": 598,
-   "lastChoice": 536,
+   "skipBottom": 608,
+   "lastChoice": 546,
    "stripTop": 768,
    "vh": 844
   },
   "390/home": {
    "hscroll": false,
-   "lastBottom": 691,
+   "lastBottom": 683,
    "navTop": 772
   },
   "390/equip": {
@@ -187,14 +187,14 @@
   },
   "390/quiz": {
    "hscroll": false,
-   "skipBottom": 608,
-   "lastChoice": 546,
+   "skipBottom": 598,
+   "lastChoice": 536,
    "stripTop": 768,
    "vh": 844
   },
   "430/home": {
    "hscroll": false,
-   "lastBottom": 691,
+   "lastBottom": 683,
    "navTop": 772
   },
   "430/equip": {

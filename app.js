@@ -111,13 +111,19 @@ function home() {
   const rangeOpen = !!window.__rangeOpen;
   const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}`;
-  const startHtml = `<button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）</button>
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）</button>`;
+  const goLabel = `スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）`;
+  const hardLabel = `${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）`;
+  const nowTxt = rpgOn && RPG.homeNow ? RPG.homeNow() : '';
+  const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span>${nowTxt ? `<span class="rs-sb2">${ruby('{続|つづ}き')}：${nowTxt}</span>` : ''}</button>` : `<button class="big go" id="go">${goLabel}</button>`;
+  const hardHtml = `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
+  const startHtml = goHtml + hardHtml;
   app.innerHTML = rpgOn ? `
-    <div data-rb><div class="sub rs-subtop">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
+    <div class="rs rs-homewrap" data-rb><div class="sub rs-subtop"><span>${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</span></div>
     ${RPG.homeTop()}
-    ${startHtml}
     ${RPG.homeBonus()}
+    ${goHtml}
+    ${RPG.homeNext ? RPG.homeNext() : ''}
+    ${hardHtml}
     <details class="rs-range"${rangeOpen ? ' open' : ''}><summary>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}　<small>${filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)}</small></summary>${subjectsHtml}</details>
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     </div>

@@ -3,9 +3,9 @@
   "B01_home_hero_and_start_in_first_screen_390": {
    "ok": true,
    "v": {
-    "goBottom": 428.5,
-    "heroTop": 47,
-    "heroBottom": 279,
+    "goBottom": 611.078125,
+    "heroTop": 95.1875,
+    "heroBottom": 357.1875,
     "vh": 844,
     "sub": "block",
     "rangeOpen": false

@@ -18,7 +18,7 @@
 - `data/`（問題データ）は未変更（`python tools/check_questions.py` → 275問 / エラー0）
 
 ## 最新テスト（2026-11-19。詳細は CHECKLIST_07.md・TEST_REPORT.md。ログ rpg/shots/fix07_tests/）
-node 5本 203件（run 95／meta 29／reward 31／stage3 36／hero 12）全通過／画面 ui_test 38・ui_test2 21・ui_test3 93・ui_test4 107・map 36・fx 10・text 20・hero(実部品) 62・fix06_reward 24・一周 loop_07 32・fix07_screens 7 全通過／コンソールエラー0／送信0。07 確認票 PASS 31／FAIL 1(B08)／未確認 1(B07)。判定＝内部確認済み。
+node 5本 203件（run 95／meta 29／reward 31／stage3 36／hero 12）全通過／画面 ui_test 38・ui_test2 21・ui_test3 93・ui_test4 107・map 36・fx 10・text 20・hero(実部品) 62・fix06_reward 24・一周 loop_07 32・fix07_screens 7 全通過／コンソールエラー0／送信0。07 確認票 PASS 32／FAIL 0／未確認 1(B07)。判定＝内部確認済み。
 
 ## 起動・確認のしかた
 - ローカル：worktree で `python -m http.server <port>` → `http://127.0.0.1:<port>/index.html?nosend=1`（**`nosend=1` を必ず付ける**。付けないと実データを送る）。`?rpg=0` で RPG だけ切れる
@@ -116,7 +116,8 @@ node 5本 203件（run 95／meta 29／reward 31／stage3 36／hero 12）全通�
 ## 07 確認票の記入と一周（2026-11-19）
 - 問題→変更→確認→証拠。**問題**：確認票が未記入／前の担当の判定を今のコミットで確かめていない。**変更**：全テストを再実行し、穴（D05 箱4種・A02 12職の実画面・B06 4幅・C02 入力欄とキーボード近似・E 一周と録画・F 比較画像）を埋めた。**確認**：上のテスト結果、確認票 `rpg/CHECKLIST_07.md`。**証拠**：`rpg/shots/fix07_loop/`（loop.webm と画像、result.json）・`fix07_d05/`・`fix07_screens/`・`fix07_compare/`・`fix07_tests/`。
 - 見つけて直した不具合：レア箱の開封カードに中身のアイコンが無かった（rpg-ui.js の chestContentHtml に追加。06「中身のアイコン/正式名/効果」）。テスト側：fix06_reward.py が学習範囲の折りたたみ（`.subj` が隠れる）と、ルビを含む `innerText` に未対応で2件落ちていたのを直した（アプリの不具合ではない）。
-- 直さず既知問題にしたもの：最初の青銅の剣が「はじまりの武器」と同じ絵（K-02）、ホームの意匠が見本と差（B08）、未接続アイコン44（K-06）。`rpg/KNOWN_ISSUES.md`。
+- B08：初回 FAIL→ホームを見本に合わせて直した（app.js home()、rpg-screens.js homeTop/homeNow/homeNext/homeBonus、rpg-screens.css 末尾、STAGE.home を h262・k2）。転職は見出し帯・主ボタンの矢印のみ。宝箱の絵は使わず★アイコン。再判定 PASS。
+- 直さず既知問題にしたもの：最初の青銅の剣が「はじまりの武器」と同じ絵（K-02）、未接続アイコン44（K-06）。`rpg/KNOWN_ISSUES.md`。
 - 台帳 `ASSET_MANIFEST.json`：件数・状態を実態に更新（`rpg/tools/refresh_manifest.py`。制作状態と接続状態は別の欄）。対応表 `rpg/ASSET_SCREEN_MAP.md`（`make_asset_screen_map.py`）。
 - 新規ツール：`loop_07.py`（一周・録画）、`d05_chests.py`、`fix07_screens.py`、`coverage_07.py`、`make_compare.py`、`refresh_manifest.py`、`make_asset_screen_map.py`。
 - 手順の順：make_manifest.js → annotate_manifest.js → refresh_manifest.py → make_asset_screen_map.py（make_manifest.js は台帳を作り直すので、後ろ2つを必ず通す）。

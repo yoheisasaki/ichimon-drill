@@ -240,3 +240,36 @@ body:has(.rs){background:#0b1329}
 /* ルビの切り替え（設定）。RPG の画面だけに効かせる。学習問題の文には効かない */
 html.rb-off .rs-app rt,html.rb-off .rs-fx rt,html.rb-off #rwRoot rt,html.rb-off [data-rb] rt,html.rb-off .rs-scope rt,html.rb-off .rs-nav rt{display:none}
 .rs-effshort{font-size:12px;opacity:.9;line-height:1.3}
+
+/* ===== ホーム（採用見本 home-job-style の左に合わせる。地色は他のRPG画面と同じ濃紺） ===== */
+.rs-homewrap{padding-top:8px}
+.rs-homewrap .rs-subtop{position:relative;margin:0 0 8px;padding:10px 38px;text-align:center;background:linear-gradient(#16275a,#0f1c42);border:2px solid #d4af5a;border-radius:12px;box-shadow:inset 0 0 0 3px #0d1630,inset 0 0 0 4px #8a7036;color:#ffe27a;font-size:18px;font-weight:900;line-height:1.4}
+.rs-homewrap .rs-subtop::before,.rs-homewrap .rs-subtop::after{content:"\2726";position:absolute;top:50%;transform:translateY(-50%);color:#d4af5a;font-size:20px}
+.rs-homewrap .rs-subtop::before{left:12px}.rs-homewrap .rs-subtop::after{right:12px}
+.rs-homewrap .rs-hc-meta{margin:0 2px 6px;color:#f4f1e4;font-size:15px}
+.rs-homewrap .rs-hc-meta .rs-coin{color:#ffe27a}
+.rs-homewrap .rs-resume-note{color:#8fe6f2}
+.rs-homewrap .rs-home{margin:0 0 8px}
+.rs-homewrap .rs-stage .rs-hcv{border-width:3px;border-radius:10px;box-shadow:0 0 0 2px #0d1630,0 0 0 3px #8a7036}
+.rs-homewrap .rs-homecard{margin:10px 0}
+.rs-homewrap .rs-bonuses{gap:10px}
+.rs-homewrap .rs-bonus{display:flex;flex-direction:column;align-items:center;gap:2px;background:#0f1c42;border-width:2px;box-shadow:inset 0 0 0 3px #0f1c42,inset 0 0 0 4px #8a7036;padding:6px 4px}
+.rs-bicon{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:radial-gradient(#ffe27a,#d4af5a 70%);color:#6a4a00;font-size:20px;line-height:1;box-shadow:0 0 10px 2px rgba(255,226,122,.55)}
+.rs-homewrap .rs-bonus.used .rs-bicon{box-shadow:none;filter:grayscale(.8)}
+.rs-homewrap .rs-bonus b{background:#1a2a5a;border:2px solid #d4af5a;border-radius:999px;padding:1px 10px;font-size:15px}
+.rs-homewrap #go.rs-startbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-height:68px;margin:2px 0 10px;border:3px solid #d4af5a;border-radius:12px;background:linear-gradient(#1f9a95,#136e73);box-shadow:inset 0 0 0 2px #0d5058,0 0 0 2px #0d1630;font-size:24px;line-height:1.25;position:relative}
+.rs-homewrap #go .rs-sb1::after{content:"\25B6";font-size:16px;margin-left:10px}
+.rs-homewrap #go .rs-sb2{font-size:14px;font-weight:700;color:#d8f5f2}
+.rs-homewrap #hard.big{min-height:52px;font-size:19px;border:2px solid #d4af5a;border-radius:12px;background:#b9791f;box-shadow:inset 0 0 0 2px #7a4d0e;margin-bottom:10px}
+.rs-homewrap #hard.big:disabled{background:#2a3358;box-shadow:none;color:#9aa3c4;border-color:#4a5788;opacity:1}
+.rs-homewrap .rs-nextskill{flex-wrap:nowrap;margin:0 0 10px;padding:7px 12px;font-size:15px;min-height:44px}
+.rs-homewrap .rs-nextskill b{font-size:16px}
+.rs-homewrap .rs-range{background:#12204a;border:2px solid #d4af5a;box-shadow:inset 0 0 0 3px #12204a,inset 0 0 0 4px #8a7036}
+.rs-homewrap .rs-range>summary{color:#f4f1e4}.rs-homewrap .rs-range>summary small{color:#ffe27a}
+.rs-homewrap .credit{color:#8f98b8}
+.rs-homewrap #go .rs-sb1{line-height:1.6;padding-top:2px}
+/* 見出し帯の金の飾りと、転職の主ボタンの矢印（見本の右＝転職に合わせる） */
+.rs-title{position:relative;background:linear-gradient(#16275a,#0f1c42)}
+.rs-title::before,.rs-title::after{content:"\2726";position:absolute;top:50%;transform:translateY(-50%);color:#d4af5a;font-size:16px}
+.rs-title::before{left:8px}.rs-title::after{right:8px}
+#jobDo.rs-big::after{content:"\25B6";font-size:15px;margin-left:10px}

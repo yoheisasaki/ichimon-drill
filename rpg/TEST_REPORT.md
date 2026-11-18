@@ -45,4 +45,4 @@
 - 結果と確認票の対応は IMPLEMENTATION_STATUS.md「修正指示書06」節。
 
 （2026-11-19 再実行）
-- node 5本 203件、画面 ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／map 36／fx 10／text 20／hero(実部品) 62／fix06_reward 24／一周 loop_07 32／fix07_screens 7 全通過。ログは rpg/shots/fix07_tests/。確認票は rpg/CHECKLIST_07.md（PASS 31／FAIL 1／未確認 1）。
+- node 5本 203件、画面 ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／map 36／fx 10／text 20／hero(実部品) 62／fix06_reward 24／一周 loop_07 32／fix07_screens 7 全通過。ログは rpg/shots/fix07_tests/。確認票は rpg/CHECKLIST_07.md（PASS 32／FAIL 0／未確認 1）。ホーム再設計後（B08）に全て再実行して通過。

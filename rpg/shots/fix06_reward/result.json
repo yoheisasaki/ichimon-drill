@@ -59,7 +59,7 @@
   },
   "D04 opened line shown & saved": {
    "ok": true,
-   "v": "ランクIの鉱石 ×4 を手に入れた！"
+   "v": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）"
   },
   "home no chestbox when none sealed": true,
   "D06 home shows sealed chest entry": true,
@@ -195,7 +195,7 @@
   "chestCanvases": 2,
   "total": "学習・討伐295＋宝箱0＝合計295",
   "base": "+295",
-  "line": "ランクIの鉱石 ×4 を手に入れた！",
+  "line": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）",
   "lineHidden": false,
   "open": false,
   "btnSame": true,

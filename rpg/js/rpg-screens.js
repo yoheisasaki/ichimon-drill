@@ -23,7 +23,7 @@
   // 主人公の絵は全て heroCv（canvas＋data-hero）→ paintHeroes → SP.drawHeroLayered。画像の読込が終わると SP.onUpdate で描き直す
   // 舞台（背景）：用途ごとの背景画像・大きさ（canvas の1px＝CSSの1px。主人公は整数倍）
   const STAGE = {
-    home: { bg: 'bg_town', h: 232, k: 1, pose: 'idle', at: 0.5, gy: 44 }, self: { bg: 'bg_room_room', w: 128, h: 120, k: 1, pose: 'idle', at: 0.5 },
+    home: { bg: 'bg_town', h: 262, k: 2, pose: 'idle', at: 0.5, gy: 46 }, self: { bg: 'bg_room_room', w: 128, h: 120, k: 1, pose: 'idle', at: 0.5 },
     equip: { bg: 'bg_room_shop', w: 168, h: 208, k: 2, pose: 'idle', at: 0.5 }, job: { bg: 'bg_room_temple', h: 224, k: 2, pose: 'idle', at: 0.5 },
     jobcard: { bg: 'bg_room_temple', w: 120, h: 112, k: 1, pose: 'idle', at: 0.5 }, look: { bg: 'bg_room_room', h: 208, k: 2, pose: 'idle', at: 0.5 },
     ending: { bg: 'bg_crown', h: 232, k: 2, pose: 'win', at: 0.5 }, fx: { bg: 'bg_room_temple', w: 240, h: 232, k: 2, pose: 'idle', at: 0.5 }, mini: { w: 44, h: 36, k: 1, pose: 'idle', at: 0.5, plain: true, strip: true }
@@ -107,15 +107,25 @@
     const s = save(), job = s.job, jl = C.jobLevel(job, s.jobXp[job]), hl = C.heroLevel(s.advXp), nx = C.nextSkill(job, s.jobXp[job]);
     const a = s.active, resume = a && a.basic.n > 0 && a.basic.n < C.ADV_UNIT;
     return `${noticeBox()}<section class="rs-home" aria-label="冒険者の様子">
-      <div class="rs-stage">${heroCv('home')}<div class="rs-stage-name"><b>${esc(s.name || '冒険者')}</b><span>${jobRb(job)} Lv${jl.lv}</span></div></div>
       <div class="rs-hc-meta"><span>${kr('冒険者')} Lv${hl.lv}</span>${coinHtml()}${resume ? `<span class="rs-resume-note">${kr('冒険')}の途中 ${a.basic.n} / ${C.ADV_UNIT}</span>` : ''}</div>
-      <div class="rs-nextskill">${nx ? `<span>${kr('次の技')}</span><b>${skRb(nx.skill.id)}</b><small>${kr(skillBlurb(nx.skill))}</small><i>あと ${Math.max(0, nx.remain)}</i>` : `<span>${kr('この職業の技は、全部覚えた')}</span>`}</div></section>`;
+      <div class="rs-stage">${heroCv('home')}<div class="rs-stage-name"><b>${esc(s.name || '冒険者')}</b><span>${jobRb(job)} Lv${jl.lv}</span></div></div></section>`;
+  };
+  // 開始ボタンの下の「続き：地域名」（今の冒険の場所）
+  RPG.homeNow = function () {
+    if (!RPG.ok) return '';
+    try { const r = A.currentRoute(save()), q = r.quest ? W.QUESTS[r.quest] : null; return esc(q ? q.name : D.REGIONS[r.region >= 0 ? r.region : D.REGIONS.length - 1].name); } catch (e) { return ''; }
+  };
+  // 次の技（1行のカード）
+  RPG.homeNext = function () {
+    if (!RPG.ok) return '';
+    const s = save(), job = s.job, nx = C.nextSkill(job, s.jobXp[job]);
+    return `<div class="rs-nextskill">${nx ? `<span>${kr('次の技')}</span><b>${skRb(nx.skill.id)}</b><i>あと ${Math.max(0, nx.remain)}</i>` : `<span>${kr('この職業の技は、全部覚えた')}</span>`}</div>`;
   };
   // 日次ボーナス・目標・受け取った宝箱（開始ボタンの下）
   RPG.homeBonus = function () {
     if (!RPG.ok) return '';
     const s = save(), key = C.todayKey(s, NOW()), used = s.daily.used[key] || 0, g = s.goal && D.JOBS[s.goal.job] ? s.goal.job : null;
-    const chip = (n, label) => `<div class="rs-bonus${used >= n ? ' used' : ''}"><b>${label}</b><small>${used >= n ? '使った' : 'まだ使える'}</small></div>`;
+    const chip = (n, label) => `<div class="rs-bonus${used >= n ? ' used' : ''}"><span class="rs-bicon" aria-hidden="true">★</span><b>${label}</b><small>${used >= n ? '使った' : 'まだ使える'}</small></div>`;
     let goalTxt = ''; if (g) { const left = M.jobProgress(s, g).filter(r => !r.pending && !r.done); goalTxt = `<div class="rs-hc-line">${kr('目標')}：${jobRb(g)}${left.length ? '' : '（もうなれる！）'}</div>`.replace('目標', '目標'); }
     return `<section class="rs-homecard" aria-label="今日のボーナス"><div class="rs-hc-b"><span>${rb('{今日|きょう}の{冒険|ぼうけん}ボーナス')}</span><div class="rs-bonuses">${chip(1, rb('{経験値|けいけんち} ×3'))}${chip(2, rb('{経験値|けいけんち} ×2'))}</div></div>${goalTxt}${RPG.homeChestHtml ? RPG.homeChestHtml() : ''}</section>`;
   };
