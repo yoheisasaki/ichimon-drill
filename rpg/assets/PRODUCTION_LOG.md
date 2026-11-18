@@ -18,6 +18,13 @@
   - 画面: `rpg/shots/assets_chest_all.png`（6枚一覧）、`assets_chest_reward_closed/open.png`、`assets_chest_scene.png`、`assets_chest_reward_full.png`
   - 回帰 95 pass / 0 fail、コンソールエラー0。
 
+## 2026-11-18 追記（第2担当）
+- 11職の主人公 待機（報酬96px＋帯28px）完了・台帳反映・画面 `rpg/shots/assets_heroes.png`。攻撃ポーズは未（順番9「残りのポーズ差分」）。
+- スライム左向きに作り直し（目が小さめ。要目視で不満なら再生成）。
+- 敵パイプライン: `tools/enemy_pipe.py <e_xxx|b_xxx...>`（説明は `tools/enemies_data.py`）。報酬56px・ボス128px、帯24px・ボス32px（同じ元絵を縮小）。ボスはspec192pxだが試作比（主人公96）で128にした。
+- 主人公は `tools/hero_pipe.py`、台帳は `tools/update_assets.py id|srcdir|use|display`、一覧画面は `tools/roster_shots.py`、目視用 `tools/sheet.py`。
+- 第1章の敵35体（草原〜空城）を `_logE1.txt/_logE2.txt` で生成中。完了分は台帳に反映する。
+
 ## 残り（優先順）
 1. 12職の主人公（報酬用96px・帯用28px。待機→攻撃）: warrior以外11職（mage priest thief magicknight paladin shadow sage ninja ranger skyknight starseer）。参照=hero_warrior_chibi/ref。人型は2.3〜2.7頭身。
 2. 第1章の敵と背景（敵は左向き。**試作の enemy_slime は正面向き**＝向きの作り直しが必要）、地域背景（REGION_COLOR のキー全部）

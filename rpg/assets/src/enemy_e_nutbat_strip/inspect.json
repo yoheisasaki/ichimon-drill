@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_nutbat/enemy_e_nutbat.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1199,
+  767
+ ],
+ "out": "rpg/assets/chars/enemy_e_nutbat_strip.png",
+ "out_size": [
+  38,
+  24
+ ],
+ "magenta_removed_px": 1123623,
+ "fringe_removed_px": 1726,
+ "magenta_left_px": 0,
+ "opaque_px": 443,
+ "colors": 417
+}

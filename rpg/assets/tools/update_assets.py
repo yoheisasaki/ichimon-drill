@@ -5,7 +5,8 @@ mp = os.path.join(ROOT, 'rpg', 'ASSET_MANIFEST.json'); m = json.load(open(mp, en
 for spec in sys.argv[1:]:
     p = (spec.split('|') + ['', '', ''])[:4]; id_ = p[0]; sd = p[1] or id_
     d = os.path.join(ROOT, 'rpg', 'assets', 'src', sd); i = json.load(open(os.path.join(d, 'inspect.json'), encoding='utf-8'))
-    pr = open(os.path.join(d, sd + '.prompt.txt'), encoding='utf-8').read().split('\n')[0]
+    bs = sd[:-6] if sd.endswith('_strip') and not os.path.exists(os.path.join(d, sd + '.prompt.txt')) else sd
+    pr = open(os.path.join(ROOT, 'rpg', 'assets', 'src', bs, bs + '.prompt.txt'), encoding='utf-8').read().split('\n')[0]
     a = by.get(id_) or {'id': id_}; if_new = id_ not in by
     kind = 'bg' if i['out'].startswith('rpg/assets/bg') else 'chars'
     a.update({'path': i['out'], 'src': '%dx%d' % tuple(i['src_size']), 'status': '正式', 'transparent': kind == 'chars', 'prompt': pr,

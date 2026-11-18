@@ -1,0 +1,16 @@
+seconds=117
+rc=0
+[enemy_e_nutbat.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_nutbat/enemy_e_nutbat.png) — 1536 × 1024 px
+
+::FromArgb(255,0,255); for($y=0;$y -lt $im.Height;$y++){for($x=0;$x -lt $im.Width;$x++){ $c=$im.GetPixel($x,$y); if($c.R -gt 170 -and $c.B -gt 170 -and $c.G -lt 110){$im.SetPixel($x,$y,$mag)} }}; $im.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$dst $($im.Width)x$($im.Height)"; Write-Output "corner=$($im.GetPixel(0,0).ToArgb())"; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_nutbat
+ succeeded in 6369ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_nutbat\enemy_e_nutbat.png 1536x1024
+corner=-65281
+
+codex
+[enemy_e_nutbat.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_nutbat/enemy_e_nutbat.png) — 1536 × 1024 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,133
+

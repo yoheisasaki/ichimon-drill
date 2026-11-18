@@ -1,0 +1,18 @@
+seconds=139
+rc=0
+[hero_starseer_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_starseer_strip/hero_starseer_strip.png) — 1278 × 1230 px
+
+[System.Drawing.Bitmap]::FromFile($path); try { Write-Output "PATH=$path"; Write-Output "SIZE=$($check.Width)x$($check.Height)"; Write-Output "CORNER=$($check.GetPixel(0,0).ToArgb().ToString('"'X8'))\"; Write-Output \"BACKGROUND_PIXELS_NORMALIZED="'$changed" } finally { $check.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_starseer_strip
+ succeeded in 9574ms:
+PATH=C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_starseer_strip\hero_starseer_strip.png
+SIZE=1278x1230
+CORNER=FFFF00FF
+BACKGROUND_PIXELS_NORMALIZED=1286182
+
+codex
+[hero_starseer_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_starseer_strip/hero_starseer_strip.png) — 1278 × 1230 px
+hook: Stop
+hook: Stop Completed
+tokens used
+23,875
+
