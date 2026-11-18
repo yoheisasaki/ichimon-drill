@@ -116,7 +116,7 @@ with sync_playwright() as p:
         pg.click('[data-outfit=dawn]'); pg.wait_for_timeout(100); chk(E + 'outfit_saved', pg.evaluate(SAVE)['look']['outfit'] == 'dawn')
         pg.click('[data-title="空の果てを見た者"]'); pg.wait_for_timeout(100); chk(E + 'title_saved', pg.evaluate(SAVE)['title'] == '空の果てを見た者')
         if engine == 'chromium': shot(pg, 'p3_me_rewards')
-        pg.click('[data-go=memorial]'); pg.wait_for_selector('#rsMemo'); chk(E + 'memorial_canvas', pg.evaluate("() => document.getElementById('rsMemo').width") == 100)
+        pg.click('[data-go=memorial]'); pg.wait_for_selector('#rsMemo'); chk(E + 'memorial_canvas', pg.evaluate("() => document.getElementById('rsMemo').width") in (100, 300))
         if engine == 'chromium': shot(pg, 'p3_memorial')
         m = metrics(pg); chk(E + 'memorial_ok', not m['hscroll'] and not m['small'], m)
         pg.evaluate("() => RPG.go('codex')"); pg.wait_for_selector('.rs-cgrid')

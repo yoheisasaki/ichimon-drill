@@ -116,7 +116,7 @@
         <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button></div>
       <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
       <div class="rs-panel"><div class="rs-h2">宝箱の おねがい</div><p class="rs-p">朝星の宝箱から レアが出るとき、この種類から えらばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
-      <div class="rs-panel">${chapters}</div>`, { back: false });
+      <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">せかいちず（浮島世界ルミナリア）</div><img class="rs-wmap" alt="浮島世界ルミナリアの ちず" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
   };
   AFTER.adv = function () {
     const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = A.currentRoute(s); enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
@@ -447,11 +447,25 @@
     doc.getElementById('enNext').onclick = () => { if ((UI.endI || 0) >= 3) done(); else { UI.endI = (UI.endI || 0) + 1; rerender(); } };
     doc.getElementById('enSkip').onclick = done;
   };
+  const MEMOS = [['ch1', 'だい1しょう', s => chCleared(s, 1)], ['ch2', 'だい2しょう', s => chCleared(s, 2)], ['main', 'ほんぺん', s => mainCleared(s)], ['dawnisle', '夜明けの 孤島', () => true]];
+  const memoImg = id => imgOf('bg_memorial_' + id);
   VIEWS.memorial = function () {
-    const s = save(); return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ（仮の絵）"></canvas><p class="rs-p">「${esc((s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだ ありません')}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p><p class="rs-p">これは コードで かいた 仮の絵です。</p></div>`);
+    const s = save(), title = (s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだ ありません';
+    if (!memoImg('dawnisle')) return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ（仮の絵）"></canvas><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p><p class="rs-p">これは コードで かいた 仮の絵です。</p></div>`);
+    const list = MEMOS.filter(m => memoImg(m[0]) && m[2](s));
+    return frame('きねんえ', list.map(m => `<div class="rs-panel c"><div class="rs-h3">${esc(m[1])}の きねんえ</div><canvas ${m[0] === 'dawnisle' ? 'id="rsMemo" ' : ''}class="rs-memo" data-m="${m[0]}" aria-label="${esc(m[1])}の きねんえ"></canvas></div>`).join('') + `<div class="rs-panel c"><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p></div>`);
   };
   AFTER.memorial = function () {
-    const c = doc.getElementById('rsMemo'), s = save(), w = 100, h = 66, k = Math.max(2, Math.floor(Math.min(360, c.parentNode.clientWidth - 24) / w));
+    const s = save();
+    if (memoImg('dawnisle')) {
+      app().querySelectorAll('canvas[data-m]').forEach(c => {
+        const im = memoImg(c.dataset.m), w = im.width, h = im.height; c.width = w; c.height = h; c.style.width = '100%'; c.style.maxWidth = (w * 1.2) + 'px'; c.style.height = 'auto';
+        const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(im, 0, 0);
+        SP.drawHero(g, s.job, Math.round(w * 0.34) - 7, h - 14, { img: 'reward', pose: 'win', look: look(), outfit: M.costumeColor(s) });
+      });
+      return;
+    }
+    const c = doc.getElementById('rsMemo'), w = 100, h = 66, k = Math.max(2, Math.floor(Math.min(360, c.parentNode.clientWidth - 24) / w));
     c.width = w; c.height = h; c.style.width = (w * k) + 'px'; c.style.height = (h * k) + 'px'; const g = c.getContext('2d');
     SP.drawBackground(g, w, h, 'dawnisle'); g.fillStyle = '#ffe27a'; g.beginPath(); g.arc(70, 24, 9, 0, 7); g.fill();
     g.save(); g.scale(2, 2); SP.drawHero(g, s.job, 12, 32, { look: look(), outfit: M.costumeColor(s) }); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2 }); g.restore();

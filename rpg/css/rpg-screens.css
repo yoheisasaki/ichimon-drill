@@ -143,3 +143,4 @@ body:has(.rs){background:#0b1329}
 .rs-room{width:100%;max-width:480px;aspect-ratio:2/1;margin:0 auto 8px;background-size:100% 100%;image-rendering:pixelated;border:2px solid var(--gold);border-radius:10px}
 .rs-npc{display:block;margin:-40px auto 4px;height:96px;image-rendering:pixelated;position:relative}
 .rs-npc.story{margin:0 auto 6px;height:88px}
+.rs-wmap{display:block;width:100%;max-width:360px;margin:0 auto 10px;image-rendering:pixelated;border:2px solid var(--gold);border-radius:10px}

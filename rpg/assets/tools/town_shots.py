@@ -9,7 +9,7 @@ srv = socketserver.TCPServer(('127.0.0.1', 18437), functools.partial(Q, director
 con = []
 def put(pg, name):
     t = open(os.path.join(SAVES, name + '.json'), encoding='utf-8').read()
-    pg.evaluate("t => localStorage.setItem('ichimon.rpg.v1', t)", t); pg.reload(); pg.wait_for_selector('.subj'); pg.wait_for_function("() => RPGSprites.IMGS.town_airship && RPGSprites.IMGS.bg_town"); pg.wait_for_timeout(300)
+    pg.evaluate("t => localStorage.setItem('ichimon.rpg.v1', t)", t); pg.reload(); pg.wait_for_selector('.subj'); pg.wait_for_function("() => RPGSprites.IMGS.town_airship && RPGSprites.IMGS.bg_town && RPGSprites.IMGS.bg_memorial_dawnisle"); pg.wait_for_timeout(300)
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True); pg = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True).new_page()
     pg.on('console', lambda m: con.append(m.text) if m.type == 'error' else None); pg.on('pageerror', lambda e: con.append(str(e)))
@@ -22,4 +22,11 @@ with sync_playwright() as p:
     for pl in ('guild', 'shop', 'forge', 'temple', 'room'):
         pg.click('.rs-tab[data-tab=town]'); pg.click(f'[data-place={pl}]'); pg.wait_for_timeout(400)
         pg.screenshot(path=os.path.join(OUT, f'assets_room_{pl}.png'), full_page=True)
+    for sv in ('ch2end', 'postgame'):
+        put(pg, sv); pg.evaluate("() => RPG.open('memorial')"); pg.wait_for_timeout(600)
+        print(sv, 'memo', pg.evaluate("() => document.querySelectorAll('canvas[data-m]').length"))
+        pg.screenshot(path=os.path.join(OUT, f'assets_memorial_{sv}.png'), full_page=True)
+    put(pg, 'day01'); pg.click('.rs-tab[data-tab=adv]'); pg.wait_for_timeout(500); pg.screenshot(path=os.path.join(OUT, 'assets_worldmap_adv.png'), full_page=True)
+    for k in ('mira', 'toto'):
+        pass
     print('console', con); b.close()
