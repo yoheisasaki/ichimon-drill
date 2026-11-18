@@ -8373,7 +8373,7 @@
   },
   {
    "id": "bg_map_rootwood",
-   "use": "探索地図_rootwood 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_rootwood 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_rootwood.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8385,7 +8385,7 @@
   },
   {
    "id": "bg_map_sunkencity",
-   "use": "探索地図_sunkencity 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_sunkencity 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_sunkencity.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8397,7 +8397,7 @@
   },
   {
    "id": "bg_map_invertedruins",
-   "use": "探索地図_invertedruins 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_invertedruins 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_invertedruins.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8409,7 +8409,7 @@
   },
   {
    "id": "bg_map_icevolcano",
-   "use": "探索地図_icevolcano 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_icevolcano 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_icevolcano.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8421,7 +8421,7 @@
   },
   {
    "id": "bg_map_oldfactory",
-   "use": "探索地図_oldfactory 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_oldfactory 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_oldfactory.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8433,7 +8433,7 @@
   },
   {
    "id": "bg_map_skybackside",
-   "use": "探索地図_skybackside 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_skybackside 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_skybackside.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8445,7 +8445,7 @@
   },
   {
    "id": "bg_map_worldtree",
-   "use": "探索地図_worldtree 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_worldtree 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_worldtree.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8457,7 +8457,7 @@
   },
   {
    "id": "bg_map_moonfall",
-   "use": "探索地図_moonfall 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_moonfall 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_moonfall.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8469,7 +8469,7 @@
   },
   {
    "id": "bg_map_skytower",
-   "use": "探索地図_skytower 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_skytower 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_skytower.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8481,7 +8481,7 @@
   },
   {
    "id": "bg_map_aurora",
-   "use": "探索地図_aurora 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_aurora 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_aurora.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8493,7 +8493,7 @@
   },
   {
    "id": "bg_map_skyfactory",
-   "use": "探索地図_skyfactory 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_skyfactory 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_skyfactory.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8505,7 +8505,7 @@
   },
   {
    "id": "bg_map_crown",
-   "use": "探索地図_crown 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_crown 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_crown.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8517,7 +8517,7 @@
   },
   {
    "id": "bg_map_meadow",
-   "use": "探索地図_meadow 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_meadow 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_meadow.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8529,7 +8529,7 @@
   },
   {
    "id": "bg_map_waterland",
-   "use": "探索地図_waterland 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_waterland 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_waterland.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8541,7 +8541,7 @@
   },
   {
    "id": "bg_map_sandsea",
-   "use": "探索地図_sandsea 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_sandsea 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_sandsea.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8553,7 +8553,7 @@
   },
   {
    "id": "bg_map_mountain",
-   "use": "探索地図_mountain 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_mountain 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_mountain.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8565,7 +8565,7 @@
   },
   {
    "id": "bg_map_gearcity",
-   "use": "探索地図_gearcity 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_gearcity 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_gearcity.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8577,7 +8577,7 @@
   },
   {
    "id": "bg_map_skycastle",
-   "use": "探索地図_skycastle 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_skycastle 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_skycastle.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8589,7 +8589,7 @@
   },
   {
    "id": "bg_map_garden",
-   "use": "探索地図_garden 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_garden 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_garden.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8601,7 +8601,7 @@
   },
   {
    "id": "bg_map_pearl",
-   "use": "探索地図_pearl 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_pearl 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_pearl.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8613,7 +8613,7 @@
   },
   {
    "id": "bg_map_nightcity",
-   "use": "探索地図_nightcity 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_nightcity 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_nightcity.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8625,7 +8625,7 @@
   },
   {
    "id": "bg_map_dragonvalley",
-   "use": "探索地図_dragonvalley 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_dragonvalley 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_dragonvalley.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8637,7 +8637,7 @@
   },
   {
    "id": "bg_map_lab0",
-   "use": "探索地図_lab0 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_lab0 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_lab0.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8649,7 +8649,7 @@
   },
   {
    "id": "bg_map_orchard",
-   "use": "探索地図_orchard 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_orchard 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_orchard.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",
@@ -8661,7 +8661,7 @@
   },
   {
    "id": "bg_map_dawnisle",
-   "use": "探索地図_dawnisle 240x240（地点・宝箱・進み具合は別レイヤー。画面への接続は未）",
+   "use": "探索地図_dawnisle 240x240（地点・宝箱・進み具合は別レイヤー。ぼうけん→ちずから開く探索地図に接続済み D-40）",
    "path": "rpg/assets/bg/bg_map_dawnisle.png",
    "src": "ChatGPT生成 1254x1254",
    "display": "240x240",

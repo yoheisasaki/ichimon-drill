@@ -144,3 +144,36 @@ body:has(.rs){background:#0b1329}
 .rs-npc{display:block;margin:-40px auto 4px;height:96px;image-rendering:pixelated;position:relative}
 .rs-npc.story{margin:0 auto 6px;height:88px}
 .rs-wmap{display:block;width:100%;max-width:360px;margin:0 auto 10px;image-rendering:pixelated;border:2px solid var(--gold);border-radius:10px}
+/* 探索地図（D-40）：絵の上に道・地点・今いる場所・宝箱を重ねる */
+.rs-mapbtn{flex:none;margin-left:auto;min-width:56px;min-height:44px;border-radius:10px;border:2px solid var(--gold);background:#1b2c5c;color:var(--ink);font-weight:800;font-size:14px}
+.rs-mini{min-height:44px;font-size:14px;margin:0 0 8px}
+.rs-mp-h{display:flex;flex-direction:column;margin:0 0 8px}.rs-mp-h b{font-size:20px;color:#ffe27a}.rs-mp-h small{font-size:13px;color:#cfd6ea;font-weight:600}
+.rs-mapbox{position:relative;width:100%;max-width:360px;aspect-ratio:1/1;margin:0 auto 8px;border:2px solid var(--gold);border-radius:10px;overflow:hidden;background:#0b1329}
+.rs-mapbox.lock .rs-mapimg{filter:grayscale(.75) brightness(.6)}
+.rs-mapimg{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;display:block}
+.rs-mapsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.rs-mapsvg polyline{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.rs-ml0{stroke:rgba(10,16,40,.75);stroke-width:5}.rs-ml1{stroke:#e9e2c4;stroke-width:2;stroke-dasharray:1.5 3.5}.rs-ml2{stroke:#ffd75a;stroke-width:3.2}
+.rs-mstart{position:absolute;transform:translate(-50%,-100%);font-size:11px;font-weight:900;padding:1px 6px;border-radius:8px;background:rgba(10,16,40,.8);color:#ffe27a;pointer-events:none;margin-top:-2px}
+.rs-mn{position:absolute;width:44px;height:44px;transform:translate(-50%,-50%);background:none;border:0;padding:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.rs-mn-c{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;background:#25366a;color:#f4f1e4;border:2px solid #0b1329;box-shadow:0 0 0 2px #cfd6ea}
+.rs-mn.done .rs-mn-c{background:#2fae5a;color:#06210f;box-shadow:0 0 0 2px #0b3a1c}
+.rs-mn.cur .rs-mn-c{background:#ffd75a;color:#3a2a00;box-shadow:0 0 0 3px #fff,0 0 0 5px #b8741a}
+.rs-mn.lock .rs-mn-c{background:#3a4468;color:#b6bfd8;box-shadow:0 0 0 2px #7a85a8}
+.rs-mn.boss .rs-mn-c{width:32px;height:32px;background:#a23a2a;color:#fff3a0;box-shadow:0 0 0 2px #ffd75a}
+.rs-mn.boss.done .rs-mn-c{background:#2fae5a;color:#06210f}
+.rs-mn.sel .rs-mn-c{outline:3px solid #8fe6f2;outline-offset:3px}
+.rs-mhero{position:absolute;transform:translate(-50%,calc(-100% - 8px));image-rendering:pixelated;pointer-events:none;z-index:3;width:40px;height:36px}
+.rs-mchest{position:absolute;transform:translate(10px,-24px);image-rendering:pixelated;pointer-events:none;z-index:1;width:28px;height:22px}
+.rs-mchest:not(.open){filter:drop-shadow(0 0 3px #ffd75a)}
+.rs-mdet{display:flex;flex-direction:column;gap:3px;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;padding:8px 10px}
+.rs-mdet b{font-size:16px}.rs-mdet small{font-size:13px;color:#b6bfd8;font-weight:600}
+.rs-pips{display:inline-flex;gap:4px;margin-left:auto}.rs-pips i{width:9px;height:9px;border-radius:50%;background:#25366a;border:1px solid #6b7aa8}.rs-pips i.on{background:#ffd75a;border-color:#ffd75a}
+.rs-mdet .rs-pips{margin:2px 0}
+.rs-mplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rs-mrow{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;text-align:left;border:2px solid #3a4a7a;border-radius:12px;background:#0f1b3e;color:var(--ink);padding:6px 10px;font-weight:700}
+.rs-mrow.cur{border-color:var(--gold);background:#1a2a5a}.rs-mrow.lock{opacity:.6}.rs-mrow.sel{outline:2px solid #8fe6f2}
+.rs-mrow .rs-dot{flex:none}.rs-mrow.done .rs-dot{background:#2fae5a;color:#06210f}
+.rs-mrow-t{flex:1;min-width:0}.rs-mrow-t b{display:block;font-size:15px}.rs-mrow-t small{display:block;font-size:12px;color:#b6bfd8;font-weight:600}
+@media (prefers-reduced-motion:no-preference){.rs-mn.cur .rs-mn-c{animation:rsmp 1.6s ease-in-out infinite}}
+@keyframes rsmp{50%{transform:scale(1.12)}}

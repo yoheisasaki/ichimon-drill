@@ -105,7 +105,8 @@
     const kept = A.keptHp(s, r), hpKeep = kept != null ? Math.round(kept / r.stats.hp * 100) : 100;
     const sk = M.currentSkills(s).map(id => D.SKILLS[id].name), tac = TACTICS.find(t => t[0] === (s.loadout.tactic || 'auto'))[1];
     const CH = { 1: '第1章　消えた灯台', 2: '第2章　空の下の世界', 3: '第3章　十二のしるし' };
-    const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? (x.atBoss ? `ボスの たたかい　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだ ここまで きていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div></li>`;
+    const nowKey = r.quest ? (W.QUESTS[r.quest].kind === 'rematch' ? W.QUESTS[r.quest].region : (W.QUESTS[r.quest].kind === 'trial' ? null : r.quest)) : (r.region >= 0 ? D.REGIONS[r.region].id : null);
+    const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? (x.atBoss ? `ボスの たたかい　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだ ここまで きていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div><button class="rs-mapbtn" data-go="regionmap" data-p='{"id":"${x.id}"}' aria-label="${esc(x.name)}の ちずを ひらく">ちず</button></li>`;
     const chapters = [1, 2, 3].map(c => `<div class="rs-h2">${CH[c]}</div><ol class="rs-map">${info.map((x, i) => x.ch === c ? nodeHtml(x, i - info.findIndex(y => y.ch === c)) : '').join('')}</ol>`).join('');
     const wish = D.WISH_LIST.map(w => `<button class="rs-chip${s.wish === w ? ' on' : ''}" data-wish="${w}" aria-pressed="${s.wish === w}">${esc(D.WISH_NAME[w])}</button>`).join('');
     const a = s.active, nOver = !q && s.progress.step >= D.ROUTE.length;
@@ -113,10 +114,10 @@
       <div class="rs-panel"><div class="rs-h2">いまの ぼうけん</div>
         <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
         ${a && a.basic.n > 0 ? `<div class="rs-note">ぼうけん ${a.basic.n} / ${C.ADV_UNIT}もん（つづきから）</div>` : ''}
-        <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button></div>
+        <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button>${nowKey ? `<button class="rs-btn" data-go="regionmap" data-p='{"id":"${nowKey}"}'>いまの ちずを ひらく</button>` : ''}</div>
       <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
       <div class="rs-panel"><div class="rs-h2">宝箱の おねがい</div><p class="rs-p">朝星の宝箱から レアが出るとき、この種類から えらばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
-      <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">せかいちず（浮島世界ルミナリア）</div><img class="rs-wmap" alt="浮島世界ルミナリアの ちず" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
+      <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">せかいちず（浮島世界ルミナリア）</div><p class="rs-p">ちいきの「ちず」を おすと、その ちいきの たんけんちずが ひらきます。</p><img class="rs-wmap" alt="浮島世界ルミナリアの ちず" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
   };
   AFTER.adv = function () {
     const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = A.currentRoute(s); enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
@@ -408,6 +409,7 @@
   };
 
   // ---------- ぼうけんの えらびかた（ほんぺん・さいせん・しれん・秘境・孤島） ----------
+  const mapBtn = id => `<button class="rs-btn rs-mini" data-go="regionmap" data-p='{"id":"${id}"}' aria-label="${esc(W.QUESTS[id].name)}の ちずを ひらく">ちずを みる</button>`;
   function questPanel(s) {
     const L = M.questList(s), by = k => L.filter(q => q.kind === k);
     const btn = q => {
@@ -421,8 +423,8 @@
       <button class="rs-qbtn${!s.progress.quest ? ' on' : ''}" data-q="" aria-pressed="${!s.progress.quest}"><b>${!s.progress.quest ? '✓ ' : ''}ほんぺん</b><small>${mainDone ? 'ぜんぶ クリア（さいごの ボスと さいせん）' : '18の ちいきを すすむ'}</small></button>
       <details class="rs-det"><summary>さいせん（たおした ボスと もういちど）${re.length ? ' ' + re.length : ''}</summary><p class="rs-p">ボスの ざいりょうが ふえます。ざいりょう3こで 固有そうびが つくれます（かじや）。</p>${re.map(btn).join('') || '<small>まだ ありません。ボスを たおすと ひらきます。</small>'}</details>
       <div class="rs-h3">しれん（最上級職への てんしょく）</div>${by('trial').map(btn).join('')}
-      <div class="rs-h3">6つの ひきょう（ほんぺんクリアご）</div>${by('secret').map(btn).join('')}
-      <div class="rs-h3">夜明けの 孤島</div>${by('island').map(btn).join('')}
+      <div class="rs-h3">6つの ひきょう（ほんぺんクリアご）</div>${by('secret').map(q => btn(q) + mapBtn(q.id)).join('')}
+      <div class="rs-h3">夜明けの 孤島</div>${by('island').map(q => btn(q) + mapBtn(q.id)).join('')}
       ${s.active ? '<div class="rs-note">ぼうけんの 途中は えらびなおせません。</div>' : ''}</div>`;
   }
 
@@ -552,6 +554,91 @@
   };
   PARENT.story = 'adv'; PARENT.storylist = 'adv'; PARENT.ending = 'adv'; PARENT.memorial = 'me'; PARENT.settings = 'me';
   ROOT_OF.story = 'adv'; ROOT_OF.storylist = 'adv'; ROOT_OF.ending = 'adv'; ROOT_OF.memorial = 'me'; ROOT_OF.settings = 'me';
+
+
+  // ---------- 探索地図（絵の上に 地点・道・今いる場所・宝箱を重ねる。D-40） ----------
+  // 絵は bg_map_<id>（240x240、道は入口(下)から奥(上)）。座標は rpg-mapdata.js（地域ごと）。進み具合は保存データから毎回計算する。
+  const MAPD = (root.RPGMapData && root.RPGMapData.MAPS) || {};
+  // key＝本編の地域id、または冒険の道id（secret_*／island）。試練は地図が無い（再戦は元の地域のキーで開く）
+  function mapDesc(s, key) {
+    const q = W.QUESTS[key];
+    let o;
+    if (!q) {
+      const ri = D.REGIONS.findIndex(r => r.id === key); if (ri < 0) return null;
+      const r = D.REGIONS[ri], inf = M.mapInfo(s)[ri], rem = s.progress.quest === 'rematch_' + key;
+      o = { key, mapId: key, name: r.name, sub: `だい${r.ch}しょう`, pts: r.points.map(n => ({ name: n, n: 3 })), boss: { name: r.boss.name, n: inf.total - inf.nNormal }, done: inf.cleared ? inf.total : inf.inRegion, cleared: inf.cleared, lock: inf.locked ? 'まだ ここまで きていない' : null, story: r.story || '', here: rem || (!s.progress.quest && inf.current), atBoss: rem, rematch: rem };
+    } else if (q.kind === 'secret' || q.kind === 'island') {
+      const segs = q.segs.filter(g => !g.boss), pts = [];
+      segs.forEach(g => { const l = pts[pts.length - 1]; if (l && l.name === g.point) l.n++; else pts.push({ name: g.point, n: 1 }); });
+      const qs = M.questState(s, key), lk = M.questLocked(s, key), cleared = !!qs.cleared;
+      o = { key, mapId: q.bg, name: q.name, sub: q.kind === 'island' ? 'クリアごの ぼうけん' : 'ひきょう', pts, boss: { name: q.boss, n: q.segs.length - segs.length }, done: cleared ? q.segs.length : (qs.step || 0), cleared, lock: lk && !cleared ? lk : null, story: '', here: s.progress.quest === key && !cleared };
+    } else return null;
+    // 各地点（最後はボス）の済んだ区間数と状態
+    o.nodes = o.pts.map(p => Object.assign({}, p)).concat([Object.assign({ boss: true }, o.boss)]);
+    let cum = 0, cur = -1;
+    o.nodes.forEach((n, i) => { n.done = Math.max(0, Math.min(n.n, o.done - cum)); cum += n.n; n.state = o.lock ? 'lock' : n.done >= n.n ? 'done' : (cur < 0 ? (cur = i, 'cur') : 'lock'); });
+    o.cur = o.atBoss ? o.nodes.length - 1 : cur;
+    if (o.atBoss) o.nodes[o.cur].state = 'cur';
+    o.total = o.nodes.reduce((a, n) => a + n.n, 0);
+    o.chestOpen = o.cleared;
+    return o;
+  }
+  // 道の折れ線上の位置。地点は最も近い道の点に投影して並びを取る
+  function pathArc(path) { const d = [0]; for (let i = 1; i < path.length; i++) d.push(d[i - 1] + Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1])); return d; }
+  function arcOf(path, d, p) {
+    let best = 1e9, at = 0;
+    for (let i = 1; i < path.length; i++) {
+      const ax = path[i - 1][0], ay = path[i - 1][1], vx = path[i][0] - ax, vy = path[i][1] - ay, L = vx * vx + vy * vy || 1;
+      const t = Math.max(0, Math.min(1, ((p[0] - ax) * vx + (p[1] - ay) * vy) / L)), dx = ax + vx * t - p[0], dy = ay + vy * t - p[1], e = dx * dx + dy * dy;
+      if (e < best) { best = e; at = d[i - 1] + (d[i] - d[i - 1]) * t; }
+    }
+    return at;
+  }
+  function pathUpTo(path, d, len) {
+    const o = [path[0]];
+    for (let i = 1; i < path.length; i++) { if (d[i] <= len) o.push(path[i]); else { const t = (len - d[i - 1]) / ((d[i] - d[i - 1]) || 1); o.push([path[i - 1][0] + (path[i][0] - path[i - 1][0]) * t, path[i - 1][1] + (path[i][1] - path[i - 1][1]) * t]); break; } }
+    return o;
+  }
+  const pts2 = a => a.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  VIEWS.regionmap = function (prm) {
+    const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id), o = mapDesc(s, key), md = o && MAPD[o.mapId];
+    if (!o) return frame('たんけんちず', '<div class="rs-panel"><p class="rs-p">この ちいきの ちずは ありません。</p></div>');
+    const ok = !!(md && md.nodes && md.nodes.length === o.nodes.length);
+    const sel = UI.mapSel != null && UI.mapKey === key && UI.mapSel < o.nodes.length ? UI.mapSel : (o.cur >= 0 ? o.cur : (o.cleared ? o.nodes.length - 1 : 0));
+    UI.mapSel = sel; UI.mapKey = key;
+    const stTxt = n => n.state === 'done' ? 'とっぱ ずみ' : n.state === 'cur' ? (n.boss ? 'ボスの たたかい' : 'いま ここ') : 'まだ ここまで きていない';
+    const pips = n => `<span class="rs-pips" aria-hidden="true">${Array.from({ length: n.n }, (_, i) => `<i${i < n.done ? ' class="on"' : ''}></i>`).join('')}</span>`;
+    const nm = (n, i) => n.boss ? (n.state === 'lock' && !o.cleared ? 'ボス' : n.name) : (n.state === 'lock' ? 'ちてん ' + (i + 1) : n.name);
+    let over = '';
+    if (ok) {
+      const d = pathArc(md.path), tot = d[d.length - 1], arcs = md.nodes.map(p => arcOf(md.path, d, p));
+      const upTo = o.cleared ? tot : o.lock ? 0 : (o.cur >= 0 ? arcs[o.cur] : 0);
+      over += `<svg class="rs-mapsvg" viewBox="0 0 240 240" aria-hidden="true" focusable="false"><polyline class="rs-ml0" points="${pts2(md.path)}"/><polyline class="rs-ml1" points="${pts2(md.path)}"/>${upTo > 0 ? `<polyline class="rs-ml2" points="${pts2(pathUpTo(md.path, d, upTo))}"/>` : ''}</svg>`;
+      over += `<span class="rs-mstart" style="left:${(md.path[0][0] / 2.4).toFixed(2)}%;top:${(md.path[0][1] / 2.4).toFixed(2)}%" aria-hidden="true">いりぐち</span>`;
+      o.nodes.forEach((n, i) => {
+        const p = md.nodes[i], pos = `left:${(p[0] / 2.4).toFixed(2)}%;top:${(p[1] / 2.4).toFixed(2)}%`;
+        over += `<button class="rs-mn ${n.state}${n.boss ? ' boss' : ''}${i === sel ? ' sel' : ''}" style="${pos}" data-mn="${i}" aria-pressed="${i === sel}" aria-label="${n.boss ? 'ボス' : 'ちてん' + (i + 1)}：${esc(nm(n, i))}（${stTxt(n)}）"><span class="rs-mn-c">${n.state === 'done' ? '✓' : n.boss ? '★' : i + 1}</span></button>`;
+        if (n.state === 'cur' && o.here) over += `<canvas class="rs-mhero" id="rsMapHero" aria-hidden="true" style="${pos}"></canvas>`;
+        if (n.boss) over += `<canvas class="rs-mchest${o.chestOpen ? ' open' : ''}" id="rsMapChest" aria-hidden="true" style="${pos}"></canvas>`;
+      });
+    }
+    const n = o.nodes[sel];
+    const detail = `<div class="rs-mdet" id="rsMapDet" aria-live="polite"><b>${n.boss ? 'ボス：' : ''}${esc(nm(n, sel))}</b>${pips(n)}<small>${stTxt(n)}${n.state !== 'lock' || o.cleared ? `　${n.done} / ${n.n}` : ''}</small>${n.boss ? `<small>たから：${o.chestOpen ? 'あけた（はじめての とっぱで コインと ざいりょう）' : 'まだ（はじめて たおすと コインと ざいりょうが もらえる）'}</small>` : ''}${n.state === 'cur' && o.story ? `<small>${esc(o.story)}</small>` : ''}${o.rematch && n.boss ? '<small>さいせんちゅう（ほんぺんは すすみません）</small>' : ''}</div>`;
+    const list = o.nodes.map((x, i) => `<li><button class="rs-mrow ${x.state}${i === sel ? ' sel' : ''}" data-mn="${i}" aria-pressed="${i === sel}"><span class="rs-dot">${x.state === 'done' ? '✓' : x.boss ? '★' : i + 1}</span><span class="rs-mrow-t"><b>${esc(nm(x, i))}</b><small>${stTxt(x)}</small></span>${pips(x)}</button></li>`).join('');
+    const prog = o.cleared ? 'ぜんぶ とっぱ！' : o.lock ? o.lock : `${o.done} / ${o.total} くかん`;
+    return frame('たんけんちず', `<div class="rs-panel rs-mp"><div class="rs-mp-h"><b>${esc(o.name)}</b><small>${esc(o.sub)}　${esc(prog)}</small></div>
+      <div class="rs-mapbox${o.lock ? ' lock' : ''}" id="rsMapBox"><img class="rs-mapimg" src="rpg/assets/bg/bg_map_${esc(o.mapId)}.png" alt="${esc(o.name)}の たんけんちず" width="240" height="240">${over}</div>
+      ${detail}${ok ? '' : '<p class="rs-p">この ちずの ざひょうが ありません。</p>'}</div>
+      <div class="rs-panel"><div class="rs-h2">ちてんの いちらん</div><ol class="rs-mplist">${list}</ol></div>`);
+  };
+  AFTER.regionmap = function (prm) {
+    const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id);
+    app().querySelectorAll('[data-mn]').forEach(b => b.onclick = () => { UI.mapSel = +b.dataset.mn; UI.mapKey = key; rerender(); });
+    const h = doc.getElementById('rsMapHero'); if (h) hero(h, s.job, 2);
+    const c = doc.getElementById('rsMapChest'); if (c) { c.width = 14; c.height = 11; const g = c.getContext('2d'); g.clearRect(0, 0, 14, 11); SP.drawChest(g, 1, 10, c.classList.contains('open')); }
+  };
+  PARENT.regionmap = 'adv'; ROOT_OF.regionmap = 'adv';
+
 
   // 学習を止めないための保険：画面側の例外は RPG を止めて、学習ホームに戻す
   ['open', 'homeTop', 'bindHomeTop', 'navHtml'].forEach(k => {

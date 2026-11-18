@@ -38,8 +38,12 @@ node run.js 95件＋meta.js 29件 全通過／画面 ui_test 38・ui_test2 21・
 ## 技エフェクト（pixelfx）：完了（2026-11-18）
 - 技の効果を pixelfx の動くドット絵に（帯は小さく、報酬画面の勝利時は大きく＋hit stop・ゆれ）。読めないときは静止画 fx_*→コード描画。詳細 DECISIONS D-39、取り込み記録 `rpg/vendor/pixelfx/README_取り込み.md`、確認 `python rpg/tools/ui_test_fx.py`。未確認：実機Safari・体感。
 
+## 探索地図（2026-11-18）：完了
+- ぼうけん→各地域の「ちず」で、`bg_map_<id>` の上に道・地点・今いる場所・済んだ区間・ボス・宝箱を重ねた探索地図が開く（25枚。試練は地図なし）。座標 `rpg/js/rpg-mapdata.js`、画面 `rpg-screens.js`（regionmap）、CSS `rpg-screens.css`、確認 `python rpg/tools/ui_test_map.py`、撮影 `rpg/shots/assets_explore_*.png`。決定 DECISIONS D-40。
+- 未確認：実機Safari・体感。宝箱は「ボスの初回報酬」を表す印（地点ごとの宝箱は設計に無い）。地点の位置は自動追跡＋目視（道の絵の上にほぼ乗るが、数枚は微調整の余地）。
+
 ## 未完・未確認
-1. 正式素材（画像）は0件。全て仮絵。生成手段なし。台帳 ASSET_MANIFEST.json（仮206・予定23）
+1. 正式素材（画像）は一部のみ（ChatGPT制作分。台帳 ASSET_MANIFEST.json の status で確認）。残りは仮絵
 2. 学習ボード側の skip 受信保存＝このリポからは確認できない（未確認）。実機Safari・画像ロード計測（画像0枚）＝未実施
 3. 敵の絵は形4種の色替え。ランクII〜VIの通常装備・レア名は仮名のまま
 4. セッション途中の画面復元（再読込で今の問題へ）は未実装
