@@ -36,40 +36,50 @@
   function fxText(fx) {
     if (!fx) return '';
     const t = [];
-    if (fx.hpPct) t.push('さいだいHP+' + pct(fx.hpPct));
+    if (fx.hpPct) t.push('最大HP+' + pct(fx.hpPct));
     if (fx.reduce) t.push('受けるダメージ-' + pct(fx.reduce));
-    if (fx.firstReduce) t.push('さいしょに受けるダメージ-' + pct(fx.firstReduce));
-    if (fx.firstSkill) t.push('さいしょの攻撃技+' + pct(fx.firstSkill));
+    if (fx.firstReduce) t.push('最初に受けるダメージ-' + pct(fx.firstReduce));
+    if (fx.firstSkill) t.push('最初の攻撃技+' + pct(fx.firstSkill));
     if (fx.elemAdd) t.push('技のとき ' + D.EL_NAME[fx.elemAdd[0]] + '属性の追加ダメージ（' + fx.elemAdd[1] + '倍）');
     if (fx.healBonus) t.push('技の回復量+' + pct(fx.healBonus));
-    if (fx.firstMulti) t.push('さいしょの連撃の合計+' + pct(fx.firstMulti));
-    if (fx.firstHeal) t.push('さいしょの攻撃技でHP' + pct(fx.firstHeal) + '回復');
-    if (fx.halfHeal) t.push('HPが半分いかになると 1回だけHP' + pct(fx.halfHeal) + '回復');
+    if (fx.firstMulti) t.push('最初の連撃の合計+' + pct(fx.firstMulti));
+    if (fx.firstHeal) t.push('最初の攻撃技でHP' + pct(fx.firstHeal) + '回復');
+    if (fx.halfHeal) t.push('HPが半分以下になると1回だけHP' + pct(fx.halfHeal) + '回復');
     const P = (k, f) => { if (fx[k]) t.push(f(pct(fx[k]))); };
-    P('reviewHeal', v => 'ふくしゅうで せいかいした時の かいふく+' + v); P('guardNormal', v => '防ぎょ技のあとの 通常こうげき+' + v);
-    P('bigReduce', v => '予告された大技の ダメージ-' + v); P('switchBonus', v => 'こうげき⇔かいふくを つづけて使うと +' + v);
-    P('lowGuard', v => 'HPが40%いかで 1回だけ ダメージ-' + Math.round(fx.lowGuard * 100 + 10) + '%'); P('teleBonus', v => '敵が大技を じゅんび中の 技+' + v);
-    P('diffSkill', v => 'ちがう技を つづけると +' + v); P('switchGuard', v => 'こうげき⇔防ぎょを つづけると +' + v);
-    P('elemReduce', v => '属性こうげきの ダメージ-' + v); P('skillAdd', v => '技のとき 追加ダメージ（' + fx.skillAdd + '倍）');
-    P('weakHeal', v => '弱点を つくと HP' + v + 'かいふく'); P('guardBoost', v => '防ぎょ技の 軽減+' + v);
-    P('stackBoost', v => 'ためる技の 上乗せ+' + v); P('teleGuard', v => '大技のじゅんび中の 防ぎょ技 軽減+' + v);
-    P('inhBoost', v => 'けいしょうした技の 効果+' + v); P('afterBig', v => '大技を うけたあと HP' + v + 'かいふく');
+    P('reviewHeal', v => '復習で正解した時の回復+' + v); P('guardNormal', v => '防御技のあとの通常攻撃+' + v);
+    P('bigReduce', v => '予告された大技のダメージ-' + v); P('switchBonus', v => '攻撃⇔回復をつづけて使うと +' + v);
+    P('lowGuard', v => 'HPが40%以下で1回だけダメージ-' + Math.round(fx.lowGuard * 100 + 10) + '%'); P('teleBonus', v => '敵が大技を準備中の技+' + v);
+    P('diffSkill', v => 'ちがう技をつづけると +' + v); P('switchGuard', v => '攻撃⇔防御をつづけると +' + v);
+    P('elemReduce', v => '属性攻撃のダメージ-' + v); P('skillAdd', v => '技のとき追加ダメージ（' + fx.skillAdd + '倍）');
+    P('weakHeal', v => '弱点をつくと HP' + v + '回復'); P('guardBoost', v => '防御技の軽減+' + v);
+    P('stackBoost', v => 'ためる技の上乗せ+' + v); P('teleGuard', v => '大技の準備中の防御技軽減+' + v);
+    P('inhBoost', v => '継承した技の効果+' + v); P('afterBig', v => '大技をうけたあと HP' + v + '回復');
     return t.join('、');
   }
-  const effectText = id => { const it = D.ITEMS[id]; if (!it) return ''; return it.fx ? fxText(it.fx) : (id === 'w_start' ? 'どの職業でも つかえる' : ''); };
-  const CAT_NAME = { relic: 'ひきょうの たから', sword: 'つるぎ', staff: 'つえ', dagger: 'たんけん', bow: 'ゆみ', heavy: 'じゅうそう', light: 'けいそう', robe: 'ローブ', charm: 'おまもり', shieldorn: 'たてかざり', ring: 'ゆびわ', any: 'どれでも' };
-  const SLOT_NAME = { weapon: 'ぶき', armor: 'ぼうぐ', acc: 'アクセサリー' };
+  const effectText = id => { const it = D.ITEMS[id]; if (!it) return ''; return it.fx ? fxText(it.fx) : (id === 'w_start' ? 'どの職業でも使える' : ''); };
+  // 効果の短い説明（最初に見る画面用）。数値の細目は fxText（「効果を詳しく」）
+  const FX_SHORT = { hpPct: '体力がふえる', reduce: '受けるダメージが減る', firstReduce: '最初の一撃を受けにくい', firstSkill: '最初の技が強くなる', healBonus: '回復の技が強くなる', firstMulti: '最初の連続攻撃が強くなる', firstHeal: '最初の技でHPが回復する', halfHeal: 'ピンチで一度だけ回復する', reviewHeal: '復習の正解で回復する', guardNormal: '守ったあとの攻撃が強い', bigReduce: '大技のダメージが減る', switchBonus: '攻撃と回復を交互に使うと強い', lowGuard: 'HPが少ないと一度だけ守られる', teleBonus: '敵の大技の準備中に強い', diffSkill: 'ちがう技を続けると強い', switchGuard: '攻撃と防御を交互に使うと強い', elemReduce: '属性攻撃を受けにくい', skillAdd: '技に追加ダメージ', weakHeal: '弱点をつくと回復する', guardBoost: '防御技の守りが強くなる', stackBoost: 'ためる技が強くなる', teleGuard: '大技の準備中の守りが強い', inhBoost: '受けついだ技が強くなる', afterBig: '大技を受けたあと回復する' };
+  const WEAPON_WORD = { sword: '剣', staff: '杖', dagger: '短剣', bow: '弓' };
+  function effectShort(id) {
+    const it = D.ITEMS[id]; if (!it) return ''; if (!it.fx) return id === 'w_start' ? 'どの職業でも使える' : '';
+    const t = [], fx = it.fx;
+    if (fx.elemAdd) t.push(D.EL_NAME[fx.elemAdd[0]] + 'をまとった' + (WEAPON_WORD[it.cat] || '武器') + 'で攻撃');
+    Object.keys(FX_SHORT).forEach(k => { if (fx[k]) t.push(FX_SHORT[k]); });
+    return t.join('・');
+  }
+  const CAT_NAME = { relic: '秘境のたから', sword: '剣', staff: '杖', dagger: '短剣', bow: '弓', heavy: '重装', light: '軽装', robe: 'ローブ', charm: 'お守り', shieldorn: '盾飾り', ring: '指輪', any: 'どれでも' };
+  const SLOT_NAME = { weapon: '武器', armor: '防具', acc: 'アクセサリー' };
 
   // ---------- 装備 ----------
   function canEquip(save, id, job) {
     const it = D.ITEMS[id]; if (!it) return '不明な装備';
-    if (!save.inv.items[id]) return 'もっていない';
-    if (it.slot === 'weapon' && it.cat !== 'any' && !D.JOBS[job || save.job].weapons.includes(it.cat)) return 'この職業では つかえない';
+    if (!save.inv.items[id]) return '持っていない';
+    if (it.slot === 'weapon' && it.cat !== 'any' && !D.JOBS[job || save.job].weapons.includes(it.cat)) return 'この職業では使えない';
     return null;
   }
   // 装備の確定。冒険の途中は変えない
   function setEquip(save, eq) {
-    if (save.active) return { ok: false, err: 'ぼうけんの途中は変えられない' };
+    if (save.active) return { ok: false, err: '冒険の途中は変えられない' };
     for (const slot of ['weapon', 'armor', 'acc']) {
       const id = eq[slot]; if (!id) continue;
       if (D.ITEMS[id].slot !== slot) return { ok: false, err: '場所がちがう' };
@@ -95,8 +105,8 @@
   }
   function canSell(save, id) {
     const it = D.ITEMS[id]; if (!it || !save.inv.items[id] || id === 'w_start') return '売れない';
-    if (isEquipped(save, id)) return 'そうびちゅう';
-    if (it.rarity === 'unique') return 'うれない（たいせつな そうび）';
+    if (isEquipped(save, id)) return '装備中';
+    if (it.rarity === 'unique') return '売れない（大切な装備）';
     return null;
   }
   function sell(save, id) {
@@ -108,7 +118,7 @@
   function canRefund(save, id) { return !!(save.inv.fresh && save.inv.fresh[id] != null && save.inv.items[id] && !enhLv(save, id)); }
   function refund(save, id) {
     if (!canRefund(save, id)) return { ok: false, err: '返品できない' };
-    if (save.active && Object.values(save.active.hero.equip).includes(id)) return { ok: false, err: 'ぼうけん中は返品できない' };
+    if (save.active && Object.values(save.active.hero.equip).includes(id)) return { ok: false, err: '冒険中は返品できない' };
     const g = save.inv.fresh[id]; Object.keys(save.equip).forEach(s => { if (save.equip[s] === id) save.equip[s] = null; });
     delete save.inv.items[id]; delete save.inv.fresh[id]; save.coins += g;
     return { ok: true, coin: g };
@@ -119,13 +129,13 @@
   // ---------- 鍛冶（強化） ----------
   function enhanceInfo(save, id) {
     const it = D.ITEMS[id], lv = enhLv(save, id); const o = { lv, max: D.ENH_MAX };
-    if (!it || !save.inv.items[id] || !it.rank || id === 'w_start') { o.err = 'きょうかできない'; return o; }
-    if (lv >= D.ENH_MAX) { o.err = 'これいじょう きょうかできない'; return o; }
+    if (!it || !save.inv.items[id] || !it.rank || id === 'w_start') { o.err = '強化できない'; return o; }
+    if (lv >= D.ENH_MAX) { o.err = 'これ以上強化できない'; return o; }
     o.coin = Math.round(it.price * ENH_COST_RATE[lv]); o.ore = ENH_ORE[lv]; o.oreId = C.oreId(it.rank); o.have = save.inv.mats[o.oreId] || 0;
     const nx = lv + 1; o.after = it.atk != null ? it.atk + D.enhBonus(it, nx) : it.def != null ? it.def + D.enhBonus(it, nx) : null;
-    if (save.active) o.err = 'ぼうけんの途中は できない';
-    else if (save.coins < o.coin) o.err = 'コインがたりない';
-    else if (o.have < o.ore) o.err = 'こうせきがたりない';
+    if (save.active) o.err = '冒険の途中はできない';
+    else if (save.coins < o.coin) o.err = 'コインが足りない';
+    else if (o.have < o.ore) o.err = '鉱石が足りない';
     return o;
   }
   function enhance(save, id) {
@@ -142,13 +152,13 @@
     else if (j.tier === 'top') {
       const have = j.reqFrom.filter(r => lv[r] >= 20).length;
       rows.push({ text: j.reqFrom.map(r => D.JOBS[r].name).join('・') + ' のうち2つが Lv20', now: have, need: 2, done: have >= 2, unit: 'つ' });
-      rows.push({ text: (j.trial === 'wing' ? 'つばさ' : 'ほし') + 'のしれん（だいにしょうを クリアしてから ぼうけんの ちずで ちょうせん）', now: save.trials && save.trials[j.trial] ? 1 : 0, need: 1, done: !!(save.trials && save.trials[j.trial]) });
+      rows.push({ text: (j.trial === 'wing' ? '翼' : '星') + 'の試練（第2章をクリアしてから冒険の地図で挑戦）', now: save.trials && save.trials[j.trial] ? 1 : 0, need: 1, done: !!(save.trials && save.trials[j.trial]) });
     }
     return rows;
   }
   function changeJob(save, job) {
     const e = C.canChangeJob(save, job); if (e) return { ok: false, err: e };
-    if (save.job === job) return { ok: false, err: 'いま その職業です' };
+    if (save.job === job) return { ok: false, err: '今その職業です' };
     save.job = job; save.loadout.skills = null; const gifts = [];
     D.JOBS[job].weapons.forEach(cat => {   // 未所有の武器系統の支給（ランクI・通常品、無料）
       if (!Object.keys(save.inv.items).some(i => D.ITEMS[i].slot === 'weapon' && D.ITEMS[i].cat === cat)) { const id = `w_${cat}_1`; save.inv.items[id] = 1; save.codex.items[id] = 1; gifts.push(id); }
@@ -164,20 +174,20 @@
     const jobs = C.jobLevels(save), e = B.validateLoadout(save.job, jobs, skills, advInherit(save));
     if (e.length) return { ok: false, err: e[0] };
     if (!['auto', 'attack', 'guard'].includes(tactic)) return { ok: false, err: '作戦が不正' };
-    if (save.active) return { ok: false, err: 'ぼうけんの途中は変えられない' };
+    if (save.active) return { ok: false, err: '冒険の途中は変えられない' };
     save.loadout = { skills: skills.slice(), tactic }; return { ok: true };
   }
   function currentSkills(save) { const jobs = C.jobLevels(save); const s = save.loadout.skills; return s && !B.validateLoadout(save.job, jobs, s, advInherit(save)).length ? s : B.recommendLoadout(save.job, jobs); }
   function skillText(sk, lvl) {
     const s = B.eff(sk, lvl || 99), t = [];
-    if (s.hits) t.push(s.hits.map(h => h[0].toFixed(1).replace(/\.0$/, '')).join('+') + '倍の連続こうげき'); else if (s.m) t.push(String(Math.round(s.m * 10) / 10) + '倍のこうげき');
-    if (s.el) t.push(D.EL_NAME[s.el] + 'ぞくせい');
-    if (s.heal) t.push('HP' + Math.round(s.heal * 100) + '%かいふく');
-    if (s.guard) t.push('つぎの' + (s.guard[1] > 1 ? s.guard[1] + 'かい' : '') + '被ダメージ-' + Math.round(s.guard[0] * 100) + '%');
-    if (s.atkDown) t.push('てきの こうげき-' + Math.round(s.atkDown * 100) + '%');
-    if (s.ig) t.push('てきの ぼうぎょを はんぶん むし');
-    if (s.prep) t.push('てきが じゅんびちゅうは ' + s.prep + '倍');
-    if (s.stack) t.push('たまった力をぜんぶ つかう');
+    if (s.hits) t.push(s.hits.map(h => h[0].toFixed(1).replace(/\.0$/, '')).join('+') + '倍の連続攻撃'); else if (s.m) t.push(String(Math.round(s.m * 10) / 10) + '倍の攻撃');
+    if (s.el) t.push(D.EL_NAME[s.el] + '属性');
+    if (s.heal) t.push('HP' + Math.round(s.heal * 100) + '%回復');
+    if (s.guard) t.push('次の' + (s.guard[1] > 1 ? s.guard[1] + '回' : '') + '被ダメージ-' + Math.round(s.guard[0] * 100) + '%');
+    if (s.atkDown) t.push('敵の攻撃-' + Math.round(s.atkDown * 100) + '%');
+    if (s.ig) t.push('敵の防御を半分無視');
+    if (s.prep) t.push('敵が準備中は ' + s.prep + '倍');
+    if (s.stack) t.push('たまった力を全部使う');
     return t.join('／');
   }
 
@@ -196,10 +206,16 @@
   function seeEnemy(save, id) { ensure(save); const c = save.codex.enemies[id] || (save.codex.enemies[id] = { seen: 0, kills: 0 }); c.seen = 1; }
   function killEnemy(save, id) { ensure(save); seeEnemy(save, id); save.codex.enemies[id].kills++; }
   function codexHas(save, id) { const it = D.ITEMS[id]; if (it && it.unique && !it.relic) return Object.keys(save.codex.items).some(k => D.ITEMS[k] && D.ITEMS[k].unique === it.unique); return !!save.codex.items[id]; }
+  // 図鑑の分母（実際に集められる対象から数える）
+  //  敵：基本種＝強化版（variantOf を持つ敵）を除いたもの。強化版は元の基本種の中で数える（enemies.variants）。
+  //  装備：支給品（はじまりの武器）と、再鍛造で変わるだけの固有装備のランク違い（_2〜）は数えない。通常品・レア・固有装備（基本の1つ）・秘境のたから。
+  const baseEnemyIds = () => Object.keys(D.ENEMIES).filter(i => !D.ENEMIES[i].variantOf);
+  const variantIdsOf = id => Object.keys(D.ENEMIES).filter(i => D.ENEMIES[i].variantOf === id);
+  const codexItemIds = () => Object.keys(D.ITEMS).filter(i => i !== 'w_start' && (!D.ITEMS[i].unique || /^u_.+_1$/.test(i) || D.ITEMS[i].relic));
   function codexSummary(save) {
-    ensure(save); const ids = Object.keys(D.ENEMIES), seen = ids.filter(i => save.codex.enemies[i] && save.codex.enemies[i].seen).length;
-    const items = Object.keys(D.ITEMS).filter(i => i !== 'w_start' && !D.ITEMS[i].unique || /^u_.+_1$/.test(i) || D.ITEMS[i].relic), got = items.filter(i => codexHas(save, i)).length;
-    return { enemies: { seen, total: ids.length }, items: { got, total: items.length } };
+    ensure(save); const seenOf = i => !!(save.codex.enemies[i] && save.codex.enemies[i].seen), base = baseEnemyIds(), vars = Object.keys(D.ENEMIES).filter(i => D.ENEMIES[i].variantOf);
+    const items = codexItemIds(), got = items.filter(i => codexHas(save, i)).length;
+    return { enemies: { seen: base.filter(seenOf).length, total: base.length, variants: { seen: vars.filter(seenOf).length, total: vars.length } }, items: { got, total: items.length } };
   }
 
   // ---------- 実績（保存済みの値から毎回計算。報酬なし） ----------
@@ -210,32 +226,32 @@
     const own = Object.keys(save.inv.items);
     const A = (id, name, desc, now, need) => ({ id, name, desc, now: Math.min(now, need), need, done: now >= need });
     const l = [
-      A('first', 'はじめの いっぽ', 'さいしょの ぼうけんを おえる', adv, 1),
-      A('adv10', 'ぼうけんの なれ', 'ぼうけんを 10かい おえる', adv, 10),
-      A('adv30', 'ぼうけん 30かい', 'ぼうけんを 30かい おえる', adv, 30),
-      A('adv72', 'ぼうけん 72かい', 'ぼうけんを 72かい おえる', adv, 72),
-      A('adv150', 'ぼうけん 150かい', 'ぼうけんを 150かい おえる', adv, 150),
-      A('adv300', 'ぼうけん 300かい', 'ぼうけんを 300かい おえる', adv, 300),
-      A('kill1', 'はじめての とうばつ', 'てきを たおす', kills, 1),
-      A('kill20', 'てきを 20たい', 'てきを 20かい たおす', kills, 20),
-      A('boss1', 'ボスを たおした', 'ボスを たおす', Object.keys(save.progress.bossKills).length, 1),
-      A('region3', '3つの ちいき', 'ちいきを 3つ とっぱ', cleared.length, 3),
-      A('region6', 'だいいっしょうの たび', 'だいいっしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 1 && cleared.includes(r.id)).length, 6),
-      A('region12', 'だいにしょうの たび', 'だいにしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 2 && cleared.includes(r.id)).length, 6),
-      A('region18', '十二のしるし', 'だいさんしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 3 && cleared.includes(r.id)).length, 6),
-      A('hero10', 'ぼうけん者 Lv10', 'ぼうけん者 Lv10', hero, 10),
-      A('hero20', 'ぼうけん者 Lv20', 'ぼうけん者 Lv20', hero, 20),
-      A('job5', '職業 Lv5', 'どれかの職業を Lv5に', maxJob, 5),
-      A('job10', '職業 Lv10', 'どれかの職業を Lv10に', maxJob, 10),
-      A('job20', '職業 Lv20', 'どれかの職業を Lv20に', maxJob, 20),
-      A('job30', '職業 Lv30', 'どれかの職業を Lv30に', maxJob, 30),
-      A('base4', '4つの きほん職', 'きほん職 4つを Lv5に', base4.filter(j => lv[j] >= 5).length, 4),
-      A('advjob', '上級職に なる', '上級職に てんしょくする', advJobs.filter(j => save.jobXp[j] > 0).length, 1),
-      A('rare1', 'はじめての レア', 'レアそうびを てにいれる', own.filter(i => D.ITEMS[i].rarity === 'rare').length, 1),
-      A('rare5', 'レア 5こ', 'レアそうびを 5こ もつ', own.filter(i => D.ITEMS[i].rarity === 'rare').length, 5),
-      A('enh3', '+3まで きたえる', 'そうびを +3に きょうか', Math.max(0, ...Object.values(save.inv.enhance)), 3),
-      A('codex', 'ずかん 10たい', 'てきの ずかんを 10たい うめる', Object.values(save.codex.enemies).filter(e => e.seen).length, 10),
-      A('name', 'じぶんの なまえ', 'なまえを つける', save.name ? 1 : 0, 1)
+      A('first', '最初の一歩', '最初の冒険を終える', adv, 1),
+      A('adv10', '冒険に慣れた', '冒険を10回終える', adv, 10),
+      A('adv30', '冒険 30回', '冒険を30回終える', adv, 30),
+      A('adv72', '冒険 72回', '冒険を72回終える', adv, 72),
+      A('adv150', '冒険 150回', '冒険を150回終える', adv, 150),
+      A('adv300', '冒険 300回', '冒険を300回終える', adv, 300),
+      A('kill1', '初めての討伐', '敵を倒す', kills, 1),
+      A('kill20', '敵を20体', '敵を20回倒す', kills, 20),
+      A('boss1', 'ボスを倒した', 'ボスを倒す', Object.keys(save.progress.bossKills).length, 1),
+      A('region3', '3つの地域', '地域を 3つ突破', cleared.length, 3),
+      A('region6', '第1章の旅', '第1章の 6地域を突破', D.REGIONS.filter(r => r.ch === 1 && cleared.includes(r.id)).length, 6),
+      A('region12', '第2章の旅', '第2章の 6地域を突破', D.REGIONS.filter(r => r.ch === 2 && cleared.includes(r.id)).length, 6),
+      A('region18', '十二のしるし', '第3章の 6地域を突破', D.REGIONS.filter(r => r.ch === 3 && cleared.includes(r.id)).length, 6),
+      A('hero10', '冒険者 Lv10', '冒険者 Lv10', hero, 10),
+      A('hero20', '冒険者 Lv20', '冒険者 Lv20', hero, 20),
+      A('job5', '職業 Lv5', 'どれかの職業をLv5に', maxJob, 5),
+      A('job10', '職業 Lv10', 'どれかの職業をLv10に', maxJob, 10),
+      A('job20', '職業 Lv20', 'どれかの職業をLv20に', maxJob, 20),
+      A('job30', '職業 Lv30', 'どれかの職業をLv30に', maxJob, 30),
+      A('base4', '4つの基本職', '基本職4つをLv5に', base4.filter(j => lv[j] >= 5).length, 4),
+      A('advjob', '上級職になる', '上級職に転職する', advJobs.filter(j => save.jobXp[j] > 0).length, 1),
+      A('rare1', '初めてのレア', 'レア装備を手に入れる', own.filter(i => D.ITEMS[i].rarity === 'rare').length, 1),
+      A('rare5', 'レア 5こ', 'レア装備を5個持つ', own.filter(i => D.ITEMS[i].rarity === 'rare').length, 5),
+      A('enh3', '+3まで鍛える', '装備を +3に強化', Math.max(0, ...Object.values(save.inv.enhance)), 3),
+      A('codex', '図鑑 10体', '敵の図鑑を10体うめる', Object.values(save.codex.enemies).filter(e => e.seen).length, 10),
+      A('name', '自分の名前', '名前をつける', save.name ? 1 : 0, 1)
     ];
     return l;
   }
@@ -258,21 +274,21 @@
   function questLocked(save, id) {
     ensure(save); const q = W.QUESTS[id]; if (!q) return '不明な道';
     const qs = save.quests[id] || {};
-    if (q.kind !== 'rematch' && qs.cleared) return 'クリアずみ';
-    if (q.kind === 'rematch') return save.progress.clearedRegions.includes(q.region) ? null : q.short + 'のボスを たおすと ひらく';
+    if (q.kind !== 'rematch' && qs.cleared) return 'クリア済み';
+    if (q.kind === 'rematch') return save.progress.clearedRegions.includes(q.region) ? null : q.short + 'のボスを倒すと開く';
     if (q.kind === 'trial') {
       const lv = C.jobLevels(save), j = D.JOBS[q.job];
-      if (!ch2Cleared(save)) return 'だいにしょうを クリアすると ひらく';
-      const n = j.reqFrom.filter(r => lv[r] >= 20).length; if (n < 2) return '上級職2つが Lv20で ひらく（いま ' + n + ' / 2）';
+      if (!ch2Cleared(save)) return '第2章をクリアすると開く';
+      const n = j.reqFrom.filter(r => lv[r] >= 20).length; if (n < 2) return '上級職2つが Lv20で開く（いま ' + n + ' / 2）';
       return null;
     }
-    if (q.kind === 'secret') return mainCleared(save) ? null : 'ほんぺんを クリアすると ひらく';
-    if (q.kind === 'island') { const n = W.SECRET_IDS.filter(i => (save.quests[i] || {}).cleared).length; return n >= 6 ? null : '6つの ひきょうを クリアすると ひらく（いま ' + n + ' / 6）'; }
+    if (q.kind === 'secret') return mainCleared(save) ? null : '本編をクリアすると開く';
+    if (q.kind === 'island') { const n = W.SECRET_IDS.filter(i => (save.quests[i] || {}).cleared).length; return n >= 6 ? null : '6つの秘境をクリアすると開く（いま ' + n + ' / 6）'; }
     return null;
   }
   function selectQuest(save, id) {
     ensure(save);
-    if (save.active) return { ok: false, err: 'ぼうけんの途中は変えられない' };
+    if (save.active) return { ok: false, err: '冒険の途中は変えられない' };
     if (id) { const e = questLocked(save, id); if (e) return { ok: false, err: e }; }
     save.progress.quest = id || null; return { ok: true };
   }
@@ -304,22 +320,22 @@
     ensure(save); const u = W.UNIQ_BY_KEY[key], own = ownedUnique(save, key), have = save.inv.mats[u.mat] || 0;
     const o = { key, name: u.name, need: u.need, have, mat: u.mat, matName: u.matName, owned: own, rank: own ? W.uniqRank(own) : 0, text: fxText(W.scaleFx(u.fx, 1)) };
     const maxR = Math.min(6, C.maxRank(save));
-    if (!own) { o.craftRank = Math.max(1, Math.min(maxR, u.chCap)); o.err = have >= u.need ? (save.active ? 'ぼうけんの途中は できない' : null) : 'ボスそざいが たりない'; return o; }
+    if (!own) { o.craftRank = Math.max(1, Math.min(maxR, u.chCap)); o.err = have >= u.need ? (save.active ? '冒険の途中はできない' : null) : 'ボス素材が足りない'; return o; }
     o.target = maxR;
-    if (!save.progress.clearedRegions.includes('rootwood')) o.reErr = 'さいたんぞうは 地底樹海を クリアすると ひらく';
-    else if (o.rank >= maxR) o.reErr = o.rank >= 6 ? 'これいじょう あげられない' : 'いま ひらいている いちばん上の ランク';
+    if (!save.progress.clearedRegions.includes('rootwood')) o.reErr = '再鍛造は地底樹海をクリアすると開く';
+    else if (o.rank >= maxR) o.reErr = o.rank >= 6 ? 'これ以上上げられない' : '今開いている一番上のランク';
     else {
       const pr = r => D.ITEMS[W.uniqId(key, r)].price; o.reCoin = Math.round(0.5 * (pr(maxR) - pr(o.rank))); o.reOre = 3 * (maxR - o.rank); o.reOreId = C.oreId(maxR); o.reHave = save.inv.mats[o.reOreId] || 0;
-      if (save.active) o.reErr = 'ぼうけんの途中は できない'; else if (save.coins < o.reCoin) o.reErr = 'コインがたりない'; else if (o.reHave < o.reOre) o.reErr = 'こうせきがたりない';
+      if (save.active) o.reErr = '冒険の途中はできない'; else if (save.coins < o.reCoin) o.reErr = 'コインが足りない'; else if (o.reHave < o.reOre) o.reErr = '鉱石が足りない';
     }
     return o;
   }
   function craftUnique(save, key) {
-    const i = uniqueInfo(save, key); if (i.owned || i.err) return { ok: false, err: i.owned ? 'もう もっている' : i.err };
+    const i = uniqueInfo(save, key); if (i.owned || i.err) return { ok: false, err: i.owned ? 'もう持っている' : i.err };
     save.inv.mats[i.mat] -= i.need; const id = W.uniqId(key, i.craftRank); save.inv.items[id] = 1; save.codex.items[id] = 1; return { ok: true, id };
   }
   function reforgeUnique(save, key) {
-    const i = uniqueInfo(save, key); if (!i.owned) return { ok: false, err: 'まだ もっていない' }; if (i.reErr) return { ok: false, err: i.reErr };
+    const i = uniqueInfo(save, key); if (!i.owned) return { ok: false, err: 'まだ持っていない' }; if (i.reErr) return { ok: false, err: i.reErr };
     const old = i.owned, id = W.uniqId(key, i.target);
     save.coins -= i.reCoin; save.inv.mats[i.reOreId] -= i.reOre;
     delete save.inv.items[old]; save.inv.items[id] = 1; save.codex.items[id] = 1;
@@ -334,5 +350,5 @@
     return W.QUEST_ORDER.map(id => { const q = W.QUESTS[id], qs = save.quests[id] || {}; return { id, kind: q.kind, name: q.name, short: q.short || null, locked: questLocked(save, id), cleared: !!qs.cleared && q.kind !== 'rematch', count: qs.count || 0, step: qs.step || 0, total: q.segs.length, boss: q.boss || null, current: save.progress.quest === id }; });
   }
 
-  return { masterOwned, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
+  return { baseEnemyIds, variantIdsOf, codexItemIds, effectShort, masterOwned, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
 });

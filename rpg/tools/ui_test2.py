@@ -53,7 +53,7 @@ with sync_playwright() as p:
     answer(p2, True)
     chk('B:stale_not_overwritten', p1.evaluate("() => JSON.parse(localStorage.getItem('ichimon.rpg.v1')).rev") >= rev_after_p1)
     p2.evaluate("() => home()")
-    chk('B:stale_notice_shown', 'よみこみなおして' in p2.inner_text('#app'))
+    chk('B:stale_notice_shown', 'なおしてね' in p2.inner_text('#app'))
     ctx.close()
     # ---- C. 途中でやめる→再開（復習の持ち越し）・短いセッションの累積
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)

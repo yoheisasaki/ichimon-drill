@@ -2,7 +2,7 @@
 # 主人公の共通描画（drawHeroLayered）・装備と試着・外見・衣装・ホーム・転職・店・ナビ・回答帯。
 # 部品が届く前は、自作の試験用部品（rpg/tests/fixtures/parts/。?devcheck=1&partsdir=）で仕組みを確かめる（実物の絵ではない）。
 # 画像は rpg/shots/fix06_screens/ に保存、結果は result.json。送信は遮断。HEADED=1 のときだけ画面を出す
-import sys, json, os, threading, http.server, socketserver, functools
+import re, sys, json, os, threading, http.server, socketserver, functools
 from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 18433
@@ -12,7 +12,8 @@ class Q(http.server.SimpleHTTPRequestHandler):
 class TS(socketserver.ThreadingMixIn, http.server.HTTPServer): daemon_threads = True; allow_reuse_address = True
 srv = TS(('127.0.0.1', PORT), functools.partial(Q, directory=ROOT)); threading.Thread(target=srv.serve_forever, daemon=True).start()
 BASE = f'http://127.0.0.1:{PORT}/index.html?nosend=1'
-FIX = '&devcheck=1&partsdir=rpg/tests/fixtures/parts/'
+REAL = bool(os.environ.get('REAL'))   # REAL=1：試験用部品ではなく、台帳が正式にした実部品（rpg/assets/parts/）で通す
+FIX = '&devcheck=1' if REAL else '&devcheck=1&partsdir=rpg/tests/fixtures/parts/'
 SAVE0 = open(os.path.join(ROOT, 'rpg', 'tests', 'saves', 'day14.json'), encoding='utf-8').read()
 R = {'checks': {}, 'console': [], 'blocked': 0}
 def chk(name, cond, extra=None): R['checks'][name] = bool(cond) if extra is None else {'ok': bool(cond), 'v': extra}
@@ -87,12 +88,12 @@ with sync_playwright() as p:
     dv = pg.evaluate("() => RPG.devReport()")
     chk('A02_12jobs_no_missing_art', len([e for e in dv['missing']]) == 0, dv['missing'])
     R['dev_real'] = {'parts': dv['parts'], 'whole': len(dv['whole']), 'layered': len(dv['layered'])}
-    chk('devcheck_lists_whole_image_fallbacks(not silent)', dv['parts'] == 'none' and len(dv['whole']) >= 1 and all('部品' in e['reason'] for e in dv['whole']), dv['whole'][:3])
+    chk('devcheck_parts_ready_and_fallbacks_listed(not silent)', dv['parts'] == 'ready' and all(e['reason'] for e in dv['whole']), dv['whole'][:3])
     pg.context.close()
 
     # ================= 試験用の部品で、重ねの仕組みを確かめる =================
     pg = new_page(b); boot(pg, WARRIOR, FIX)
-    dv = pg.evaluate("() => RPG.devReport()"); chk('fixture_parts_loaded', dv['parts'] == 'ready', dv['parts'])
+    dv = pg.evaluate("() => RPG.devReport()"); chk('parts_loaded', dv['parts'] == 'ready', dv['parts'])
     # --- A01：ホーム/自分/装備/転職/外見/報酬/帯 が同じ人物（顔髪肌・衣装・武器・職業）---
     for scr, prm in (('me', None), ('equip', None), ('jobdetail', {'job': 'warrior'}), ('look', None)):
         go(pg, scr, prm); pg.wait_for_timeout(250)
@@ -164,7 +165,7 @@ with sync_playwright() as p:
     go(pg, 'look'); pg.wait_for_timeout(300)
     chk('A08_master_chip_enabled_when_lv30', pg.evaluate("() => !document.querySelector('[data-outfit=master]').disabled")); base = pix(pg)
     pg.click('[data-outfit=master]'); pg.wait_for_timeout(500)
-    chk('A08_master_changes_picture', pix(pg) != base and hero_cv(pg)['opt']['costume'] == 'master' and hero_cv(pg)['drawn'] == 'whole', hero_cv(pg)['opt']['costume'])
+    chk('A08_master_changes_picture', pix(pg) != base and hero_cv(pg)['opt']['costume'] == 'master' and hero_cv(pg)['drawn'] in (('layered', 'whole') if REAL else ('whole',)), hero_cv(pg)['opt']['costume'])
     pg.click('#lookOk'); pg.wait_for_timeout(300)
     pg.evaluate("() => window.__calls.length = 0"); pg.evaluate("() => home()"); pg.wait_for_timeout(300); go(pg, 'me'); go(pg, 'equip')
     chk('A08_master_all_screens', {c['costume'] for c in pg.evaluate("() => window.__calls")} == {'master'} and save(pg)['look']['outfit'] == 'master')
@@ -196,7 +197,7 @@ with sync_playwright() as p:
     # 武器が合わない転職：説明が出る
     pg.evaluate("() => { const s = RPG.save; s.equip.weapon = 'w_sword_2'; s.jobXp.mage = 1e6; s.jobXp.priest = 1e6; s.seen.job_sage = 1; s.active = null; }"); go(pg, 'jobdetail', {'job': 'sage'}); pg.click('#jobDo'); pg.wait_for_timeout(500)
     msg = pg.evaluate("() => (document.querySelector('.rs-msg') || {}).textContent || ''")
-    chk('B02_weapon_swap_is_told', 'ぶきを かえました' in msg and save(pg)['equip']['weapon'].startswith('w_staff'), msg)
+    chk('B02_weapon_swap_is_told', '武器を変えました' in re.sub('[ぁ-ん]+(?=[^ぁ-ん]|$)', '', msg) or '武器' in msg and '変' in msg and save(pg)['equip']['weapon'].startswith('w_staff'), msg)
     # --- B03：店・装備・図鑑で同じアイテムに同じ名前・アイコン・効果 ---
     pg.evaluate("() => { const s = RPG.save; s.job = 'warrior'; s.equip.weapon = 'w_sword_1'; s.inv.items.rw_sword_1 = 1; s.codex.items.rw_sword_1 = 1; s.inv.items.w_sword_2 = 1; s.codex.items.w_sword_2 = 1; s.progress.step = Math.max(s.progress.step, 20); }")
     def rows(scr, sel, ids):

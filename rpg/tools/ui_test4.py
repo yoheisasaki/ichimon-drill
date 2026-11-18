@@ -46,7 +46,7 @@ with sync_playwright() as p:
         pg.route('**/script.google.com/**', blk)
         pg.goto(URL); pg.wait_for_selector('.subj')
         # ===== 初日のセーブ：おはなし・クエスト選択・固有装備・設定・宝箱 =====
-        put(pg, 'day01', "s.seen = {}; s.progress.quest = null;")
+        put(pg, 'day01', "s.seen = {}; s.progress.quest = null; s.progress.step = 0; s.active = null;")
         pg.click('.rs-tab[data-tab=adv]'); pg.wait_for_selector('.rs-map')
         chk(E + 'story_unread_banner', pg.query_selector('.rs-new') is not None)
         n_q = len(pg.query_selector_all('.rs-qbtn'))
@@ -59,7 +59,7 @@ with sync_playwright() as p:
         pages = 1
         chk(E + 'story_first_page', pg.inner_text('.rs-story-n').startswith('1 /'))
         if engine == 'chromium': shot(pg, 'p3_story')
-        while pg.inner_text('#stNext') == 'つぎへ':
+        while pg.evaluate("() => [...document.getElementById('stNext').childNodes].map(n => n.nodeName === 'RUBY' ? n.firstChild.textContent : n.textContent).join('')") == '次へ':
             pg.click('#stNext'); pages += 1
         chk(E + 'story_1to3_pages', 1 <= pages <= 3, pages)
         pg.click('#stNext'); pg.wait_for_selector('.rs-map')
@@ -96,8 +96,8 @@ with sync_playwright() as p:
         # ===== 本編末・クリア後のセーブ：クエスト・再戦・称号・エンディング・記念絵・図鑑 =====
         put(pg, 'postgame', "s.active = null; s.seen = {}; s.ending = {seen:false}; s.daily = {maxKey:'', used:{}};")
         pg.click('.rs-tab[data-tab=adv]'); pg.wait_for_selector('.rs-map')
-        cleared = pg.query_selector_all('.rs-qbtn:not([data-q^=rematch])'); txt = pg.inner_text('.rs-panel:nth-of-type(3)') if False else pg.inner_text('#app')
-        chk(E + 'postgame_shows_cleared', txt.count('クリアずみ') >= 8, txt.count('クリアずみ'))
+        cleared = pg.query_selector_all('.rs-qbtn:not([data-q^=rematch])'); txt = pg.inner_text('.rs-panel:nth-of-type(3)') if False else pg.evaluate("() => { const c = document.getElementById('app').cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; }")
+        chk(E + 'postgame_shows_cleared', txt.count('クリア済み') >= 8, txt.count('クリア済み'))
         chk(E + 'ending_link_after_clear', pg.query_selector('[data-go=ending]') is not None)
         pg.click('.rs-det summary'); pg.wait_for_timeout(100)
         re = pg.query_selector_all('[data-q^=rematch]'); chk(E + 'rematch_18_open', len(re) == 18, len(re))
@@ -108,7 +108,7 @@ with sync_playwright() as p:
         pg.evaluate("() => RPG.go('adv')"); pg.click('[data-q=""]'); pg.wait_for_timeout(100); chk(E + 'back_to_main', pg.evaluate(SAVE)['progress']['quest'] is None)
         pg.click('[data-go=ending]'); pg.wait_for_selector('#enNext'); k = 1
         if engine == 'chromium': shot(pg, 'p3_ending')
-        while pg.inner_text('#enNext') == 'つぎへ': pg.click('#enNext'); k += 1
+        while pg.evaluate("() => [...document.getElementById('enNext').childNodes].map(n => n.nodeName === 'RUBY' ? n.firstChild.textContent : n.textContent).join('')") == '次へ': pg.click('#enNext'); k += 1
         chk(E + 'ending_4_pages', k == 4, k)
         pg.click('#enNext'); pg.wait_for_selector('.rs-map'); chk(E + 'ending_seen_saved', pg.evaluate(SAVE)['ending']['seen'] is True)
         pg.click('.rs-tab[data-tab=me]'); pg.wait_for_selector('.rs-me')
@@ -119,10 +119,10 @@ with sync_playwright() as p:
         if engine == 'chromium': shot(pg, 'p3_memorial')
         m = metrics(pg); chk(E + 'memorial_ok', not m['hscroll'] and not m['small'], m)
         pg.evaluate("() => RPG.go('codex')"); pg.wait_for_selector('.rs-cgrid')
-        chk(E + 'codex_extra_groups', 'クリアごなど' in pg.inner_text('#app') and len(pg.query_selector_all('canvas[data-en]')) > 80, len(pg.query_selector_all('canvas[data-en]')))
+        chk(E + 'codex_extra_groups', 'クリア後など' in pg.evaluate("() => { const c = document.getElementById('app').cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; }") and len(pg.query_selector_all('canvas[data-en]')) > 80, len(pg.query_selector_all('canvas[data-en]')))
         if engine == 'chromium': shot(pg, 'p3_codex_extra')
         pg.evaluate("() => { const s = JSON.parse(localStorage.getItem('ichimon.rpg.v1')); s.inv.items.u_kojunotate_6 = 1; s.codex.items.u_kojunotate_6 = 1; localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }"); pg.reload(); pg.wait_for_selector('.subj'); pg.evaluate("() => RPG.go('codex')"); pg.wait_for_selector('.rs-cgrid')
-        pg.click('[data-ct=item]'); chk(E + 'codex_items_unique_once', pg.inner_text('#app').count('古樹の盾飾り') == 1)
+        pg.click('[data-ct=item]'); chk(E + 'codex_items_unique_once', pg.evaluate("() => { const c = document.getElementById('app').cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; }").count('古樹の盾飾り') == 1)
         # ===== 試験用セーブ6つ：主要画面が全部開ける・はみ出さない・小さいボタンなし =====
         for name in ('day01', 'day14', 'ch1end', 'ch2end', 'maingoal', 'postgame'):
             put(pg, name, "s.active = null;")
@@ -144,7 +144,7 @@ with sync_playwright() as p:
         pg.goto(URL); pg.wait_for_selector('.subj'); put(pg, 'postgame', "s.active = null; s.seen = {};")
         bad = {}
         for scr in ('adv', 'forge', 'me', 'settings', 'storylist', 'codex', 'ending', 'memorial', 'story'):
-            if scr == 'story': pg.evaluate("() => { RPG.go('adv'); document.getElementById('rsStory').click(); }")
+            if scr == 'story': pg.evaluate("() => { RPG.save.active = null; RPG.save.progress.quest = null; RPG.save.progress.step = 0; RPG.go('adv'); document.getElementById('rsStory').click(); }")
             else: pg.evaluate(f"() => RPG.go('{scr}')")
             m = metrics(pg)
             if m['hscroll'] or m['small']: bad[scr] = m

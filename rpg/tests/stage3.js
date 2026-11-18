@@ -25,7 +25,7 @@ t('固有：時砂の短剣（敵が大技を準備中の技 +）', () => {
   const a = skill(mk({}, { setup: s => { s.enemy.tele = true; } }), 'w_strike').dmg, b = skill(mk({ teleBonus: 0.15 }, { setup: s => { s.enemy.tele = true; } }), 'w_strike').dmg, c = skill(mk({ teleBonus: 0.15 }), 'w_strike').dmg;
   ok(b > a); eq(c, a);
 });
-t('固有：天秤のつるぎ（攻撃⇔防御の切替で +）／潮音の杖（攻撃⇔回復で +）', () => {
+t('固有：天秤の剣（攻撃⇔防御の切替で +）／潮音の杖（攻撃⇔回復で +）', () => {
   const base = skill(mk({}), 'w_strike').dmg, g = skill(mk({ switchGuard: 0.12 }, { setup: s => { s.hero.p.lastKind = 'guard'; } }), 'w_strike').dmg, same = skill(mk({ switchGuard: 0.12 }, { setup: s => { s.hero.p.lastKind = 'atk'; } }), 'w_strike').dmg;
   ok(g > base); eq(same, base);
   const h = skill(mk({ switchBonus: 0.12 }, { setup: s => { s.hero.p.lastKind = 'heal'; } }), 'w_strike').dmg; ok(h > base);
@@ -59,7 +59,7 @@ t('固有：極光の衣（弱点を突くと小回復）。弱点でなけれ�
   eq(skill(mk({ weakHeal: 0.06 }, Object.assign({}, o, { weak: 'ice' })), 'm_fire').heal, 0);
 });
 const enemyHit = (fx, act, setup) => { const st = mk(fx, { setup: s => { s.enemy.pattern = [act]; s.enemy.pi = 0; s.enemy.atk = 80; if (setup) setup(s); } }); return { st, ev: B.enemyAct(st) }; };
-t('固有：古樹の盾飾り（最初の被ダメ）／水晶のまもり（予告大技）／白銀の胸当て（属性攻撃）', () => {
+t('固有：古樹の盾飾り（最初の被ダメ）／水晶の守り（予告大技）／白銀の胸当て（属性攻撃）', () => {
   const big = { k: 'big', m: 2, n: 'x' }, el = { k: 'big', m: 2, n: 'y', el: 'ice' };
   const d0 = enemyHit({}, big).ev.dmg; ok(enemyHit({ firstReduce: 0.25 }, big).ev.dmg < d0, '最初の被ダメ');
   ok(enemyHit({ bigReduce: 0.15 }, big).ev.dmg < d0, '大技'); eq(enemyHit({ bigReduce: 0.15 }, { k: 'atk', m: 2 }).ev.dmg, enemyHit({}, { k: 'atk', m: 2 }).ev.dmg, '通常攻撃には効かない');
@@ -149,7 +149,7 @@ t('試練：第2章クリアと上級2職Lv20が必要。クリアで最上級�
   const low = fresh(); D.REGIONS.filter(r => r.ch <= 2).forEach(r => low.progress.clearedRegions.push(r.id)); ok(M.questLocked(low, 'trial_wing'), 'Lv不足');
   ok(M.selectQuest(s, 'trial_wing').ok); const r = runQuest(s, 'trial_wing', 40); ok(s.quests.trial_wing.cleared, '40冒険以内にクリア（強い主人公）');
   const last = r.seen[r.seen.length - 1]; ok(last.clear && last.clear.trial === 'wing' && last.clear.title); eq(s.trials.wing, 1); eq(C.canChangeJob(s, 'skyknight'), null);
-  ok(C.canChangeJob(s, 'starseer'), '星の試練は別'); ok(M.questLocked(s, 'trial_wing') === 'クリアずみ'); ok(!M.selectQuest(s, 'trial_wing').ok); eq(s.progress.quest, null);
+  ok(C.canChangeJob(s, 'starseer'), '星の試練は別'); ok(M.questLocked(s, 'trial_wing') === 'クリア済み'); ok(!M.selectQuest(s, 'trial_wing').ok); eq(s.progress.quest, null);
   const sum = M.changeJob(s, 'skyknight'); ok(sum.ok); eq(s.job, 'skyknight');
 });
 t('試練：敗退や継続でも途中の状態（突破した短編・敵のHP）が保存される', () => {
@@ -180,14 +180,16 @@ t('本編クリア時に mainClear が立つ（エンディングへの導線）
 });
 
 // ---------- おはなし ----------
-t('おはなし：全300区間＋全クエストの区間に 1〜3画面。空の文章なし。第3章の全地点名が出る', () => {
-  let n = 0; const chk = r => { const p = ST.pagesFor(r); n++; ok(p.length >= 1 && p.length <= 3, 'ページ数 ' + p.length + ' ' + r.point); p.forEach(x => ok(x.text && x.text.length > 3 && x.text.length <= 60)); };
+t('おはなし：出来事のある区間（地域の最初・地点の最初・ボス戦の最初）だけ 1〜3画面。それ以外は会話なし。第3章の全地点名が出る', () => {
+  let n = 0, ev = 0; const chk = r => { const p = ST.pagesFor(r); n++; eq(p.length > 0, ST.hasEvent(r), '出来事と会話の一致 ' + r.point); if (p.length) { ev++; ok(p.length >= 1 && p.length <= 3, 'ページ数 ' + p.length + ' ' + r.point); p.forEach(x => ok(x.text && x.text.length > 3 && x.text.length <= 80)); } };
   D.ROUTE.forEach(chk); Object.values(W.QUESTS).forEach(q => q.segs.forEach(chk));
-  D.REGIONS.filter(r => r.ch === 3).forEach(r => r.points.forEach((pt, i) => { const route = D.ROUTE[D.REGION_START[r.idx] + i * 3 + (i === 0 ? 1 : 0)]; ok(ST.pagesFor(route).some(x => x.text.includes(pt)) || i === 0, pt); }));
-  ok(n > 450);
+  D.REGIONS.filter(r => r.ch === 3).forEach(r => r.points.forEach((pt, i) => { const route = D.ROUTE[D.REGION_START[r.idx] + i * 3]; ok(ST.pagesFor(route).some(x => x.text.includes(pt)) || i === 0, pt); }));
+  ok(n > 450); ok(ev > 100 && ev < n / 2, '出来事の区間は全体の半分未満 ' + ev + '/' + n);
+  D.REGIONS.forEach(r => { const first = D.ROUTE[D.REGION_START[r.idx]]; ok(ST.pagesFor(first).length >= 2, r.id + ' の最初'); });
 });
-t('おはなし：ボス戦の最初の区間に ボスの前の会話。悪い結末なし（敗退でも文章は同じ）', () => {
+t('おはなし：ボス戦の最初の区間に ボスの前の会話。2区間目以降は会話なし。悪い結末なし（敗退でも文章は同じ）', () => {
   const be = D.ROUTE.find(r => r.boss && r.seg === 1 && r.region === 0), p = ST.pagesFor(be); ok(p.length >= 2); eq(ST.pagesFor(be), p);
+  const b2 = D.ROUTE.find(r => r.boss && r.seg === 2 && r.region === 0); eq(ST.pagesFor(b2).length, 0);
 });
 
 // ---------- 音 ----------
@@ -221,7 +223,7 @@ t('検査：全装備の入手経路（通常＝店／レア＝宝箱／固有�
   const s = fresh(); allRegions(s); D.WISH_LIST.forEach(w => { for (let r = 1; r <= 6; r++) ok(Object.values(D.ITEMS).some(i => i.rarity === 'rare' && i.wish === w && i.rank === r), w + r); });
 });
 t('検査：固有装備の地域・章の対応が設計書の表どおり（18＝6地域×3章）', () => {
-  const tbl = { meadow: ['古樹の盾飾り', '根源の指輪', '翠天のマント'], waterland: ['水晶のまもり', '潮音の杖', '深碧の護符'], sandsea: ['時砂の短剣', '双面の指輪', '天秤のつるぎ'], mountain: ['白銀の胸当て', '熔晶の武器飾り', '極光の衣'], gearcity: ['黒鋼の盾飾り', '巨兵の弓', '城塞の鎧'], skycastle: ['機神の指輪', '記憶の護符', '王冠の星飾り'] };
+  const tbl = { meadow: ['古樹の盾飾り', '根源の指輪', '翠天のマント'], waterland: ['水晶の守り', '潮音の杖', '深碧の護符'], sandsea: ['時砂の短剣', '双面の指輪', '天秤の剣'], mountain: ['白銀の胸当て', '熔晶の武器飾り', '極光の衣'], gearcity: ['黒鋼の盾飾り', '巨兵の弓', '城塞の鎧'], skycastle: ['機神の指輪', '記憶の護符', '王冠の星飾り'] };
   Object.keys(tbl).forEach((k, ri) => tbl[k].forEach((nm, ci) => { const u = W.UNIQ.find(x => x.name === nm); ok(u, nm); eq(u.ch, ci + 1, nm); eq(u.ri, ri, nm); }));
 });
 t('検査：古いセーブ（第3段の欄なし）を読み込んでも壊れない。書き出し・読み込みでクエスト進行が残る', () => {

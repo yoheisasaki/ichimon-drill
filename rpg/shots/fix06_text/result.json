@@ -1,0 +1,127 @@
+{
+ "checks": {
+  "ruby_default_on": true,
+  "ruby_toggle_off_hides_rt_in_rpg_screens": true,
+  "ruby_toggle_off_hides_rt_on_home": true,
+  "ruby_off_kept_after_reload": true,
+  "ruby_toggle_on_again": true,
+  "learning_question_rt_not_hidden_by_toggle": true,
+  "reward_text_has_kanji_ruby_words": true,
+  "reward_ore_name_kanji": true,
+  "home_buttons_use_fukushu_wording_with_kanji": {
+   "ok": true,
+   "v": {
+    "go": "スタート（10問）",
+    "hard": "復習が必要なところ（3個）"
+   }
+  },
+  "home_has_ruby_on_start_buttons": true,
+  "codex_denominator_base_species_99_variants_60": {
+   "ok": true,
+   "v": {
+    "enemies": {
+     "seen": 18,
+     "total": 99,
+     "variants": {
+      "seen": 0,
+      "total": 60
+     }
+    },
+    "items": {
+     "got": 6,
+     "total": 144
+    }
+   }
+  },
+  "codex_enemy_tab_total_matches_summary": true,
+  "codex_enemy_grid_shows_only_base_species": {
+   "ok": true,
+   "v": {
+    "cells": 99,
+    "base": 99
+   }
+  },
+  "codex_variants_shown_inside_parent": true,
+  "codex_item_list_count_equals_denominator": {
+   "ok": true,
+   "v": {
+    "total": 144,
+    "listed": 144,
+    "tab": "装備 6/144"
+   }
+  },
+  "story_only_at_events": {
+   "ok": true,
+   "v": {
+    "n": 300,
+    "ev": 96,
+    "boss2": 0
+   }
+  },
+  "rare_60_items_formal_names_icons_effects": {
+   "ok": true,
+   "v": [
+    60,
+    []
+   ]
+  },
+  "B03_rare_60_same_name_icon_effect_in_equip_and_codex_by_itemId": {
+   "ok": true,
+   "v": []
+  },
+  "B04_no_bare_kanji_in_any_kid_screen": {
+   "ok": true,
+   "v": {}
+  },
+  "B05_no_wakachi_kari_or_dev_notes_in_any_screen": {
+   "ok": true,
+   "v": []
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "bare_kanji": {},
+ "bad_text": [],
+ "dbg": {
+  "rows": [
+   [
+    "rw_sword_6",
+    {
+     "id": "rw_sword_6",
+     "name": "天雷の剣",
+     "icon": "http://127.0.0.1:18461/rpg/assets/icons/rw_sword_6.png"
+    }
+   ],
+   [
+    "rw_sword_5",
+    {
+     "id": "rw_sword_5",
+     "name": "凍星の剣",
+     "icon": "http://127.0.0.1:18461/rpg/assets/icons/rw_sword_5.png"
+    }
+   ]
+  ],
+  "cdx": [
+   [
+    "w_sword_1",
+    {
+     "id": "w_sword_1",
+     "name": "青銅の剣",
+     "icon": "http://127.0.0.1:18461/rpg/assets/icons/w_sword_1.png",
+     "small": "攻撃 8"
+    }
+   ],
+   [
+    "w_staff_1",
+    {
+     "id": "w_staff_1",
+     "name": "旅人の杖",
+     "icon": "http://127.0.0.1:18461/rpg/assets/icons/w_staff_1.png",
+     "small": "攻撃 8"
+    }
+   ]
+  ],
+  "nrows": 66,
+  "ncdx": 144
+ }
+}

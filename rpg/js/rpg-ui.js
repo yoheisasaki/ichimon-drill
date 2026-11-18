@@ -3,7 +3,7 @@
 (function (root) {
   const D = root.RPGData, C = root.RPGCore, A = root.RPGAdv, M = root.RPGMeta, SP = root.RPGSprites, FXL = root.RPGFX;
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const rb = s => (typeof root.ruby === 'function' ? root.ruby(s) : esc(s.replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1')));
+  const RU = root.RPGRuby, rb = RU.render;   // ルビは rpg-ruby.js（{漢字|よみ} と辞書）
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const PARAMS = new URLSearchParams(root.location ? root.location.search : '');
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
@@ -13,6 +13,7 @@
 
   // ---------- 起動 ----------
   RPG.init = function () {
+    try { Object.values(D.JOBS).forEach(j => RU.registerNote(j.name, j.ruby)); Object.values(D.SKILLS).forEach(s => RU.registerNote(s.name, s.ruby)); D.REGIONS.forEach(r => RU.registerNote(r.name, r.ruby)); RU.init(); if (root.document && root.document.body) RU.observe(root.document); else root.addEventListener('DOMContentLoaded', () => RU.observe(root.document)); } catch (e) { if (root.console) console.error('ruby init', e); }
     if (PARAMS.get('rpg') === '0') { RPG.err = 'off'; return; }   // 動作確認用：RPG を切って学習だけ動かす
     const io = { get: k => root.localStorage.getItem(k), set: (k, v) => root.localStorage.setItem(k, v) };
     RPG.io = io; RPG.store = C.makeStore(io);
@@ -43,9 +44,9 @@
   RPG.noticeHtml = function () {
     if (!RPG.err || RPG.err === 'off') return '';
     const m = {
-      storage: 'この端末では ぼうけんの きろくを ほぞんできません。<b>がくしゅうは そのまま つかえます</b>。「ゲームのデータ」から かきだして のこしてね。',
-      corrupt: 'ぼうけんの データが よみこめません（がくしゅうは つかえます）。',
-      stale: 'ほかの 画面で ぼうけんが すすんでいます。この 画面を よみこみなおしてね。'
+      storage: 'この端末では冒険の記録を保存できません。<b>学習はそのまま使えます</b>。「ゲームのデータ」から書き出して残してね。',
+      corrupt: '冒険のデータが読み込めません（学習は使えます）。',
+      stale: '他の画面で冒険が進んでいます。この画面を読み込みなおしてね。'
     }[RPG.err] || '';
     return m ? `<div class="rpg-notice" role="alert">${m}</div>` : '';
   };
@@ -200,9 +201,9 @@
     if (!ob) return;
     ob.onclick = () => {
       if (ob.disabled) return; ob.disabled = true;
-      if (!RPG.ok) { msg.textContent = 'いま ほぞんできないので あけられません。'; ob.disabled = false; return; }
+      if (!RPG.ok) { msg.textContent = 'いま保存できないので開けられません。'; ob.disabled = false; return; }
       const r = C.openChestPersist(RPG.save, RPG.store, id, NOW());
-      if (!r.ok) { RPG.err = r.err === 'stale' ? 'stale' : RPG.err; msg.textContent = 'ほぞんできなかったので あけていません。もういちど ためしてね。'; ob.disabled = false; return; }
+      if (!r.ok) { RPG.err = r.err === 'stale' ? 'stale' : RPG.err; msg.textContent = '保存できなかったので開けていません。もう一度試してね。'; ob.disabled = false; return; }
       const fin = () => { drawChestCv(cc, true, 1); ln.innerHTML = chestContentHtml(r.chest); ln.hidden = false; ob.remove(); snd('chest'); onDone && onDone(r.chest); };
       if (reduceMotion() || !cc) { fin(); return; }
       const t0 = performance.now(); const tick = now => { const p = (now - t0) / 700; if (p >= 1) { fin(); return; } drawChestCv(cc, p > 0.45, p); requestAnimationFrame(tick); }; requestAnimationFrame(tick);
@@ -227,12 +228,12 @@
   function clearHtml(res) {
     const c = res.clear; if (!c) return '';
     const L = [];
-    if (c.trial) L.push('<b>しれん クリア！</b> ' + (c.trial === 'wing' ? '天翔騎士' : '星詠み') + 'に てんしょくできる ように なった');
+    if (c.trial) L.push('<b>試練クリア！</b> ' + (c.trial === 'wing' ? '天翔騎士' : '星詠み') + 'に転職できるようになった');
     else L.push('<b>' + esc(res.quest.name) + ' クリア！</b>');
-    if (c.title) L.push('しょうごう「' + esc(c.title) + '」');
-    if (c.costume) L.push('いしょう「' + esc(c.costume) + '」');
-    if (c.item) L.push('ひきょうの たから「' + esc(itemName(c.item)) + '」');
-    if (c.lamp) L.push('夜明けの 灯 を てにいれた');
+    if (c.title) L.push('称号「' + esc(c.title) + '」');
+    if (c.costume) L.push('衣装「' + esc(c.costume) + '」');
+    if (c.item) L.push('秘境のたから「' + esc(itemName(c.item)) + '」');
+    if (c.lamp) L.push('夜明けの灯を手に入れた');
     return '<div class="rw-clear">' + L.map(x => '<div>' + x + '</div>').join('') + '</div>';
   }
   RPG.rewardHtml = function (res, S, wrongHtml, hasWrong) {
@@ -244,7 +245,7 @@
     const lvTxt = res.job.lvTo > res.job.lvFrom ? `${esc(jd.name)} Lv${res.job.lvFrom} → <b>Lv${res.job.lvTo}</b>` : `${esc(jd.name)} Lv${res.job.lvTo}`;
     const newSk = res.newSkills.length ? `<div class="rw-new">${rb('{新|あたら}しい{技|わざ}')}：${res.newSkills.map(id => rb(D.SKILLS[id].ruby)).join('、')}</div>` : '';
     const adv = res.adv.lvTo > res.adv.lvFrom ? `<div class="rw-row sm">${rb('{冒険者|ぼうけんしゃ}')} Lv${res.adv.lvFrom} → <b>Lv${res.adv.lvTo}</b></div>` : '';
-    const coinNote = [res.coinAnswers ? `学習 ${res.coinAnswers}` : '', res.coinKill ? `討伐 ${res.coinKill}` : '', res.coinWelcome ? `はじめのお祝い ${res.coinWelcome}` : ''].filter(Boolean).join(' ＋ ');
+    const coinNote = [res.coinAnswers ? `学習 ${res.coinAnswers}` : '', res.coinKill ? `討伐 ${res.coinKill}` : '', res.coinWelcome ? `最初のお祝い ${res.coinWelcome}` : ''].filter(Boolean).join(' ＋ ');
     return `
     <div class="rw" id="rwRoot" data-outcome="${res.outcome}">
       <div class="rw-title">${rb('{冒険|ぼうけん}の{成果|せいか}')}</div>
@@ -258,7 +259,7 @@
         <div class="rw-row"><span>● コイン（学習・討伐）</span><b id="rwCoinBase">+${tot.base}</b></div>
         <div class="rw-note">${esc(coinNote)}</div>
         <div class="rw-row rw-total"><span>今回のコイン</span><b id="rwTotal">${esc(tot.text)}</b></div>
-        <div class="rw-job"><div class="rw-jobt"><span>${lvTxt}</span><span>${jl.capped ? 'Lv上限' : nx ? `次の${rb('{技|わざ}')}まで あと ${Math.max(0, nx.remain)}` : '全て覚えた'}</span></div><div class="rw-bar"><i style="width:${pct}%"></i></div></div>
+        <div class="rw-job"><div class="rw-jobt"><span>${lvTxt}</span><span>${jl.capped ? 'Lv上限' : nx ? `次の${rb('{技|わざ}')}まであと ${Math.max(0, nx.remain)}` : '全て覚えた'}</span></div><div class="rw-bar"><i style="width:${pct}%"></i></div></div>
         ${newSk}${adv}
         ${res.drops.map(d => `<div class="rw-row sm">${esc(d.name)} ×${d.n}${d.thief ? '（宝の気配）' : ''}${res.firstClear ? '（初回報酬）' : ''}</div>`).join('')}
       </div>
@@ -267,7 +268,7 @@
       ${RPG.noticeHtml()}
       <div class="rw-btns"><button class="rw-btn" id="end">おわる</button><button class="rw-btn" id="more">${rb('{次|つぎ}の10{問|もん}')}</button></div>
       <button class="rw-link" id="rwEquip">${rb('{装備|そうび}を{見|み}る')}</button>
-      ${res.mainClear ? '<button class="rw-link" id="rwEnding">エンディングを みる</button>' : ''}
+      ${res.mainClear ? '<button class="rw-link" id="rwEnding">エンディングを見る</button>' : ''}
     </div>`;
   };
   function drawChestCv(cv, open, p) {   // 開封の演出：ゆれる→ふたがひらく→光
@@ -312,10 +313,10 @@
   // ---------- ホームの「ゲームのデータ」 ----------
   RPG.homeHtml = function () {
     const note = RPG.progressNote();
-    return `${note ? `<div class="rpg-note">ぼうけん ${note.n} / ${note.unit} もん（つづきから）</div>` : ''}
+    return `${note ? `<div class="rpg-note">冒険 ${note.n} / ${note.unit} 問（続きから）</div>` : ''}
     <details class="rpg-bk"><summary>ゲームのデータ（バックアップ）</summary>
-      <p>かきだすと、がくしゅうの きろく・えらんだ設定・ぼうけんの すすみ を 1つの ファイルにできます。<b>おくる じゅんびの きろく（そうしんキュー）と たんまつの IDは ふくみません。</b>クラウドには ほぞんされません。ほかの たんまつとの 自動どうきは ありません。</p>
-      <div class="rpg-bkb"><button id="rpgExport">かきだす</button><label class="rpg-file">よみこむ<input id="rpgImport" type="file" accept=".json,application/json"></label></div>
+      <p>書き出すと、学習の記録・選んだ設定・冒険の進みを 1つのファイルにできます。<b>送る準備の記録（送信キュー）と端末の IDは含みません。</b>クラウドには保存されません。他の端末との自動同期はありません。</p>
+      <div class="rpg-bkb"><button id="rpgExport">書き出す</button><label class="rpg-file">読み込む<input id="rpgImport" type="file" accept=".json,application/json"></label></div>
       <div id="rpgBkMsg" role="status"></div>
     </details>`;
   };
@@ -327,19 +328,19 @@
         const get = k => { try { return JSON.parse(root.localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
         const txt = C.buildExport({ stats: get('ichimon.stats.v1') || {}, sel: get('ichimon.sel.v1'), rpg: RPG.ok ? RPG.save : get(C.LS_RPG) }, NOW());
         const a = root.document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' })); a.download = 'ichimon-save-' + new Date().toISOString().slice(0, 10) + '.json';
-        root.document.body.appendChild(a); a.click(); a.remove(); msg.textContent = 'かきだしました（ダウンロードを みてね）。';
-      } catch (e) { msg.textContent = 'かきだせませんでした。'; }
+        root.document.body.appendChild(a); a.click(); a.remove(); msg.textContent = '書き出しました（ダウンロードを見てね）。';
+      } catch (e) { msg.textContent = '書き出せませんでした。'; }
     };
     im.onchange = () => {
       const f = im.files && im.files[0]; if (!f) return;
       const r = new FileReader();
       r.onload = () => {
         const p = C.parseImport(String(r.result));
-        if (!p.ok) { msg.textContent = 'よみこめません：' + p.err[0] + '（なにも かえていません）'; return; }
-        if (!root.confirm('いまの きろくを バックアップしてから、ファイルの 内容に 入れかえます。よいですか？')) { msg.textContent = 'キャンセルしました。'; return; }
+        if (!p.ok) { msg.textContent = '読み込めません：' + p.err[0] + '（何も変えていません）'; return; }
+        if (!root.confirm('今の記録をバックアップしてから、ファイルの内容に入れ替えます。よいですか？')) { msg.textContent = 'キャンセルしました。'; return; }
         const res = C.applyImport(String(r.result), RPG.io || { get: k => root.localStorage.getItem(k), set: (k, v) => root.localStorage.setItem(k, v) }, NOW());
-        if (!res.ok) { msg.textContent = 'うまく いきませんでした（なにも かえていません）。'; return; }
-        msg.textContent = 'よみこみました。ページを よみこみなおします。'; setTimeout(() => root.location.reload(), 600);
+        if (!res.ok) { msg.textContent = 'うまくいきませんでした（何も変えていません）。'; return; }
+        msg.textContent = '読み込みました。ページを読み込みなおします。'; setTimeout(() => root.location.reload(), 600);
       };
       r.readAsText(f);
     };

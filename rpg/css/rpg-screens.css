@@ -236,3 +236,7 @@ body:has(.rs){background:#0b1329}
 @media (prefers-reduced-motion:reduce){.rs-fx-glow{transition:none}}
 .rs-data .rpg-bk summary{color:#f4f1e4}
 .rs-hc-meta .rs-coin{color:#8a6a00}
+
+/* ルビの切り替え（設定）。RPG の画面だけに効かせる。学習問題の文には効かない */
+html.rb-off .rs-app rt,html.rb-off .rs-fx rt,html.rb-off #rwRoot rt,html.rb-off [data-rb] rt,html.rb-off .rs-scope rt,html.rb-off .rs-nav rt{display:none}
+.rs-effshort{font-size:12px;opacity:.9;line-height:1.3}

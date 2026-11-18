@@ -65,7 +65,7 @@
     if (r === 5 && c.includes('skytower')) r = 6;
     return r;
   }
-  const oreId = r => 'ore_' + r, oreName = r => 'ランク' + D.RANK_NAME[r - 1] + 'のこうせき';
+  const oreId = r => 'ore_' + r, oreName = r => 'ランク' + D.RANK_NAME[r - 1] + 'の鉱石';
   function addMat(save, id, n) { save.inv.mats[id] = (save.inv.mats[id] || 0) + n; }
   function grantItem(save, id) {
     const it = D.ITEMS[id];
@@ -146,8 +146,8 @@
   function canBuy(save, id) {
     const it = D.ITEMS[id]; if (!it || it.rarity !== 'normal' || !it.rank) return '買えない';
     if (it.rank > maxRank(save)) return 'まだ売っていない';
-    if (save.inv.items[id]) return 'もっている';
-    if (save.coins < it.price) return 'コインがたりない';
+    if (save.inv.items[id]) return '持っている';
+    if (save.coins < it.price) return 'コインが足りない';
     return null;
   }
   function buy(save, id) { const e = canBuy(save, id); if (e) return { ok: false, err: e }; save.coins -= D.ITEMS[id].price; save.inv.items[id] = 1; return { ok: true }; }
@@ -165,13 +165,13 @@
   // ---------- 転職 ----------
   function canChangeJob(save, job) {
     const j = D.JOBS[job]; if (!j) return '不明な職業';
-    if (save.active) return 'ぼうけんの途中は変えられない';
-    if (!save.firstDone) return 'さいしょのぼうけんのあとに変えられる';
+    if (save.active) return '冒険の途中は変えられない';
+    if (!save.firstDone) return '最初の冒険のあとに変えられる';
     const lv = jobLevels(save);
     if (j.tier === 'adv') { return j.req.every(r => lv[r] >= 10) ? null : '基本職2つがLv10になると解放'; }
     if (j.tier === 'top') {
       if (j.reqFrom.filter(r => lv[r] >= 20).length < 2) return '上級職2つがLv20になると解放';
-      if (!save.trials || !save.trials[j.trial]) return 'しれんをクリアすると解放';
+      if (!save.trials || !save.trials[j.trial]) return '試練をクリアすると解放';
     }
     return null;
   }

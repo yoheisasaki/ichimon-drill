@@ -3,9 +3,9 @@
   "B01_home_hero_and_start_in_first_screen_390": {
    "ok": true,
    "v": {
-    "goBottom": 424.5,
-    "heroTop": 43,
-    "heroBottom": 275,
+    "goBottom": 428.5,
+    "heroTop": 47,
+    "heroBottom": 279,
     "vh": 844,
     "sub": "block",
     "rangeOpen": false
@@ -13,14 +13,14 @@
   },
   "B01_home_hero_official_art": {
    "ok": true,
-   "v": "whole"
+   "v": "layered"
   },
   "home_function_kept(range:subject/unit/hard/go)": true,
   "home_range_stays_open_after_pick": true,
   "backup_not_on_home": true,
   "backup_in_settings": true,
   "A09_ch1_boss_images": {
-   "ok": false,
+   "ok": true,
    "v": [
     [
      "b_ancienttree",
@@ -32,7 +32,7 @@
     ],
     [
      "b_hourglass",
-     false
+     true
     ],
     [
      "b_silverdragon",
@@ -40,49 +40,32 @@
     ],
     [
      "b_blackknight",
-     false
+     true
     ],
     [
      "b_machinegod",
-     false
+     true
     ]
    ]
   },
   "A09_codex_enemies_no_missing_image": {
-   "ok": false,
-   "v": [
-    "b_hourglass",
-    "b_blackknight",
-    "b_machinegod"
-   ]
+   "ok": true,
+   "v": []
   },
   "A09_codex_uses_enemy_canvases": {
    "ok": true,
-   "v": 159
+   "v": 99
   },
   "adv_enemy_canvas_official": true,
   "A02_12jobs_no_missing_art": {
    "ok": true,
    "v": []
   },
-  "devcheck_lists_whole_image_fallbacks(not silent)": {
+  "devcheck_parts_ready_and_fallbacks_listed(not silent)": {
    "ok": true,
-   "v": [
-    {
-     "key": "warrior|-|idle|L",
-     "reason": "部品なし／武器・顔・髪・色は反映されない"
-    },
-    {
-     "key": "mage|-|idle|L",
-     "reason": "部品なし／武器・顔・髪・色は反映されない"
-    },
-    {
-     "key": "priest|-|idle|L",
-     "reason": "部品なし／武器・顔・髪・色は反映されない"
-    }
-   ]
+   "v": []
   },
-  "fixture_parts_loaded": {
+  "parts_loaded": {
    "ok": true,
    "v": "ready"
   },
@@ -153,7 +136,7 @@
   "A03_only_weapon_pixels_differ(body/head same)": {
    "ok": true,
    "v": {
-    "all": 226,
+    "all": 317,
     "bodyHeadDiff": 0
    }
   },
@@ -310,19 +293,19 @@
   },
   "B02_weapon_swap_is_told": {
    "ok": true,
-   "v": "賢者 に なりました。 樫の杖 に ぶきを かえました（賢者は 鉄のつるぎを つかえないため）。"
+   "v": "賢者けんじゃ になりました。 樫かしの杖つえ に武器ぶきを変かえました（賢者けんじゃは 鉄てつの剣けんを使つかえないため）。"
   },
   "B03_same_name_icon_stat_in_shop_equip_codex": {
    "ok": true,
    "v": [
     [
      "w_sword_1",
-     "青銅のつるぎ",
+     "青銅せいどうの剣けん",
      true
     ],
     [
      "rw_sword_1(equip=codex)",
-     "火花のつるぎ",
+     "火花ひばなの剣けん",
      true
     ]
    ]
@@ -417,8 +400,8 @@
  "console": [],
  "blocked": 0,
  "dev_real": {
-  "parts": "none",
-  "whole": 12,
-  "layered": 0
+  "parts": "ready",
+  "whole": 0,
+  "layered": 12
  }
 }

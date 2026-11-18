@@ -14,7 +14,7 @@ t('店：買う→返品は同額（未使用のみ）、冒険に装備して�
 });
 t('店：ランク解放前・所持済み・コイン不足は買えない', () => { const s = fresh2(); ok(!M.buyChecked(s, 'w_sword_2').ok); M.buyChecked(s, 'w_sword_1'); ok(!M.buyChecked(s, 'w_sword_1').ok); s.coins = 10; ok(!M.buyChecked(s, 'a_heavy_1').ok); });
 t('店：売却は店価の25%、装備中・初期武器は売れない', () => {
-  const s = fresh2(); M.buyChecked(s, 'a_heavy_1'); M.setEquip(s, { armor: 'a_heavy_1' }); eq(M.canSell(s, 'a_heavy_1'), 'そうびちゅう'); eq(M.canSell(s, 'w_start'), '売れない');
+  const s = fresh2(); M.buyChecked(s, 'a_heavy_1'); M.setEquip(s, { armor: 'a_heavy_1' }); eq(M.canSell(s, 'a_heavy_1'), '装備中'); eq(M.canSell(s, 'w_start'), '売れない');
   M.setEquip(s, { armor: null }); const c = s.coins; eq(M.sell(s, 'a_heavy_1').coin, 45); eq(s.coins, c + 45);
 });
 t('鍛冶：+3まで、費用は店価20/35/50%・素材2/4/6、必ず成功、基準値の+5%ずつ', () => {

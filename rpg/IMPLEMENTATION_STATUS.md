@@ -101,3 +101,13 @@ node run.js 95件＋meta.js 29件 全通過／画面 ui_test 38・ui_test2 21・
 2. 作業途中の部品（戦士・魔法戦士ほか。部品担当が書いている parts.json の handPos・武器の握り・4色の肌髪列）でも描画は動くことを確認済み（rpg/shots/fix06_screens/parts_wip_*.png。`?devcheck=1&partsdir=rpg/assets/parts/` で台帳を変えずに試せる）。部品が完成したら、武器の握り・先の向き・weaponScale・手の位置を目視（A03・A05・A07）。
 3. A01/A03/A04/A06/A07 を実物の部品で再確認（`python rpg/tools/ui_test_hero.py`）。マスター衣装の部品（`body_<職>_master_*`）、上級職の追加衣装（alt）とその入手（依頼）。
 4. 第1章ボス3体の画像、レア装備55品の正式な名前、親向け以外の全画面のルビ統一（次の担当）、実機iPhone。
+
+## 修正指示書06 4章・6章＋部品の接続（2026-11-18〜19）
+（問題→変更→確認結果→証拠。判断は IMPLEMENTATION_DECISIONS.md D-46〜D-50）
+- 問題：主人公の部品が揃ったのに台帳の parts_json が「予定」で1枚絵のまま。ホームの主人公（整数2倍）が背景の建物より大きく重なる。子ども向け画面がひらがな分かち書き・「にがて」・「ランクIのこうせき」・仮名表示で、ルビも画面ごとにまちまち。会話は全区間に同型の説明文。図鑑の分母が159（強化版込み）。レア55品が仮名。
+- 変更（絵）：台帳 parts_json を「正式」（connected＝接続済み）。12職の通常衣装・マスター衣装・追加衣装は parts.json にあれば部品、無ければ1枚絵（読むだけ。parts は触っていない）。ホームの主人公を整数1倍（96px）にし足元を街の広場の位置（下から44px）へ。第1章ボス3体（砂時計の巨人・黒鎧の騎士・天蓋の機神）の正式画像と帯用6行を台帳に「正式」で登録（inspect を差し替え）。`rpg/tools/boss_fit.py` を drawHeroLayered に直した。
+- 変更（ルビ）：`rpg-ruby.js`（共通レンダラー：{漢字|よみ}＋辞書＋DOMへの後付けの安全なテキスト走査）、`rpg-ruby-dict.js`（1194語）。名称（職業・技・地域）はデータの ruby 欄を起動時に登録。設定画面に「ふりがな」オン/オフ（初期ON）。画面ごとの kr()／タグ除去は廃止。ホームの学習ボタンは本体の言い方「復習が必要なところ（N個）」「スタート（N問）」＋ルビ。報酬画面の「ランクIの鉱石」。効果文は短い文（effectShort）を一覧・店に、数値を「効果を詳しく」に。ひらがな分かち書きの文言を語彙表で漢字かな交じりに直し（変更一覧 rpg/shots/fix06_text/changes_before_after.txt、残りのひらがな＝助詞・送り仮名中心 hiragana_remaining.txt）。
+- 変更（文章・図鑑）：会話は出来事の区間だけ（rpg-story.js を自然な文に書き直し、pagesFor が出来事以外で []）。図鑑の分母＝基本種99（強化版60は元の敵の欄で「強化版 n/m」）、装備144（一覧の件数も同じ集合）。レア60品すべて正式名（オリジナル）、provisional 廃止。
+- 確認結果：node run 95／meta 29／reward 31／stage3 36／hero 12 全通過。ブラウザ（headless・390px・nosend=1）：新規 `python rpg/tools/ui_test_text.py` 20項目全通過（B03 レア60品＋B04 ルビの外の漢字ゼロ＋B05 分かち書き/禁止語ゼロ＋ルビ切替＋図鑑分母）、`REAL=1 python rpg/tools/ui_test_hero.py`（実部品）62項目（A01・A03・A04・A06・A07・A08・A09 を含む）、ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／ui_test_map 36／ui_test_fx／regress fix06b、コンソールエラー0。文字を含むテストの期待値を新しい表記に直した。
+- 証拠：rpg/shots/fix06_text/（home・adv・town・me・equip・shop・jobdetail・codex・settings・reward 390px、me_ruby_off、result.json、bare_kanji.txt）、rpg/shots/fix06_screens/（real_*＝実部品、strips_all_regions_390.png）、rpg/tools/ruby_audit.js（抜け0件）。
+- 未了・注意：実機iPhoneは未確認。辞書の単漢字の読み（--review）は目視で確認したが、読みの正しさの最終確認は人の目が望ましい。マスター衣装のうち parts.json に無い組合せは1枚絵（開発用検査 `?devcheck=1&devpanel=1` に一覧）。台帳の planned_* 行（予定）は制作計画の記録で、画面には出ない。

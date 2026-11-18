@@ -13,17 +13,17 @@
   const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['me', '{自分|じぶん}']];
   const ROOT_OF = { adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const PARENT = { place: 'town', equip: 'me', shop: 'place', forge: 'place', jobs: 'place', jobdetail: 'jobs', loadout: 'adv', look: 'me', codex: 'me', ach: 'place', data: 'me' };
-  const TACTICS = [['auto', 'おまかせ', 'ようすを見て 自動でえらぶ'], ['attack', 'せめる', 'こうげきを おもに。回復は HPがひくい時だけ'], ['guard', 'まもる', '予告された大技にそなえ、回復も早め']];
+  const TACTICS = [['auto', 'おまかせ', '様子を見て自動で選ぶ'], ['attack', '攻める', '攻撃を主に。回復は HPが低い時だけ'], ['guard', '守る', '予告された大技にそなえ、回復も早め']];
 
   // ---------- 小さな部品 ----------
   function look() { return M.lookOf(save()); }
-  const rb = s => (typeof root.ruby === 'function' ? root.ruby(s) : esc(String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1')));   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
+  const RuRb = root.RPGRuby, rb = RuRb.render;   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
   const jobRb = j => rb(D.JOBS[j].ruby || D.JOBS[j].name), skRb = id => rb(D.SKILLS[id].ruby || D.SKILLS[id].name);
   const PARAMS = new URLSearchParams(root.location ? root.location.search : '');
   // 主人公の絵は全て heroCv（canvas＋data-hero）→ paintHeroes → SP.drawHeroLayered。画像の読込が終わると SP.onUpdate で描き直す
   // 舞台（背景）：用途ごとの背景画像・大きさ（canvas の1px＝CSSの1px。主人公は整数倍）
   const STAGE = {
-    home: { bg: 'bg_town', h: 232, k: 2, pose: 'idle', at: 0.5 }, self: { bg: 'bg_room_room', w: 128, h: 120, k: 1, pose: 'idle', at: 0.5 },
+    home: { bg: 'bg_town', h: 232, k: 1, pose: 'idle', at: 0.5, gy: 44 }, self: { bg: 'bg_room_room', w: 128, h: 120, k: 1, pose: 'idle', at: 0.5 },
     equip: { bg: 'bg_room_shop', w: 168, h: 208, k: 2, pose: 'idle', at: 0.5 }, job: { bg: 'bg_room_temple', h: 224, k: 2, pose: 'idle', at: 0.5 },
     jobcard: { bg: 'bg_room_temple', w: 120, h: 112, k: 1, pose: 'idle', at: 0.5 }, look: { bg: 'bg_room_room', h: 208, k: 2, pose: 'idle', at: 0.5 },
     ending: { bg: 'bg_crown', h: 232, k: 2, pose: 'win', at: 0.5 }, fx: { bg: 'bg_room_temple', w: 240, h: 232, k: 2, pose: 'idle', at: 0.5 }, mini: { w: 44, h: 36, k: 1, pose: 'idle', at: 0.5, plain: true, strip: true }
@@ -44,9 +44,9 @@
     const bg = st.bg && SP.IMGS[st.bg];
     if (bg) { const sc = Math.max(W / bg.width, H / bg.height), dw = bg.width * sc, dh = bg.height * sc; g.drawImage(bg, (W - dw) / 2, (H - dh) * (a.use === 'home' ? 0.62 : 1), dw, dh); }
     else if (st.bg) { g.fillStyle = '#16244d'; g.fillRect(0, 0, W, H); }
-    if (a.use !== 'mini') { g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(W * st.at, H - 8, 30 * st.k, 5 * st.k, 0, 0, 7); g.fill(); }
+    if (a.use !== 'mini') { g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(W * st.at, H - (st.gy || 8), 30 * st.k, 5 * st.k, 0, 0, 7); g.fill(); }
     const look0 = a.look || look();
-    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - 8, scale: st.k, outline: st.strip ? '#0d1630' : null });
+    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - (st.gy || 8), scale: st.k, outline: st.strip ? '#0d1630' : null });
     c.dataset.drawn = r;
   }
   function paintHeroes(rootEl) { (rootEl || doc).querySelectorAll('canvas[data-hero]').forEach(c => { try { paintHero(c); } catch (e) { if (root.console) console.error('paintHero', e); } }); }
@@ -71,20 +71,11 @@
   const itemLine = id => { const it = D.ITEMS[id]; return it ? it.name : '（なし）'; };
   function statLine(id) {
     const st = M.statOf(save(), id), it = D.ITEMS[id]; if (!it) return '';
-    return st.atk != null ? `こうげき ${st.atk}` : st.def != null ? `ぼうぎょ ${st.def}` : '';
+    return st.atk != null ? `攻撃 ${st.atk}` : st.def != null ? `防御 ${st.def}` : '';
   }
   const iconOf = (id, px) => { const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); px = px || 32; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="${px}" height="${px}" style="width:${px}px;height:${px}px" alt="" aria-hidden="true">` : ''; };
-  // 新しく作る文章の漢字は辞書（漢字→よみ）でルビにする。長い語を先に照合
-  const RUBY = [['冒険者', 'ぼうけんしゃ'], ['目標', 'もくひょう'], ['冒険', 'ぼうけん'], ['装備', 'そうび'], ['転職', 'てんしょく'], ['職業', 'しょくぎょう'], ['経験値', 'けいけんち'], ['宝箱', 'たからばこ'], ['朝星', 'あさぼし'], ['武器', 'ぶき'], ['防具', 'ぼうぐ'], ['攻撃', 'こうげき'], ['防御', 'ぼうぎょ'], ['街', 'まち'], ['自分', 'じぶん'], ['学習', 'がくしゅう'], ['範囲', 'はんい'], ['変更', 'へんこう'], ['今日', 'きょう'], ['次', 'つぎ'], ['技', 'わざ'], ['見た目', 'みため'], ['強さ', 'つよさ'], ['試着', 'しちゃく'], ['取り消し', 'とりけし'], ['条件', 'じょうけん'], ['特徴', 'とくちょう'], ['属性', 'ぞくせい'], ['回復', 'かいふく'], ['連続', 'れんぞく'], ['敵', 'てき'], ['魔法', 'まほう'], ['弱点', 'じゃくてん'], ['剣', 'けん'], ['弓', 'ゆみ'], ['守', 'まも'], ['覚', 'おぼ'], ['詳', 'くわ'], ['効果', 'こうか'], ['能力', 'のうりょく'], ['持', 'も'], ['店', 'みせ'], ['使', 'つか'], ['別', 'べつ'], ['現在', 'げんざい'], ['動', 'うご'], ['選', 'えら'], ['未解放', 'みかいほう'], ['解放', 'かいほう'], ['必要', 'ひつよう'], ['初回', 'しょかい'], ['支給', 'しきゅう'], ['無料', 'むりょう'], ['適合', 'てきごう'], ['替', 'か'], ['合', 'あ'], ['決定', 'けってい'], ['保存', 'ほぞん'], ['外見', 'がいけん'], ['髪型', 'かみがた'], ['髪', 'かみ'], ['顔', 'かお'], ['肌', 'はだ'], ['色', 'いろ'], ['衣装', 'いしょう'], ['通常', 'つうじょう'], ['購入', 'こうにゅう'], ['金', 'かね'], ['全部', 'ぜんぶ'], ['全て', 'すべて'], ['種類', 'しゅるい'], ['強化', 'きょうか'], ['必殺', 'ひっさつ'], ['炎', 'ほのお'], ['氷', 'こおり'], ['雷', 'かみなり'], ['光', 'ひかり'], ['水', 'みず'], ['闇', 'やみ'], ['風', 'かぜ'], ['土', 'つち'], ['聖', 'せい'], ['戦', 'たたか'], ['倒', 'たお'], ['中', 'ちゅう'], ['途中', 'とちゅう'], ['学', 'まな']];
-  const RUBY_SORTED = RUBY.slice().sort((a, b) => b[0].length - a[0].length);
-  function kr(t) {
-    t = String(t); let out = '', i = 0;
-    while (i < t.length) {
-      const hit = RUBY_SORTED.find(([k]) => t.startsWith(k, i));
-      if (hit) { out += '<ruby>' + esc(hit[0]) + '<rt>' + esc(hit[1]) + '</rt></ruby>'; i += hit[0].length; } else { out += esc(t[i]); i++; }
-    }
-    return out;
-  }
+  // ルビは rpg-ruby.js の render（{漢字|よみ} と辞書）。画面ごとにタグを外して漢字だけに戻す経路は作らない
+  const kr = RuRb.render;
   // 技の短い説明（最初の画面用。詳しい倍率は折りたたみの中）
   function skillBlurb(sk) {
     if (!sk) return '';
@@ -97,10 +88,10 @@
     return e ? e + 'の力で攻撃する' : '強く攻撃する';
   }
   const rankTag = it => it.rank ? `<i class="rs-rank">ランク${D.RANK_NAME[it.rank - 1]}</i>` : '';
-  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + '';
-  const tierName = t => ({ base: 'きほん職', adv: '上級職', top: '最上級職' })[t];
+  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">秘境</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + '';
+  const tierName = t => ({ base: '基本職', adv: '上級職', top: '最上級職' })[t];
   const noticeBox = () => RPG.noticeHtml();
-  function commit() { const ok = RPG.persist(); if (!ok) UI.msg = RPG.err === 'stale' ? 'ほかの画面で すすんでいます。よみこみなおしてね。' : 'ほぞんできませんでした（「ゲームのデータ」でかきだしてね）。'; return ok; }
+  function commit() { const ok = RPG.persist(); if (!ok) UI.msg = RPG.err === 'stale' ? '他の画面で進んでいます。読み込みなおしてね。' : '保存できませんでした（「ゲームのデータ」で書き出してね）。'; return ok; }
 
   // ---------- 下部ナビ ----------
   RPG.navHtml = function (active) {
@@ -115,10 +106,10 @@
     if (!RPG.ok) return RPG.noticeHtml();
     const s = save(), job = s.job, jl = C.jobLevel(job, s.jobXp[job]), hl = C.heroLevel(s.advXp), nx = C.nextSkill(job, s.jobXp[job]);
     const a = s.active, resume = a && a.basic.n > 0 && a.basic.n < C.ADV_UNIT;
-    return `${noticeBox()}<section class="rs-home" aria-label="冒険者のようす">
-      <div class="rs-stage">${heroCv('home')}<div class="rs-stage-name"><b>${esc(s.name || 'ぼうけん者')}</b><span>${jobRb(job)} Lv${jl.lv}</span></div></div>
+    return `${noticeBox()}<section class="rs-home" aria-label="冒険者の様子">
+      <div class="rs-stage">${heroCv('home')}<div class="rs-stage-name"><b>${esc(s.name || '冒険者')}</b><span>${jobRb(job)} Lv${jl.lv}</span></div></div>
       <div class="rs-hc-meta"><span>${kr('冒険者')} Lv${hl.lv}</span>${coinHtml()}${resume ? `<span class="rs-resume-note">${kr('冒険')}の途中 ${a.basic.n} / ${C.ADV_UNIT}</span>` : ''}</div>
-      <div class="rs-nextskill">${nx ? `<span>${kr('次の技')}</span><b>${skRb(nx.skill.id)}</b><small>${kr(skillBlurb(nx.skill))}</small><i>あと ${Math.max(0, nx.remain)}</i>` : `<span>${kr('この職業の技は、ぜんぶ覚えた')}</span>`}</div></section>`;
+      <div class="rs-nextskill">${nx ? `<span>${kr('次の技')}</span><b>${skRb(nx.skill.id)}</b><small>${kr(skillBlurb(nx.skill))}</small><i>あと ${Math.max(0, nx.remain)}</i>` : `<span>${kr('この職業の技は、全部覚えた')}</span>`}</div></section>`;
   };
   // 日次ボーナス・目標・受け取った宝箱（開始ボタンの下）
   RPG.homeBonus = function () {
@@ -170,18 +161,18 @@
     const sk = M.currentSkills(s).map(id => D.SKILLS[id].name), tac = TACTICS.find(t => t[0] === (s.loadout.tactic || 'auto'))[1];
     const CH = { 1: '第1章　消えた灯台', 2: '第2章　空の下の世界', 3: '第3章　十二のしるし' };
     const nowKey = r.quest ? (W.QUESTS[r.quest].kind === 'rematch' ? W.QUESTS[r.quest].region : (W.QUESTS[r.quest].kind === 'trial' ? null : r.quest)) : (r.region >= 0 ? D.REGIONS[r.region].id : null);
-    const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? (x.atBoss ? `ボスの たたかい　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだ ここまで きていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div><button class="rs-mapbtn" data-go="regionmap" data-p='{"id":"${x.id}"}' aria-label="${esc(x.name)}の ちずを ひらく">ちず</button></li>`;
+    const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? '突破済み' : x.current ? (x.atBoss ? `ボスの戦い　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだここまで来ていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div><button class="rs-mapbtn" data-go="regionmap" data-p='{"id":"${x.id}"}' aria-label="${esc(x.name)}の地図を開く">地図</button></li>`;
     const chapters = [1, 2, 3].map(c => `<div class="rs-h2">${CH[c]}</div><ol class="rs-map">${info.map((x, i) => x.ch === c ? nodeHtml(x, i - info.findIndex(y => y.ch === c)) : '').join('')}</ol>`).join('');
     const wish = D.WISH_LIST.map(w => `<button class="rs-chip${s.wish === w ? ' on' : ''}" data-wish="${w}" aria-pressed="${s.wish === w}">${esc(D.WISH_NAME[w])}</button>`).join('');
     const a = s.active, nOver = !q && s.progress.step >= D.ROUTE.length;
-    return frame('ぼうけん', `
-      <div class="rs-panel"><div class="rs-h2">いまの ぼうけん</div>
-        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" data-en="${r.enemy}" data-boss="${ed.boss ? 1 : 0}" data-box="96" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
-        ${a && a.basic.n > 0 ? `<div class="rs-note">ぼうけん ${a.basic.n} / ${C.ADV_UNIT}もん（つづきから）</div>` : ''}
-        <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button>${nowKey ? `<button class="rs-btn" data-go="regionmap" data-p='{"id":"${nowKey}"}'>いまの ちずを ひらく</button>` : ''}</div>
-      <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
-      <div class="rs-panel"><div class="rs-h2">宝箱の おねがい</div><p class="rs-p">朝星の宝箱から レアが出るとき、この種類から えらばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
-      <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">せかいちず（浮島世界ルミナリア）</div><p class="rs-p">ちいきの「ちず」を おすと、その ちいきの たんけんちずが ひらきます。</p><img class="rs-wmap" alt="浮島世界ルミナリアの ちず" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
+    return frame('冒険', `
+      <div class="rs-panel"><div class="rs-h2">今の冒険</div>
+        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" data-en="${r.enemy}" data-boss="${ed.boss ? 1 : 0}" data-box="96" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（全部クリア！最後のボスと再戦）' : ''}</small>${ed.weak ? `<small>弱点：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>残りHP ${hpKeep}%（続きの戦い）</small>` : ''}</div></div>
+        ${a && a.basic.n > 0 ? `<div class="rs-note">冒険 ${a.basic.n} / ${C.ADV_UNIT}問（続きから）</div>` : ''}
+        <button class="rs-big" id="rsStart">学習を選んでスタート</button>${nowKey ? `<button class="rs-btn" data-go="regionmap" data-p='{"id":"${nowKey}"}'>今の地図を開く</button>` : ''}</div>
+      <div class="rs-panel"><div class="rs-h2">技と作戦</div><p class="rs-p">${sk.map(esc).join('・')}／作戦：${esc(tac)}</p><button class="rs-btn" data-go="loadout">技・作戦を変える</button></div>
+      <div class="rs-panel"><div class="rs-h2">宝箱のお願い</div><p class="rs-p">朝星の宝箱からレアが出るとき、この種類から選ばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
+      <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">世界地図（浮島世界ルミナリア）</div><p class="rs-p">地域の「地図」を押すと、その地域の探検地図が開きます。</p><img class="rs-wmap" alt="浮島世界ルミナリアの地図" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
   };
   AFTER.adv = function () {
     doc.getElementById('rsStart').onclick = () => root.home();
@@ -190,26 +181,26 @@
 
   // ---------- まち ----------
   const PLACES = {
-    guild: { name: 'ギルド', desc: 'ギルド長ミラが ぼうけんの ようすを きいてくれる。', links: [['jobs', 'てんしょく'], ['ach', 'じっせき']] },
-    shop: { name: 'そうびや', desc: 'ぶき・ぼうぐ・アクセサリーを かう・うる・かえる。', links: [['shop', 'みせ（かう・うる）'], ['equip', 'そうびを かえる']] },
-    forge: { name: 'かじや', desc: '鍛冶師トトが そうびを きたえてくれる。', links: [['forge', 'きょうか']] },
-    temple: { name: 'しんでん', desc: 'しるしの 力を ととのえる。ぼうけんの まえに わざを えらぶ。', links: [['loadout', 'わざ・さくせん']] },
-    room: { name: 'じしつ', desc: 'じぶんの へや。', links: [['look', 'なまえ・みため'], ['codex', 'ずかん'], ['data', 'ゲームのデータ']] },
-    ship: { name: 'くうせん', desc: '見習い船長ルカの船。ぼうけんの ちずを ひらく。', links: [['adv', 'ぼうけんの ちず']] }
+    guild: { name: 'ギルド', desc: 'ギルド長ミラが冒険の様子を聞いてくれる。', links: [['jobs', '転職'], ['ach', '実績']] },
+    shop: { name: '装備屋', desc: '武器・防具・アクセサリーを買う・売る・返す。', links: [['shop', '店（買う・売る）'], ['equip', '装備を変える']] },
+    forge: { name: '鍛冶屋', desc: '鍛冶師トトが装備を鍛えてくれる。', links: [['forge', '強化']] },
+    temple: { name: '神殿', desc: 'しるしの力を整える。冒険の前に技を選ぶ。', links: [['loadout', '技・作戦']] },
+    room: { name: '自室', desc: '自分の部屋。', links: [['look', '名前・見た目'], ['codex', '図鑑'], ['data', 'ゲームのデータ']] },
+    ship: { name: '空船', desc: '見習い船長ルカの船。冒険の地図を開く。', links: [['adv', '冒険の地図']] }
   };
   const mainCleared = s => !!(s.ending && s.ending.seen) || s.progress.step >= D.ROUTE.length;
   const chCleared = (s, ch) => D.REGIONS.filter(x => x.ch === ch).every(x => (s.progress.clearedRegions || []).includes(x.id));
   const imgOf = id => (SP.IMGS && SP.IMGS[id]) || null;
-  const roomImg = id => { const im = imgOf('bg_room_' + id); return im ? `<div class="rs-room" role="img" aria-label="${esc((PLACES[id] || {}).name || '')}の なか" style="background-image:url(${im.src})"></div>` : ''; };
+  const roomImg = id => { const im = imgOf('bg_room_' + id); return im ? `<div class="rs-room" role="img" aria-label="${esc((PLACES[id] || {}).name || '')}のなか" style="background-image:url(${im.src})"></div>` : ''; };
   const NPC_OF = { guild: 'mira', forge: 'toto', ship: 'luca' };
   const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)), a2 = k && imgOf('npc_' + k + '_alt'); return im ? `<img class="rs-npc" alt="" src="${im.src}"${a2 ? ` data-alt="${a2.src}" data-base="${imgOf('npc_' + k).src}"` : ''}>` : ''; };
   const NPC_WHO = { 'ミラ': 'mira', 'トト': 'toto', 'ルカ': 'luca', '黒鎧の騎士': 'knight' };
   const TOWN_PARTS = [['town_windmill', 'meadow', 74, 57], ['town_fountain', 'waterland', 35, 72], ['town_airship', null, 46, 1], ['town_monument', 'main', 41, 28]];
   VIEWS.town = function () {
-    const spots = [['guild', 'ギルド', 5, 36], ['shop', 'そうびや', 37, 45], ['forge', 'かじや', 67, 34], ['temple', 'しんでん', 8, 8], ['room', 'じしつ', 66, 4], ['ship', 'くうせん', 38, 0]];
+    const spots = [['guild', 'ギルド', 5, 36], ['shop', '装備屋', 37, 45], ['forge', '鍛冶屋', 67, 34], ['temple', '神殿', 8, 8], ['room', '自室', 66, 4], ['ship', '空船', 38, 0]];
     const bg = imgOf('bg_town'), s = save(), cl = s.progress.clearedRegions || [], main = mainCleared(s);
     const parts = bg ? TOWN_PARTS.filter(([id, need]) => imgOf(id) && (!need || (need === 'main' ? main : cl.includes(need)))).map(([id, , x, y]) => { const im = imgOf(id); return `<img class="rs-tpart" alt="" src="${im.src}" style="left:${x}%;top:${y}%;width:${(im.width / 240 * 100).toFixed(1)}%">`; }).join('') : '';
-    return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ</p>
+    return frame('風待ちの町', `<p class="rs-p c">行きたい場所をタップ</p>
       <div class="rs-town${bg ? ' img' : ''}" role="group" aria-label="まちの地図"${bg ? ` style="background-image:url(${bg.src})"` : ''}>${parts}${spots.map(([id, nm, x, y]) => `<button class="rs-spot s-${id}" style="left:${x}%;top:${y}%" data-place="${id}"><span class="rs-bld"></span><b>${nm}</b></button>`).join('')}${bg ? '' : '<div class="rs-sea"></div>'}</div>`, { back: false });
   };
   AFTER.town = function () {
@@ -229,14 +220,14 @@
     const s = save(), jl = C.jobLevels(s), hl = C.heroLevel(s.advXp), st = M.statsWith(s, s.equip), jd = D.JOBS[s.job];
     const jobs = D.JOB_IDS.map(j => { const lv = C.jobLevel(j, s.jobXp[j]); return `<div class="rs-jl${j === s.job ? ' me' : ''}"><span>${esc(D.JOBS[j].name)}</span><b>Lv${lv.lv}</b></div>`; }).join('');
     const cs = M.codexSummary(s);
-    return frame('じぶん', `
-      <div class="rs-panel rs-me">${heroCv('self')}<div><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-job">${esc(jd.name)} Lv${jl[s.job]}</div><div class="rs-hc-sub">ぼうけん者 Lv${hl.lv}</div>${bar(hl.into, hl.need)}<div class="rs-hc-sub">${coinHtml()}</div></div></div>
-      <div class="rs-panel"><div class="rs-h2">つよさ</div><div class="rs-stats"><div>HP <b>${st.maxHp}</b></div><div>こうげき <b>${st.atk}</b></div><div>ぼうぎょ <b>${st.def}</b></div></div></div>
-      <div class="rs-panel"><div class="rs-h2">いまの そうび</div>
+    return frame('自分', `
+      <div class="rs-panel rs-me">${heroCv('self')}<div><div class="rs-hc-name">${esc(s.name || '冒険者')}</div><div class="rs-hc-job">${esc(jd.name)} Lv${jl[s.job]}</div><div class="rs-hc-sub">冒険者 Lv${hl.lv}</div>${bar(hl.into, hl.need)}<div class="rs-hc-sub">${coinHtml()}</div></div></div>
+      <div class="rs-panel"><div class="rs-h2">強さ</div><div class="rs-stats"><div>HP <b>${st.maxHp}</b></div><div>攻撃 <b>${st.atk}</b></div><div>防御 <b>${st.def}</b></div></div></div>
+      <div class="rs-panel"><div class="rs-h2">今の装備</div>
         ${['weapon', 'armor', 'acc'].map(sl => `<div class="rs-eqrow"><small>${M.SLOT_NAME[sl]}</small><b>${esc(itemLine(s.equip[sl]))}${s.equip[sl] && M.enhLv(s, s.equip[sl]) ? ' +' + M.enhLv(s, s.equip[sl]) : ''}</b></div>`).join('')}
-        <button class="rs-btn" data-go="equip" data-p='{"back":"me"}'>そうびを みる・かえる</button></div>
-      <div class="rs-panel"><div class="rs-h2">職業レベル</div><div class="rs-jls">${jobs}</div><button class="rs-btn" data-go="jobs" data-p='{"back":"me"}'>てんしょく</button></div>
-      <div class="rs-panel rs-links"><button class="rs-btn" data-go="look">なまえ・みため</button><button class="rs-btn" data-go="codex">ずかん（てき ${cs.enemies.seen}/${cs.enemies.total}・そうび ${cs.items.got}/${cs.items.total}）</button><button class="rs-btn" data-go="ach">じっせき</button><button class="rs-btn" data-go="settings">せってい（おと・バックアップ）</button></div>`, { back: false });
+        <button class="rs-btn" data-go="equip" data-p='{"back":"me"}'>装備を見る・変える</button></div>
+      <div class="rs-panel"><div class="rs-h2">職業レベル</div><div class="rs-jls">${jobs}</div><button class="rs-btn" data-go="jobs" data-p='{"back":"me"}'>転職</button></div>
+      <div class="rs-panel rs-links"><button class="rs-btn" data-go="look">名前・見た目</button><button class="rs-btn" data-go="codex">図鑑（敵 ${cs.enemies.seen}/${cs.enemies.total}・装備 ${cs.items.got}/${cs.items.total}）</button><button class="rs-btn" data-go="ach">実績</button><button class="rs-btn" data-go="settings">設定（音・バックアップ）</button></div>`, { back: false });
   };
   AFTER.me = function () {};
 
@@ -255,19 +246,19 @@
     const usable = owned.filter(i => !M.canEquip(s, i.id)), other = owned.filter(i => M.canEquip(s, i.id));
     const sel = UI.eq[UI.slot] ? D.ITEMS[UI.eq[UI.slot]] : null, selOwned = sel && s.inv.items[sel.id], selNow = sel && s.equip[UI.slot] === sel.id;
     const eff = sel ? M.effectText(sel.id) : '';
-    const list = usable.map(it => eqRow(s, it)).join('') + (UI.slot !== 'weapon' ? `<button class="rs-item rs-eqitem${!UI.eq[UI.slot] ? ' on' : ''}" data-eq=""><span class="rs-it-t"><b>はずす</b></span></button>` : '') || '<p class="rs-p">まだ持っていません。</p>';
+    const list = usable.map(it => eqRow(s, it)).join('') + (UI.slot !== 'weapon' ? `<button class="rs-item rs-eqitem${!UI.eq[UI.slot] ? ' on' : ''}" data-eq=""><span class="rs-it-t"><b>外す</b></span></button>` : '') || '<p class="rs-p">まだ持っていません。</p>';
     return frame(rb('{装備|そうび}'), `
       <div class="rs-panel rs-eqtop"><div class="rs-eqrow1"><div class="rs-stage rs-stage-eq">${heroCv('equip', { weaponId: UI.eq.weapon || null })}</div>
-        <div class="rs-eqweapon">${sel ? `${iconOf(sel.id, 64)}<b>${esc(sel.name)}</b>${selNow ? `<i class="rs-now2">${kr('装備')}中</i>` : selOwned ? `<i class="rs-try">${kr('試着')}中</i>` : `<i class="rs-try">${kr('試着')}中（${kr('店')}で買える）</i>`}` : '<b>武器なし</b>'}</div></div>
+        <div class="rs-eqweapon">${sel ? `${iconOf(sel.id, 64)}<b>${esc(sel.name)}</b><small class="rs-effshort">${esc(M.effectShort(sel.id))}</small>${selNow ? `<i class="rs-now2">${kr('装備')}中</i>` : selOwned ? `<i class="rs-try">${kr('試着')}中</i>` : `<i class="rs-try">${kr('試着')}中（${kr('店')}で買える）</i>`}` : '<b>武器なし</b>'}</div></div>
         <table class="rs-cmp"><tr><th></th><th>${kr('現在')}</th><th>${kr('試着')}</th><th></th></tr>
           <tr><td>HP</td><td>${cur.maxHp}</td><td>${tr.maxHp}</td><td>${eqDiff(cur.maxHp, tr.maxHp)}</td></tr>
           <tr><td>${kr('攻撃')}</td><td>${cur.atk}</td><td>${tr.atk}</td><td>${eqDiff(cur.atk, tr.atk)}</td></tr>
           <tr><td>${kr('防御')}</td><td>${cur.def}</td><td>${tr.def}</td><td>${eqDiff(cur.def, tr.def)}</td></tr></table>
-        ${sel ? `<details class="rs-det"><summary>${kr('効果')}を${kr('詳')}しく</summary><p class="rs-p">${esc(statLine(sel.id))}${sel.rank ? '　' + kr('種類') + '：' + esc(M.CAT_NAME[sel.cat] || '') + '　ランク' + D.RANK_NAME[sel.rank - 1] : ''}</p><p class="rs-p">${eff ? esc(eff) : 'とくべつな 効果は ありません。'}</p></details>` : ''}</div>
+        ${sel ? `<details class="rs-det"><summary>${kr('効果')}を${kr('詳')}しく</summary><p class="rs-p">${esc(statLine(sel.id))}${sel.rank ? '　' + kr('種類') + '：' + esc(M.CAT_NAME[sel.cat] || '') + '　ランク' + D.RANK_NAME[sel.rank - 1] : ''}</p><p class="rs-p">${eff ? esc(eff) : 'とくべつな効果はありません。'}</p></details>` : ''}</div>
       <div class="rs-tabs2" role="tablist">${slots}</div>
       <div class="rs-list">${list}</div>
       ${other.length ? `<details class="rs-det rs-panel"><summary>${kr('別')}の${kr('職業')}用（${other.length}）</summary><div class="rs-list">${other.map(it => eqRow(s, it)).join('')}</div></details>` : ''}
-      ${s.active ? `<div class="rs-note">${kr('冒険')}の${kr('途中')}は ${kr('装備')}を かえられません。</div>` : ''}
+      ${s.active ? `<div class="rs-note">${kr('冒険')}の${kr('途中')}は ${kr('装備')}を変えられません。</div>` : ''}
       <button class="rs-big" id="eqOk" ${changed && !s.active && (!sel || selOwned) ? '' : 'disabled'}>${rb('これを{装備|そうび}する')}</button>
       <div class="rs-row2"><button class="rs-btn" id="eqReset" ${changed ? '' : 'disabled'}>${rb('{取|と}り{消|け}し')}</button><button class="rs-btn" id="eqRec">おすすめ</button></div>
       <p class="rs-p c">${rb('「これを{装備|そうび}する」を{押|お}すまで、{保存|ほぞん}されません。')}</p>`, { back: true });
@@ -276,22 +267,22 @@
     const s = save();
     app().querySelectorAll('[data-slot]').forEach(b => b.onclick = () => { UI.slot = b.dataset.slot; rerender(); });
     app().querySelectorAll('[data-eq]').forEach(b => b.onclick = () => { const id = b.dataset.eq; if (id && M.canEquip(s, id)) { UI.msg = M.canEquip(s, id); rerender(); UI.msg = ''; return; } UI.eq[UI.slot] = id || null; UI.msg = ''; rerender(); });
-    doc.getElementById('eqRec').onclick = () => { UI.eq = M.recommendEquip(s); UI.msg = 'おすすめを ためしています。きまったら「これを そうびする」。'; rerender(); UI.msg = ''; };
+    doc.getElementById('eqRec').onclick = () => { UI.eq = M.recommendEquip(s); UI.msg = 'おすすめを試しています。決まったら「これを装備する」。'; rerender(); UI.msg = ''; };
     doc.getElementById('eqReset').onclick = () => { UI.eq = Object.assign({}, s.equip); UI.msg = ''; rerender(); };
-    doc.getElementById('eqOk').onclick = () => { const r = M.setEquip(s, UI.eq); if (!r.ok) { UI.msg = r.err; rerender(); return; } commit(); UI.msg = UI.msg || 'そうびを かえました。'; UI.eq = Object.assign({}, s.equip); rerender(); };
+    doc.getElementById('eqOk').onclick = () => { const r = M.setEquip(s, UI.eq); if (!r.ok) { UI.msg = r.err; rerender(); return; } commit(); UI.msg = UI.msg || '装備を変えました。'; UI.eq = Object.assign({}, s.equip); rerender(); };
   };
 
   // ---------- 店（買う・試着・売る。全商品にアイコン。いまの職業で使える武器を先に） ----------
   VIEWS.shop = function () {
-    const s = save(), rank = C.maxRank(s), tabs = [['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセ'], ['sell', 'うる・かえす']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${kr(nm)}</button>`).join('');
+    const s = save(), rank = C.maxRank(s), tabs = [['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセ'], ['sell', '売る・返す']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${kr(nm)}</button>`).join('');
     let body;
     if (UI.shopTab === 'sell') {
       const own = Object.keys(s.inv.items).filter(i => i !== 'w_start').map(i => D.ITEMS[i]);
       body = own.length ? own.map(it => {
         const ref = M.canRefund(s, it.id), eqd = M.isEquipped(s, it.id), conf = UI.confirm === it.id;
-        const act = eqd ? `<span class="rs-small">${kr('装備')}中</span>` : ref ? `<button class="rs-btn sm" data-refund="${it.id}">${conf ? 'ほんとうに かえす' : `かえす +${s.inv.fresh[it.id]}`}</button>` : `<button class="rs-btn sm" data-sell="${it.id}">${conf ? 'ほんとうに うる' : `うる +${M.sellPrice(it.id)}`}</button>`;
-        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 40)}<span class="rs-it-t"><b>${esc(it.name)}${M.enhLv(s, it.id) ? ' +' + M.enhLv(s, it.id) : ''}</b>${rankTag(it)}${rareTag(it)}<small>${esc(statLine(it.id))}${ref ? '　まだ つかっていない：同じ ねだんで かえせる' : '　店の ねだんの 25%で うれる'}</small>${act}</span></div>`;
-      }).join('') : '<p class="rs-p">うれるものが ありません。</p>';
+        const act = eqd ? `<span class="rs-small">${kr('装備')}中</span>` : ref ? `<button class="rs-btn sm" data-refund="${it.id}">${conf ? '本当に返す' : `返す +${s.inv.fresh[it.id]}`}</button>` : `<button class="rs-btn sm" data-sell="${it.id}">${conf ? '本当に売る' : `売る +${M.sellPrice(it.id)}`}</button>`;
+        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 40)}<span class="rs-it-t"><b>${esc(it.name)}${M.enhLv(s, it.id) ? ' +' + M.enhLv(s, it.id) : ''}</b>${rankTag(it)}${rareTag(it)}<small>${esc(statLine(it.id))}${ref ? '　まだ使っていない：同じ値段で返せる' : '　店の値段の 25%で売れる'}</small>${act}</span></div>`;
+      }).join('') : '<p class="rs-p">売れるものがありません。</p>';
     } else {
       let items = Object.values(D.ITEMS).filter(i => i.slot === UI.shopTab && i.rarity === 'normal' && i.rank && i.rank <= rank), hidden = 0;
       if (UI.shopTab === 'weapon') {   // いまの職業で使える武器を先に。別職用は「すべて」で見られる
@@ -301,19 +292,19 @@
       }
       const toggle = UI.shopTab === 'weapon' ? `<div class="rs-chips" role="group"><button class="rs-chip${!UI.shopAll ? ' on' : ''}" data-shopall="0" aria-pressed="${!UI.shopAll}">${kr('現在')}の${kr('職業')}で${kr('使')}える</button><button class="rs-chip${UI.shopAll ? ' on' : ''}" data-shopall="1" aria-pressed="${!!UI.shopAll}">${kr('全て')}</button></div>` : '';
       body = toggle + items.map(it => {
-        const have = !!s.inv.items[it.id], can = C.canBuy(s, it.id), eff = M.effectText(it.id), eqd = M.isEquipped(s, it.id), notFit = !fitsJob(s.job, it);
-        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 48)}<span class="rs-it-t"><b>${esc(it.name)}</b>${eqd ? `<i class="rs-now2">${kr('装備')}中</i>` : have ? '<i class="rs-have">もっている</i>' : ''}${rankTag(it)}<small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${notFit ? '　（' + kr('別') + 'の' + kr('職業') + '用）' : ''}</small>
+        const have = !!s.inv.items[it.id], can = C.canBuy(s, it.id), eff = M.effectShort(it.id), eqd = M.isEquipped(s, it.id), notFit = !fitsJob(s.job, it);
+        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 48)}<span class="rs-it-t"><b>${esc(it.name)}</b>${eqd ? `<i class="rs-now2">${kr('装備')}中</i>` : have ? '<i class="rs-have">持っている</i>' : ''}${rankTag(it)}<small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${notFit ? '　（' + kr('別') + 'の' + kr('職業') + '用）' : ''}</small>
           <span class="rs-shopbtns">${have ? '' : `<button class="rs-btn sm" data-buy="${it.id}" ${can ? 'disabled' : ''}>${it.price} コインで ${kr('購入')}</button>`}<button class="rs-btn sm" data-try="${it.id}">${kr('試着')}</button></span>${!have && can ? `<small class="rs-why">${esc(can)}</small>` : ''}</span></div>`;
-      }).join('') + (hidden ? `<p class="rs-p">${kr('別')}の${kr('職業')}用の ${kr('武器')}が ${hidden}こ あります（「${kr('全て')}」で ${kr('見')}られます）。</p>` : '') + `<p class="rs-p">${['ランクIIは 砂海を とっぱすると 売りだされます。', 'ランクIIIは 第1章を クリアすると 売りだされます。', 'ランクIVは 逆さ遺跡を とっぱすると 売りだされます。', 'ランクVは 第2章を クリアすると 売りだされます。', 'ランクVIは 天測の塔を とっぱすると 売りだされます。', ''][rank - 1]}</p>`;
+      }).join('') + (hidden ? `<p class="rs-p">${kr('別')}の${kr('職業')}用の ${kr('武器')}が ${hidden}個あります（「${kr('全て')}」で ${kr('見')}られます）。</p>` : '') + `<p class="rs-p">${['ランクIIは砂海を突破すると売り出されます。', 'ランクIIIは第1章をクリアすると売り出されます。', 'ランクIVは逆さ遺跡を突破すると売り出されます。', 'ランクVは第2章をクリアすると売り出されます。', 'ランクVIは天測の塔を突破すると売り出されます。', ''][rank - 1]}</p>`;
     }
-    return frame('そうびや', `<div class="rs-panel c">${coinHtml()}</div><div class="rs-tabs2">${tabs}</div><div class="rs-list">${body}</div>`);
+    return frame('装備屋', `<div class="rs-panel c">${coinHtml()}</div><div class="rs-tabs2">${tabs}</div><div class="rs-list">${body}</div>`);
   };
   AFTER.shop = function () {
     const s = save();
     app().querySelectorAll('[data-st]').forEach(b => b.onclick = () => { UI.shopTab = b.dataset.st; UI.confirm = null; rerender(); });
     app().querySelectorAll('[data-shopall]').forEach(b => b.onclick = () => { UI.shopAll = b.dataset.shopall === '1'; rerender(); });
     app().querySelectorAll('[data-try]').forEach(b => b.onclick = () => go('equip', { back: 'shop', tryItem: b.dataset.try }));
-    app().querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { const r = M.buyChecked(s, b.dataset.buy); UI.msg = r.ok ? `${D.ITEMS[b.dataset.buy].name} を かいました。` : r.err; if (r.ok) commit(); rerender(); });
+    app().querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { const r = M.buyChecked(s, b.dataset.buy); UI.msg = r.ok ? `${D.ITEMS[b.dataset.buy].name} を買いました。` : r.err; if (r.ok) commit(); rerender(); });
     app().querySelectorAll('[data-sell],[data-refund]').forEach(b => b.onclick = () => {
       const id = b.dataset.sell || b.dataset.refund; if (UI.confirm !== id) { UI.confirm = id; rerender(); return; }
       const r = b.dataset.refund ? M.refund(s, id) : M.sell(s, id); UI.confirm = null; UI.msg = r.ok ? `+${r.coin} コイン` : r.err; if (r.ok) commit(); rerender();
@@ -325,26 +316,26 @@
     const s = save(), own = Object.keys(s.inv.items).filter(i => i !== 'w_start').map(i => D.ITEMS[i]).sort((a, b) => b.rank - a.rank);
     const rows = own.map(it => {
       const i = M.enhanceInfo(s, it.id), lv = i.lv;
-      const st = statLine(it.id), after = i.after != null && lv < D.ENH_MAX ? `→ ${it.atk != null ? 'こうげき' : 'ぼうぎょ'} ${i.after}` : '';
-      return `<div class="rs-item"><div><b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}</div><small>${esc(st)} ${esc(after)}${it.slot === 'acc' ? '　（こうかの 量が +5%ずつ）' : ''}</small>
-        ${lv >= D.ENH_MAX ? '<span class="rs-small">さいだい（+3）</span>' : `<small>ひよう ${i.coin}コイン ＋ ${esc(C.oreName(it.rank))} ×${i.ore}（もち ${i.have}）</small><button class="rs-btn sm" data-enh="${it.id}" ${i.err ? 'disabled' : ''}>+${lv + 1}に きょうか</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`}</div>`;
-    }).join('') || '<p class="rs-p">きたえられる そうびが ありません。</p>';
+      const st = statLine(it.id), after = i.after != null && lv < D.ENH_MAX ? `→ ${it.atk != null ? '攻撃' : '防御'} ${i.after}` : '';
+      return `<div class="rs-item"><div><b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}</div><small>${esc(st)} ${esc(after)}${it.slot === 'acc' ? '　（効果の量が +5%ずつ）' : ''}</small>
+        ${lv >= D.ENH_MAX ? '<span class="rs-small">最大（+3）</span>' : `<small>費用 ${i.coin}コイン ＋ ${esc(C.oreName(it.rank))} ×${i.ore}（持ち ${i.have}）</small><button class="rs-btn sm" data-enh="${it.id}" ${i.err ? 'disabled' : ''}>+${lv + 1}に強化</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`}</div>`;
+    }).join('') || '<p class="rs-p">鍛えられる装備がありません。</p>';
     const mats = Object.keys(s.inv.mats).filter(k => s.inv.mats[k] > 0).map(k => {
       let nm = k; if (k.startsWith('ore_')) nm = C.oreName(+k.slice(4)); else if (k.startsWith('bm_')) { const r = D.REGIONS.find(x => 'bm_' + x.id === k); nm = r ? r.mat : k; }
       return `<span class="rs-mat">${esc(nm)} ×${s.inv.mats[k]}</span>`;
-    }).join('') || '<small>まだ ありません</small>';
-    return frame('かじや', `<div class="rs-panel c">${coinHtml()}<p class="rs-p">きょうかは +3まで。かならず せいこうします。1回ごとに 基準の せいのうが +5%。</p></div>
-      <div class="rs-panel"><div class="rs-h2">そざい</div><div class="rs-mats">${mats}</div><p class="rs-p">ボスの そざいで つくる 固有そうびは、まだ つくれません（じっそうまえ）。</p></div><div class="rs-list">${rows}</div>`);
+    }).join('') || '<small>まだありません</small>';
+    return frame('鍛冶屋', `<div class="rs-panel c">${coinHtml()}<p class="rs-p">強化は +3まで。必ず成功します。1回ごとに基準の性能が +5%。</p></div>
+      <div class="rs-panel"><div class="rs-h2">素材</div><div class="rs-mats">${mats}</div><p class="rs-p">ボスの素材で作る固有装備は、まだ作れません。</p></div><div class="rs-list">${rows}</div>`);
   };
   AFTER.forge = function () {
-    app().querySelectorAll('[data-enh]').forEach(b => b.onclick = () => { const r = M.enhance(save(), b.dataset.enh); UI.msg = r.ok ? `+${r.lv} に なりました！` : r.err; if (r.ok) commit(); rerender(); });
+    app().querySelectorAll('[data-enh]').forEach(b => b.onclick = () => { const r = M.enhance(save(), b.dataset.enh); UI.msg = r.ok ? `+${r.lv} になりました！` : r.err; if (r.ok) commit(); rerender(); });
   };
 
   // ---------- 転職（姿→特徴→条件✓→「この職業になる」を先に。技・強さは折りたたみ） ----------
   const JOB_BLURB = {
-    warrior: '{剣|けん}で{正面|しょうめん}から{戦|たたか}う', mage: '{魔法|まほう}で{敵|てき}の{弱点|じゃくてん}をつく', priest: '{回復|かいふく}と{守|まも}りで{長|なが}く{戦|たたか}う', thief: 'すばやい{連続攻撃|れんぞくこうげき}で{戦|たたか}う',
-    magicknight: '{属性|ぞくせい}をまとった{剣|けん}で{戦|たたか}う', paladin: '{守|まも}りと{回復|かいふく}をあやつる{騎士|きし}', shadow: '{影|かげ}にまぎれて{連続|れんぞく}で{攻|せ}める', sage: '{魔法|まほう}と{回復|かいふく}をあやつる{賢者|けんじゃ}',
-    ninja: 'すばやい{動|うご}きで{敵|てき}をまどわす', ranger: '{弓|ゆみ}で{遠|とお}くから{狙|ねら}う', skyknight: '{翼|つばさ}で{空|そら}をかける{騎士|きし}', starseer: '{星|ほし}の{力|ちから}で{未来|みらい}を{読|よ}む'
+    warrior: '剣で正面から戦う', mage: '魔法で敵の弱点をつく', priest: '回復と守りで長く戦う', thief: 'すばやい連続攻撃で戦う',
+    magicknight: '属性をまとった剣で戦う', paladin: '守りと回復をあやつる騎士', shadow: '影にまぎれて連続で攻める', sage: '魔法と回復をあやつる賢者',
+    ninja: 'すばやい動きで敵をまどわす', ranger: '弓で遠くから狙う', skyknight: '翼で空をかける騎士', starseer: '星の力で未来を読む'
   };
   VIEWS.jobs = function () {
     const s = save(), tabs = ['base', 'adv', 'top'].map(t => `<button class="rs-tab2${UI.tier === t ? ' on' : ''}" data-tier="${t}">${rb(tierRb(t))}</button>`).join('');
@@ -352,7 +343,7 @@
       const lv = C.jobLevel(j, s.jobXp[j]).lv, e = C.canChangeJob(s, j), me = s.job === j, goal = s.goal && s.goal.job === j;
       return `<button class="rs-jobcard${me ? ' me' : ''}${e && !me ? ' lock' : ''}" data-go="jobdetail" data-p='${JSON.stringify({ job: j })}'>${heroCv('jobcard', { job: j })}<div><b>${jobRb(j)}</b><small>Lv${lv}${me ? '（' + kr('現在') + 'の' + kr('職業') + '）' : e ? '' : '（なれる）'}${goal ? '　★' + kr('目標') : ''}</small></div></button>`;
     }).join('');
-    return frame(rb('{転職|てんしょく}'), `<div class="rs-tabs2" role="tablist">${tabs}</div><div class="rs-jobgrid">${cards}</div><p class="rs-p c">${rb('{転職|てんしょく}は{無料|むりょう}です。{職業|しょくぎょう}ごとのレベルは そのまま{残|のこ}ります。')}</p>`);
+    return frame(rb('{転職|てんしょく}'), `<div class="rs-tabs2" role="tablist">${tabs}</div><div class="rs-jobgrid">${cards}</div><p class="rs-p c">${rb('{転職|てんしょく}は{無料|むりょう}です。{職業|しょくぎょう}ごとのレベルはそのまま{残|のこ}ります。')}</p>`);
   };
   const tierRb = t => ({ base: '{基本職|きほんしょく}', adv: '{上級職|じょうきゅうしょく}', top: '{最上級職|さいじょうきゅうしょく}' })[t];
   AFTER.jobs = function () { app().querySelectorAll('[data-tier]').forEach(b => b.onclick = () => { UI.tier = b.dataset.tier; rerender(); }); };
@@ -370,7 +361,7 @@
         <div class="rs-jobname"><b>${jobRb(j)}</b><i class="rs-rank">${rb(tierRb(jd.tier))}</i>${me ? `<i class="rs-now2">${kr('現在')}</i>` : ''}</div>
         <p class="rs-blurb">${rb(JOB_BLURB[j] || '')}</p></div>
       ${reqs ? `<div class="rs-panel"><div class="rs-h2">${rb('{転職|てんしょく}{条件|じょうけん}')}</div>${reqs}</div>` : ''}
-      <div class="rs-note" id="jobNote">${me ? kr('現在') + 'の' + kr('職業') + 'です。' : e ? esc(e) : 'この' + kr('職業') + 'に なれます！'}</div>
+      <div class="rs-note" id="jobNote">${me ? kr('現在') + 'の' + kr('職業') + 'です。' : e ? esc(e) : 'この' + kr('職業') + 'になれます！'}</div>
       <button class="rs-big gold" id="jobDo" ${e || me ? 'disabled' : ''}>${rb('この{職業|しょくぎょう}になる')}</button>
       <div class="rs-row2"><button class="rs-btn" id="jobPlay">${rb('{動|うご}きを{見|み}る')}</button>${jd.tier !== 'base' ? `<button class="rs-btn" id="jobGoal">${goal ? rb('{目標|もくひょう}をやめる') : rb('{目標|もくひょう}にする')}</button>` : ''}</div>
       <details class="rs-det rs-panel"><summary>${rb('{覚|おぼ}える{技|わざ}')}</summary>${sk}</details>
@@ -381,7 +372,7 @@
     const d = doc.getElementById('jobDo'); if (d) d.onclick = () => {
       const prev = s.job, first = !s.seen['job_' + j], r = M.changeJob(s, j); if (!r.ok) { UI.msg = r.err; rerender(); return; }
       s.seen['job_' + j] = 1; commit();
-      const sw = r.swapped && r.swapped.to ? `${D.ITEMS[r.swapped.to].name} に ぶきを かえました（${D.JOBS[j].name}は ${r.swapped.from ? D.ITEMS[r.swapped.from].name : 'いまの ぶき'}を つかえないため）。` : '';
+      const sw = r.swapped && r.swapped.to ? `${D.ITEMS[r.swapped.to].name} に武器を変えました（${D.JOBS[j].name}は ${r.swapped.from ? D.ITEMS[r.swapped.from].name : '今の武器'}を使えないため）。` : '';
       showJobFx(j, first, r.gifts, msg => { go('me'); UI.msg = msg; rerender(); }, prev, sw);
     };
     const g = doc.getElementById('jobGoal'); if (g) g.onclick = () => { M.setGoal(s, s.goal && s.goal.job === j ? null : j); commit(); rerender(); };
@@ -392,17 +383,17 @@
   };
   // 転職の演出（初回のみ。旧姿→しるしの光→新しい姿。宝箱・NPCには何も当てない。とばせる。動きが苦手な設定では静止）
   function showJobFx(j, first, gifts, done, prev, extra) {
-    const gift = gifts && gifts.length ? `<div class="rs-fx-gift">${gifts.map(g => esc(D.ITEMS[g].name)).join('、')} を もらった！</div>` : '', ex = extra ? `<div class="rs-fx-gift">${esc(extra)}</div>` : '';
-    if (!first) return done(`${D.JOBS[j].name} に なりました。${extra ? ' ' + extra : ''}`);
+    const gift = gifts && gifts.length ? `<div class="rs-fx-gift">${gifts.map(g => esc(D.ITEMS[g].name)).join('、')} をもらった！</div>` : '', ex = extra ? `<div class="rs-fx-gift">${esc(extra)}</div>` : '';
+    if (!first) return done(`${D.JOBS[j].name} になりました。${extra ? ' ' + extra : ''}`);
     const still = reduceMotion(), o = doc.createElement('div'); o.className = 'rs-fx' + (still ? ' still' : ''); o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', '転職');
-    o.innerHTML = `<div class="rs-fx-in"><div class="rs-fx-stage" id="fxStage">${heroCv('fx', { job: still ? j : (prev || j), pose: still ? 'win' : 'idle' })}<div class="rs-fx-glow"></div></div><div class="rs-fx-t" id="fxT">${still ? jobRb(j) + ' に なった！' : jobRb(prev || j)}</div><div id="fxExtra"${still ? '' : ' hidden'}>${gift}${ex}</div><button class="rs-big" id="fxSkip">${still ? 'とじる' : 'とばす'}</button></div>`;
+    o.innerHTML = `<div class="rs-fx-in"><div class="rs-fx-stage" id="fxStage">${heroCv('fx', { job: still ? j : (prev || j), pose: still ? 'win' : 'idle' })}<div class="rs-fx-glow"></div></div><div class="rs-fx-t" id="fxT">${still ? jobRb(j) + ' になった！' : jobRb(prev || j)}</div><div id="fxExtra"${still ? '' : ' hidden'}>${gift}${ex}</div><button class="rs-big" id="fxSkip">${still ? 'とじる' : 'とばす'}</button></div>`;
     doc.body.appendChild(o); paintHeroes(o);
-    let closed = false; const close = () => { if (closed) return; closed = true; o.remove(); done(`${D.JOBS[j].name} に なりました。${extra ? ' ' + extra : ''}`); };
+    let closed = false; const close = () => { if (closed) return; closed = true; o.remove(); done(`${D.JOBS[j].name} になりました。${extra ? ' ' + extra : ''}`); };
     o.querySelector('#fxSkip').onclick = close;
     if (still) return;
     const cv = o.querySelector('canvas[data-hero]'), t = o.querySelector('#fxT'), a = JSON.parse(cv.dataset.hero), at = (ms, f) => setTimeout(() => { if (!closed && o.isConnected) f(); }, ms);
-    at(700, () => { o.querySelector('#fxStage').classList.add('glow'); t.textContent = 'しるしが かがやく…'; });
-    at(1500, () => { cv.dataset.hero = JSON.stringify(heroOpts('fx', { job: j, pose: 'attack' })); paintHero(cv); t.innerHTML = jobRb(j) + ' に なった！'; o.querySelector('#fxExtra').hidden = false; o.querySelector('#fxSkip').textContent = 'とじる'; });
+    at(700, () => { o.querySelector('#fxStage').classList.add('glow'); t.textContent = 'しるしが輝く…'; });
+    at(1500, () => { cv.dataset.hero = JSON.stringify(heroOpts('fx', { job: j, pose: 'attack' })); paintHero(cv); t.innerHTML = jobRb(j) + ' になった！'; o.querySelector('#fxExtra').hidden = false; o.querySelector('#fxSkip').textContent = 'とじる'; });
     at(2100, () => { const b = heroOpts('fx', { job: j, pose: 'win' }); cv.dataset.hero = JSON.stringify(b); paintHero(cv); });
     at(4500, close);
   }
@@ -412,14 +403,14 @@
     const s = save(), jobs = C.jobLevels(s), job = s.job, lv = jobs[job], inhOn = M.advInherit(s);
     const own = D.SKILLS_OF[job].filter(k => k.lv <= lv), inh = inhOn ? B.inheritable(jobs).filter(id => D.SKILLS[id].job !== job).map(id => D.SKILLS[id]) : [];
     const sel = UI.sel, errs = B.validateLoadout(job, jobs, sel, inhOn);
-    const chip = k => { const on = sel.includes(k.id); return `<button class="rs-sk btn${on ? ' on' : ''}" data-sk="${k.id}" aria-pressed="${on}"><div><b>${esc(k.name)}</b><i class="rs-cost">ゲージ${k.cost}</i>${k.job !== job ? `<i class="rs-rare">${esc(D.JOBS[k.job].name)}の わざ</i>` : ''}</div><small>${esc(M.skillText(k, k.job === job ? lv : 1))}</small></button>`; };
-    return frame('わざ・さくせん', `
-      <div class="rs-panel"><div class="rs-h2">${esc(D.JOBS[job].name)}の わざ（3つまで）</div><p class="rs-p">えらんだ わざは、こたえに あわせて 自動でつかわれます。ぼうけんを はじめると、とちゅうでは かえられません。</p><div class="rs-list">${own.map(chip).join('')}</div></div>
-      <div class="rs-panel"><div class="rs-h2">ほかの 職業の わざ（1つだけ）</div>${inhOn ? (inh.length ? `<div class="rs-list">${inh.map(chip).join('')}</div>` : '<p class="rs-p">けいしょうできる わざが まだ ありません。</p>') : '<p class="rs-p">きほん職の どれかが Lv5に なると つかえます。</p>'}</div>
-      <div class="rs-panel"><div class="rs-h2">さくせん</div><div class="rs-list">${TACTICS.map(([id, nm, ds]) => `<button class="rs-sk btn${UI.tactic === id ? ' on' : ''}" data-tac="${id}" aria-pressed="${UI.tactic === id}"><div><b>${nm}</b></div><small>${esc(ds)}</small></button>`).join('')}</div></div>
-      ${errs.length ? `<div class="rs-note">${esc(errs[0])}</div>` : ''}${s.active ? '<div class="rs-note">ぼうけんの 途中は かえられません。</div>' : ''}
-      <div class="rs-row2"><button class="rs-btn" id="lkRec">おすすめに する</button></div>
-      <button class="rs-big" id="lkOk" ${errs.length || s.active ? 'disabled' : ''}>これで けってい</button>`);
+    const chip = k => { const on = sel.includes(k.id); return `<button class="rs-sk btn${on ? ' on' : ''}" data-sk="${k.id}" aria-pressed="${on}"><div><b>${esc(k.name)}</b><i class="rs-cost">ゲージ${k.cost}</i>${k.job !== job ? `<i class="rs-rare">${esc(D.JOBS[k.job].name)}の技</i>` : ''}</div><small>${esc(M.skillText(k, k.job === job ? lv : 1))}</small></button>`; };
+    return frame('技・作戦', `
+      <div class="rs-panel"><div class="rs-h2">${esc(D.JOBS[job].name)}の技（3つまで）</div><p class="rs-p">選んだ技は、答えにあわせて自動で使われます。冒険をはじめると、途中では変えられません。</p><div class="rs-list">${own.map(chip).join('')}</div></div>
+      <div class="rs-panel"><div class="rs-h2">他の職業の技（1つだけ）</div>${inhOn ? (inh.length ? `<div class="rs-list">${inh.map(chip).join('')}</div>` : '<p class="rs-p">継承できる技がまだありません。</p>') : '<p class="rs-p">基本職のどれかが Lv5になると使えます。</p>'}</div>
+      <div class="rs-panel"><div class="rs-h2">作戦</div><div class="rs-list">${TACTICS.map(([id, nm, ds]) => `<button class="rs-sk btn${UI.tactic === id ? ' on' : ''}" data-tac="${id}" aria-pressed="${UI.tactic === id}"><div><b>${nm}</b></div><small>${esc(ds)}</small></button>`).join('')}</div></div>
+      ${errs.length ? `<div class="rs-note">${esc(errs[0])}</div>` : ''}${s.active ? '<div class="rs-note">冒険の途中は変えられません。</div>' : ''}
+      <div class="rs-row2"><button class="rs-btn" id="lkRec">おすすめにする</button></div>
+      <button class="rs-big" id="lkOk" ${errs.length || s.active ? 'disabled' : ''}>これで決定</button>`);
   };
   AFTER.loadout = function () {
     const s = save(), jobs = C.jobLevels(s);
@@ -430,7 +421,7 @@
     });
     app().querySelectorAll('[data-tac]').forEach(b => b.onclick = () => { UI.tactic = b.dataset.tac; rerender(); });
     doc.getElementById('lkRec').onclick = () => { UI.sel = B.recommendLoadout(s.job, jobs); rerender(); };
-    doc.getElementById('lkOk').onclick = () => { const r = M.setLoadout(s, UI.sel, UI.tactic); UI.msg = r.ok ? 'けっていしました。つぎの ぼうけんから つかわれます。' : r.err; if (r.ok) commit(); rerender(); };
+    doc.getElementById('lkOk').onclick = () => { const r = M.setLoadout(s, UI.sel, UI.tactic); UI.msg = r.ok ? '決定しました。次の冒険から使われます。' : r.err; if (r.ok) commit(); rerender(); };
   };
 
   // ---------- 外見 ----------
@@ -442,7 +433,7 @@
     const mo = M.masterOwned(s, s.job), outfits = `<button class="rs-chip${!L.outfit || L.outfit !== 'master' ? ' on' : ''}" data-outfit="" aria-pressed="${L.outfit !== 'master'}">${kr('通常')}</button><button class="rs-chip${L.outfit === 'master' && mo ? ' on' : ''}" data-outfit="master" aria-pressed="${L.outfit === 'master' && mo}" ${mo ? '' : 'aria-disabled="true" disabled'}>マスター${kr('衣装')}</button>`;
     return frame(rb('{名前|なまえ}・{見|み}た{目|め}'), `
       <div class="rs-panel c"><div class="rs-stage">${heroCv('look', { look: lookPrev(), costume: lookCostume() })}</div></div>
-      <div class="rs-panel"><label class="rs-h2" for="rsName">${rb('{名前|なまえ}（8{文字|もじ}まで）')}</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="ぼうけん者"><p class="rs-p">${rb('{名前|なまえ}はこの{端末|たんまつ}の{中|なか}だけに{残|のこ}ります。')}</p></div>
+      <div class="rs-panel"><label class="rs-h2" for="rsName">${rb('{名前|なまえ}（8{文字|もじ}まで）')}</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="冒険者"><p class="rs-p">${rb('{名前|なまえ}はこの{端末|たんまつ}の{中|なか}だけに{残|のこ}ります。')}</p></div>
       <div class="rs-panel"><div class="rs-h2">${kr('顔')}</div><div class="rs-chips">${num('face', M.FACE_N)}</div><div class="rs-h2">${kr('髪型')}</div><div class="rs-chips">${num('hair', M.HAIR_N)}</div>
         <div class="rs-h2">${kr('肌')}の${kr('色')}</div><div class="rs-chips">${sw('skin', M.SKIN)}</div><div class="rs-h2">${kr('髪')}の${kr('色')}</div><div class="rs-chips">${sw('hairColor', M.HAIR_COLOR)}</div>
         <div class="rs-h2">${kr('衣装')}</div><div class="rs-chips">${outfits}</div>${mo ? '' : `<p class="rs-p">マスター${kr('衣装')}は、${jobRb(s.job)}を Lv30にすると ${kr('解放')}されます。</p>`}
@@ -453,21 +444,25 @@
     const nm = doc.getElementById('rsName'); nm.oninput = () => { UI.name = nm.value; };
     app().querySelectorAll('[data-lk]').forEach(b => b.onclick = () => { UI.look[b.dataset.lk] = +b.dataset.v; rerender(); });
     app().querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => { if (b.disabled) return; UI.look.outfit = b.dataset.outfit || null; rerender(); });
-    doc.getElementById('lookOk').onclick = () => { const r = M.setLook(save(), UI.name, UI.look); UI.msg = r.ok ? 'けっていしました。' : r.err; if (r.ok) commit(); rerender(); };
+    doc.getElementById('lookOk').onclick = () => { const r = M.setLook(save(), UI.name, UI.look); UI.msg = r.ok ? '決定しました。' : r.err; if (r.ok) commit(); rerender(); };
   };
 
   // ---------- 図鑑 ----------
   VIEWS.codex = function () {
-    const s = save(), cs = M.codexSummary(s), tabs = [['enemy', `てき ${cs.enemies.seen}/${cs.enemies.total}`], ['item', `そうび ${cs.items.got}/${cs.items.total}`]].map(([id, nm]) => `<button class="rs-tab2${UI.codexTab === id ? ' on' : ''}" data-ct="${id}">${nm}</button>`).join('');
+    const s = save(), cs = M.codexSummary(s), tabs = [['enemy', `敵 ${cs.enemies.seen}/${cs.enemies.total}`], ['item', `装備 ${cs.items.got}/${cs.items.total}`]].map(([id, nm]) => `<button class="rs-tab2${UI.codexTab === id ? ' on' : ''}" data-ct="${id}">${nm}</button>`).join('');
     let body = '';
+    const seenOf = id => { const c = s.codex.enemies[id]; return !!(c && c.seen); };
+    const varLine = id => { const v = M.variantIdsOf(id); return v.length ? `<small>強化版 ${v.filter(seenOf).length}/${v.length}</small>` : ''; };   // 強化版は基本種の中で数える
+    const cell = (e, boss, wk) => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `倒した ${c.kills}回${wk && e.weak ? '　弱点：' + esc(D.EL_NAME[e.weak]) : ''}` : 'まだ出会っていない'}</small>${varLine(e.id)}</div>`; };
     if (UI.codexTab === 'enemy') {
-      body = D.REGIONS.map(r => `<div class="rs-h2">${esc(r.name)}</div><div class="rs-cgrid">${r.enemies.concat([r.boss]).map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e === r.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい${e.weak ? '　よわてん：' + esc(D.EL_NAME[e.weak]) : ''}` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
-      const regIds = D.REGIONS.map(r => r.id), ex = {}; Object.values(D.ENEMIES).forEach(e => { if (!regIds.includes(e.region)) (ex[e.region] = ex[e.region] || []).push(e); });
-      body += Object.keys(ex).map(bg => `<div class="rs-h2">${esc(W.BG_NAMES[bg] || bg)}（クリアごなど）</div><div class="rs-cgrid">${ex[bg].map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
+      body = `<p class="rs-p">基本の敵を数えます。強化版は、元の敵の「強化版」の欄にまとめています（例：強化版 1/2）。</p>` + D.REGIONS.map(r => `<div class="rs-h2">${esc(r.name)}</div><div class="rs-cgrid">${r.enemies.concat([r.boss]).map(e => cell(e, e === r.boss, true)).join('')}</div>`).join('');
+      const regIds = D.REGIONS.map(r => r.id), ex = {}; Object.values(D.ENEMIES).forEach(e => { if (!regIds.includes(e.region) && !e.variantOf) (ex[e.region] = ex[e.region] || []).push(e); });
+      body += Object.keys(ex).map(bg => `<div class="rs-h2">${esc(W.BG_NAMES[bg] || bg)}（クリア後など）</div><div class="rs-cgrid">${ex[bg].map(e => cell(e, e.boss, false)).join('')}</div>`).join('');
     } else {
-      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s) || i.relic) && (!i.unique || i.relic || /_1$/.test(i.id))).map(i => { const got = M.codexHas(s, i.id); const eff = got ? M.effectText(i.id) : ''; return `<div class="rs-item rs-eqitem${got ? '' : ' ng'}">${got ? iconOf(i.id, 40) : ''}<span class="rs-it-t"><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}${got ? `<small>${esc(statLine(i.id))}${eff ? '　' + esc(eff) : ''}</small>` : ''}</span></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
+      const ids = M.codexItemIds();
+      body = '<p class="rs-p">集められる装備を数えます（はじまりの武器と、再鍛造でランクだけが変わる固有装備は、数えません）。</p>' + ['weapon', 'armor', 'acc'].map(sl => { const list = ids.filter(i => D.ITEMS[i].slot === sl); return `<div class="rs-h2">${M.SLOT_NAME[sl]}　${list.filter(i => M.codexHas(s, i)).length}/${list.length}</div><div class="rs-list">${list.map(id => { const i = D.ITEMS[id], got = M.codexHas(s, i.id); const eff = got ? M.effectShort(i.id) : ''; return `<div class="rs-item rs-eqitem${got ? '' : ' ng'}" data-item="${i.id}">${got ? iconOf(i.id, 40) : ''}<span class="rs-it-t"><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}${got ? `<small>${esc(statLine(i.id))}${eff ? '　' + esc(eff) : ''}</small>` : `<small>${i.rank ? 'ランク' + D.RANK_NAME[i.rank - 1] : ''}</small>`}</span></div>`; }).join('')}</div>`; }).join('');
     }
-    return frame('ずかん', `<div class="rs-tabs2">${tabs}</div>${body}`);
+    return frame('図鑑', `<div class="rs-tabs2">${tabs}</div>${body}`);
   };
   AFTER.codex = function () {
     app().querySelectorAll('[data-ct]').forEach(b => b.onclick = () => { UI.codexTab = b.dataset.ct; rerender(); });
@@ -476,7 +471,7 @@
   // ---------- 実績 ----------
   VIEWS.ach = function () {
     const list = M.achievements(save()), n = list.filter(a => a.done).length;
-    return frame('じっせき', `<div class="rs-panel c"><b>${n} / ${list.length}</b> たっせい<p class="rs-p">じっせきに ごほうびは ありません。あそびの きろくです。</p></div><div class="rs-list">${list.map(a => `<div class="rs-item${a.done ? ' on' : ''}"><div><b>${a.done ? '✓ ' : ''}${esc(a.name)}</b></div><small>${esc(a.desc)}</small>${a.done ? '' : bar(a.now, a.need) + `<small>${a.now} / ${a.need}</small>`}</div>`).join('')}</div>`);
+    return frame('実績', `<div class="rs-panel c"><b>${n} / ${list.length}</b> 達成<p class="rs-p">実績に報酬はありません。あそびの記録です。</p></div><div class="rs-list">${list.map(a => `<div class="rs-item${a.done ? ' on' : ''}"><div><b>${a.done ? '✓ ' : ''}${esc(a.name)}</b></div><small>${esc(a.desc)}</small>${a.done ? '' : bar(a.now, a.need) + `<small>${a.now} / ${a.need}</small>`}</div>`).join('')}</div>`);
   };
 
   // ---------- ゲームのデータ（バックアップ） ----------
@@ -490,8 +485,8 @@
   VIEWS.story = function () {
     const S = UI.story || { pages: [{ who: null, text: '' }], i: 0 }, p = S.pages[S.i], last = S.i >= S.pages.length - 1;
     const nk = p.who && NPC_WHO[p.who], nim = nk && (/[！？]/.test(p.text) && imgOf('npc_' + nk + '_alt') || imgOf('npc_' + nk));
-    return frame('おはなし', `<div class="rs-panel rs-story">${nim ? `<img class="rs-npc story" alt="" src="${nim.src}">` : ''}<div class="rs-story-who">${p.who ? esc(p.who) : '　'}</div><p class="rs-story-text">${esc(p.text)}</p><div class="rs-story-n">${S.i + 1} / ${S.pages.length}</div></div>
-      <div class="rs-row2"><button class="rs-btn" id="stSkip">とばす</button><button class="rs-big" id="stNext">${last ? 'おわり' : 'つぎへ'}</button></div>`);
+    return frame('お話', `<div class="rs-panel rs-story">${nim ? `<img class="rs-npc story" alt="" src="${nim.src}">` : ''}<div class="rs-story-who">${p.who ? esc(p.who) : '　'}</div><p class="rs-story-text">${esc(p.text)}</p><div class="rs-story-n">${S.i + 1} / ${S.pages.length}</div></div>
+      <div class="rs-row2"><button class="rs-btn" id="stSkip">とばす</button><button class="rs-big" id="stNext">${last ? 'おわり' : '次へ'}</button></div>`);
   };
   AFTER.story = function () {
     const S = UI.story, done = () => { save().seen[S.key] = 1; commit(); go(S.back || 'adv'); };
@@ -503,11 +498,11 @@
     D.REGIONS.forEach((r, ri) => {
       const st0 = D.REGION_START[ri]; if (st0 > st) return; const nn = r.points.length * 3, b = [`<button class="rs-chip" data-sg="${st0}">はじまり</button>`];
       r.points.forEach((p, pi) => { if (pi > 0 && st0 + pi * 3 <= st) b.push(`<button class="rs-chip" data-sg="${st0 + pi * 3}">${esc(p)}</button>`); });
-      if (st0 + nn <= st) b.push(`<button class="rs-chip" data-sg="${st0 + nn}">ボスの まえ</button>`);
+      if (st0 + nn <= st) b.push(`<button class="rs-chip" data-sg="${st0 + nn}">ボスの前</button>`);
       grp.push(`<div class="rs-h2">${esc(r.name)}</div><div class="rs-chips">${b.join('')}</div>`);
     });
     const qs = W.QUEST_ORDER.filter(id => W.QUESTS[id].kind !== 'rematch' && ((s.quests[id] || {}).step > 0 || (s.quests[id] || {}).cleared)).map(id => `<button class="rs-chip" data-sq="${id}">${esc(W.QUESTS[id].name)}</button>`).join('');
-    return frame('おはなしを よみかえす', `<div class="rs-panel">${grp.join('') || '<p class="rs-p">まだ ありません。</p>'}${qs ? `<div class="rs-h2">クリアごの ぼうけん</div><div class="rs-chips">${qs}</div>` : ''}</div>`);
+    return frame('お話を読み返す', `<div class="rs-panel">${grp.join('') || '<p class="rs-p">まだありません。</p>'}${qs ? `<div class="rs-h2">クリア後の冒険</div><div class="rs-chips">${qs}</div>` : ''}</div>`);
   };
   AFTER.storylist = function () {
     app().querySelectorAll('[data-sg]').forEach(b => b.onclick = () => startStory(D.ROUTE[+b.dataset.sg], 'storylist'));
@@ -515,23 +510,23 @@
   };
 
   // ---------- ぼうけんの えらびかた（ほんぺん・さいせん・しれん・秘境・孤島） ----------
-  const mapBtn = id => `<button class="rs-btn rs-mini" data-go="regionmap" data-p='{"id":"${id}"}' aria-label="${esc(W.QUESTS[id].name)}の ちずを ひらく">ちずを みる</button>`;
+  const mapBtn = id => `<button class="rs-btn rs-mini" data-go="regionmap" data-p='{"id":"${id}"}' aria-label="${esc(W.QUESTS[id].name)}の地図を開く">地図をみる</button>`;
   function questPanel(s) {
     const L = M.questList(s), by = k => L.filter(q => q.kind === k);
     const btn = q => {
-      const st = q.locked && !q.cleared ? q.locked : q.cleared ? 'クリアずみ' : q.kind === 'rematch' ? `やった回数 ${q.count}` : q.step > 0 ? `${q.step} / ${q.total}（つづき）` : `ぜんぶで ${q.total}くかん`;
+      const st = q.locked && !q.cleared ? q.locked : q.cleared ? 'クリア済み' : q.kind === 'rematch' ? `やった回数 ${q.count}` : q.step > 0 ? `${q.step} / ${q.total}（続き）` : `全部で ${q.total}区間`;
       const nm = q.kind === 'rematch' ? q.boss ? '' : '' : '';
       return `<button class="rs-qbtn${q.current ? ' on' : ''}${q.locked ? ' lock' : ''}" data-q="${q.id}" ${q.locked ? 'aria-disabled="true"' : ''} aria-pressed="${q.current}"><b>${q.current ? '✓ ' : ''}${esc(q.kind === 'rematch' ? q.name : q.name)}</b><small>${esc(st)}</small></button>${nm}`;
     };
     const re = by('rematch').filter(q => !q.locked);
     const mainDone = M.mainCleared(s);
-    return `<div class="rs-panel"><div class="rs-h2">ほかの ぼうけん</div>
-      <button class="rs-qbtn${!s.progress.quest ? ' on' : ''}" data-q="" aria-pressed="${!s.progress.quest}"><b>${!s.progress.quest ? '✓ ' : ''}ほんぺん</b><small>${mainDone ? 'ぜんぶ クリア（さいごの ボスと さいせん）' : '18の ちいきを すすむ'}</small></button>
-      <details class="rs-det"><summary>さいせん（たおした ボスと もういちど）${re.length ? ' ' + re.length : ''}</summary><p class="rs-p">ボスの ざいりょうが ふえます。ざいりょう3こで 固有そうびが つくれます（かじや）。</p>${re.map(btn).join('') || '<small>まだ ありません。ボスを たおすと ひらきます。</small>'}</details>
-      <div class="rs-h3">しれん（最上級職への てんしょく）</div>${by('trial').map(btn).join('')}
-      <div class="rs-h3">6つの ひきょう（ほんぺんクリアご）</div>${by('secret').map(q => btn(q) + mapBtn(q.id)).join('')}
-      <div class="rs-h3">夜明けの 孤島</div>${by('island').map(q => btn(q) + mapBtn(q.id)).join('')}
-      ${s.active ? '<div class="rs-note">ぼうけんの 途中は えらびなおせません。</div>' : ''}</div>`;
+    return `<div class="rs-panel"><div class="rs-h2">他の冒険</div>
+      <button class="rs-qbtn${!s.progress.quest ? ' on' : ''}" data-q="" aria-pressed="${!s.progress.quest}"><b>${!s.progress.quest ? '✓ ' : ''}本編</b><small>${mainDone ? '全部クリア（最後のボスと再戦）' : '18の地域を進む'}</small></button>
+      <details class="rs-det"><summary>再戦（倒したボスともう一度）${re.length ? ' ' + re.length : ''}</summary><p class="rs-p">ボスの素材が増えます。素材3個で固有装備が作れます（鍛冶屋）。</p>${re.map(btn).join('') || '<small>まだありません。ボスを倒すと開きます。</small>'}</details>
+      <div class="rs-h3">試練（最上級職への転職）</div>${by('trial').map(btn).join('')}
+      <div class="rs-h3">6つの秘境（本編クリア後）</div>${by('secret').map(q => btn(q) + mapBtn(q.id)).join('')}
+      <div class="rs-h3">夜明けの孤島</div>${by('island').map(q => btn(q) + mapBtn(q.id)).join('')}
+      ${s.active ? '<div class="rs-note">冒険の途中は選び直せません。</div>' : ''}</div>`;
   }
 
   // ---------- エンディング・記念 ----------
@@ -539,28 +534,28 @@
     const s = save(), i = UI.endI || 0, E = ST.ENDING, N = 4;
     const regs = D.REGIONS.filter(r => r.ch === 3).concat(D.REGIONS.filter(r => r.ch === 2)).slice(0, 12).map(r => esc(r.name)).join('・');
     const jl = C.jobLevels(s), jobs = D.JOB_IDS.filter(j => jl[j] > 1).map(j => `${esc(D.JOBS[j].name)} Lv${jl[j]}`).join('／') || '（これから）';
-    const memos = D.REGIONS.filter(r => (s.inv.mats['bm_' + r.id] || 0) > 0 || s.progress.bossKills[r.boss.id]).map(r => esc(r.mat)).join('、') || '（ボスの ざいりょう）';
+    const memos = D.REGIONS.filter(r => (s.inv.mats['bm_' + r.id] || 0) > 0 || s.progress.bossKills[r.boss.id]).map(r => esc(r.mat)).join('、') || '（ボスの素材）';
     const p = [
-      `<div class="rs-stage">${heroCv('ending')}</div><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-sub">${esc(D.JOBS[s.job].name)} Lv${jl[s.job]}</div><p class="rs-story-text">${esc(E[0][1])}</p>`,
-      `<p class="rs-story-text">${esc(E[1][1])}</p><div class="rs-h2">たすけた ちいき</div><p class="rs-p">${regs}</p>`,
-      `<div class="rs-h2">そだてた しるし</div><p class="rs-p">${jobs}</p><div class="rs-h2">きねんひん</div><p class="rs-p">${memos}</p>`,
-      `<p class="rs-story-text">${esc(E[2][1])}</p><p class="rs-story-text">${esc(E[3][1])}</p><p class="rs-p">ほんぺんは クリア！ ぼうけんの ちずから 「6つの ひきょう」に ちょうせんできます。</p>`
+      `<div class="rs-stage">${heroCv('ending')}</div><div class="rs-hc-name">${esc(s.name || '冒険者')}</div><div class="rs-hc-sub">${esc(D.JOBS[s.job].name)} Lv${jl[s.job]}</div><p class="rs-story-text">${esc(E[0][1])}</p>`,
+      `<p class="rs-story-text">${esc(E[1][1])}</p><div class="rs-h2">助けた地域</div><p class="rs-p">${regs}</p>`,
+      `<div class="rs-h2">育てたしるし</div><p class="rs-p">${jobs}</p><div class="rs-h2">記念品</div><p class="rs-p">${memos}</p>`,
+      `<p class="rs-story-text">${esc(E[2][1])}</p><p class="rs-story-text">${esc(E[3][1])}</p><p class="rs-p">本編はクリア！冒険の地図から「6つの秘境」に挑戦できます。</p>`
     ];
     const last = i >= N - 1;
-    return frame('エンディング', `<div class="rs-panel rs-story c">${p[i]}<div class="rs-story-n">${i + 1} / ${N}</div></div><div class="rs-row2"><button class="rs-btn" id="enSkip">とばす</button><button class="rs-big" id="enNext">${last ? 'おわり' : 'つぎへ'}</button></div>`);
+    return frame('エンディング', `<div class="rs-panel rs-story c">${p[i]}<div class="rs-story-n">${i + 1} / ${N}</div></div><div class="rs-row2"><button class="rs-btn" id="enSkip">とばす</button><button class="rs-big" id="enNext">${last ? 'おわり' : '次へ'}</button></div>`);
   };
   AFTER.ending = function () {
     const done = () => { const s = save(); s.ending.seen = true; commit(); UI.endI = 0; if (UI.params && UI.params.from === 'result') root.home(); else go('adv'); };
     doc.getElementById('enNext').onclick = () => { if ((UI.endI || 0) >= 3) done(); else { UI.endI = (UI.endI || 0) + 1; rerender(); } };
     doc.getElementById('enSkip').onclick = done;
   };
-  const MEMOS = [['ch1', 'だい1しょう', s => chCleared(s, 1)], ['ch2', 'だい2しょう', s => chCleared(s, 2)], ['main', 'ほんぺん', s => mainCleared(s)], ['dawnisle', '夜明けの 孤島', () => true]];
+  const MEMOS = [['ch1', '第1章', s => chCleared(s, 1)], ['ch2', '第2章', s => chCleared(s, 2)], ['main', '本編', s => mainCleared(s)], ['dawnisle', '夜明けの孤島', () => true]];
   const memoImg = id => imgOf('bg_memorial_' + id);
   VIEWS.memorial = function () {
-    const s = save(), title = (s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだ ありません';
-    if (!memoImg('dawnisle')) return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ"></canvas><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p></div>`);
+    const s = save(), title = (s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだありません';
+    if (!memoImg('dawnisle')) return frame('記念絵', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの記念絵"></canvas><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯をともした。' : ''}</p></div>`);
     const list = MEMOS.filter(m => memoImg(m[0]) && m[2](s));
-    return frame('きねんえ', list.map(m => `<div class="rs-panel c"><div class="rs-h3">${esc(m[1])}の きねんえ</div><canvas ${m[0] === 'dawnisle' ? 'id="rsMemo" ' : ''}class="rs-memo" data-m="${m[0]}" aria-label="${esc(m[1])}の きねんえ"></canvas></div>`).join('') + `<div class="rs-panel c"><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p></div>`);
+    return frame('記念絵', list.map(m => `<div class="rs-panel c"><div class="rs-h3">${esc(m[1])}の記念絵</div><canvas ${m[0] === 'dawnisle' ? 'id="rsMemo" ' : ''}class="rs-memo" data-m="${m[0]}" aria-label="${esc(m[1])}の記念絵"></canvas></div>`).join('') + `<div class="rs-panel c"><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯をともした。' : ''}</p></div>`);
   };
   AFTER.memorial = function () {
     const s = save();
@@ -580,14 +575,17 @@
 
   // ---------- せってい（音・振動。どちらも初期オフ） ----------
   VIEWS.settings = function () {
-    const st = save().settings;
-    return frame('せってい', `<div class="rs-panel"><div class="rs-h2">おと</div><p class="rs-p">ぼうけん中の 小さな 音（せいかい・こうげき・ごほうびなど）。BGMは ありません。はじめは オフです。</p>
-      <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">おとを ならす</button></div>
-      <div class="rs-h2">しんどう</div><p class="rs-p">ごほうびの ときに ふるえます（たんまつが たいおうしている ときだけ）。はじめは オフです。</p>
+    const st = save().settings, rbOn = RuRb.isOn();
+    return frame('設定', `<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
+      <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
+      <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・攻撃・報酬など）。BGMはありません。はじめはオフです。</p>
+      <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">音を鳴らす</button></div>
+      <div class="rs-h2">振動</div><p class="rs-p">報酬のときに震えます（端末が対応しているときだけ）。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
     const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); rerender(); };
+    doc.getElementById('rbOn').onclick = () => { RuRb.setOn(true); rerender(); }; doc.getElementById('rbOff').onclick = () => { RuRb.setOn(false); rerender(); };
     doc.getElementById('snOn').onclick = () => set('sound', true); doc.getElementById('snOff').onclick = () => set('sound', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
@@ -600,31 +598,31 @@
     if (!R.titles.length && !R.lamp) return '';
     const t = R.titles.map(x => `<button class="rs-chip${s.title === x ? ' on' : ''}" data-title="${esc(x)}" aria-pressed="${s.title === x}">${esc(x)}</button>`).join('');
     const o = '';   // 色だけの衣装は選べない（専用の絵ができるまで。IMPLEMENTATION_STATUS 参照）
-    return `<div class="rs-panel"><div class="rs-h2">しょうごう・いしょう</div>${t ? `<div class="rs-chips">${t}</div>` : ''}${o ? `<div class="rs-h3">いしょう</div><div class="rs-chips"><button class="rs-chip${!s.look.outfit ? ' on' : ''}" data-outfit="">しょくぎょうの いろ</button>${o}</div>` : ''}${R.lamp ? '<button class="rs-btn" data-go="memorial">きねんえを みる</button>' : ''}</div>`;
+    return `<div class="rs-panel"><div class="rs-h2">称号・衣装</div>${t ? `<div class="rs-chips">${t}</div>` : ''}${o ? `<div class="rs-h3">衣装</div><div class="rs-chips"><button class="rs-chip${!s.look.outfit ? ' on' : ''}" data-outfit="">職業の色</button>${o}</div>` : ''}${R.lamp ? '<button class="rs-btn" data-go="memorial">記念絵を見る</button>' : ''}</div>`;
   }
 
-  // ---------- かじや：固有そうび ----------
+  // ---------- 鍛冶屋：固有装備 ----------
   function uniquePanel(s) {
     const rows = W.UNIQ.map(u => {
       const i = M.uniqueInfo(s, u.key), reg = u.region.name;
       const act = i.owned
-        ? (i.reErr ? `<small class="rs-why">${esc(i.reErr)}</small>` : `<small>さいたんぞう：ランク${D.RANK_NAME[i.rank - 1]} → ${D.RANK_NAME[i.target - 1]}（${i.reCoin}コイン ＋ ${esc(C.oreName(i.target))} ×${i.reOre}）</small>`) + `<button class="rs-btn sm" data-reforge="${u.key}" ${i.reErr ? 'disabled' : ''}>さいたんぞうする</button>`
-        : `<small>${esc(u.matName)} ${i.have} / ${i.need}（${esc(reg)}のボス）</small><button class="rs-btn sm" data-craft="${u.key}" ${i.err ? 'disabled' : ''}>つくる</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`;
-      return `<div class="rs-item"><div><b>${esc(u.name)}</b><i class="rs-rare">固有</i>${i.owned ? rankTag(D.ITEMS[i.owned]) : ''}<i class="rs-prov">だい${u.ch}章</i></div><small>${esc(i.text)}</small>${act}</div>`;
+        ? (i.reErr ? `<small class="rs-why">${esc(i.reErr)}</small>` : `<small>再鍛造：ランク${D.RANK_NAME[i.rank - 1]} → ${D.RANK_NAME[i.target - 1]}（${i.reCoin}コイン ＋ ${esc(C.oreName(i.target))} ×${i.reOre}）</small>`) + `<button class="rs-btn sm" data-reforge="${u.key}" ${i.reErr ? 'disabled' : ''}>再鍛造する</button>`
+        : `<small>${esc(u.matName)} ${i.have} / ${i.need}（${esc(reg)}のボス）</small><button class="rs-btn sm" data-craft="${u.key}" ${i.err ? 'disabled' : ''}>作る</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`;
+      return `<div class="rs-item"><div><b>${esc(u.name)}</b><i class="rs-rare">固有</i>${i.owned ? rankTag(D.ITEMS[i.owned]) : ''}<i class="rs-prov">第${u.ch}章</i></div><small>${esc(i.text)}</small>${act}</div>`;
     }).join('');
     const n = W.UNIQ.filter(u => M.ownedUnique(s, u.key)).length;
-    return `<details class="rs-det rs-panel"><summary>固有そうび（${n} / ${W.UNIQ.length}）</summary><p class="rs-p">ボスの ざいりょう3こで つくれます。ざいりょうは ぼうけんの ちずの「さいせん」で あつまります。さいたんぞうで ランクが あがっても、効果・きょうかは そのままです。</p><div class="rs-list">${rows}</div></details>`;
+    return `<details class="rs-det rs-panel"><summary>固有装備（${n} / ${W.UNIQ.length}）</summary><p class="rs-p">ボスの素材3個で作れます。素材は冒険の地図の「再戦」で集まります。再鍛造でランクがあがっても、効果・強化はそのままです。</p><div class="rs-list">${rows}</div></details>`;
   }
   const oldForge = VIEWS.forge, oldForgeAfter = AFTER.forge;
   VIEWS.forge = function () {
     let h = oldForge.apply(this, arguments);
-    h = h.replace('<p class="rs-p">ボスの そざいで つくる 固有そうびは、まだ つくれません（じっそうまえ）。</p>', '').replace('<div class="rs-list">', uniquePanel(save()) + '<div class="rs-list">');
+    h = h.replace('<p class="rs-p">ボスの素材で作る固有装備は、まだ作れません。</p>', '').replace('<div class="rs-list">', uniquePanel(save()) + '<div class="rs-list">');
     return h;
   };
   AFTER.forge = function () {
     oldForgeAfter.apply(this, arguments);
-    app().querySelectorAll('[data-craft]').forEach(b => b.onclick = () => { const r = M.craftUnique(save(), b.dataset.craft); UI.msg = r.ok ? `${D.ITEMS[r.id].name} を つくりました！` : r.err; if (r.ok) { commit(); RPG.sound && RPG.sound.play('chest'); } rerender(); });
-    app().querySelectorAll('[data-reforge]').forEach(b => b.onclick = () => { const r = M.reforgeUnique(save(), b.dataset.reforge); UI.msg = r.ok ? `ランク${D.RANK_NAME[r.to - 1]} に さいたんぞうしました！` : r.err; if (r.ok) commit(); rerender(); });
+    app().querySelectorAll('[data-craft]').forEach(b => b.onclick = () => { const r = M.craftUnique(save(), b.dataset.craft); UI.msg = r.ok ? `${D.ITEMS[r.id].name} を作りました！` : r.err; if (r.ok) { commit(); RPG.sound && RPG.sound.play('chest'); } rerender(); });
+    app().querySelectorAll('[data-reforge]').forEach(b => b.onclick = () => { const r = M.reforgeUnique(save(), b.dataset.reforge); UI.msg = r.ok ? `ランク${D.RANK_NAME[r.to - 1]} に再鍛造しました！` : r.err; if (r.ok) commit(); rerender(); });
   };
 
   // ---------- 追加の導線（ぼうけん・じぶん・ずかん） ----------
@@ -632,9 +630,9 @@
   VIEWS.adv = function () {
     const s = save(), r = A.currentRoute(s), q = r.quest ? W.QUESTS[r.quest] : null;
     let h = oldAdv.apply(this, arguments);
-    const seen = !!s.seen[storyKey(r)], ending = M.mainCleared(s);
-    const st = `<div class="rs-panel"><div class="rs-h2">おはなし</div><p class="rs-p">${seen ? 'この くかんの おはなしは よみました。' : '<b class="rs-new">あたらしい おはなしが あります。</b>'}</p><div class="rs-row2"><button class="rs-btn" id="rsStory">${seen ? 'もういちど よむ' : 'おはなしを よむ'}</button><button class="rs-btn" data-go="storylist">よみかえす</button></div>${ending ? '<button class="rs-btn" data-go="ending">エンディングを みる</button>' : ''}</div>`;
-    h = h.replace('<div class="rs-panel"><div class="rs-h2">わざと さくせん</div>', st + questPanel(s) + '<div class="rs-panel"><div class="rs-h2">わざと さくせん</div>');
+    const ev = ST.hasEvent(r), seen = !!s.seen[storyKey(r)], ending = M.mainCleared(s);   // 会話があるのは出来事のある区間だけ
+    const st = `<div class="rs-panel"><div class="rs-h2">お話</div>${ev ? `<p class="rs-p">${seen ? 'この区間のお話は読みました。' : '<b class="rs-new">新しいお話があります。</b>'}</p>` : '<p class="rs-p">この区間に新しいお話はありません。</p>'}<div class="rs-row2">${ev ? `<button class="rs-btn" id="rsStory">${seen ? 'もう一度読む' : 'お話を読む'}</button>` : ''}<button class="rs-btn" data-go="storylist">読み返す</button></div>${ending ? '<button class="rs-btn" data-go="ending">エンディングを見る</button>' : ''}</div>`;
+    h = h.replace('<div class="rs-panel"><div class="rs-h2">技と作戦</div>', st + questPanel(s) + '<div class="rs-panel"><div class="rs-h2">技と作戦</div>');
     return h;
   };
   AFTER.adv = function () {
@@ -643,7 +641,7 @@
     app().querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
       const id = b.dataset.q || null, e = M.selectQuest(s, id);
       if (!e.ok) { UI.msg = e.err; rerender(); return; }
-      commit(); UI.msg = id ? `「${W.QUESTS[id].name}」を えらびました。` : 'ほんぺんに もどしました。'; rerender();
+      commit(); UI.msg = id ? `「${W.QUESTS[id].name}」を選びました。` : '本編にもどしました。'; rerender();
     });
   };
   const oldMe = VIEWS.me, oldMeAfter = AFTER.me;
@@ -672,12 +670,12 @@
     if (!q) {
       const ri = D.REGIONS.findIndex(r => r.id === key); if (ri < 0) return null;
       const r = D.REGIONS[ri], inf = M.mapInfo(s)[ri], rem = s.progress.quest === 'rematch_' + key;
-      o = { key, mapId: key, name: r.name, sub: `だい${r.ch}しょう`, pts: r.points.map(n => ({ name: n, n: 3 })), boss: { name: r.boss.name, n: inf.total - inf.nNormal }, done: inf.cleared ? inf.total : inf.inRegion, cleared: inf.cleared, lock: inf.locked ? 'まだ ここまで きていない' : null, story: r.story || '', here: rem || (!s.progress.quest && inf.current), atBoss: rem, rematch: rem };
+      o = { key, mapId: key, name: r.name, sub: `第${r.ch}章`, pts: r.points.map(n => ({ name: n, n: 3 })), boss: { name: r.boss.name, n: inf.total - inf.nNormal }, done: inf.cleared ? inf.total : inf.inRegion, cleared: inf.cleared, lock: inf.locked ? 'まだここまで来ていない' : null, story: r.story || '', here: rem || (!s.progress.quest && inf.current), atBoss: rem, rematch: rem };
     } else if (q.kind === 'secret' || q.kind === 'island') {
       const segs = q.segs.filter(g => !g.boss), pts = [];
       segs.forEach(g => { const l = pts[pts.length - 1]; if (l && l.name === g.point) l.n++; else pts.push({ name: g.point, n: 1 }); });
       const qs = M.questState(s, key), lk = M.questLocked(s, key), cleared = !!qs.cleared;
-      o = { key, mapId: q.bg, name: q.name, sub: q.kind === 'island' ? 'クリアごの ぼうけん' : 'ひきょう', pts, boss: { name: q.boss, n: q.segs.length - segs.length }, done: cleared ? q.segs.length : (qs.step || 0), cleared, lock: lk && !cleared ? lk : null, story: '', here: s.progress.quest === key && !cleared };
+      o = { key, mapId: q.bg, name: q.name, sub: q.kind === 'island' ? 'クリア後の冒険' : '秘境', pts, boss: { name: q.boss, n: q.segs.length - segs.length }, done: cleared ? q.segs.length : (qs.step || 0), cleared, lock: lk && !cleared ? lk : null, story: '', here: s.progress.quest === key && !cleared };
     } else return null;
     // 各地点（最後はボス）の済んだ区間数と状態
     o.nodes = o.pts.map(p => Object.assign({}, p)).concat([Object.assign({ boss: true }, o.boss)]);
@@ -708,34 +706,34 @@
   const pts2 = a => a.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
   VIEWS.regionmap = function (prm) {
     const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id), o = mapDesc(s, key), md = o && MAPD[o.mapId];
-    if (!o) return frame('たんけんちず', '<div class="rs-panel"><p class="rs-p">この ちいきの ちずは ありません。</p></div>');
+    if (!o) return frame('探検地図', '<div class="rs-panel"><p class="rs-p">この地域の地図はありません。</p></div>');
     const ok = !!(md && md.nodes && md.nodes.length === o.nodes.length);
     const sel = UI.mapSel != null && UI.mapKey === key && UI.mapSel < o.nodes.length ? UI.mapSel : (o.cur >= 0 ? o.cur : (o.cleared ? o.nodes.length - 1 : 0));
     UI.mapSel = sel; UI.mapKey = key;
-    const stTxt = n => n.state === 'done' ? 'とっぱ ずみ' : n.state === 'cur' ? (n.boss ? 'ボスの たたかい' : 'いま ここ') : 'まだ ここまで きていない';
+    const stTxt = n => n.state === 'done' ? '突破済み' : n.state === 'cur' ? (n.boss ? 'ボスの戦い' : '今ここ') : 'まだここまで来ていない';
     const pips = n => `<span class="rs-pips" aria-hidden="true">${Array.from({ length: n.n }, (_, i) => `<i${i < n.done ? ' class="on"' : ''}></i>`).join('')}</span>`;
-    const nm = (n, i) => n.boss ? (n.state === 'lock' && !o.cleared ? 'ボス' : n.name) : (n.state === 'lock' ? 'ちてん ' + (i + 1) : n.name);
+    const nm = (n, i) => n.boss ? (n.state === 'lock' && !o.cleared ? 'ボス' : n.name) : (n.state === 'lock' ? '地点 ' + (i + 1) : n.name);
     let over = '';
     if (ok) {
       const d = pathArc(md.path), tot = d[d.length - 1], arcs = md.nodes.map(p => arcOf(md.path, d, p));
       const upTo = o.cleared ? tot : o.lock ? 0 : (o.cur >= 0 ? arcs[o.cur] : 0);
       over += `<svg class="rs-mapsvg" viewBox="0 0 240 240" aria-hidden="true" focusable="false"><polyline class="rs-ml0" points="${pts2(md.path)}"/><polyline class="rs-ml1" points="${pts2(md.path)}"/>${upTo > 0 ? `<polyline class="rs-ml2" points="${pts2(pathUpTo(md.path, d, upTo))}"/>` : ''}</svg>`;
-      over += `<span class="rs-mstart" style="left:${(md.path[0][0] / 2.4).toFixed(2)}%;top:${(md.path[0][1] / 2.4).toFixed(2)}%" aria-hidden="true">いりぐち</span>`;
+      over += `<span class="rs-mstart" style="left:${(md.path[0][0] / 2.4).toFixed(2)}%;top:${(md.path[0][1] / 2.4).toFixed(2)}%" aria-hidden="true">入口</span>`;
       o.nodes.forEach((n, i) => {
         const p = md.nodes[i], pos = `left:${(p[0] / 2.4).toFixed(2)}%;top:${(p[1] / 2.4).toFixed(2)}%`;
-        over += `<button class="rs-mn ${n.state}${n.boss ? ' boss' : ''}${i === sel ? ' sel' : ''}" style="${pos}" data-mn="${i}" aria-pressed="${i === sel}" aria-label="${n.boss ? 'ボス' : 'ちてん' + (i + 1)}：${esc(nm(n, i))}（${stTxt(n)}）"><span class="rs-mn-c">${n.state === 'done' ? '✓' : n.boss ? '★' : i + 1}</span></button>`;
+        over += `<button class="rs-mn ${n.state}${n.boss ? ' boss' : ''}${i === sel ? ' sel' : ''}" style="${pos}" data-mn="${i}" aria-pressed="${i === sel}" aria-label="${n.boss ? 'ボス' : '地点' + (i + 1)}：${esc(nm(n, i))}（${stTxt(n)}）"><span class="rs-mn-c">${n.state === 'done' ? '✓' : n.boss ? '★' : i + 1}</span></button>`;
         if (n.state === 'cur' && o.here) over += `<canvas class="rs-mhero rs-hcv rs-hcv-mini" id="rsMapHero" data-hero="${esc(JSON.stringify(heroOpts('mini', {})))}" aria-hidden="true" style="${pos}"></canvas>`;
         if (n.boss) over += `<span class="rs-mboss${o.chestOpen ? ' open' : ''}" id="rsMapBoss" aria-hidden="true" style="${pos}">初回報酬${o.chestOpen ? '✓' : ''}</span>`;
       });
     }
     const n = o.nodes[sel];
-    const detail = `<div class="rs-mdet" id="rsMapDet" aria-live="polite"><b>${n.boss ? 'ボス：' : ''}${esc(nm(n, sel))}</b>${pips(n)}<small>${stTxt(n)}${n.state !== 'lock' || o.cleared ? `　${n.done} / ${n.n}` : ''}</small>${n.boss ? `<small>初回報酬：${o.chestOpen ? '受け取り済み（コインと素材）' : 'まだ（初めて倒すとコインと素材がもらえる）'}</small>` : ''}${n.state === 'cur' && o.story ? `<small>${esc(o.story)}</small>` : ''}${o.rematch && n.boss ? '<small>さいせんちゅう（ほんぺんは すすみません）</small>' : ''}</div>`;
+    const detail = `<div class="rs-mdet" id="rsMapDet" aria-live="polite"><b>${n.boss ? 'ボス：' : ''}${esc(nm(n, sel))}</b>${pips(n)}<small>${stTxt(n)}${n.state !== 'lock' || o.cleared ? `　${n.done} / ${n.n}` : ''}</small>${n.boss ? `<small>初回報酬：${o.chestOpen ? '受け取り済み（コインと素材）' : 'まだ（初めて倒すとコインと素材がもらえる）'}</small>` : ''}${n.state === 'cur' && o.story ? `<small>${esc(o.story)}</small>` : ''}${o.rematch && n.boss ? '<small>再戦中（本編は進みません）</small>' : ''}</div>`;
     const list = o.nodes.map((x, i) => `<li><button class="rs-mrow ${x.state}${i === sel ? ' sel' : ''}" data-mn="${i}" aria-pressed="${i === sel}"><span class="rs-dot">${x.state === 'done' ? '✓' : x.boss ? '★' : i + 1}</span><span class="rs-mrow-t"><b>${esc(nm(x, i))}</b><small>${stTxt(x)}</small></span>${pips(x)}</button></li>`).join('');
-    const prog = o.cleared ? 'ぜんぶ とっぱ！' : o.lock ? o.lock : `${o.done} / ${o.total} くかん`;
-    return frame('たんけんちず', `<div class="rs-panel rs-mp"><div class="rs-mp-h"><b>${esc(o.name)}</b><small>${esc(o.sub)}　${esc(prog)}</small></div>
-      <div class="rs-mapbox${o.lock ? ' lock' : ''}" id="rsMapBox"><img class="rs-mapimg" src="rpg/assets/bg/bg_map_${esc(o.mapId)}.png" alt="${esc(o.name)}の たんけんちず" width="240" height="240">${over}</div>
-      ${detail}${ok ? '' : '<p class="rs-p">この ちずの ざひょうが ありません。</p>'}</div>
-      <div class="rs-panel"><div class="rs-h2">ちてんの いちらん</div><ol class="rs-mplist">${list}</ol></div>`);
+    const prog = o.cleared ? '全部突破！' : o.lock ? o.lock : `${o.done} / ${o.total} 区間`;
+    return frame('探検地図', `<div class="rs-panel rs-mp"><div class="rs-mp-h"><b>${esc(o.name)}</b><small>${esc(o.sub)}　${esc(prog)}</small></div>
+      <div class="rs-mapbox${o.lock ? ' lock' : ''}" id="rsMapBox"><img class="rs-mapimg" src="rpg/assets/bg/bg_map_${esc(o.mapId)}.png" alt="${esc(o.name)}の探検地図" width="240" height="240">${over}</div>
+      ${detail}${ok ? '' : '<p class="rs-p">この地図の座標がありません。</p>'}</div>
+      <div class="rs-panel"><div class="rs-h2">地点の一覧</div><ol class="rs-mplist">${list}</ol></div>`);
   };
   AFTER.regionmap = function (prm) {
     const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id);

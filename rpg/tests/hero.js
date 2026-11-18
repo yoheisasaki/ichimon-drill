@@ -40,10 +40,9 @@ t('台帳：全行に connected（接続の有無）が制作状態とは別に�
   const ng = man.assets.filter(a => a.status === '正式' && a.connected === '未接続').map(a => a.id);
   ok(ng.every(id => /^(icon_(bm_|ore_|job_|dawn|trial_)|chest_(normal|boss)_)/.test(id)), '想定外の未接続：' + ng.filter(id => !/^(icon_(bm_|ore_|job_|dawn|trial_)|chest_(normal|boss)_)/.test(id)).join());
 });
-t('台帳：第1章ボス6体のうち画像のある3体は「正式」。無い3体は仮のまま（残件）', () => {
-  const st = k => (man.assets.find(a => a.id === 'enemy_b_' + k) || {}).status;
-  ['ancienttree', 'crystalturtle', 'silverdragon'].forEach(k => eq(st(k), '正式', k));
-  ['hourglass', 'blackknight', 'machinegod'].forEach(k => { eq(st(k), '仮', k); ok(!fs.existsSync(path.join(ROOT, 'rpg/assets/chars/enemy_b_' + k + '.png')), k + ' の画像が出来ている→台帳を直す'); });
+t('台帳：第1章ボス6体と帯用の画像は全て「正式」で、ファイルがある', () => {
+  const st = k => (man.assets.find(a => a.id === k) || {}).status;
+  ['ancienttree', 'crystalturtle', 'silverdragon', 'hourglass', 'blackknight', 'machinegod'].forEach(k => { eq(st('enemy_b_' + k), '正式', k); eq(st('enemy_b_' + k + '_strip'), '正式', k + ' strip'); ok(fs.existsSync(path.join(ROOT, 'rpg/assets/chars/enemy_b_' + k + '.png')) && fs.existsSync(path.join(ROOT, 'rpg/assets/chars/enemy_b_' + k + '_strip.png')), k); });
 });
 t('武器の絵：はじまりの武器・他系統は、職業の最初の武器系統のランクIで描く（二重武器を作らない）', () => {
   eq(M.artWeapon('priest', 'w_start'), 'w_staff_1'); eq(M.artWeapon('thief', null), 'w_dagger_1'); eq(M.artWeapon('ranger', 'w_bow_3'), 'w_bow_3'); eq(M.artWeapon('warrior', 'rw_sword_2'), 'rw_sword_2');

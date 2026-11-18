@@ -7,7 +7,7 @@ const m = JSON.parse(fs.readFileSync(P, 'utf8'));
 const OK = '接続済み', NG = '未接続';
 const J = '主人公1枚絵（drawHeroLayered。部品が無い組合せの描き方）';
 const RULES = [
-  [/^parts_json$/, NG, '主人公の部品（rpg/assets/parts/）。status を「正式」にすると rpg-ui.js が読む。届くまで1枚絵で描く'],
+  [/^parts_json$/, OK, 'rpg-ui.js が読み、drawHeroLayered が身体・頭・武器・前の手を重ねる'],
   [/^hero_[a-z]+_strip(_attack|_hit|_walk|_master)?$/, OK, '回答帯（drawHeroLayered use=strip）／探索地図の現在地'],
   [/^hero_[a-z]+_(master_win|master)$/, OK, 'ホーム・自分・装備・転職・外見・エンディング・報酬（マスター衣装を選び、獲得済みのとき）'],
   [/^hero_[a-z]+(_ready|_attack|_hit|_win)?$/, OK, 'ホーム・自分・装備・転職・外見・エンディング・報酬・記念絵（' + J + '）'],

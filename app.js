@@ -102,24 +102,25 @@ function home() {
     gs = groupsOf(filter);
     units[filter] = (units[filter] || []).filter(g => gs.includes(g));
   }
+  const rpgOn = !!(window.RPG && RPG.ok);   // ぼうけんが動いているとき：主人公と開始ボタンを先に、教科カードは「学習範囲の変更」の中へ
   const card = (label, list, cls, key) => {
     const c = counts(list);
-    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>にがて ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
+    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>${rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ'} ${c.all}こ</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id));
   const rangeOpen = !!window.__rangeOpen;
-  const rpgOn = !!(window.RPG && RPG.ok);   // ぼうけんが動いているとき：主人公と開始ボタンを先に、教科カードは「学習範囲の変更」の中へ
-  const subjectsHtml = `<div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
-    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}`;
-  const startHtml = `<button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>`;
+  const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
+    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}`;
+  const startHtml = `<button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）</button>
+    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）</button>`;
   app.innerHTML = rpgOn ? `
-    <div class="sub rs-subtop">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
+    <div data-rb><div class="sub rs-subtop">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${RPG.homeTop()}
     ${startHtml}
     ${RPG.homeBonus()}
-    <details class="rs-range"${rangeOpen ? ' open' : ''}><summary>学習範囲の変更　<small>${esc(filter === '全部' ? 'ぜんぶ' : filter)}</small></summary>${subjectsHtml}</details>
-    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>
+    <details class="rs-range"${rangeOpen ? ' open' : ''}><summary>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}　<small>${filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)}</small></summary>${subjectsHtml}</details>
+    <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
+    </div>
     ${RPG.navHtml('home')}` : `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
@@ -127,7 +128,7 @@ function home() {
     ${subjectsHtml}
     ${startHtml}
     ${window.RPG ? RPG.homeHtml() : ''}
-    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>
+    <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     ${window.RPG ? RPG.navHtml('home') : ''}`;
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
@@ -268,9 +269,9 @@ function result() {
   flush();
   app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
-  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '';
+  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>${S.rpg ? ruby('{間違|まちが}えた{問題|もんだい}') : 'まちがえた もんだい'}</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '';
   const rg = window.RPG ? RPG.afterSession(S) : null;
-  const rh = rg && rg.settled ? RPG.rewardHtml(rg.res, S, wrongHtml + '<button class="rw-btn alt" id="again">まちがえたのだけ もう1回</button>', S.wrong.length > 0) : null;
+  const rh = rg && rg.settled ? RPG.rewardHtml(rg.res, S, wrongHtml + '<button class="rw-btn alt" id="again">' + ruby('{間違|まちが}えたのだけもう1回') + '</button>', S.wrong.length > 0) : null;
   if (rh) {
     app.innerHTML = rh;
     RPG.bindReward(rg.res);
@@ -279,10 +280,10 @@ function result() {
     app.innerHTML = `
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
-    ${rg && !rg.settled ? `<div class="rpg-note">こんかい ${S.total}もん ／ ぼうけん ${rg.n} / ${rg.unit}（つづきは つぎの スタートで）</div>` : ''}
+    ${rg && !rg.settled ? `<div class="rpg-note">${ruby('{今回|こんかい}')} ${S.total}${ruby('{問|もん}')} ／ ${ruby('{冒険|ぼうけん}')} ${rg.n} / ${rg.unit}（${ruby('{続|つづ}きは{次|つぎ}のスタートで')}）</div>` : ''}
     ${S.skips ? `<div class="skipcount">わかんない ${S.skips}こ</div>` : ''}
     ${S.wrong.length ? wrongHtml : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
-    <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
+    <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>${S.rpg ? ruby('{間違|まちが}えたのだけもう1回') : 'まちがえたのだけ もう1回'}</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
   }
