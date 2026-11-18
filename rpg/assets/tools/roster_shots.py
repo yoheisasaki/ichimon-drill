@@ -17,7 +17,7 @@ with sync_playwright() as p:
       document.body.innerHTML = ''; document.body.style.background = '#6a9a6a';
       ids.forEach(id => { const w = document.createElement('div'); w.style.cssText = 'display:inline-block;margin:4px;text-align:center;font:10px sans-serif';
         [['reward', 1], ['strip', 1]].forEach(([m, s]) => { const cv = document.createElement('canvas'); cv.width = 240; cv.height = 240; cv.style.cssText = 'width:240px;height:240px;vertical-align:bottom'; const g = cv.getContext('2d'); g.scale(s, s);
-          if (kind === 'hero') RPGSprites.drawHero(g, id, 60, 239, { img: m }); else RPGSprites.drawEnemy(g, id, false, 60, 239, { img: m }); w.appendChild(cv); });
+          if (kind === 'hero') RPGSprites.drawHero(g, id, 120, 239, { img: m }); else RPGSprites.drawEnemy(g, id, false, 120, 239, { img: m }); w.appendChild(cv); });
         w.appendChild(document.createElement('br')); w.append(id); document.body.appendChild(w); });
     }""", [kind, ids])
-    pg.wait_for_timeout(300); pg.screenshot(path=os.path.join(ROOT, 'rpg', 'shots', name + '.png'), full_page=True); print('console', con); b.close()
+    pg.wait_for_timeout(2500); pg.screenshot(path=os.path.join(ROOT, 'rpg', 'shots', name + '.png'), full_page=True); print('console', con); b.close()

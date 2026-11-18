@@ -1,21 +1,21 @@
 {
  "src": "rpg/assets/src/enemy_b_garde/enemy_b_garde.png",
  "src_size": [
-  512,
-  512
+  556,
+  447
  ],
  "trim_size": [
-  505,
+  536,
   427
  ],
  "out": "rpg/assets/chars/enemy_b_garde.png",
  "out_size": [
-  227,
+  241,
   192
  ],
- "magenta_removed_px": 91134,
- "fringe_removed_px": 3353,
+ "magenta_removed_px": 74553,
+ "fringe_removed_px": 3426,
  "magenta_left_px": 198,
- "opaque_px": 33882,
- "colors": 26921
+ "opaque_px": 34481,
+ "colors": 27324
 }

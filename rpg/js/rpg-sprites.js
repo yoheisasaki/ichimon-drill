@@ -57,8 +57,8 @@
     });
   }
   // 画像は「ctx の拡大率に関わらず 画像1ドット = 画面の1CSS px」で描く（ぼかさない）。cx は中心、gy は足元。
-  function blit(ctx, im, cx, gy, tint) {
-    const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k;
+  function blit(ctx, im, cx, gy, tint, scale) {
+    const k = ctx.getTransform().a || 1, sc = scale || 1, w = im.width * sc / k, h = im.height * sc / k;
     ctx.imageSmoothingEnabled = false;
     let src = im;
     if (tint) {
@@ -82,7 +82,7 @@
   function drawEnemy(ctx, id, boss, x, groundY, o) {
     o = o || {};
     const im = o.img && IMGS['enemy_' + id + (o.img === 'strip' ? '_strip' : '')];
-    if (im) { blit(ctx, im, x + 7, groundY - (o.lift || 0), o.tint); return; } const rows = SHAPES[shapeOf(id)], y = groundY - rows.length - (o.lift || 0);
+    if (im) { blit(ctx, im, x + 7, groundY - (o.lift || 0), o.tint, o.scale); return; } const rows = SHAPES[shapeOf(id)], y = groundY - rows.length - (o.lift || 0);
     draw(ctx, rows, palForEnemy(id, boss), x, y, false, o.tint);
     if (boss) { ctx.fillStyle = '#e0b030'; ctx.fillRect(x + 4, y - 2, 1, 2); ctx.fillRect(x + 6, y - 3, 2, 3); ctx.fillRect(x + 9, y - 2, 1, 2); }
   }

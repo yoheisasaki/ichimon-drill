@@ -1,21 +1,21 @@
 {
  "src": "rpg/assets/src/enemy_b_ourne/enemy_b_ourne.png",
  "src_size": [
-  512,
-  512
+  557,
+  452
  ],
  "trim_size": [
-  489,
+  536,
   431
  ],
  "out": "rpg/assets/chars/enemy_b_ourne.png",
  "out_size": [
-  218,
+  239,
   192
  ],
- "magenta_removed_px": 97476,
- "fringe_removed_px": 6910,
- "magenta_left_px": 367,
- "opaque_px": 31377,
- "colors": 25639
+ "magenta_removed_px": 81524,
+ "fringe_removed_px": 7196,
+ "magenta_left_px": 369,
+ "opaque_px": 32441,
+ "colors": 26315
 }

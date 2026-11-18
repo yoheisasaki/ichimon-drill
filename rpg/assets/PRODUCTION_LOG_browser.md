@@ -26,8 +26,19 @@
 - 済み: シート0-9の60体（第2章24、第3章24、試練ボス2、秘境ボス6、隠しボス1、試練の通常3）。台帳 enemy_<id> と enemy_<id>_strip は「正式」。画面は rpg-sprites.js が台帳から自動で読む。
 - 右向きで出た3体（記憶の紙鳥・花冠の獣・天秤の守衛）は左右反転して採用。
 - 事故: PC電源断で ASSET_MANIFEST.json がゼロ埋めで壊れた → HEAD から復元し、自分の敵の行だけ再登録。別担当の未コミットの台帳変更は失われた可能性がある（要確認）。
-- 残り: 秘境・夜明けの通常敵 x_*/xi_*（既存敵の強化個体。仮絵のまま）、試練の通常敵 t_wing1/t_star1/t_star2。技の効果は別途。
+- 残り: （下の 2026-11-18 続き で完了）
 
 ## 技の効果 2026-11-18
 - tools/fx_take.py <シート番号>。共通12種（斬撃・炎・氷・雷・水・光・回復・盾・煙・星・風・爆発）を fx/<id>.png(64px) と fx/<id>_strip.png(24px) に。台帳 fx_<id>。画面への接続は未（素材のみ）。確認: shots/assets_fx_all.png
 - 残り: 各職の大技専用エフェクト（未制作）。
+
+## 敵の続き 2026-11-18（別セッション）
+- 試練の通常敵 t_wing1(試しの剣士)・t_star1(試しの小星)・t_star2(試しの星守): ChatGPT 1シート3体(横1列) → tools/enemies_take.py 10 → enemies_manifest.py 10。台帳「正式」。shots/assets_enemies_trial.png。
+- 秘境 x_<地域>_<k>（5体×6地域=30体。依頼の「36体」は実データでは30）と夜明けの孤島 xi_0〜29: 元の敵の画像から tools/enemies_variants.py で一括（色相を地域の目標色へ回転＋1px縁取り＋きらめき）。元の敵はどれも正式画像ありで、後回しは無し。xi は暖色(橙)寄せ＋金の飾り。台帳は 60体×(本体+strip)=120行「正式」（派生画像）。shots/assets_enemies_x.png（一部）。
+  - 注意: 色替えは機械処理。dragonvalley は主色が虹色の個体があり黄緑寄りになった（見分けは付く）。気に入らなければ tools/enemies_variants.py の TH を直して再実行（冪等）。
+- ボス切れの調査（依頼）: b_rootserpent の「頭が切れる」は画像でなく確認用シート(roster_shots.py)のキャンバス幅(240px)で左が切れていただけ（画像は無傷）。roster_shots.py の描画位置を直して撮り直した。
+  - 別件の実害: 生成シートを固定グリッドで切っていたため、隣のマスにはみ出た体が欠けていた個体を、シート全体の連結成分で切り直した（tools/enemies_recut.py --apply）。直したID: b_sphinx, b_lavabeast, b_balga, b_librarian, b_griffon, b_balancelion, b_ourne, e_thundermagnet, b_garde, b_voidcrown, xb_orchard（本体と strip）。欠け量が特に大きかったのは b_librarian(7258px)・b_ourne(5541px)・b_garde(2952px)・b_balga(1073px)。
+  - 縁接触の全数検査: 最終PNGは余白を切るので必ず縁に接する（検査にならない）。切り出し前のシートで「セル縁から3px以内の不透明画素」と「隣のマスへの連続」を調べて判定した（tools の一時スクリプト。残りの接触は無し）。
+- 192pxボスの収まり（幅390）: rpg/tools/boss_fit.py → shots/assets_boss_fit.png。直す前は報酬画面で右に最大31pxはみ出し・帯(高さ44)で上が8px切れ（21体）。直した: 報酬は右端を枠内に寄せ、足りなければ縮小（rpg-ui.js の fitScale、rpg-sprites.js の blit に scale 引数）。帯は高さ40pxに縮小。27体すべて収まり確認。
+- 中止: 大技の専用エフェクトと技の効果の画面接続（pixelfx 採用のため別担当）。
+- 事故メモ: ChatGPT のホーム入力欄に別件(戦国タイピングの小判アイコン)の下書きが残っており、上書きした。控えは scratchpad の chatgpt_draft_backup.txt。

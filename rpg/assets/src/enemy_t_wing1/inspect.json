@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_t_wing1/enemy_t_wing1.png",
+ "src_size": [
+  724,
+  724
+ ],
+ "trim_size": [
+  623,
+  489
+ ],
+ "out": "rpg/assets/chars/enemy_t_wing1.png",
+ "out_size": [
+  122,
+  96
+ ],
+ "magenta_removed_px": 345483,
+ "fringe_removed_px": 1573,
+ "magenta_left_px": 0,
+ "opaque_px": 6828,
+ "colors": 5039
+}

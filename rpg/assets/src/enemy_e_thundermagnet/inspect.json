@@ -1,21 +1,21 @@
 {
  "src": "rpg/assets/src/enemy_e_thundermagnet/enemy_e_thundermagnet.png",
  "src_size": [
-  512,
-  512
+  523,
+  401
  ],
  "trim_size": [
-  493,
+  502,
   380
  ],
  "out": "rpg/assets/chars/enemy_e_thundermagnet.png",
  "out_size": [
-  125,
+  127,
   96
  ],
- "magenta_removed_px": 135892,
- "fringe_removed_px": 1835,
- "magenta_left_px": 6,
- "opaque_px": 7957,
- "colors": 7281
+ "magenta_removed_px": 83169,
+ "fringe_removed_px": 1872,
+ "magenta_left_px": 5,
+ "opaque_px": 7942,
+ "colors": 7261
 }

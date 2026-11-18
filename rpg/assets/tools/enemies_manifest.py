@@ -16,4 +16,4 @@ for n in map(int, sys.argv[1:]):
 c = {}
 for a in m['assets']: c[a['status']] = c.get(a['status'], 0) + 1
 m['counts'] = c
-json.dump(m, open(mp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1); print(c)
+tmp = mp + '.tmp'; json.dump(m, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1); json.load(open(tmp, encoding='utf-8')); os.replace(tmp, mp); print(c)

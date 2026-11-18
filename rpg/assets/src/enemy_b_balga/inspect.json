@@ -1,21 +1,21 @@
 {
  "src": "rpg/assets/src/enemy_b_balga/enemy_b_balga.png",
  "src_size": [
-  483,
-  543
+  482,
+  455
  ],
  "trim_size": [
-  443,
+  462,
   433
  ],
  "out": "rpg/assets/chars/enemy_b_balga.png",
  "out_size": [
-  196,
+  205,
   192
  ],
- "magenta_removed_px": 114167,
- "fringe_removed_px": 1025,
+ "magenta_removed_px": 70131,
+ "fringe_removed_px": 1077,
  "magenta_left_px": 1,
- "opaque_px": 28868,
- "colors": 20165
+ "opaque_px": 29113,
+ "colors": 20329
 }

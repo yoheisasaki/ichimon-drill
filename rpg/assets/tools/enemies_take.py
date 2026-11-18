@@ -20,7 +20,8 @@ mg = (r > 140) & (b > 140) & (g < 140) & ((r + b) // 2 - g > 70)
 al = ~mg
 for k, (key, nm, desc, kind) in enumerate(items):
     cx, cy = k % 3, k // 3
-    x0, x1, y0, y1 = int(cx*W/3), int((cx+1)*W/3), int(cy*H/2), int((cy+1)*H/2)
+    rows = 2 if len(E.S[n*6:n*6+6]) > 3 else 1
+    x0, x1, y0, y1 = int(cx*W/3), int((cx+1)*W/3), int(cy*H/rows), int((cy+1)*H/rows)
     sub = ndimage.binary_opening(al[y0:y1, x0:x1], iterations=1)
     lab, m = ndimage.label(ndimage.binary_dilation(sub, iterations=8))
     if m == 0: print(key, 'EMPTY'); continue
