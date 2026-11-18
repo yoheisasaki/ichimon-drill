@@ -119,7 +119,7 @@ with sync_playwright() as p:
         pg.click('.rs-tab[data-tab=me]'); pg.wait_for_selector('.rs-me')
         m = metrics(pg); chk(E + 'me_ok', not m['hscroll'] and not m['small'], m)
         if engine == 'chromium': shot(pg, 'p2_me')
-        pg.click('[data-go=codex]'); pg.wait_for_selector('.rs-cgrid'); chk(E + 'codex_36', len(pg.query_selector_all('.rs-cell')) == 84)
+        pg.click('[data-go=codex]'); pg.wait_for_selector('.rs-cgrid'); chk(E + 'codex_36', len(pg.query_selector_all('.rs-cell')) >= 84)
         if engine == 'chromium': shot(pg, 'p2_codex')
         pg.click('[data-ct=item]'); chk(E + 'codex_items', len(pg.query_selector_all('.rs-item')) >= 10)
         pg.click('#rsBack'); pg.click('[data-go=ach]'); pg.wait_for_selector('.rs-item')

@@ -1,12 +1,15 @@
 'use strict';
 // 素材台帳 rpg/ASSET_MANIFEST.json を作る。node rpg/tools/make_manifest.js
 // 正式素材を入れたら該当行の status を '正式'、path を画像に変える（実行時に rpg-ui.js が読む。再生成すると上書きされるので、正式化後は手で編集する）
-const fs = require('fs'), path = require('path'), D = require('../js/rpg-data.js');
+const fs = require('fs'), path = require('path'), D = require('../js/rpg-data.js'), W = require('../js/rpg-world.js');
 const A = [];
 const base = { transparent: true, ref: 'references/approved-answer-reward.png（見本）', prompt: null, inspect: '未検品（仮絵。完成扱いにしない）' };
 D.JOB_IDS.forEach(j => A.push(Object.assign({ id: 'hero_' + j, use: `主人公 ${D.JOBS[j].name}（帯・報酬で共用の仮ドット絵。1ポーズ）`, path: 'code:rpg-sprites.js#HERO', src: '14x14', display: '28px(帯)/84px(報酬)', anchor: '足元中央', status: '仮' }, base)));
 Object.keys(D.ENEMIES).forEach(e => A.push(Object.assign({ id: 'enemy_' + e, use: `敵 ${D.ENEMIES[e].name}（形4種＋色替えの仮絵）`, path: 'code:rpg-sprites.js#SHAPES', src: '14x14', display: '28px(帯)/84px(報酬)', anchor: '足元中央', status: '仮' }, base)));
 D.REGIONS.forEach(r => A.push(Object.assign({ id: 'bg_' + r.id, use: `背景（帯・報酬） ${r.name}（色と丘・木のコード描画）`, path: 'code:rpg-sprites.js#REGION_COLOR', src: 'コード描画', display: '帯 幅×44px / 報酬 幅×約220px', anchor: '-', status: '仮' }, base)));
+W.BGS.forEach(b => A.push(Object.assign({ id: 'bg_' + b, use: `背景 ${W.BG_NAMES[b]}（試練・秘境・孤島。色味のコード描画）`, path: 'code:rpg-sprites.js#REGION_COLOR', src: 'コード描画', display: '帯 幅×44px / 報酬 幅×約220px', anchor: '-', status: '仮' }, base)));
+A.push(Object.assign({ id: 'sound_original', use: '音（WebAudio合成の短い8種。外部素材なし。初期オフ）', path: 'code:rpg-sound.js', src: '合成', display: '-', anchor: '-', status: '仮' }, base));
+A.push(Object.assign({ id: 'memorial_picture', use: '夜明けの記念絵（コード描画の仮）', path: 'code:rpg-screens.js#VIEWS.memorial', src: '100x66', display: '約360px', anchor: '-', status: '仮' }, base));
 A.push(Object.assign({ id: 'chest_open', use: '宝箱（開）報酬画面', path: 'code:rpg-sprites.js#CHEST_OPEN', src: '12x8', display: '72px', anchor: '足元中央', status: '仮' }, base));
 A.push(Object.assign({ id: 'chest_closed', use: '宝箱（閉）', path: 'code:rpg-sprites.js#CHEST', src: '12x8', display: '72px', anchor: '足元中央', status: '仮' }, base));
 // 第2段で増えた仮絵（画面は全てコード/CSS描画。ホーム・街・装備・転職の「本格的な絵」は未制作）
