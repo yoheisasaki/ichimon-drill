@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_cablesnake/enemy_e_cablesnake.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  465,
+  412
+ ],
+ "out": "rpg/assets/chars/enemy_e_cablesnake.png",
+ "out_size": [
+  108,
+  96
+ ],
+ "magenta_removed_px": 150801,
+ "fringe_removed_px": 1378,
+ "magenta_left_px": 1,
+ "opaque_px": 5958,
+ "colors": 5496
+}

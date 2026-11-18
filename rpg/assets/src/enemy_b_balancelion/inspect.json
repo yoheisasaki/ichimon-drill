@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_balancelion/enemy_b_balancelion.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  457,
+  440
+ ],
+ "out": "rpg/assets/chars/enemy_b_balancelion.png",
+ "out_size": [
+  199,
+  192
+ ],
+ "magenta_removed_px": 126438,
+ "fringe_removed_px": 3212,
+ "magenta_left_px": 136,
+ "opaque_px": 25178,
+ "colors": 20694
+}

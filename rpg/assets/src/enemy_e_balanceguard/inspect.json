@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_balanceguard/enemy_e_balanceguard.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  428,
+  400
+ ],
+ "out": "rpg/assets/chars/enemy_e_balanceguard.png",
+ "out_size": [
+  103,
+  96
+ ],
+ "magenta_removed_px": 154383,
+ "fringe_removed_px": 1639,
+ "magenta_left_px": 0,
+ "opaque_px": 6140,
+ "colors": 5606
+}

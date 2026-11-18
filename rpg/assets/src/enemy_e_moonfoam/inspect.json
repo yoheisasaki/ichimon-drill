@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_moonfoam/enemy_e_moonfoam.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  388,
+  394
+ ],
+ "out": "rpg/assets/chars/enemy_e_moonfoam.png",
+ "out_size": [
+  95,
+  96
+ ],
+ "magenta_removed_px": 177316,
+ "fringe_removed_px": 1526,
+ "magenta_left_px": 0,
+ "opaque_px": 4969,
+ "colors": 2934
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_leviathan/enemy_b_leviathan.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  471,
+  424
+ ],
+ "out": "rpg/assets/chars/enemy_b_leviathan.png",
+ "out_size": [
+  213,
+  192
+ ],
+ "magenta_removed_px": 112618,
+ "fringe_removed_px": 1491,
+ "magenta_left_px": 0,
+ "opaque_px": 30318,
+ "colors": 25946
+}

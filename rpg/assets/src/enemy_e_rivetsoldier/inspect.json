@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_rivetsoldier/enemy_e_rivetsoldier.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  409,
+  372
+ ],
+ "out": "rpg/assets/chars/enemy_e_rivetsoldier.png",
+ "out_size": [
+  106,
+  96
+ ],
+ "magenta_removed_px": 170890,
+ "fringe_removed_px": 939,
+ "magenta_left_px": 0,
+ "opaque_px": 6045,
+ "colors": 5392
+}

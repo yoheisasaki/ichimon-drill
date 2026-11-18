@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_siren/enemy_b_siren.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  458,
+  411
+ ],
+ "out": "rpg/assets/chars/enemy_b_siren.png",
+ "out_size": [
+  214,
+  192
+ ],
+ "magenta_removed_px": 136641,
+ "fringe_removed_px": 1707,
+ "magenta_left_px": 6,
+ "opaque_px": 27005,
+ "colors": 23132
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_rootserpent/enemy_b_rootserpent.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  458,
+  427
+ ],
+ "out": "rpg/assets/chars/enemy_b_rootserpent.png",
+ "out_size": [
+  206,
+  192
+ ],
+ "magenta_removed_px": 119693,
+ "fringe_removed_px": 1507,
+ "magenta_left_px": 0,
+ "opaque_px": 28538,
+ "colors": 21113
+}

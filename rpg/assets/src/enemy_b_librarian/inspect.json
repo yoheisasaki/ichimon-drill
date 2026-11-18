@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_librarian/enemy_b_librarian.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  458,
+  435
+ ],
+ "out": "rpg/assets/chars/enemy_b_librarian.png",
+ "out_size": [
+  202,
+  192
+ ],
+ "magenta_removed_px": 109292,
+ "fringe_removed_px": 3240,
+ "magenta_left_px": 4525,
+ "opaque_px": 29170,
+ "colors": 19458
+}

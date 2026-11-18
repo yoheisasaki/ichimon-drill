@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_sandmirror/enemy_e_sandmirror.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  404,
+  426
+ ],
+ "out": "rpg/assets/chars/enemy_e_sandmirror.png",
+ "out_size": [
+  91,
+  96
+ ],
+ "magenta_removed_px": 169038,
+ "fringe_removed_px": 2019,
+ "magenta_left_px": 4,
+ "opaque_px": 4612,
+ "colors": 4443
+}

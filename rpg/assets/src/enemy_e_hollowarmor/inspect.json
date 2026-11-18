@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_hollowarmor/enemy_e_hollowarmor.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  282,
+  393
+ ],
+ "out": "rpg/assets/chars/enemy_e_hollowarmor.png",
+ "out_size": [
+  69,
+  96
+ ],
+ "magenta_removed_px": 188462,
+ "fringe_removed_px": 902,
+ "magenta_left_px": 649,
+ "opaque_px": 4365,
+ "colors": 3749
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_lavabeast/enemy_b_lavabeast.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  484,
+  417
+ ],
+ "out": "rpg/assets/chars/enemy_b_lavabeast.png",
+ "out_size": [
+  223,
+  192
+ ],
+ "magenta_removed_px": 109451,
+ "fringe_removed_px": 1339,
+ "magenta_left_px": 0,
+ "opaque_px": 32132,
+ "colors": 26471
+}

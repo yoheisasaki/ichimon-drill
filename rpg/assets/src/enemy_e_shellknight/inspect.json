@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_shellknight/enemy_e_shellknight.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  338,
+  370
+ ],
+ "out": "rpg/assets/chars/enemy_e_shellknight.png",
+ "out_size": [
+  88,
+  96
+ ],
+ "magenta_removed_px": 181932,
+ "fringe_removed_px": 813,
+ "magenta_left_px": 0,
+ "opaque_px": 5358,
+ "colors": 4734
+}

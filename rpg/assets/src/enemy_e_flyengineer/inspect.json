@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_flyengineer/enemy_e_flyengineer.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  390,
+  360
+ ],
+ "out": "rpg/assets/chars/enemy_e_flyengineer.png",
+ "out_size": [
+  104,
+  96
+ ],
+ "magenta_removed_px": 179164,
+ "fringe_removed_px": 1240,
+ "magenta_left_px": 0,
+ "opaque_px": 5807,
+ "colors": 5398
+}

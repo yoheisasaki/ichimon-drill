@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_frostwing/enemy_e_frostwing.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  432,
+  371
+ ],
+ "out": "rpg/assets/chars/enemy_e_frostwing.png",
+ "out_size": [
+  112,
+  96
+ ],
+ "magenta_removed_px": 162395,
+ "fringe_removed_px": 1588,
+ "magenta_left_px": 0,
+ "opaque_px": 6595,
+ "colors": 5649
+}

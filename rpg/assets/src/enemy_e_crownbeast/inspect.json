@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_crownbeast/enemy_e_crownbeast.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  375,
+  436
+ ],
+ "out": "rpg/assets/chars/enemy_e_crownbeast.png",
+ "out_size": [
+  83,
+  96
+ ],
+ "magenta_removed_px": 166140,
+ "fringe_removed_px": 2050,
+ "magenta_left_px": 11,
+ "opaque_px": 4605,
+ "colors": 3713
+}

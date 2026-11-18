@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_amberbee/enemy_e_amberbee.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  413,
+  365
+ ],
+ "out": "rpg/assets/chars/enemy_e_amberbee.png",
+ "out_size": [
+  109,
+  96
+ ],
+ "magenta_removed_px": 182589,
+ "fringe_removed_px": 961,
+ "magenta_left_px": 0,
+ "opaque_px": 5477,
+ "colors": 5015
+}
