@@ -1,0 +1,1 @@
+職業しるし（同会話のシート。基準 src/icons_w_sword/prompt.txt）

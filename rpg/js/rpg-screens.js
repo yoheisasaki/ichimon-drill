@@ -32,7 +32,7 @@
     const st = M.statOf(save(), id), it = D.ITEMS[id]; if (!it) return '';
     return st.atk != null ? `こうげき ${st.atk}` : st.def != null ? `ぼうぎょ ${st.def}` : '';
   }
-  const iconOf = id => { const a = RPG.assets && RPG.assets['icon_' + id]; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="32" height="32" alt="" aria-hidden="true">` : ''; };
+  const iconOf = id => { const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); return a && a.path ? `<img class="rs-ic" src="${a.path}" width="32" height="32" alt="" aria-hidden="true">` : ''; };
   const rankTag = it => it.rank ? `<i class="rs-rank">ランク${D.RANK_NAME[it.rank - 1]}</i>` : '';
   const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + (it.provisional ? '<i class="rs-prov">仮名</i>' : '');
   const tierName = t => ({ base: 'きほん職', adv: '上級職', top: '最上級職' })[t];
