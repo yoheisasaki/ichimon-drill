@@ -136,3 +136,9 @@ body:has(.rs){background:#0b1329}
 .rw-open{display:block;margin:6px auto;min-height:48px;padding:0 22px;border-radius:12px;border:2px solid #e0b030;background:#2a3a7a;color:#fff3a0;font-size:18px;font-weight:900}
 
 .rs-ic{width:32px;height:32px;image-rendering:pixelated;vertical-align:middle;margin-right:6px}
+
+.rs-town.img{background-size:100% 100%;background-repeat:no-repeat;image-rendering:pixelated;height:auto;aspect-ratio:240/254}
+.rs-town.img .rs-bld{display:none}
+.rs-tpart{position:absolute;z-index:1;image-rendering:pixelated;pointer-events:none}
+.rs-room{width:100%;max-width:480px;aspect-ratio:2/1;margin:0 auto 8px;background-size:100% 100%;image-rendering:pixelated;border:2px solid var(--gold);border-radius:10px}
+.rs-npc{display:block;margin:-40px auto 4px;height:96px;image-rendering:pixelated;position:relative}

@@ -133,17 +133,24 @@
     room: { name: 'じしつ', desc: 'じぶんの へや。', links: [['look', 'なまえ・みため'], ['codex', 'ずかん'], ['data', 'ゲームのデータ']] },
     ship: { name: 'くうせん', desc: '見習い船長ルカの船。ぼうけんの ちずを ひらく。', links: [['adv', 'ぼうけんの ちず']] }
   };
+  const imgOf = id => (SP.IMGS && SP.IMGS[id]) || null;
+  const roomImg = id => { const im = imgOf('bg_room_' + id); return im ? `<div class="rs-room" role="img" aria-label="${esc((PLACES[id] || {}).name || '')}の なか" style="background-image:url(${im.src})"></div>` : ''; };
+  const NPC_OF = { guild: 'mira', forge: 'toto', ship: 'luca' };
+  const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)); return im ? `<img class="rs-npc" alt="" src="${im.src}">` : ''; };
+  const TOWN_PARTS = [['town_windmill', 'meadow', 74, 70], ['town_fountain', 'waterland', 34, 74], ['town_airship', null, 46, 1], ['town_monument', 'main', 41, 28]];
   VIEWS.town = function () {
-    const spots = [['guild', 'ギルド', 8, 40], ['shop', 'そうびや', 38, 52], ['forge', 'かじや', 68, 44], ['temple', 'しんでん', 12, 16], ['room', 'じしつ', 62, 14], ['ship', 'くうせん', 40, 8]];
-    return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ（仮の絵です）</p>
-      <div class="rs-town" role="group" aria-label="まちの地図">${spots.map(([id, nm, x, y]) => `<button class="rs-spot s-${id}" style="left:${x}%;top:${y}%" data-place="${id}"><span class="rs-bld"></span><b>${nm}</b></button>`).join('')}<div class="rs-sea"></div></div>`, { back: false });
+    const spots = [['guild', 'ギルド', 5, 36], ['shop', 'そうびや', 37, 45], ['forge', 'かじや', 67, 34], ['temple', 'しんでん', 8, 8], ['room', 'じしつ', 66, 4], ['ship', 'くうせん', 38, 0]];
+    const bg = imgOf('bg_town'), s = save(), cl = s.progress.clearedRegions || [], main = !!(s.ending && s.ending.seen) || cl.length >= 18;
+    const parts = bg ? TOWN_PARTS.filter(([id, need]) => imgOf(id) && (!need || (need === 'main' ? main : cl.includes(need)))).map(([id, , x, y]) => { const im = imgOf(id); return `<img class="rs-tpart" alt="" src="${im.src}" style="left:${x}%;top:${y}%;width:${(im.width / 240 * 100).toFixed(1)}%">`; }).join('') : '';
+    return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ${bg ? '' : '（仮の絵です）'}</p>
+      <div class="rs-town${bg ? ' img' : ''}" role="group" aria-label="まちの地図"${bg ? ` style="background-image:url(${bg.src})"` : ''}>${parts}${spots.map(([id, nm, x, y]) => `<button class="rs-spot s-${id}" style="left:${x}%;top:${y}%" data-place="${id}"><span class="rs-bld"></span><b>${nm}</b></button>`).join('')}${bg ? '' : '<div class="rs-sea"></div>'}</div>`, { back: false });
   };
   AFTER.town = function () {
     app().querySelectorAll('[data-place]').forEach(b => b.onclick = () => { const id = b.dataset.place; if (id === 'ship') go('adv'); else go('place', { id }); });
   };
   VIEWS.place = function (p) {
     const pl = PLACES[p.id] || PLACES.guild;
-    return frame(pl.name, `<p class="rs-p c">${esc(pl.desc)}</p><div class="rs-list">${pl.links.map(([to, nm]) => `<button class="rs-big alt" data-go="${to}" data-p='${JSON.stringify({ place: p.id })}'>${nm}</button>`).join('')}</div>`);
+    return frame(pl.name, `${roomImg(p.id)}${npcImg(p.id)}<p class="rs-p c">${esc(pl.desc)}</p><div class="rs-list">${pl.links.map(([to, nm]) => `<button class="rs-big alt" data-go="${to}" data-p='${JSON.stringify({ place: p.id })}'>${nm}</button>`).join('')}</div>`);
   };
 
   // ---------- じぶん ----------
