@@ -43,3 +43,6 @@
 - node：run 95／meta 29／reward 31／stage3 36／hero 12（新規：色の列・色の置換・武器の置き場・台帳・外見・衣装・転職の武器）
 - ブラウザ（headless、nosend=1）：ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／ui_test_map 36／ui_test_fx／regress（fix06）、新規 ui_test_hero.py（rpg/shots/fix06_screens/result.json）。試験用の主人公部品は rpg/tests/fixtures/（make_parts_fixture.py で生成。実物ではない）。
 - 結果と確認票の対応は IMPLEMENTATION_STATUS.md「修正指示書06」節。
+
+（2026-11-19 再実行）
+- node 5本 203件、画面 ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／map 36／fx 10／text 20／hero(実部品) 62／fix06_reward 24／一周 loop_07 32／fix07_screens 7 全通過。ログは rpg/shots/fix07_tests/。確認票は rpg/CHECKLIST_07.md（PASS 31／FAIL 1／未確認 1）。

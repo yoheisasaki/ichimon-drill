@@ -19,7 +19,7 @@ SAVE = "() => JSON.parse(localStorage.getItem('ichimon.rpg.v1'))"
 def shot(pg, name): pg.screenshot(path=os.path.join(OUT, name + '.png'), full_page=True)
 def new_page(b):
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-    pg = ctx.new_page()
+    ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
     pg.on('console', lambda m: R['console'].append(f'{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
     pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}'))
     pg.route('**/script.google.com/**', blk)
@@ -33,9 +33,9 @@ def adventure(pg, patch=''):
         if pg.query_selector('#rwRoot'): break
         pg.evaluate(CORRECT); pg.wait_for_timeout(750)
     pg.wait_for_selector('#rwRoot', timeout=8000); pg.wait_for_timeout(500)
-INFO = """() => { const q = s => document.querySelector(s); const bs = [...document.querySelectorAll('#end,#more')].map(b => { const c = getComputedStyle(b), r = b.getBoundingClientRect(); return [c.backgroundImage, c.color, c.fontSize, c.fontWeight, c.borderColor, Math.round(r.width), Math.round(r.height)].join('|'); });
+INFO = """() => { const q = s => document.querySelector(s); const tx = e => { const c = e.cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent.trim(); }; const bs = [...document.querySelectorAll('#end,#more')].map(b => { const c = getComputedStyle(b), r = b.getBoundingClientRect(); return [c.backgroundImage, c.color, c.fontSize, c.fontWeight, c.borderColor, Math.round(r.width), Math.round(r.height)].join('|'); });
   return { outcome: q('#rwRoot').dataset.outcome, cap: (() => { const c = q('#rwCap').cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; })(), drops: document.querySelectorAll('.rw-drop').length, chestCanvases: document.querySelectorAll('#rwRoot canvas').length,
-    total: q('#rwTotal') && q('#rwTotal').innerText, base: q('#rwCoinBase') && q('#rwCoinBase').innerText, line: q('#rwChestLine') ? q('#rwChestLine').innerText : null, lineHidden: q('#rwChestLine') ? q('#rwChestLine').hidden : null,
+    total: q('#rwTotal') && tx(q('#rwTotal')), base: q('#rwCoinBase') && tx(q('#rwCoinBase')), line: q('#rwChestLine') ? tx(q('#rwChestLine')) : null, lineHidden: q('#rwChestLine') ? q('#rwChestLine').hidden : null,
     open: !!q('#rwOpen'), btnSame: bs.length === 2 && bs[0] === bs[1], hscroll: document.documentElement.scrollWidth > innerWidth,
     html: q('#rwRoot').innerHTML.indexOf('朝星') >= 0, order: [...document.querySelectorAll('#rwRoot > *')].map(e => e.className.split(' ')[0] || e.id).join(','),
     endVisible: (() => { const r = q('#end').getBoundingClientRect(); return r.bottom > 0; })() }; }"""
@@ -46,7 +46,7 @@ with sync_playwright() as p:
     i = pg.evaluate(INFO); R['victory_unopened'] = i
     chk('D01 victory caption', i['outcome'] == 'victory' and '倒した' in i['cap'], i['cap'])
     chk('D01 no chest in scene canvas / one card only', i['drops'] == 1 and i['chestCanvases'] == 2, i)   # 場面canvas＋箱カードcanvasの2つだけ
-    chk('D03 sealed: line empty, total=base', i['line'] == '' and i['open'] and i['total'] == '合計 ' + i['base'], i)
+    chk('D03 sealed: line empty, total=base', i['line'] == '' and i['open'] and i['total'].replace(' ', '') == '合計' + i['base'], i)
     chk('D10 buttons same style', i['btnSame'])
     sv = pg.evaluate(SAVE); chk('D03 coins saved = base only', sv['coins'] == int(i['base'].replace('+', '')) and sv['chests'][-1]['status'] == 'sealed', [sv['coins'], i['base']])
     shot(pg, 'victory_unopened')

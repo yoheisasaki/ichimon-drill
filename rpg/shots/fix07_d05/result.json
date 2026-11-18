@@ -1,0 +1,70 @@
+{
+ "cases": {
+  "rare": {
+   "line": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）",
+   "total": "学習・討伐295＋宝箱0＝合計295",
+   "status": "opened",
+   "result": {
+    "kind": "rare",
+    "rank": 1,
+    "dup": false,
+    "item": "rw_sword_1"
+   },
+   "coin_delta": 0,
+   "ore1_delta": 0,
+   "rare_count": 1,
+   "hscroll": false
+  },
+  "rare_dup": {
+   "line": "火花の剣 が出た！もう持っていたので ランクIの鉱石 ×3 に交換",
+   "total": "学習・討伐295＋宝箱0＝合計295",
+   "status": "opened",
+   "result": {
+    "kind": "rare",
+    "rank": 1,
+    "dup": true,
+    "ore": 3,
+    "item": "rw_sword_1"
+   },
+   "coin_delta": 0,
+   "ore1_delta": 3,
+   "rare_count": 1,
+   "hscroll": false
+  },
+  "mat": {
+   "line": "ランクIの鉱石 ×4 を手に入れた！",
+   "total": "学習・討伐295＋宝箱0＝合計295",
+   "status": "opened",
+   "result": {
+    "kind": "mat",
+    "rank": 1,
+    "mats": {
+     "ore_1": 4
+    }
+   },
+   "coin_delta": 0,
+   "ore1_delta": 4,
+   "rare_count": 0,
+   "hscroll": false
+  },
+  "coin": {
+   "line": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！",
+   "total": "学習・討伐295＋宝箱40＝合計335",
+   "status": "opened",
+   "result": {
+    "kind": "coinmat",
+    "rank": 1,
+    "coin": 40,
+    "mats": {
+     "ore_1": 2
+    }
+   },
+   "coin_delta": 40,
+   "ore1_delta": 2,
+   "rare_count": 0,
+   "hscroll": false
+  }
+ },
+ "console": [],
+ "blocked": 0
+}

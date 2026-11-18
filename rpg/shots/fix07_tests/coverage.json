@@ -1,0 +1,13 @@
+{
+ "n": 324,
+ "by": {
+  "base:layered": 108,
+  "master:layered": 108,
+  "alt1:whole": 54,
+  "alt1:layered": 54
+ },
+ "nonLayeredOnlyAltOfNonAdvJobs": true,
+ "parts": "ready",
+ "enemyMissing": [],
+ "missing": []
+}

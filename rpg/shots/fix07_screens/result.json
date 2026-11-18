@@ -1,0 +1,244 @@
+{
+ "checks": {
+  "A02 12 jobs listed (4+6+2)": {
+   "ok": true,
+   "v": {
+    "base": [
+     "戦士",
+     "魔法使い",
+     "僧侶",
+     "盗賊"
+    ],
+    "adv": [
+     "魔法戦士",
+     "聖騎士",
+     "影武者",
+     "賢者",
+     "忍者",
+     "レンジャー"
+    ],
+    "top": [
+     "天翔騎士",
+     "星詠み"
+    ]
+   }
+  },
+  "B06 320px: no hscroll, end reachable above nav, quiz buttons not covered by strip": {
+   "ok": true,
+   "v": []
+  },
+  "B06 375px: no hscroll, end reachable above nav, quiz buttons not covered by strip": {
+   "ok": true,
+   "v": []
+  },
+  "B06 390px: no hscroll, end reachable above nav, quiz buttons not covered by strip": {
+   "ok": true,
+   "v": []
+  },
+  "B06 430px: no hscroll, end reachable above nav, quiz buttons not covered by strip": {
+   "ok": true,
+   "v": []
+  },
+  "C02 input: field and submit inside the shrunken viewport, keyboard typing works": {
+   "ok": true,
+   "v": {
+    "ansTop": 268,
+    "subBottom": 410,
+    "vh": 410,
+    "stripHidden": true,
+    "focused": "ans",
+    "typed": "てすと"
+   }
+  },
+  "console clean / no external request": {
+   "ok": true,
+   "v": [
+    [],
+    0
+   ]
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "job_names": {
+  "base": [
+   "戦士",
+   "魔法使い",
+   "僧侶",
+   "盗賊"
+  ],
+  "adv": [
+   "魔法戦士",
+   "聖騎士",
+   "影武者",
+   "賢者",
+   "忍者",
+   "レンジャー"
+  ],
+  "top": [
+   "天翔騎士",
+   "星詠み"
+  ]
+ },
+ "b06_layout": {
+  "320/home": {
+   "hscroll": false,
+   "lastBottom": 691,
+   "navTop": 772
+  },
+  "320/equip": {
+   "hscroll": false,
+   "lastBottom": 697,
+   "navTop": 772
+  },
+  "320/shop": {
+   "hscroll": false,
+   "lastBottom": 312,
+   "navTop": 772
+  },
+  "320/jobs": {
+   "hscroll": false,
+   "lastBottom": 387,
+   "navTop": 772
+  },
+  "320/jobdetail": {
+   "hscroll": false,
+   "lastBottom": 716,
+   "navTop": 772
+  },
+  "320/me": {
+   "hscroll": false,
+   "lastBottom": 704,
+   "navTop": 772
+  },
+  "320/quiz": {
+   "hscroll": false,
+   "skipBottom": 608,
+   "lastChoice": 546,
+   "stripTop": 768,
+   "vh": 844
+  },
+  "375/home": {
+   "hscroll": false,
+   "lastBottom": 691,
+   "navTop": 772
+  },
+  "375/equip": {
+   "hscroll": false,
+   "lastBottom": 698,
+   "navTop": 772
+  },
+  "375/shop": {
+   "hscroll": false,
+   "lastBottom": 262,
+   "navTop": 772
+  },
+  "375/jobs": {
+   "hscroll": false,
+   "lastBottom": 387,
+   "navTop": 772
+  },
+  "375/jobdetail": {
+   "hscroll": false,
+   "lastBottom": 716,
+   "navTop": 772
+  },
+  "375/me": {
+   "hscroll": false,
+   "lastBottom": 704,
+   "navTop": 772
+  },
+  "375/quiz": {
+   "hscroll": false,
+   "skipBottom": 598,
+   "lastChoice": 536,
+   "stripTop": 768,
+   "vh": 844
+  },
+  "390/home": {
+   "hscroll": false,
+   "lastBottom": 691,
+   "navTop": 772
+  },
+  "390/equip": {
+   "hscroll": false,
+   "lastBottom": 698,
+   "navTop": 772
+  },
+  "390/shop": {
+   "hscroll": false,
+   "lastBottom": 262,
+   "navTop": 772
+  },
+  "390/jobs": {
+   "hscroll": false,
+   "lastBottom": 387,
+   "navTop": 772
+  },
+  "390/jobdetail": {
+   "hscroll": false,
+   "lastBottom": 716,
+   "navTop": 772
+  },
+  "390/me": {
+   "hscroll": false,
+   "lastBottom": 704,
+   "navTop": 772
+  },
+  "390/quiz": {
+   "hscroll": false,
+   "skipBottom": 608,
+   "lastChoice": 546,
+   "stripTop": 768,
+   "vh": 844
+  },
+  "430/home": {
+   "hscroll": false,
+   "lastBottom": 691,
+   "navTop": 772
+  },
+  "430/equip": {
+   "hscroll": false,
+   "lastBottom": 698,
+   "navTop": 772
+  },
+  "430/shop": {
+   "hscroll": false,
+   "lastBottom": 262,
+   "navTop": 772
+  },
+  "430/jobs": {
+   "hscroll": false,
+   "lastBottom": 387,
+   "navTop": 772
+  },
+  "430/jobdetail": {
+   "hscroll": false,
+   "lastBottom": 716,
+   "navTop": 772
+  },
+  "430/me": {
+   "hscroll": false,
+   "lastBottom": 704,
+   "navTop": 772
+  },
+  "430/quiz": {
+   "hscroll": false,
+   "skipBottom": 608,
+   "lastChoice": 546,
+   "stripTop": 768,
+   "vh": 844
+  }
+ },
+ "c02_info": {
+  "ansTop": 268,
+  "subBottom": 410,
+  "vh": 410,
+  "stripHidden": true,
+  "focused": "ans",
+  "typed": "てすと"
+ },
+ "c02_strip_visible_after_blur": true,
+ "pass": 7,
+ "fail": []
+}

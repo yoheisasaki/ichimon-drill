@@ -1,0 +1,155 @@
+[
+ {
+  "file": "rpg/shots/fix07_compare/01_home.png",
+  "title": "ホーム",
+  "before": "RPG現状_20261118/03_ホーム.png",
+  "after": [
+   [
+    "修正後（新規セーブ・主人公を選んだ直後）",
+    "rpg/shots/fix07_loop/03_home_hero.png"
+   ],
+   [
+    "修正後（魔法戦士・再読込後）",
+    "rpg/shots/fix07_loop/23_home_after_reload.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/02_strip.png",
+  "title": "回答中の帯（下端の冒険帯）",
+  "before": "RPG現状_20261118/02_回答中_帯の拡大.png",
+  "after": [
+   [
+    "修正後（同じ帯・魔法戦士）",
+    "rpg/shots/fix07_loop/24_quiz_strip.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/03_reward_sealed.png",
+  "title": "報酬：宝箱を開ける前",
+  "before": "RPG現状_20261118/05_報酬画面_全体_宝箱を開ける前.png",
+  "after": [
+   [
+    "修正後（勝利・朝星の箱は閉じたまま）",
+    "rpg/shots/fix06_reward/victory_unopened.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/04_reward_opened.png",
+  "title": "報酬：宝箱を開けた後",
+  "before": "RPG現状_20261118/06_報酬画面_朝星の宝箱を開けた後.png",
+  "after": [
+   [
+    "修正後（開封後。合計が一致）",
+    "rpg/shots/fix06_reward/victory_opened.png"
+   ],
+   [
+    "修正後（レア箱・アイコン付き）",
+    "rpg/shots/fix07_d05/rare_2_opened.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/05_reward_nochest.png",
+  "title": "報酬：当日3回目（箱なし）",
+  "before": null,
+  "after": [
+   [
+    "修正後（箱の欄ごと出さない）",
+    "rpg/shots/fix06_reward/third_nochest.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/06_equip.png",
+  "title": "装備：前 → 試着 → 確定",
+  "before": "RPG現状_20261118/12_装備_いま.png",
+  "after": [
+   [
+    "修正後：前（装備中）",
+    "rpg/shots/fix07_loop/15_equip_before_sword2.png"
+   ],
+   [
+    "修正後：試着（鉄の剣）",
+    "rpg/shots/fix07_loop/16_equip_try_sword2.png"
+   ],
+   [
+    "修正後：確定",
+    "rpg/shots/fix07_loop/17_equip_confirmed_sword2.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/07_equip_try_old.png",
+  "title": "装備：別の武器を試着（修正前の試着画面との比較）",
+  "before": "RPG現状_20261118/13_装備_別の武器を試着.png",
+  "after": [
+   [
+    "修正後：試着（鉄の剣）",
+    "rpg/shots/fix07_loop/16_equip_try_sword2.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/08_job.png",
+  "title": "転職：詳細（魔法戦士）",
+  "before": "RPG現状_20261118/15_転職_詳細_魔法戦士.png",
+  "after": [
+   [
+    "修正後：詳細",
+    "rpg/shots/fix07_loop/19_jobdetail_magicknight.png"
+   ],
+   [
+    "修正後：転職の演出",
+    "rpg/shots/fix07_loop/20_job_fx.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/09_jobs_all.png",
+  "title": "転職：全12職の一覧（基本4・上級6・最上級2）",
+  "before": "RPG現状_20261118/14_転職_一覧.png",
+  "after": [
+   [
+    "修正後：基本職",
+    "rpg/shots/fix07_screens/A02_jobs_base_390.png"
+   ],
+   [
+    "修正後：上級職",
+    "rpg/shots/fix07_screens/A02_jobs_adv_390.png"
+   ],
+   [
+    "修正後：最上級職",
+    "rpg/shots/fix07_screens/A02_jobs_top_390.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/10_B08_reference.png",
+  "title": "B08：採用見本との比較（同じ高さに縮尺）",
+  "before": "C:/Users/user/projects/AI事業部/_work/ichimon-rpg-spec-20261118/references/home-job-style.png",
+  "after": [
+   [
+    "実装：ホーム（魔法戦士）",
+    "rpg/shots/fix07_loop/22_home_magicknight.png"
+   ],
+   [
+    "実装：転職の詳細",
+    "rpg/shots/fix07_loop/19_jobdetail_magicknight.png"
+   ]
+  ]
+ },
+ {
+  "file": "rpg/shots/fix07_compare/11_A06_look.png",
+  "title": "A06：顔・髪型・肌・髪色を変えた前後（ホーム）",
+  "before": "C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\shots/fix07_loop/01_home_new.png",
+  "after": [
+   [
+    "変更後（顔3・髪4・肌2・髪色3）",
+    "rpg/shots/fix07_loop/03_home_hero.png"
+   ]
+  ]
+ }
+]

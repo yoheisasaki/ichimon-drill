@@ -182,8 +182,9 @@
     const r = c.result; if (!r) return '';
     let line = '';
     if (r.kind === 'rare') {
-      const fx = M.effectText(r.item);
-      line = r.dup ? `<b>${esc(itemName(r.item))}</b> が出た！<br><small>もう持っていたので ${esc(C.oreName(r.rank))} ×${r.ore} に交換</small>` : `<b>${esc(itemName(r.item))}</b> を手に入れた！${fx ? `<br><small>${esc(fx)}</small>` : ''}`;
+      const fx = M.effectText(r.item), a = root.RPG && RPG.assets && RPG.assets['icon_' + r.item];
+      const ic = a && a.path ? `<img class="rs-ic rw-itemic" src="${a.path}" width="56" height="56" style="width:56px;height:56px;display:block;margin:2px auto 4px;image-rendering:pixelated" alt="" aria-hidden="true">` : '';
+      line = ic + (r.dup ? `<b>${esc(itemName(r.item))}</b> が出た！<br><small>もう持っていたので ${esc(C.oreName(r.rank))} ×${r.ore} に交換</small>` : `<b>${esc(itemName(r.item))}</b> を手に入れた！${fx ? `<br><small>${esc(fx)}</small>` : ''}`);
     }
     else if (r.kind === 'mat') line = `${esc(C.oreName(r.rank))} ×${Object.values(r.mats)[0]} を手に入れた！`;
     else line = `コイン +${r.coin} と ${esc(C.oreName(r.rank))} ×${Object.values(r.mats)[0]} を手に入れた！`;
