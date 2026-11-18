@@ -2,37 +2,13 @@
 // 送信先（学習ボードの Apps Script Webアプリ）
 const SEND_URL = 'https://script.google.com/macros/s/AKfycbwR6PPGrKn5HL1yJ8-xc_sjV-kaEDY2dv0jD_e7XyRSjQUd2E_2_Pq-rGE6tWxHRj3QFg/exec';
 const PARAMS = new URLSearchParams(location.search);
-const NOSEND = PARAMS.get('nosend') === '1';
+const MAMA = PARAMS.get('mama') === '1'; // ママモード：送信せず、保存キーも別名
+const NOSEND = PARAMS.get('nosend') === '1' || MAMA;
 const SEND_OVERRIDE = PARAMS.get('send'); // テスト用：送信先を差し替え
 const ROUND = 10, MASTER = 3, REASK_GAP = 3, REASK_MAX = 5, BATCH = 200;
 const SUBJECTS = ['国語', '算数', '理科', '社会'];
-const LS_STATS = 'ichimon.stats.v1', LS_Q = 'ichimon.queue.v1', LS_DEV = 'ichimon.dev.v1', LS_SEL = 'ichimon.sel.v1';
-// 「まとまり」：unit → まとまり名。ここに無い unit は unit 名のまま（「地図：◯県」は「◯県」）
-const GROUP_OF = {
-  '地図：栃木県': '栃木・群馬', '地図：群馬県': '栃木・群馬',
-  '地図：茨城県': '茨城・千葉', '地図：千葉県': '茨城・千葉',
-  '地図：東京都': '東京・神奈川', '地図：神奈川県': '東京・神奈川',
-  '地図：山梨県': '山梨・静岡・埼玉', '地図：静岡県': '山梨・静岡・埼玉', '地図：埼玉県': '山梨・静岡・埼玉',
-  '地図：石川県': '石川・福井', '地図：福井県': '石川・福井'
-};
-// まとまり名のふりがな（無いものはそのまま）
-const GROUP_RUBY = {
-  '漢字': '{漢字|かんじ}', '熟語': '{熟語|じゅくご}', '対義語': '{対義語|たいぎご}', '物語文': '{物語文|ものがたりぶん}',
-  '慣用句': '{慣用句|かんようく}', '四字熟語': '{四字熟語|よじじゅくご}',
-  '鳥のなかま': '{鳥|とり}のなかま', '動物のなかま分け': '{動物|どうぶつ}のなかま{分|わ}け', '光と鏡': '{光|ひかり}と{鏡|かがみ}',
-  '人のからだ': '{人|ひと}のからだ', '季節の植物': '{季節|きせつ}の{植物|しょくぶつ}',
-  '栃木・群馬': '{栃木|とちぎ}・{群馬|ぐんま}', '茨城・千葉': '{茨城|いばらき}・{千葉|ちば}',
-  '東京・神奈川': '{東京|とうきょう}・{神奈川|かながわ}', '山梨・静岡・埼玉': '{山梨|やまなし}・{静岡|しずおか}・{埼玉|さいたま}',
-  '石川・福井': '{石川|いしかわ}・{福井|ふくい}', '県庁所在地': '{県庁所在地|けんちょうしょざいち}',
-  '栃木県': '{栃木|とちぎ}{県|けん}', '群馬県': '{群馬|ぐんま}{県|けん}', '茨城県': '{茨城|いばらき}{県|けん}', '千葉県': '{千葉|ちば}{県|けん}',
-  '東京都': '{東京|とうきょう}{都|と}', '神奈川県': '{神奈川|かながわ}{県|けん}', '山梨県': '{山梨|やまなし}{県|けん}', '静岡県': '{静岡|しずおか}{県|けん}',
-  '埼玉県': '{埼玉|さいたま}{県|けん}', '石川県': '{石川|いしかわ}{県|けん}', '福井県': '{福井|ふくい}{県|けん}'
-};
-function groupOf(q) {
-  const u = q.unit || '';
-  return GROUP_OF[u] || u.replace(/^地図：/, '') || 'そのほか';
-}
-
+const LS_SFX = MAMA ? '.mama' : '';
+const LS_STATS = 'ichimon.stats.v1' + LS_SFX, LS_Q = 'ichimon.queue.v1' + LS_SFX, LS_DEV = 'ichimon.dev.v1' + LS_SFX, LS_SEL = 'ichimon.sel.v1' + LS_SFX;
 // ---------- 保存（localStorage。使えなくても動く） ----------
 const mem = {};
 function lsGet(k) { try { const v = localStorage.getItem(k); return v === null ? (mem[k] ?? null) : v; } catch (e) { return mem[k] ?? null; } }
@@ -46,10 +22,6 @@ let stats = load(LS_STATS, {});   // qid -> {w:まちがい回数, c:正解回�
 let queue = load(LS_Q, { seq: 0, rows: [] });
 
 // ---------- ふりがな ----------
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-function ruby(s) { return esc(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g, '<ruby>$1<rt>$2</rt></ruby>'); }
-function plain(s) { return String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1'); }
-
 // ---------- データ ----------
 let DATA = null, current = null, filter = '全部';
 let units = {}; // 教科 -> 選んだまとまり（空＝ぜんぶまぜる）
@@ -108,6 +80,7 @@ function home() {
   const p = pool(), hard = p.filter(q => isHard(q.id));
   app.innerHTML = `
     <h1>一問一答</h1>
+    ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}

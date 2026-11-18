@@ -13,3 +13,8 @@
 - 地図問題：問題に `"map":{"hl":"<県>","mark":"<地点>"}`。`map.js`（renderMap）・`data/map_chubu_kanto.json`・`data/features.json`。地図 JSON は地図問題が初めて出るときに1回だけ読む。「ちず」ボタンは map 付きの問題だけを出す（社会にも含む）。
 - 問題の検査：`python tools/check_questions.py`（id重複・choices3つ・答えと重複・`{|}`の形・map.mark/hl の存在）。問題を足したら必ず通す。
 - 出典：地図：国土数値情報（行政区域データ）を加工して作成（元データの整形：smartnews-smri/japan-topography）。最初の画面の下にも表示。
+
+## ママ用（保護者）
+- 問題の一覧：https://yoheisasaki.github.io/ichimon-drill/list.html （全問を回・教科・まとまり別に表示。教科の絞り込み・文字検索・「こたえをかくす」＝タップで1問ずつ表示、口頭で出題できる）。端末の記録は読まず、送信もしない。
+- 試しに解く：https://yoheisasaki.github.io/ichimon-drill/?mama=1 （送信しない。保存キーは末尾 `.mama` で、息子の成績・選び・送信待ちとは混ざらない。ホーム上部にママ用の帯と一覧へのリンクが出る）。
+- 共通部分（まとまり・ふりがな）は `common.js`。
