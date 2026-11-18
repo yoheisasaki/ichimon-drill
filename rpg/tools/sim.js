@@ -1,7 +1,7 @@
 'use strict';
 // 決定的シミュレーション。使い方: node rpg/tools/sim.js [--json]
 // 正答率ごとに「毎日2回・基本10問」を固定seedで回し、成長・資金・討伐・クリア回数を集計する（第1章のみ）
-const D = require('../js/rpg-data.js'), C = require('../js/rpg-core.js'), A = require('../js/rpg-adventure.js'), B = require('../js/rpg-battle.js');
+const D = require('../js/rpg-data.js'), W = require('../js/rpg-world.js'), M = require('../js/rpg-meta.js'), C = require('../js/rpg-core.js'), A = require('../js/rpg-adventure.js'), B = require('../js/rpg-battle.js');
 
 const DAY = 86400e3, T0 = Date.UTC(2026, 10, 18, -9 + 9, 0, 0);  // 日本時間 2026-11-18 09:00 相当
 function buyPolicy(save, jobOrder) {
@@ -19,9 +19,17 @@ function buyPolicy(save, jobOrder) {
   ['weapon', 'armor', 'acc'].forEach(s => { const b = C.bestOwned(save, s, job); if (b) save.equip[s] = b; });
 }
 function chooseJob(save, order) {
-  const lv = C.jobLevels(save);
-  for (const j of order) { if (lv[j] < 10 || D.JOBS[j].tier !== 'base') { if (!C.canChangeJob(save, j) || j === save.job) return j; } }
-  return save.job;
+  const lv = C.jobLevels(save), tgt = j => ({ base: 10, adv: 20, top: 30 })[D.JOBS[j].tier];
+  for (const j of order) { if (lv[j] < tgt(j) && (!C.canChangeJob(save, j) || j === save.job)) return j; }
+  return order[order.length - 1];
+}
+// クリア後・試練の選択（opts.post のとき）：試練 → 秘境6 → 孤島
+function chooseQuest(save, opts, path) {
+  if (save.progress.quest) return;
+  const top = path.find(j => D.JOBS[j].tier === 'top');
+  if (top) { const q = W.QUESTS['trial_' + D.JOBS[top].trial]; if (q && !M.questLocked(save, q.id)) { M.selectQuest(save, q.id); return; } }
+  if (!opts.post) return;
+  for (const id of W.SECRET_IDS.concat(['island'])) { if (!M.questLocked(save, id)) { M.selectQuest(save, id); return; } }
 }
 // opts: {acc, days, seed, jobPath:[...]}
 function playJourney(opts) {
@@ -36,7 +44,7 @@ function playJourney(opts) {
       if (!save.active) {
         // 転職（冒険の合間）
         const want = chooseJob(save, path); if (want !== save.job && !C.canChangeJob(save, want)) { save.job = want; save.loadout.skills = null; }
-        buyPolicy(save, path);
+        buyPolicy(save, path); chooseQuest(save, opts, path);
       }
       const a = A.begin(save, ms);
       const enemyAtStart = a.enemyId;
@@ -44,7 +52,7 @@ function playJourney(opts) {
       for (let i = 0; i < 10; i++) {
         const ok = rng() < opts.acc; qn++;
         const r = A.recordAnswer(save, { rid: 'q' + qn, kind: 'basic', correct: ok, qid: 'q' }, ms);
-        r.events.forEach(ev => { if (ev.t === 'hero') { const rg0 = (stat.reg[D.REGIONS[a.route.region].name] = stat.reg[D.REGIONS[a.route.region].name] || { norm: 0, boss: 0, normKills: 0, cAtKill: [], dmg: 0, acts: 0, hp: 0, def: 0, atk: 0, n: 0 }); rg0.dmg += ev.dmg; rg0.acts++; { const st0 = stat.step[a.step] = stat.step[a.step] || { d: 0, n: 0, hp: 0, atk: 0, def: 0, m: 0 }; st0.d += ev.dmg; st0.n++; st0.hp += a.battle.hero.maxHp; st0.atk += a.battle.hero.atk; st0.def += a.battle.hero.def; st0.m++; } stat.skillUse[a.hero.job + ':' + ev.act] = (stat.skillUse[a.hero.job + ':' + ev.act] || 0) + 1; } if (ev.why) stat.whyCount[ev.why] = (stat.whyCount[ev.why] || 0) + 1; if (ev.kill && killC == null) killC = a.basic.c; });
+        r.events.forEach(ev => { if (ev.t === 'hero') { const rg0 = (stat.reg[(a.route.quest ? a.route.quest : D.REGIONS[a.route.region].name)] = stat.reg[(a.route.quest ? a.route.quest : D.REGIONS[a.route.region].name)] || { norm: 0, boss: 0, normKills: 0, cAtKill: [], dmg: 0, acts: 0, hp: 0, def: 0, atk: 0, n: 0 }); rg0.dmg += ev.dmg; rg0.acts++; { const st0 = stat.step[a.step] = stat.step[a.step] || { d: 0, n: 0, hp: 0, atk: 0, def: 0, m: 0 }; st0.d += ev.dmg; st0.n++; st0.hp += a.battle.hero.maxHp; st0.atk += a.battle.hero.atk; st0.def += a.battle.hero.def; st0.m++; } stat.skillUse[a.hero.job + ':' + ev.act] = (stat.skillUse[a.hero.job + ':' + ev.act] || 0) + 1; } if (ev.why) stat.whyCount[ev.why] = (stat.whyCount[ev.why] || 0) + 1; if (ev.kill && killC == null) killC = a.basic.c; });
         const hf = a.battle.hero.hp / a.battle.hero.maxHp; if (hf < stat.minHpFrac) stat.minHpFrac = hf;
         if (!ok && A.queueReview(save, r.origin, null)) queue.push(r.origin);
       }
@@ -60,16 +68,19 @@ function playJourney(opts) {
       { const rg = stat.reg[res.region] = stat.reg[res.region] || { norm: 0, boss: 0, normKills: 0, cAtKill: [], dmg: 0, acts: 0, hp: 0, def: 0, atk: 0, n: 0 };
         if (res.enemy.boss) rg.boss++; else { rg.norm++; if (res.outcome === 'victory') { rg.normKills++; rg.cAtKill.push(killC); } } }
       stat.adv++; stat.coinsEarned += res.coin;
+      if (res.quest) { const qa = (stat.questAdv = stat.questAdv || {}); qa[res.quest.id] = (qa[res.quest.id] || 0) + 1; if (res.clear) (stat.questDone = stat.questDone || {})[res.quest.id] = { day: d + 1, adv: stat.adv }; }
       if (res.outcome === 'victory') { stat.wins++; stat.killAdv.push(stat.adv); if (res.enemy.boss) { stat.regionDay[res.region] = d + 1; } }
       else if (res.outcome === 'retreat') stat.retreats++; else stat.continues++;
       const stp = save.progress.step;
       if (stp >= D.REGION_START[6] && stat.ch1Day == null) { stat.ch1Day = d + 1; stat.ch1Adv = stat.adv; }
       if (stp >= D.REGION_START[12] && stat.ch2Day == null) { stat.ch2Day = d + 1; stat.ch2Adv = stat.adv; }
+      if (res.quest && res.quest.kind === 'trial' && res.clear) { stat.trialDay = stat.trialDay || {}; stat.trialDay[res.quest.id] = d + 1; }
       if (stp >= D.ROUTE.length && stat.endDay == null) { stat.endDay = d + 1; stat.endAdv = stat.adv; }
     }
     stat.days = d + 1;
     if (opts.stopAtCh1 && save.progress.step >= D.REGION_START[6]) break;
     if (opts.stopAtEnd && save.progress.step >= D.ROUTE.length) break;
+    if (opts.post && stat.questDone && stat.questDone.island) break;
   }
   stat.final = { advLv: C.heroLevel(save.advXp).lv, advXp: save.advXp, jobs: C.jobLevels(save), coins: save.coins, job: save.job, step: save.progress.step, rank: C.maxRank(save), items: Object.keys(save.inv.items).length, pity: save.chest.pity };
   return { stat, save };

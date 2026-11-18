@@ -117,7 +117,7 @@
     if (j.tier === 'adv') { return j.req.every(r => lv[r] >= 10) ? null : '基本職2つがLv10になると解放'; }
     if (j.tier === 'top') {
       if (j.reqFrom.filter(r => lv[r] >= 20).length < 2) return '上級職2つがLv20になると解放';
-      if (!save.progress.clearedRegions.length || !save.trials || !save.trials[j.trial]) return 'しれんにちょうせん';
+      if (!save.trials || !save.trials[j.trial]) return 'しれんをクリアすると解放';
     }
     return null;
   }

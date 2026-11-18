@@ -78,7 +78,7 @@
     // o: {job, jobLv, advLv, equip, skills:[id], tactic, enemyId, enemyHp?}
     const hs = heroStats(o.advLv, o.job, o.jobLv, o.equip), ed0 = D.ENEMIES[o.enemyId], ed = Object.assign({}, ed0, o.enemyStats || D.statsAt(ed0, 0));
     let gauge = START_GAUGE; if (o.job === 'mage' && o.jobLv >= 3) gauge += 1;
-    const p = { imbue: null, shield: 0, shadow: 0, last: null, seal: null, aim: 0, fly: false, star: 0 };
+    const p = { imbue: null, shield: 0, shadow: 0, last: null, seal: null, aim: 0, fly: false, star: 0, lastKind: null, lastSkill: null };
     if (o.job === 'ranger' && o.jobLv >= 15) p.aim = 1;
     if (o.job === 'starseer' && o.jobLv >= 15) p.star = 1;
     const e = { id: ed.id, name: ed.name, boss: ed.boss, maxHp: ed.hp, hp: o.enemyHp == null ? ed.hp : Math.max(1, o.enemyHp), atk: ed.atk, def: ed.def, weak: ed.weak, pattern: ed.pattern, pi: 0, count: 0, guarded: false, brace: 0, atkDown: null, tele: false };
@@ -122,6 +122,7 @@
       hits = [[1, el]];
       if (job === 'magicknight' && p.imbue && h.jobLv >= 15) temp *= 1.10;
       if (job === 'skyknight' && p.fly) temp *= (h.jobLv >= 15 ? 1.25 : 1.20);
+      if (hx.guardNormal && h.guard && h.guard.left > 0) temp *= 1 + hx.guardNormal;   // 翠天のマント：防御技のあとの通常攻撃
       let follow = 0;
       if (job === 'shadow') follow = p.shadow * (h.jobLv >= 15 ? 0.25 : 0.2);
       if (follow) hits.push([follow, null]);
@@ -129,7 +130,7 @@
       e.hp = Math.max(0, e.hp - ev.dmg); e.brace = 0;
       if (job === 'shadow') p.shadow = Math.min(2, p.shadow + 1);
       if (job === 'ranger' && isCorrectNormal) p.aim = Math.min(3, p.aim + 1);
-      ev.el = el;
+      ev.el = el; p.lastKind = 'atk';
     } else {
       const sk0 = D.SKILLS[act.id], own = sk0.job === job, sk = own ? eff(sk0, h.jobLv) : sk0;
       h.gauge -= sk.cost; st.cast[act.id] = (st.cast[act.id] || 0) + 1;
@@ -145,7 +146,7 @@
       if (fx.includes('meteor') && p.fly) { hits = [[3.0, null]]; p.fly = false; }
       else if (fx.includes('descend') && p.fly) { hits = [[4.8, null]]; guard = [0.4, 1]; p.fly = false; }
       const sc = stack ? p[stack.k] : 0;
-      if (stack && stack.per && sc) hits.push([stack.per * sc, sk.el || null]);
+      if (stack && stack.per && sc) hits.push([stack.per * sc * (1 + (hx.stackBoost || 0)), sk.el || null]);   // 巨兵の弓：蓄積技強化
       if (own && sk.igPerAim) ig = Math.min(1, sk.igPerAim * p.aim);
       if (fx.includes('starGuard')) guard = [0.20 + 0.10 * p.star, 1];
       if (fx.includes('starHeal')) heal = 0.20 + 0.05 * p.star;
@@ -172,10 +173,22 @@
       if (hx.elemAdd) hits.push([hx.elemAdd[1], hx.elemAdd[0]]);
       if (hx.firstSkill && hits.length && mark(true, 'firstSkill')) temp *= 1 + hx.firstSkill;
       if (hx.firstMulti && hits.length > 1 && mark(true, 'firstMulti')) temp *= 1 + hx.firstMulti;
+      // 固有装備の効果（第3段）
+      const kind = heal ? 'heal' : guard ? 'guard' : 'atk', flip = p.lastKind && p.lastKind !== kind;
+      let healX = 1;
+      if (hx.skillAdd && hits.some(x => x[0] > 0)) hits.push([hx.skillAdd, null]);                 // 熔晶の武器飾り：技の追加ダメージ
+      if (hx.teleBonus && e.tele) temp *= 1 + hx.teleBonus;                                          // 時砂の短剣：敵が準備中の技強化
+      if (hx.diffSkill && p.lastSkill && p.lastSkill !== act.id && hits.some(x => x[0] > 0)) temp *= 1 + hx.diffSkill;   // 双面の指輪：異なる技の連続
+      if (hx.switchBonus && flip && (kind === 'heal' || p.lastKind === 'heal')) { temp *= 1 + hx.switchBonus; healX *= 1 + hx.switchBonus; }   // 潮音の杖：攻撃⇔回復
+      if (hx.switchGuard && flip && (kind === 'guard' || p.lastKind === 'guard')) temp *= 1 + hx.switchGuard;   // 天秤のつるぎ：攻撃⇔防御
+      if (!own && hx.inhBoost) { temp *= 1 + hx.inhBoost; healX *= 1 + hx.inhBoost; }                // 記憶の護符：継承技補助
+      if (guard && (hx.guardBoost || (hx.teleGuard && e.tele))) guard = [Math.min(REDUCE_CAP, guard[0] + (hx.guardBoost || 0) + (e.tele ? hx.teleGuard || 0 : 0)), guard[1]];   // 黒鋼の盾飾り・城塞の鎧
       const dmgSkill = hits.some(x => x[0] > 0);
+      const weakHit = dmgSkill && e.weak && hits.some(x => x[1] === e.weak);
       if (dmgSkill) { ev.dmg = calcDamage(h, e, hits, { temp, ig, igTG }); e.hp = Math.max(0, e.hp - ev.dmg); e.brace = 0; }
+      if (weakHit && hx.weakHeal) ev.heal += healHero(h, hx.weakHeal, 1);   // 極光の衣：弱点攻撃のあとの小回復
       ev.hits = hits.length; ev.el = sk.el || null;
-      if (heal) { ev.heal += healHero(h, heal, (1 + (hx.healBonus || 0)) * (harmonized && sk.sys ? (h.jobLv >= 15 ? 1.25 : 1.2) : 1)); }
+      if (heal) { ev.heal += healHero(h, heal, healX * (1 + (hx.healBonus || 0)) * (harmonized && sk.sys ? (h.jobLv >= 15 ? 1.25 : 1.2) : 1)); }
       if (hx.firstHeal && dmgSkill && mark(true, 'firstHeal')) ev.heal += healHero(h, hx.firstHeal, 1);
       if (guard) applyGuard(h, guard[0], guard[1]);
       if (atkDown && (!e.atkDown || atkDown > e.atkDown.pct)) e.atkDown = { pct: atkDown, left: 1 };
@@ -183,6 +196,7 @@
       if (fx.includes('fly')) p.fly = true;
       if (fx.includes('meteor') || fx.includes('descend')) { /* 飛翔中なら上で着地済み。地上ならそのまま */ }
       if (stack && stack.use === 'all') p[stack.k] = 0;
+      p.lastKind = kind; p.lastSkill = act.id;
       if (fx.includes('shadow2')) p.shadow = 2; else if (job === 'shadow') p.shadow = Math.min(2, p.shadow + 1);
     }
     if (hx.halfHeal && h.hp > 0 && h.hp <= h.maxHp / 2 && mark(true, 'halfHeal')) ev.heal += healHero(h, hx.halfHeal, 1);
@@ -197,12 +211,14 @@
     const down = e.atkDown ? 1 - e.atkDown.pct : 1;
     return Math.max(1, Math.floor(e.atk * a.m * down * 100 / (100 + h.def)));
   }
-  function totalReduce(h, firstUse) {
+  function totalReduce(h, firstUse, a) {
     const hx = h.fx || {};
     let keep = 1;
     if (h.guard && h.guard.left > 0) keep *= 1 - h.guard.pct;
     if (hx.reduce) keep *= 1 - hx.reduce;
     if (firstUse && hx.firstReduce) keep *= 1 - hx.firstReduce;
+    if (a && a.k === 'big' && hx.bigReduce) keep *= 1 - hx.bigReduce;     // 水晶のまもり
+    if (a && a.el && hx.elemReduce) keep *= 1 - hx.elemReduce;            // 白銀の胸当て
     return Math.min(REDUCE_CAP, 1 - keep);
   }
   function enemyAct(st) {
@@ -210,7 +226,9 @@
     e.pi++; e.count = 0; e.guarded = false;
     if (a.k === 'atk' || a.k === 'big') {
       const base = incoming(h, e, a), first = !st.used.firstHit; st.used.firstHit = 1;
-      const red = totalReduce(h, first), gActive = h.guard && h.guard.left > 0;
+      let red = totalReduce(h, first, a); const gActive = h.guard && h.guard.left > 0;
+      const hx = h.fx || {};
+      if (hx.lowGuard && h.hp <= h.maxHp * 0.4 && !st.used.lowGuard) { st.used.lowGuard = 1; red = Math.min(REDUCE_CAP, 1 - (1 - red) * (1 - hx.lowGuard)); ev.lowGuard = true; }   // 深碧の護符：低HPで1回
       ev.dmg = Math.max(1, Math.floor(base * (1 - red))); ev.reduced = base - ev.dmg;
       if (e.atkDown) { e.atkDown.left--; if (e.atkDown.left <= 0) e.atkDown = null; }
       if (gActive) {
@@ -219,6 +237,7 @@
       }
       h.hp -= ev.dmg;
       if (h.hp <= 0) { h.hp = 0; st.status = 'retreat'; ev.down = true; }
+      else if (a.k === 'big' && hx.afterBig) healHero(h, hx.afterBig, 1);   // 王冠の星飾り：大技のあとの立て直し
     } else if (a.k === 'guard') e.guarded = true;
     else if (a.k === 'brace') e.brace = 0.25;
     e.tele = enemyAction(e).k === 'big';
@@ -250,9 +269,9 @@
     if (kills.length) { kills.sort((a, b) => costOf(a) - costOf(b) || b.ev.dmg - a.ev.dmg); return { act: kills[0].act, why: 'kill' }; }
     // 2. 予告された大技への防御
     if (e.tele) {
-      const inc = incoming(h, e, enemyAction(e)), cur = totalReduce(h, !st.used.firstHit);
+      const ea = enemyAction(e), inc = incoming(h, e, ea), cur = totalReduce(h, !st.used.firstHit, ea);
       if (inc * (1 - cur) >= h.hp || inc * (1 - cur) >= T.bigFrac * h.maxHp) {
-        const gs = pv.filter(x => x.act.t === 'skill' && totalReduce(x.st.hero, !st.used.firstHit) > cur + 0.001).map(x => ({ x, r: totalReduce(x.st.hero, !st.used.firstHit) }));
+        const gs = pv.filter(x => x.act.t === 'skill' && totalReduce(x.st.hero, !st.used.firstHit, ea) > cur + 0.001).map(x => ({ x, r: totalReduce(x.st.hero, !st.used.firstHit, ea) }));
         if (gs.length) { gs.sort((a, b) => b.r - a.r || b.x.ev.dmg - a.x.ev.dmg || costOf(a.x) - costOf(b.x)); return { act: gs[0].x.act, why: 'defend' }; }
       }
     }
@@ -313,7 +332,7 @@
     if (ev.correct) {
       const ch = chooseAction(st), a = heroAct(st, ch.act, true);
       a.why = ch.why; out.push(a);
-      if (ev.kind === 'review') { const r = healHero(h, h.job === 'priest' && h.jobLv >= 3 ? 0.15 : 0.10, 1); if (r) { out.push({ t: 'heal', heal: r }); } }
+      if (ev.kind === 'review') { const r = healHero(h, (h.job === 'priest' && h.jobLv >= 3 ? 0.15 : 0.10) + ((h.fx && h.fx.reviewHeal) || 0), 1); if (r) { out.push({ t: 'heal', heal: r }); } }
       postCorrect(st, ch.act.t === 'normal');
       if (st.status === 'fight' && ev.kind === 'basic') {
         e.count++;
