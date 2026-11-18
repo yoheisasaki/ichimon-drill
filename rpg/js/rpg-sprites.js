@@ -69,7 +69,7 @@
   }
   function drawHero(ctx, job, x, groundY, o) {
     o = o || {};
-    const im = o.img && IMGS['hero_' + job + (o.img === 'strip' ? '_strip' : '')];
+    const base = 'hero_' + job + (o.img === 'strip' ? '_strip' : ''), im = o.img && ((o.pose && IMGS[base + '_' + o.pose]) || IMGS[base]);
     if (im) {
       blit(ctx, im, x + 7, groundY, o.tint);
       if (o.guard) { ctx.fillStyle = '#7fd3ff'; ctx.fillRect(x + 12, groundY - 12, 2, 5); }

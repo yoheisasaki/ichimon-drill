@@ -133,14 +133,17 @@
     room: { name: 'じしつ', desc: 'じぶんの へや。', links: [['look', 'なまえ・みため'], ['codex', 'ずかん'], ['data', 'ゲームのデータ']] },
     ship: { name: 'くうせん', desc: '見習い船長ルカの船。ぼうけんの ちずを ひらく。', links: [['adv', 'ぼうけんの ちず']] }
   };
+  const mainCleared = s => !!(s.ending && s.ending.seen) || s.progress.step >= D.ROUTE.length;
+  const chCleared = (s, ch) => D.REGIONS.filter(x => x.ch === ch).every(x => (s.progress.clearedRegions || []).includes(x.id));
   const imgOf = id => (SP.IMGS && SP.IMGS[id]) || null;
   const roomImg = id => { const im = imgOf('bg_room_' + id); return im ? `<div class="rs-room" role="img" aria-label="${esc((PLACES[id] || {}).name || '')}の なか" style="background-image:url(${im.src})"></div>` : ''; };
   const NPC_OF = { guild: 'mira', forge: 'toto', ship: 'luca' };
-  const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)); return im ? `<img class="rs-npc" alt="" src="${im.src}">` : ''; };
-  const TOWN_PARTS = [['town_windmill', 'meadow', 74, 70], ['town_fountain', 'waterland', 34, 74], ['town_airship', null, 46, 1], ['town_monument', 'main', 41, 28]];
+  const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)), a2 = k && imgOf('npc_' + k + '_alt'); return im ? `<img class="rs-npc" alt="" src="${im.src}"${a2 ? ` data-alt="${a2.src}" data-base="${imgOf('npc_' + k).src}"` : ''}>` : ''; };
+  const NPC_WHO = { 'ミラ': 'mira', 'トト': 'toto', 'ルカ': 'luca', '黒鎧の騎士': 'knight' };
+  const TOWN_PARTS = [['town_windmill', 'meadow', 74, 57], ['town_fountain', 'waterland', 35, 72], ['town_airship', null, 46, 1], ['town_monument', 'main', 41, 28]];
   VIEWS.town = function () {
     const spots = [['guild', 'ギルド', 5, 36], ['shop', 'そうびや', 37, 45], ['forge', 'かじや', 67, 34], ['temple', 'しんでん', 8, 8], ['room', 'じしつ', 66, 4], ['ship', 'くうせん', 38, 0]];
-    const bg = imgOf('bg_town'), s = save(), cl = s.progress.clearedRegions || [], main = !!(s.ending && s.ending.seen) || cl.length >= 18;
+    const bg = imgOf('bg_town'), s = save(), cl = s.progress.clearedRegions || [], main = mainCleared(s);
     const parts = bg ? TOWN_PARTS.filter(([id, need]) => imgOf(id) && (!need || (need === 'main' ? main : cl.includes(need)))).map(([id, , x, y]) => { const im = imgOf(id); return `<img class="rs-tpart" alt="" src="${im.src}" style="left:${x}%;top:${y}%;width:${(im.width / 240 * 100).toFixed(1)}%">`; }).join('') : '';
     return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ${bg ? '' : '（仮の絵です）'}</p>
       <div class="rs-town${bg ? ' img' : ''}" role="group" aria-label="まちの地図"${bg ? ` style="background-image:url(${bg.src})"` : ''}>${parts}${spots.map(([id, nm, x, y]) => `<button class="rs-spot s-${id}" style="left:${x}%;top:${y}%" data-place="${id}"><span class="rs-bld"></span><b>${nm}</b></button>`).join('')}${bg ? '' : '<div class="rs-sea"></div>'}</div>`, { back: false });
@@ -151,6 +154,10 @@
   VIEWS.place = function (p) {
     const pl = PLACES[p.id] || PLACES.guild;
     return frame(pl.name, `${roomImg(p.id)}${npcImg(p.id)}<p class="rs-p c">${esc(pl.desc)}</p><div class="rs-list">${pl.links.map(([to, nm]) => `<button class="rs-big alt" data-go="${to}" data-p='${JSON.stringify({ place: p.id })}'>${nm}</button>`).join('')}</div>`);
+  };
+
+  AFTER.place = function () {
+    const n = app().querySelector('.rs-npc[data-alt]'); if (n) n.onclick = () => { n.src = n.src === n.dataset.alt ? n.dataset.base : n.dataset.alt; };
   };
 
   // ---------- じぶん ----------
@@ -375,7 +382,8 @@
   function startStory(route, back) { UI.story = { pages: ST.pagesFor(route), i: 0, key: storyKey(route), back: back || 'adv' }; go('story', {}); }
   VIEWS.story = function () {
     const S = UI.story || { pages: [{ who: null, text: '' }], i: 0 }, p = S.pages[S.i], last = S.i >= S.pages.length - 1;
-    return frame('おはなし', `<div class="rs-panel rs-story"><div class="rs-story-who">${p.who ? esc(p.who) : '　'}</div><p class="rs-story-text">${esc(p.text)}</p><div class="rs-story-n">${S.i + 1} / ${S.pages.length}</div></div>
+    const nk = p.who && NPC_WHO[p.who], nim = nk && (/[！？]/.test(p.text) && imgOf('npc_' + nk + '_alt') || imgOf('npc_' + nk));
+    return frame('おはなし', `<div class="rs-panel rs-story">${nim ? `<img class="rs-npc story" alt="" src="${nim.src}">` : ''}<div class="rs-story-who">${p.who ? esc(p.who) : '　'}</div><p class="rs-story-text">${esc(p.text)}</p><div class="rs-story-n">${S.i + 1} / ${S.pages.length}</div></div>
       <div class="rs-row2"><button class="rs-btn" id="stSkip">とばす</button><button class="rs-big" id="stNext">${last ? 'おわり' : 'つぎへ'}</button></div>`);
   };
   AFTER.story = function () {

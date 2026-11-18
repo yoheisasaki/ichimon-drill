@@ -96,7 +96,7 @@
     ctx.clearRect(0, 0, W, H); SP.drawBackground(ctx, W, H, si.region, 'strip');
     const gy = H - 2, hx = 8 + Math.min(RPG.scene.walk, 8) * 6 + (o.heroDx || 0), ex = W - 26 + (o.enemyDx || 0);
     const heroTint = si.status === 'retreat' ? '#8a90a8' : (o.heroFlash ? '#ff9aa0' : null);
-    SP.drawHero(ctx, si.job, hx, gy, { img: 'strip', tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
+    SP.drawHero(ctx, si.job, hx, gy, { img: 'strip', pose: o.heroFlash ? 'hit' : o.heroPose, tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
     if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { img: 'strip', tint: o.enemyFlash ? '#fff' : null, scale: fitScale(SP.IMGS['enemy_' + si.enemyId + '_strip'], 0, 40) });
     if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cx = o.still.hero ? hx + 7 : ex + 7; ctx.drawImage(im, cx - w / 2, gy - h - 2, w, h); ctx.restore(); } }
     fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx + 7 : f.at === 'melee' ? ex - 10 : ex + 7, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1, STRIP_DS); });
@@ -124,7 +124,7 @@
       if (e.t === 'hero') {
         const key = e.act !== 'normal' && FXL ? FXL.keyFor(e.act) : null, job = RPG.save && RPG.save.active ? RPG.save.active.battle.hero.job : null;
         const st = { d: 360, key, f: p => {
-          const r = { heroDx: p < .3 ? p / .3 * 8 : p < .6 ? 8 : (1 - (p - .6) / .4) * 8, enemyFlash: p > .3 && p < .6 && e.dmg > 0 };
+          const r = { heroDx: p < .3 ? p / .3 * 8 : p < .6 ? 8 : (1 - (p - .6) / .4) * 8, enemyFlash: p > .3 && p < .6 && e.dmg > 0, heroPose: p > .2 && p < .7 ? 'attack' : null };
           if (!key) { r.slash = p > .25 && p < .55; r.heal = e.heal > 0 && p > .5; }
           else if (!st.played && p > .2 && p < .6) { const kind = FXL.stillOf(key), hero = (FXL.AT[key] === 'hero'); if (kind && SP.IMGS['fx_' + kind + '_strip']) r.still = { kind, hero }; else { r.slash = !hero; r.heal = hero && e.heal > 0; } }
           return r;
@@ -241,7 +241,7 @@
     const paint = () => {
       SP.drawBackground(g, lw, lh, rg, 'reward');
       g.save(); g.scale(2, 2);   // キャラは2倍（仮絵）
-      SP.drawHero(g, res.job.id, cx - 20, gy2, { img: 'reward', tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
+      SP.drawHero(g, res.job.id, cx - 20, gy2, { img: 'reward', pose: res.outcome === 'victory' ? 'win' : 'hit', tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
       if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true, res.enemy.boss ? 'boss' : 'normal');
       else {
         // 192pxボスは幅が220px超になることがあり、右端が切れる／主人公に重なる。右端を枠の内側に寄せ、足りなければ縮小する

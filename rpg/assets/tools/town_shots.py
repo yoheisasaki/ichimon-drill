@@ -9,7 +9,7 @@ srv = socketserver.TCPServer(('127.0.0.1', 18437), functools.partial(Q, director
 con = []
 def put(pg, name):
     t = open(os.path.join(SAVES, name + '.json'), encoding='utf-8').read()
-    pg.evaluate("t => localStorage.setItem('ichimon.rpg.v1', t)", t); pg.reload(); pg.wait_for_selector('.subj'); pg.wait_for_timeout(1500)
+    pg.evaluate("t => localStorage.setItem('ichimon.rpg.v1', t)", t); pg.reload(); pg.wait_for_selector('.subj'); pg.wait_for_function("() => RPGSprites.IMGS.town_airship && RPGSprites.IMGS.bg_town"); pg.wait_for_timeout(300)
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True); pg = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True).new_page()
     pg.on('console', lambda m: con.append(m.text) if m.type == 'error' else None); pg.on('pageerror', lambda e: con.append(str(e)))
