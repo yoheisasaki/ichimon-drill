@@ -5,7 +5,7 @@
   1312
  ],
  "trim_size": [
-  372,
+  373,
   497
  ],
  "out": "rpg/assets/chars/hero_ninja_strip_hit.png",
@@ -13,9 +13,9 @@
   22,
   29
  ],
- "magenta_removed_px": 1474359,
- "fringe_removed_px": 4267,
- "magenta_left_px": 38,
- "opaque_px": 321,
- "colors": 300
+ "magenta_removed_px": 1465162,
+ "fringe_removed_px": 2002,
+ "magenta_left_px": 75,
+ "opaque_px": 356,
+ "colors": 328
 }

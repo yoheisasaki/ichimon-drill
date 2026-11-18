@@ -12,6 +12,7 @@ NC = 2 if STRIP else 3
 SUF = '_strip' if STRIP else ''
 def mag(a):
     r,g,b=[a[...,i].astype(int) for i in range(3)]
+    if os.environ.get('STRICT')=='1': return (r>200)&(b>200)&(g<80)&((r+b)//2-g>150)
     return (r>140)&(b>140)&(g<120)&((r+b)//2-g>80)
 for j in sys.argv[1:]:
     sid=f'hero_{j}{SUF}_sheet'; s=f'{A}/src/{sid}/{sid}.png'; f=f'{D}/rpgpose_{"s_" if STRIP else ""}{j}.png'

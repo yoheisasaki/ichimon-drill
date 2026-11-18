@@ -6,16 +6,16 @@
  ],
  "trim_size": [
   351,
-  425
+  426
  ],
  "out": "rpg/assets/chars/hero_ninja_win.png",
  "out_size": [
   85,
   103
  ],
- "magenta_removed_px": 1517089,
- "fringe_removed_px": 4732,
- "magenta_left_px": 180,
- "opaque_px": 3002,
- "colors": 2894
+ "magenta_removed_px": 1508454,
+ "fringe_removed_px": 1512,
+ "magenta_left_px": 777,
+ "opaque_px": 3685,
+ "colors": 3516
 }

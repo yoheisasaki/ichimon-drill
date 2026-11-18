@@ -2,7 +2,7 @@
  "note": "状態: 予定=未制作 / 仮=コード描画の仮絵（完成扱いにしない）/ 正式=制作済み・組み込み済み。画像生成の手段が無く、試作の正式素材は6件（草原セット）。",
  "updated": "2026-11-18",
  "counts": {
-  "正式": 724,
+  "正式": 730,
   "仮": 12,
   "予定": 21
  },
@@ -8847,7 +8847,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [426, 353], \"out_size\": [103, 85], \"magenta_removed_px\": 1510738, \"fringe_removed_px\": 4685, \"magenta_left_px\": 179, \"opaque_px\": 3333, \"colors\": 3079}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [426, 354], \"out_size\": [103, 86], \"magenta_removed_px\": 1503593, \"fringe_removed_px\": 2328, \"magenta_left_px\": 657, \"opaque_px\": 3935, \"colors\": 3666}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・攻撃ポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
   },
@@ -8859,7 +8859,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [364, 368], \"out_size\": [88, 89], \"magenta_removed_px\": 1512013, \"fringe_removed_px\": 5134, \"magenta_left_px\": 224, \"opaque_px\": 3247, \"colors\": 3102}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [364, 369], \"out_size\": [88, 89], \"magenta_removed_px\": 1503035, \"fringe_removed_px\": 1711, \"magenta_left_px\": 906, \"opaque_px\": 3973, \"colors\": 3796}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・被弾ポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
   },
@@ -8871,7 +8871,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [352, 343], \"out_size\": [85, 83], \"magenta_removed_px\": 1514940, \"fringe_removed_px\": 4142, \"magenta_left_px\": 294, \"opaque_px\": 3155, \"colors\": 2995}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [354, 343], \"out_size\": [86, 83], \"magenta_removed_px\": 1509196, \"fringe_removed_px\": 1273, \"magenta_left_px\": 727, \"opaque_px\": 3674, \"colors\": 3488}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・構えポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
   },
@@ -8883,7 +8883,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [501, 403], \"out_size\": [29, 23], \"magenta_removed_px\": 1488167, \"fringe_removed_px\": 3437, \"magenta_left_px\": 23, \"opaque_px\": 264, \"colors\": 243}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [502, 404], \"out_size\": [29, 23], \"magenta_removed_px\": 1477296, \"fringe_removed_px\": 1920, \"magenta_left_px\": 65, \"opaque_px\": 305, \"colors\": 283}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・攻撃ポーズ（帯 28px前後用）",
    "display": "28px(帯)"
   },
@@ -8895,7 +8895,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [372, 497], \"out_size\": [22, 29], \"magenta_removed_px\": 1474359, \"fringe_removed_px\": 4267, \"magenta_left_px\": 38, \"opaque_px\": 321, \"colors\": 300}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [373, 497], \"out_size\": [22, 29], \"magenta_removed_px\": 1465162, \"fringe_removed_px\": 2002, \"magenta_left_px\": 75, \"opaque_px\": 356, \"colors\": 328}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・被弾ポーズ（帯 28px前後用）",
    "display": "28px(帯)"
   },
@@ -8907,7 +8907,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [347, 500], \"out_size\": [20, 29], \"magenta_removed_px\": 1481826, \"fringe_removed_px\": 3784, \"magenta_left_px\": 26, \"opaque_px\": 287, \"colors\": 264}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1199, 1312], \"trim_size\": [348, 502], \"out_size\": [20, 29], \"magenta_removed_px\": 1469672, \"fringe_removed_px\": 1620, \"magenta_left_px\": 72, \"opaque_px\": 334, \"colors\": 315}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・歩行ポーズ（帯 28px前後用）",
    "display": "28px(帯)"
   },
@@ -8919,7 +8919,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [351, 425], \"out_size\": [85, 103], \"magenta_removed_px\": 1517089, \"fringe_removed_px\": 4732, \"magenta_left_px\": 180, \"opaque_px\": 3002, \"colors\": 2894}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [351, 426], \"out_size\": [85, 103], \"magenta_removed_px\": 1508454, \"fringe_removed_px\": 1512, \"magenta_left_px\": 777, \"opaque_px\": 3685, \"colors\": 3516}。目視: 担当が確認、最終は父",
    "use": "主人公 ninja・勝利ポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
   },
@@ -9111,7 +9111,7 @@
    "transparent": true,
    "anchor": "足元中央",
    "prompt": "ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md",
-   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [338, 392], \"out_size\": [80, 93], \"magenta_removed_px\": 1494356, \"fringe_removed_px\": 712, \"magenta_left_px\": 1, \"opaque_px\": 4389, \"colors\": 4228}。目視: 担当が確認、最終は父",
+   "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [376, 422], \"out_size\": [83, 93], \"magenta_removed_px\": 1475342, \"fringe_removed_px\": 1153, \"magenta_left_px\": 0, \"opaque_px\": 4681, \"colors\": 4468}。目視: 担当が確認、最終は父",
    "use": "主人公 ranger・被弾ポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
   },
@@ -9654,6 +9654,78 @@
    "inspect": "検品済み(自動): {\"src_size\": [1536, 1024], \"trim_size\": [314, 415], \"out_size\": [74, 98], \"magenta_removed_px\": 1499207, \"fringe_removed_px\": 1066, \"magenta_left_px\": 0, \"opaque_px\": 4054, \"colors\": 3848}。目視: 担当が確認、最終は父",
    "use": "主人公 warrior・勝利ポーズ（報酬 96px前後用）",
    "display": "96px(報酬)"
+  },
+  {
+   "id": "hero_ranger_master_win",
+   "path": "rpg/assets/chars/hero_ranger_master_win.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [637, 675], \"out_size\": [92, 97], \"magenta_removed_px\": 1325410, \"fringe_removed_px\": 1753, \"magenta_left_px\": 4, \"opaque_px\": 5105, \"colors\": 4884}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_ranger_master_win（報酬用）",
+   "display": "96px(報酬)"
+  },
+  {
+   "id": "hero_warrior_master_win",
+   "path": "rpg/assets/chars/hero_warrior_master_win.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [575, 668], \"out_size\": [84, 98], \"magenta_removed_px\": 1341824, \"fringe_removed_px\": 2364, \"magenta_left_px\": 1, \"opaque_px\": 4895, \"colors\": 4654}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_warrior_master_win（報酬用）",
+   "display": "96px(報酬)"
+  },
+  {
+   "id": "hero_ranger_master",
+   "path": "rpg/assets/chars/hero_ranger_master.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [608, 664], \"out_size\": [88, 96], \"magenta_removed_px\": 1318592, \"fringe_removed_px\": 2513, \"magenta_left_px\": 2, \"opaque_px\": 5251, \"colors\": 5061}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_ranger_master（報酬用）",
+   "display": "96px(報酬)"
+  },
+  {
+   "id": "hero_ranger_strip_master",
+   "path": "rpg/assets/chars/hero_ranger_strip_master.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [470, 523], \"out_size\": [25, 28], \"magenta_removed_px\": 1406936, \"fringe_removed_px\": 1763, \"magenta_left_px\": 0, \"opaque_px\": 470, \"colors\": 469}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_ranger_strip_master（帯用）",
+   "display": "28px(帯)"
+  },
+  {
+   "id": "hero_warrior_master",
+   "path": "rpg/assets/chars/hero_warrior_master.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [524, 653], \"out_size\": [77, 96], \"magenta_removed_px\": 1347159, \"fringe_removed_px\": 2135, \"magenta_left_px\": 2, \"opaque_px\": 4852, \"colors\": 4555}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_warrior_master（報酬用）",
+   "display": "96px(報酬)"
+  },
+  {
+   "id": "hero_warrior_strip_master",
+   "path": "rpg/assets/chars/hero_warrior_strip_master.png",
+   "src": "2172x724",
+   "status": "正式",
+   "transparent": true,
+   "anchor": "足元中央",
+   "prompt": "ChatGPTブラウザ版: 通常の待機・勝利・帯待機を参照に付け、豪華版(マスター/追加衣装)を横1列3マスのシートで生成(マゼンタ背景)→tools/master_take.py で切り出し・通常待機と同じ高さ。説明は PRODUCTION_LOG_browser.md",
+   "inspect": "検品済み(自動): {\"src_size\": [2172, 724], \"trim_size\": [586, 454], \"out_size\": [36, 28], \"magenta_removed_px\": 1435275, \"fringe_removed_px\": 1800, \"magenta_left_px\": 0, \"opaque_px\": 510, \"colors\": 508}。目視: 担当が確認、最終は父",
+   "use": "主人公 hero_warrior_strip_master（帯用）",
+   "display": "28px(帯)"
   }
  ],
  "vendor": [

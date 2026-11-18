@@ -10,8 +10,10 @@ from PIL import Image
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 A = os.path.join(ROOT, 'rpg', 'assets')
 
+STRICT = os.environ.get('STRICT') == '1'   # 紫の服の職(ninja等)用: マゼンタ判定を厳しく(背景の純マゼンタだけ消す)
 def magenta_mask(a):
     r, g, b = a[..., 0].astype(int), a[..., 1].astype(int), a[..., 2].astype(int)
+    if STRICT: return (r > 200) & (b > 200) & (g < 80) & ((r + b) // 2 - g > 150)
     return (r > 140) & (b > 140) & (g < 120) & ((r + b) // 2 - g > 80)
 
 def rel(x): return x.replace(ROOT, '').replace(chr(92), '/').lstrip('/')
@@ -27,7 +29,7 @@ def sprite(id_, src, height, name):
         pad = np.pad(~alpha, 1, constant_values=True)
         edge = alpha & (pad[:-2, 1:-1] | pad[2:, 1:-1] | pad[1:-1, :-2] | pad[1:-1, 2:])
         r, g, b = a[..., 0].astype(int), a[..., 1].astype(int), a[..., 2].astype(int)
-        tint = ((r - g) > 40) & ((b - g) > 40) & (np.abs(r - b) < 90) & (b > 90)
+        tint = (((r - g) > 110) & ((b - g) > 110) & (np.abs(r - b) < 60) & (b > 150)) if STRICT else (((r - g) > 40) & ((b - g) > 40) & (np.abs(r - b) < 90) & (b > 90))
         kill = edge & tint
         if not kill.any(): break
         removed += int(kill.sum()); a[kill, 3] = 0
@@ -36,7 +38,9 @@ def sprite(id_, src, height, name):
     w, h = im.size
     if isinstance(height, float): height = max(1, round(h * height))   # 小数なら縮小率(出力px/元px)
     nw = max(1, round(w * height / h))
-    out = im.resize((nw, height), Image.NEAREST)
+    if os.environ.get('RESAMPLE') == 'box':   # 細かい飾りの多い絵を小さくするとき(帯用マスター衣装): 面積平均で縮め、透明度だけ2値に戻す
+        out = im.resize((nw, height), Image.BOX); oa = np.array(out); oa[..., 3] = np.where(oa[..., 3] > 127, 255, 0); out = Image.fromarray(oa)
+    else: out = im.resize((nw, height), Image.NEAREST)
     # 縮小後に残ったマゼンタ寄り画素の数(検品)
     o = np.array(out); op = o[..., 3] > 0
     r, g, b = o[..., 0].astype(int), o[..., 1].astype(int), o[..., 2].astype(int)

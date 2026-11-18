@@ -57,3 +57,11 @@
 - 確認: `python tools/poses_shots.py` → shots/assets_poses_reward.png（待機/攻撃/構え/被弾/勝利）、assets_poses_strip.png（待機/攻撃/被弾/歩行）。実画面の drawHero で全職すべて別の絵が出る。回帰 95 pass / 0 fail、コンソールエラー0。
 - 気づき: ranger 報酬の被弾は弓が消えている（要目視）。ninja は紫の服でマゼンタ除去が少し荒い（magenta_left 数百px）。帯の歩行は画面側が walk を使っていない（rpg-ui.js は attack/hit のみ）ので素材のみ。
 - 残り: マスター衣装（12職x5ポーズ）、上級職の追加衣装（6x5）、顔4・髪6の差分は未着手（文脈長のため停止。同じ方法で、衣装違いを文章で指定し待機の絵を参照に付ければ作れる）。使用上限の表示は出なかった。タブは閉じた。
+
+## 主人公 手直し・マスター衣装 2026-11-18（電源断のため途中で停止）
+- 手直し済み: ranger 報酬の被弾を弓つきで作り直し(目視で弓あり)。ninja の4ポーズ報酬＋帯3ポーズは、マゼンタ判定を厳しくする `STRICT=1`（process.py / pose_sheet_take.py / master_take.py の環境変数）で既存シートから切り直し。服の穴が消えた。紫の服の職はこの指定を使う。
+- 歩行: rpg-ui.js の RPG.play で explore の出来事に歩行ポーズ(帯 walk)の420msの動きを追加（前の位置から6px進む。8歩目以降はその場歩き）。回答の合間に歩く場面は既にあったので使う方に決定。
+- マスター衣装: 方法=職ごとに新規チャット→通常の待機・勝利・帯待機(16倍等のドット拡大・マゼンタ背景)を3枚添付→横1列3マス(待機/勝利/帯待機)のシート1枚→ `python tools/master_take.py master <職>`（通常待機と同じ高さに縮尺。帯は RESAMPLE=box で面積平均）→ `python tools/master_manifest.py`。
+- 済み(6枚): warrior・ranger の master / master_win / strip_master。台帳「正式」。画面は未接続（drawHero は master を読まない）。帯のマスターは飾りが細かく少しぼやける。次は帯用の飾りを控えめにと指示して作り直すとよい。
+- 残り: マスター10職(mage priest thief magicknight paladin shadow sage ninja(STRICT) skyknight starseer)、上級職追加衣装6種(kind=alt)、顔4・髪6の差分（案: 画像の肌・髪を色分けして色替え。ポーズとの適合は未試作）、画面接続（Lv30で master 画像、外見画面の反映）、assets_master_*.png / assets_look_*.png の撮影。
+- 備考: 外見画面(rpg-screens.js hero)は画像でなく仮ドット絵で描いており、画像の待機/勝利は外見(肌・髪)を反映しない。接続時に要設計。使用上限の表示は出なかった。タブは閉じた。

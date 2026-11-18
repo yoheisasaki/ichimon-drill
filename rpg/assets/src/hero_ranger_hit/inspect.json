@@ -5,17 +5,17 @@
   1024
  ],
  "trim_size": [
-  338,
-  392
+  376,
+  422
  ],
  "out": "rpg/assets/chars/hero_ranger_hit.png",
  "out_size": [
-  80,
+  83,
   93
  ],
- "magenta_removed_px": 1494356,
- "fringe_removed_px": 712,
- "magenta_left_px": 1,
- "opaque_px": 4389,
- "colors": 4228
+ "magenta_removed_px": 1475342,
+ "fringe_removed_px": 1153,
+ "magenta_left_px": 0,
+ "opaque_px": 4681,
+ "colors": 4468
 }

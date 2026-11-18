@@ -137,7 +137,10 @@
       }
       else if (e.t === 'heal') steps.push({ d: 280, f: p => ({ heal: true }) });
       else if (e.t === 'enemy' && e.dmg > 0) steps.push({ d: 360, f: p => ({ enemyDx: p < .3 ? -p / .3 * 8 : p < .6 ? -8 : -(1 - (p - .6) / .4) * 8, heroFlash: p > .3 && p < .6, guard: e.reduced > 0 && p > .2 && p < .7 }) });
-      else if (e.t === 'explore') RPG.scene.walk++;
+      else if (e.t === 'explore') {   // 回答の合間に冒険帯で歩く：前の位置から6px進みながら歩行ポーズ（8歩目以降はその場歩き）
+        const adv = RPG.scene.walk < 8 ? 6 : 0; RPG.scene.walk++;
+        steps.push({ d: 420, f: p => ({ heroDx: -adv * (1 - p), heroPose: 'walk' }) });
+      }
     });
     if (reduceMotion() || !steps.length) { drawStrip(); return; }
     const t0 = performance.now(); let i = 0, start = t0, last = t0; cancelAnimationFrame(raf);

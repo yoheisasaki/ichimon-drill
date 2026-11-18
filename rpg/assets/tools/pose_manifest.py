@@ -12,7 +12,7 @@ for f in sorted(glob.glob(os.path.join(ROOT, 'rpg', 'assets', 'chars', 'hero_*_*
     if not os.path.exists(sd): continue
     i = json.load(open(sd, encoding='utf-8'))
     a = by.get(id_) or {'id': id_}; new = id_ not in by
-    if a.get('status') == '正式' and 'ChatGPTシート' not in a.get('prompt', '') and not new: continue   # 別担当(Codex)の正式行は触らない
+    if a.get('status') == '正式' and 'pose_sheet_take' not in a.get('prompt', '') and not new: continue   # 別担当(Codex)の正式行は触らない
     a.update({'path': i['out'], 'src': '%dx%d' % tuple(i['src_size']), 'status': '正式', 'transparent': True, 'anchor': '足元中央',
               'prompt': 'ChatGPTブラウザ版: 待機絵を参照に付けた複数ポーズのシート(マゼンタ背景)→tools/pose_sheet_take.py で切り出し・待機と同縮尺。説明は PRODUCTION_LOG_browser.md',
               'inspect': '検品済み(自動): ' + json.dumps({k: v for k, v in i.items() if k not in ('src', 'out')}, ensure_ascii=False) + '。目視: 担当が確認、最終は父',

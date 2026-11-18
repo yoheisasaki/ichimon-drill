@@ -5,17 +5,17 @@
   1024
  ],
  "trim_size": [
-  352,
+  354,
   343
  ],
  "out": "rpg/assets/chars/hero_ninja_ready.png",
  "out_size": [
-  85,
+  86,
   83
  ],
- "magenta_removed_px": 1514940,
- "fringe_removed_px": 4142,
- "magenta_left_px": 294,
- "opaque_px": 3155,
- "colors": 2995
+ "magenta_removed_px": 1509196,
+ "fringe_removed_px": 1273,
+ "magenta_left_px": 727,
+ "opaque_px": 3674,
+ "colors": 3488
 }
