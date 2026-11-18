@@ -82,7 +82,7 @@ t('全装備の効果文・全技の説明文が空にならない', () => {
 // ===== 全3章のデータ検査・解放経路・全体シミュレーション =====
 t('全3章：18地域・300区間（72+96+132）・通常66体＋ボス18体、全員が道のりに出る', () => {
   eq(D.REGIONS.length, 18); eq(D.ROUTE.length, 300); eq(D.REGION_START[6], 72); eq(D.REGION_START[12], 168);
-  const en = Object.values(D.ENEMIES); eq(en.filter(e => !e.boss).length, 66); eq(en.filter(e => e.boss).length, 18);
+  const en = Object.values(D.ENEMIES).filter(e => D.REGIONS.some(r => r.id === e.region)); eq(en.filter(e => !e.boss).length, 66); eq(en.filter(e => e.boss).length, 18);
   const used = new Set(D.ROUTE.map(r => r.enemy)); en.forEach(e => ok(used.has(e.id), e.id + ' が道のりに出ない'));
   D.REGIONS.forEach((r, i) => { eq(D.ROUTE.filter(x => x.region === i && x.boss).length, r.ch === 1 ? 3 : 4); eq(D.ROUTE.filter(x => x.region === i && !x.boss).length, r.points.length * 3); eq(r.points.length, r.ch === 1 ? 3 : r.ch === 2 ? 4 : 6); });
 });

@@ -123,3 +123,14 @@ body:has(.rs){background:#0b1329}
 @media (prefers-reduced-motion:reduce){.rs-fx,.rs-fx canvas{animation:none}}
 .rs-data .rpg-bk{background:#0f1b3e;border-color:#3a4a7a;color:#cfd6ea}.rs-data .rpg-bkb button,.rs-data .rpg-file{background:#1b2c5c;color:#f4f1e4;border-color:var(--gold)}
 .rs .rpg-notice{color:#6a4a00}
+/* 第3段 */
+.rs-story{min-height:150px}.rs-story-who{font-size:15px;font-weight:900;color:var(--gold);min-height:22px}.rs-story-text{font-size:19px;line-height:1.7;margin:8px 0;font-weight:700}.rs-story-n{font-size:12px;color:#b6bfd8;text-align:right}
+.rs-new{color:#ffe27a}.rs-h3{font-size:14px;font-weight:900;color:#b6bfd8;margin:12px 0 6px}
+.rs-qbtn{display:block;width:100%;text-align:left;min-height:56px;border:2px solid #3a4a7a;border-radius:10px;background:#0f1b3e;color:var(--ink);padding:8px 10px;margin:0 0 6px;font-size:16px;font-weight:800}
+.rs-qbtn small{display:block;color:#b6bfd8;font-size:13px;font-weight:600;margin-top:2px}.rs-qbtn.on{border-color:var(--gold);background:#1a2a5a}.rs-qbtn.lock{opacity:.6}
+.rs-det summary{min-height:44px;display:flex;align-items:center;font-weight:800;cursor:pointer}.rs-det{margin:6px 0}
+.rs-dotc{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px;border:1px solid #fff8}
+.rs-memo{image-rendering:pixelated;border-radius:10px;max-width:100%}
+.rw-clear{background:#1a2a5a;border:2px solid #e0b030;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:15px;line-height:1.6}
+.rw-chestcv{display:block;margin:6px auto;image-rendering:pixelated}
+.rw-open{display:block;margin:6px auto;min-height:48px;padding:0 22px;border-radius:12px;border:2px solid #e0b030;background:#2a3a7a;color:#fff3a0;font-size:18px;font-weight:900}

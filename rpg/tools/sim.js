@@ -79,6 +79,7 @@ function playJourney(opts) {
     }
     stat.days = d + 1;
     if (opts.stopAtCh1 && save.progress.step >= D.REGION_START[6]) break;
+    if (opts.stopAtCh2 && save.progress.step >= D.REGION_START[12]) break;
     if (opts.stopAtEnd && save.progress.step >= D.ROUTE.length) break;
     if (opts.post && stat.questDone && stat.questDone.island) break;
   }

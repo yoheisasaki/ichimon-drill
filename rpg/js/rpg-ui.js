@@ -82,7 +82,7 @@
   function sceneInfo() {
     const a = RPG.save.active; if (!a) return null;
     const b = a.battle, ed = D.ENEMIES[a.enemyId];
-    return { job: b.hero.job, region: D.REGIONS[a.route.region].id, enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0) };
+    return { job: b.hero.job, region: a.route.bg || D.REGIONS[a.route.region].id, outfit: M.costumeColor(RPG.save), enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0) };
   }
   function drawStrip(o) {
     if (!ctx) return; o = o || {};
@@ -90,7 +90,7 @@
     ctx.clearRect(0, 0, W, H); SP.drawBackground(ctx, W, H, si.region);
     const gy = H - 2, hx = 8 + Math.min(RPG.scene.walk, 8) * 6 + (o.heroDx || 0), ex = W - 26 + (o.enemyDx || 0);
     const heroTint = si.status === 'retreat' ? '#8a90a8' : (o.heroFlash ? '#ff9aa0' : null);
-    SP.drawHero(ctx, si.job, hx, gy, { tint: heroTint, guard: o.guard || si.guard });
+    SP.drawHero(ctx, si.job, hx, gy, { tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
     if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { tint: o.enemyFlash ? '#fff' : null });
     if (o.slash) { SP.px(ctx, hx + 16, gy - 12, '#fff', 2); SP.px(ctx, hx + 18, gy - 10, '#ffe27a', 2); SP.px(ctx, hx + 20, gy - 8, '#fff', 2); }
     if (o.heal) { SP.px(ctx, hx + 5, gy - 18, '#5be08a', 1); SP.px(ctx, hx + 4, gy - 17, '#5be08a', 3); SP.px(ctx, hx + 5, gy - 16, '#5be08a', 1); }
@@ -107,7 +107,9 @@
   };
   RPG.unmount = function () { cancelAnimationFrame(raf); cv = ctx = null; anim = null; };
   // 出来事を短く再生。演出は計算結果に影響しない（省略しても同じ）
+  const snd = n => { try { if (RPG.sound) RPG.sound.play(n); } catch (e) {} };
   RPG.play = function (events) {
+    events.forEach(e => { if (e.t === 'hero') snd(e.act === 'normal' ? 'attack' : 'skill'); else if (e.t === 'enemy' && e.dmg > 0) snd('hit'); });
     if (!ctx || !events.length) { if (events.some(e => e.t === 'explore')) RPG.scene.walk++; return; }
     const steps = [];
     events.forEach(e => {
@@ -136,7 +138,19 @@
     if (c.kind === 'rare') line = c.dup ? `${esc(itemName(c.item))} が でた！（もっていたので ${esc(C.oreName(c.rank))} ×${c.ore} に）` : `<b>${esc(itemName(c.item))}</b> 手に入れた！`;
     else if (c.kind === 'mat') line = `${esc(C.oreName(c.rank))} ×${Object.values(c.mats)[0]} を 手に入れた！`;
     else line = `コイン +${c.coin} と ${esc(C.oreName(c.rank))} ×${Object.values(c.mats)[0]} を 手に入れた！`;
-    return `<div class="rw-drop"><div class="rw-chest">朝星の宝箱</div><div class="rw-dropline">${line}</div></div>`;
+    const opened = !!(RPG.save && RPG.save.seen && RPG.save.seen.lastChest === res.id);
+    return `<div class="rw-drop" id="rwDrop"><div class="rw-chest">朝星の宝箱</div><canvas id="rwChestCv" class="rw-chestcv" aria-hidden="true"></canvas>${opened ? '' : '<button class="rw-open" id="rwOpen">宝箱を あける</button>'}<div class="rw-dropline" id="rwChestLine" ${opened ? '' : 'hidden'}>${line}</div></div>`;
+  }
+  function clearHtml(res) {
+    const c = res.clear; if (!c) return '';
+    const L = [];
+    if (c.trial) L.push('<b>しれん クリア！</b> ' + (c.trial === 'wing' ? '天翔騎士' : '星詠み') + 'に てんしょくできる ように なった');
+    else L.push('<b>' + esc(res.quest.name) + ' クリア！</b>');
+    if (c.title) L.push('しょうごう「' + esc(c.title) + '」');
+    if (c.costume) L.push('いしょう「' + esc(c.costume) + '」');
+    if (c.item) L.push('ひきょうの たから「' + esc(itemName(c.item)) + '」');
+    if (c.lamp) L.push('夜明けの 灯 を てにいれた');
+    return '<div class="rw-clear">' + L.map(x => '<div>' + x + '</div>').join('') + '</div>';
   }
   RPG.rewardHtml = function (res, S, wrongHtml, hasWrong) {
     const e = res.enemy, hpPct = Math.max(1, Math.round(e.hpLeft / e.hpMax * 100));
@@ -166,22 +180,40 @@
         ${chestHtml(res)}
         ${res.drops.map(d => `<div class="rw-row sm">${esc(d.name)} ×${d.n}${d.thief ? '（宝の気配）' : ''}</div>`).join('')}
       </div>
+      ${clearHtml(res)}
       ${RPG.noticeHtml()}
       <div class="rw-btns"><button class="rw-btn" id="end">おわる</button><button class="rw-btn" id="more">つぎの10もん</button></div>
       <button class="rw-link" id="rwEquip">そうびを みる</button>
+      ${res.mainClear ? '<button class="rw-link" id="rwEnding">エンディングを みる</button>' : ''}
     </div>`;
   };
+  function drawChestCv(cv, open, p) {   // 開封の演出：ゆれる→ふたがひらく→光（仮絵）
+    const g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
+    const dx = !open && p ? Math.round(Math.sin(p * 40) * 1) : 0;
+    SP.drawChest(g, 6 + dx, 13, !!open);
+    if (open) { g.fillStyle = '#fff3a0'; [[3, 2], [20, 3], [11, 0], [16, 1], [7, 1]].forEach(a => { if (p === 1 || ((a[0] * 7 + Math.floor(p * 10)) % 3)) g.fillRect(a[0], a[1], 1, 1); }); }
+  }
   RPG.bindReward = function (res) {
+    snd(res.adv.lvTo > res.adv.lvFrom || res.job.lvTo > res.job.lvFrom ? 'level' : 'reward');
+    const enb = root.document.getElementById('rwEnding'); if (enb) enb.onclick = () => { if (RPG.open) RPG.open('ending', { from: 'result' }); };
+    const ob = root.document.getElementById('rwOpen'), cc = root.document.getElementById('rwChestCv');
+    if (cc) { cc.width = 24; cc.height = 14; cc.style.width = '144px'; cc.style.height = '84px'; drawChestCv(cc, !ob, 0); }
+    if (ob) ob.onclick = () => {
+      ob.disabled = true; snd('chest');
+      const fin = () => { drawChestCv(cc, true, 1); const ln = root.document.getElementById('rwChestLine'); if (ln) ln.hidden = false; ob.remove(); if (RPG.save && RPG.save.seen) { RPG.save.seen.lastChest = res.id; RPG.persist(); } };
+      if (reduceMotion() || !cc) { fin(); return; }
+      const t0 = performance.now(); const tick = now => { const p = (now - t0) / 700; if (p >= 1) { fin(); return; } drawChestCv(cc, p > 0.45, p); requestAnimationFrame(tick); }; requestAnimationFrame(tick);
+    };
     const eqb = root.document.getElementById('rwEquip'); if (eqb) eqb.onclick = () => { if (RPG.open) RPG.open('equip', { from: 'result' }); };
     const w = root.document.getElementById('rwWrong'), box = root.document.getElementById('rwWrongBox');
     if (w) w.onclick = () => { const o = box.hidden; box.hidden = !o; w.setAttribute('aria-expanded', String(o)); w.textContent = (o ? '▼ ' : '▶ ') + 'まちがえた問題をみる'; };
     const c = root.document.getElementById('rwCanvas'); if (!c) return;
     const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k); c.height = Math.round(c.width * 0.66);
-    const g = c.getContext('2d'), rg = D.ENEMIES[res.enemy.id].region;
+    const g = c.getContext('2d'), rg = res.bg || D.ENEMIES[res.enemy.id].region;
     SP.drawBackground(g, c.width, c.height, rg);
     const gy2 = Math.round(c.height * 0.88 / 2), cx = Math.round(c.width / 4);
     g.save(); g.scale(2, 2);   // キャラは2倍（仮絵）
-    SP.drawHero(g, res.job.id, cx - 20, gy2, { tint: res.outcome === 'retreat' ? '#8a90a8' : null });
+    SP.drawHero(g, res.job.id, cx - 20, gy2, { tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
     if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true);
     else SP.drawEnemy(g, res.enemy.id, res.enemy.boss, cx + 8, gy2, {});
     g.restore();

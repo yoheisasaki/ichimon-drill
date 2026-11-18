@@ -49,7 +49,7 @@
     return rows;
   }
   function drawHero(ctx, job, x, groundY, o) {
-    o = o || {}; const rows = heroRows(o.look), y = groundY - rows.length, pal = palForHero(job);
+    o = o || {}; const rows = heroRows(o.look), y = groundY - rows.length, pal = palForHero(job); if (o.outfit) pal.b = o.outfit;
     if (o.look) { pal.s = o.look.skin; pal.h = o.look.hair; }
     draw(ctx, rows, pal, x, y, false, o.tint);
     if (o.guard) { ctx.fillStyle = '#7fd3ff'; ctx.fillRect(x + 11, y + 5, 2, 5); }
@@ -73,7 +73,19 @@
     sandsea: { sky: ['#f6d9a0', '#fff0cf'], far: '#e0b873', grass: '#e8c780', tuft: '#c49a50', tree: '#8a7a3a' },
     mountain: { sky: ['#b7d6f0', '#eef6ff'], far: '#c8d8ea', grass: '#e6eef6', tuft: '#b4c8dc', tree: '#6a8aa8' },
     gearcity: { sky: ['#a8a8b8', '#d8d8e0'], far: '#8a8a9a', grass: '#707080', tuft: '#555566', tree: '#4a4a5a' },
-    skycastle: { sky: ['#b9a5f0', '#efe6ff'], far: '#a08ad8', grass: '#c8b8f0', tuft: '#9a86d0', tree: '#7a68b8' }
+    skycastle: { sky: ['#b9a5f0', '#efe6ff'], far: '#a08ad8', grass: '#c8b8f0', tuft: '#9a86d0', tree: '#7a68b8' },
+    // 第2・3章・クリア後（仮の色味。正式素材は未制作）
+    rootwood: { sky: ['#6a8a5a', '#a8c890'], far: '#4a6a3a', grass: '#3a5a30', tuft: '#2a4a24', tree: '#5a3a20' }, sunkencity: { sky: ['#5a9ac0', '#a8d8e8'], far: '#4a7a9a', grass: '#3a6a88', tuft: '#2a5a78', tree: '#6a8aa0' },
+    invertedruins: { sky: ['#d8c090', '#f0e4c0'], far: '#b09a6a', grass: '#c8aa70', tuft: '#a08850', tree: '#7a6a40' }, icevolcano: { sky: ['#e08a60', '#f6d0b0'], far: '#8a4a3a', grass: '#6a4a40', tuft: '#4a3028', tree: '#c8503a' },
+    oldfactory: { sky: ['#9a9aa8', '#cacad4'], far: '#707080', grass: '#5a5a68', tuft: '#40404c', tree: '#8a7050' }, skybackside: { sky: ['#8a78c8', '#d0c4f0'], far: '#6a58a8', grass: '#9a88d0', tuft: '#7a68b8', tree: '#5a4a98' },
+    worldtree: { sky: ['#9ae0b8', '#e4f8d8'], far: '#5ab07a', grass: '#4aa060', tuft: '#2a8040', tree: '#7a5a30' }, moonfall: { sky: ['#2a3a7a', '#7a8ac8'], far: '#4a5a9a', grass: '#5a7ab0', tuft: '#8ab0d8', tree: '#3a4a80' },
+    skytower: { sky: ['#f0c870', '#fff0c0'], far: '#d0a850', grass: '#e0c070', tuft: '#b89040', tree: '#8a6a30' }, aurora: { sky: ['#4a7ac8', '#a0e8d0'], far: '#8ab8d8', grass: '#e0f0f8', tuft: '#a8d0e8', tree: '#5a8ab0' },
+    skyfactory: { sky: ['#a0a8c0', '#d8dcec'], far: '#7a8098', grass: '#606880', tuft: '#464e68', tree: '#a07040' }, crown: { sky: ['#2a1a5a', '#8a60c8'], far: '#4a3a8a', grass: '#6a50a8', tuft: '#8a70c8', tree: '#3a2a70' },
+    trial_wing: { sky: ['#f0d890', '#fff4d0'], far: '#e0c070', grass: '#f0e0a0', tuft: '#d8b860', tree: '#c8a040' }, trial_star: { sky: ['#1a1a50', '#5a4aa8'], far: '#3a3a80', grass: '#4a4a98', tuft: '#6a5ab8', tree: '#2a2a68' },
+    garden: { sky: ['#f8d0e0', '#fff0f4'], far: '#e890b0', grass: '#7ac860', tuft: '#d8608a', tree: '#c8408a' }, pearl: { sky: ['#a0d0e8', '#e0f4f8'], far: '#80b8d0', grass: '#a8d0e0', tuft: '#d8e8f0', tree: '#6a9ab8' },
+    nightcity: { sky: ['#1a1a40', '#5a5a98'], far: '#3a3a70', grass: '#40406a', tuft: '#5a5a90', tree: '#2a2a50' }, dragonvalley: { sky: ['#a8c0d8', '#e0ecf4'], far: '#7a98b8', grass: '#c8d8e4', tuft: '#98b4cc', tree: '#6a7a90' },
+    lab0: { sky: ['#8a96a8', '#cfd6e0'], far: '#667080', grass: '#505a68', tuft: '#38424e', tree: '#80a0c0' }, orchard: { sky: ['#3a2a78', '#9a80d8'], far: '#5a4a98', grass: '#6a5aa8', tuft: '#f0e090', tree: '#4a3a88' },
+    dawnisle: { sky: ['#f8a878', '#fff0c8'], far: '#f0c890', grass: '#e8d8a0', tuft: '#c8b070', tree: '#8a9a5a' }
   };
   function drawBackground(ctx, w, h, region) {
     const c = REGION_COLOR[region] || REGION_COLOR.meadow, gh = Math.max(5, Math.round(h * 0.27));

@@ -1,0 +1,167 @@
+{
+ "day01": {
+  "days": 1,
+  "adventures": 2,
+  "heroLv": 3,
+  "advXp": 720,
+  "job": "warrior",
+  "jobLv": {
+   "warrior": 3
+  },
+  "coins": 190,
+  "maxRank": 1,
+  "clearedRegions": 0,
+  "kills": 2,
+  "items": 3,
+  "rare": 1,
+  "quests": {},
+  "trials": {},
+  "retreats": 0,
+  "questAdv": null
+ },
+ "day14": {
+  "days": 14,
+  "adventures": 28,
+  "heroLv": 13,
+  "advXp": 10415,
+  "job": "priest",
+  "jobLv": {
+   "warrior": 10,
+   "mage": 10,
+   "priest": 3
+  },
+  "coins": 3288,
+  "maxRank": 1,
+  "clearedRegions": 2,
+  "kills": 24,
+  "items": 6,
+  "rare": 1,
+  "quests": {},
+  "trials": {},
+  "retreats": 0,
+  "questAdv": null
+ },
+ "ch1end": {
+  "days": 36,
+  "adventures": 72,
+  "heroLv": 21,
+  "advXp": 26875,
+  "job": "magicknight",
+  "jobLv": {
+   "warrior": 10,
+   "mage": 10,
+   "priest": 10,
+   "magicknight": 12
+  },
+  "coins": 8348,
+  "maxRank": 3,
+  "clearedRegions": 6,
+  "kills": 60,
+  "items": 11,
+  "rare": 2,
+  "quests": {},
+  "trials": {},
+  "retreats": 0,
+  "questAdv": null
+ },
+ "ch2end": {
+  "days": 91,
+  "adventures": 182,
+  "heroLv": 35,
+  "advXp": 68050,
+  "job": "paladin",
+  "jobLv": {
+   "warrior": 10,
+   "mage": 10,
+   "priest": 10,
+   "magicknight": 20,
+   "paladin": 18
+  },
+  "coins": 19694,
+  "maxRank": 5,
+  "clearedRegions": 12,
+  "kills": 138,
+  "items": 19,
+  "rare": 4,
+  "quests": {},
+  "trials": {},
+  "retreats": 0,
+  "questAdv": null
+ },
+ "maingoal": {
+  "days": 171,
+  "adventures": 342,
+  "heroLv": 49,
+  "advXp": 127820,
+  "job": "skyknight",
+  "jobLv": {
+   "warrior": 10,
+   "mage": 10,
+   "priest": 10,
+   "magicknight": 20,
+   "paladin": 21,
+   "skyknight": 22
+  },
+  "coins": 34373,
+  "maxRank": 6,
+  "clearedRegions": 18,
+  "kills": 256,
+  "items": 27,
+  "rare": 6,
+  "quests": {
+   "trial_wing": 1
+  },
+  "trials": {
+   "wing": 1
+  },
+  "retreats": 3,
+  "questAdv": {
+   "trial_wing": 9
+  }
+ },
+ "postgame": {
+  "days": 242,
+  "adventures": 484,
+  "heroLv": 58,
+  "advXp": 180880,
+  "job": "skyknight",
+  "jobLv": {
+   "warrior": 10,
+   "mage": 10,
+   "priest": 10,
+   "magicknight": 20,
+   "paladin": 21,
+   "skyknight": 30
+  },
+  "coins": 55619,
+  "maxRank": 6,
+  "clearedRegions": 18,
+  "kills": 365,
+  "items": 33,
+  "rare": 6,
+  "quests": {
+   "trial_wing": 1,
+   "secret_garden": 1,
+   "secret_pearl": 1,
+   "secret_nightcity": 1,
+   "secret_dragonvalley": 1,
+   "secret_lab0": 1,
+   "secret_orchard": 1,
+   "island": 1
+  },
+  "trials": {
+   "wing": 1
+  },
+  "retreats": 3,
+  "questAdv": {
+   "trial_wing": 9,
+   "secret_garden": 18,
+   "secret_pearl": 18,
+   "secret_nightcity": 16,
+   "secret_dragonvalley": 19,
+   "secret_lab0": 17,
+   "secret_orchard": 18,
+   "island": 36
+  }
+ }
+}

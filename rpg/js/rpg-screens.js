@@ -3,7 +3,7 @@
 // 絵は全て仮（コード描画・CSS）。ロジックは rpg-meta.js。ここはDOMだけ。
 (function (root) {
   const RPG = root.RPG; if (!RPG) return;
-  const D = root.RPGData, C = root.RPGCore, B = root.RPGBattle, M = root.RPGMeta, SP = root.RPGSprites;
+  const D = root.RPGData, C = root.RPGCore, B = root.RPGBattle, M = root.RPGMeta, SP = root.RPGSprites, A = root.RPGAdv, W = root.RPGWorld, ST = root.RPGStory;
   const doc = root.document, app = () => doc.getElementById('app');
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
@@ -21,7 +21,7 @@
     if (!canvas) return; const W = 20, H = 18; canvas.width = W; canvas.height = H; canvas.style.width = (W * k) + 'px'; canvas.style.height = (H * k) + 'px';
     const g = canvas.getContext('2d'); g.clearRect(0, 0, W, H); o = o || {};
     if (o.bg) SP.drawBackground(g, W, H, o.bg);
-    SP.drawHero(g, job, 3, H - 1, { look: o.look === false ? null : (o.look || look()), tint: o.tint });
+    SP.drawHero(g, job, 3, H - 1, { look: o.look === false ? null : (o.look || look()), tint: o.tint, outfit: o.look === false ? null : M.costumeColor(save()) });
   }
   function enemyCv(canvas, id, boss, k) { const W = 18, H = 16; canvas.width = W; canvas.height = H; canvas.style.width = W * k + 'px'; canvas.style.height = H * k + 'px'; const g = canvas.getContext('2d'); SP.drawEnemy(g, id, boss, 2, H - 1, {}); }
   function jobSprites() { app().querySelectorAll('canvas[data-job]').forEach(c => hero(c, c.dataset.job, +c.dataset.k || 3, { look: c.dataset.plain ? false : undefined })); }
@@ -33,7 +33,7 @@
     return st.atk != null ? `こうげき ${st.atk}` : st.def != null ? `ぼうぎょ ${st.def}` : '';
   }
   const rankTag = it => it.rank ? `<i class="rs-rank">ランク${D.RANK_NAME[it.rank - 1]}</i>` : '';
-  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : '') + (it.provisional ? '<i class="rs-prov">仮名</i>' : '');
+  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + (it.provisional ? '<i class="rs-prov">仮名</i>' : '');
   const tierName = t => ({ base: 'きほん職', adv: '上級職', top: '最上級職' })[t];
   const noticeBox = () => RPG.noticeHtml();
   function commit() { const ok = RPG.persist(); if (!ok) UI.msg = RPG.err === 'stale' ? 'ほかの画面で すすんでいます。よみこみなおしてね。' : 'ほぞんできませんでした（「ゲームのデータ」でかきだしてね）。'; return ok; }
@@ -100,25 +100,25 @@
 
   // ---------- ぼうけん（地図・技設定のまとめ・おねがい） ----------
   VIEWS.adv = function () {
-    const s = save(), info = M.mapInfo(s), r = D.ROUTE[Math.min(s.progress.step, D.ROUTE.length - 1)], ed = D.ENEMIES[r.enemy];
-    const hpKeep = s.progress.enemyHp && s.progress.enemyHp.id === r.enemy ? Math.round(s.progress.enemyHp.hp / r.stats.hp * 100) : 100;
+    const s = save(), info = M.mapInfo(s), r = A.currentRoute(s), ed = D.ENEMIES[r.enemy], q = r.quest ? W.QUESTS[r.quest] : null;
+    const kept = A.keptHp(s, r), hpKeep = kept != null ? Math.round(kept / r.stats.hp * 100) : 100;
     const sk = M.currentSkills(s).map(id => D.SKILLS[id].name), tac = TACTICS.find(t => t[0] === (s.loadout.tactic || 'auto'))[1];
     const CH = { 1: '第1章　消えた灯台', 2: '第2章　空の下の世界', 3: '第3章　十二のしるし' };
     const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? (x.atBoss ? `ボスの たたかい　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだ ここまで きていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div></li>`;
     const chapters = [1, 2, 3].map(c => `<div class="rs-h2">${CH[c]}</div><ol class="rs-map">${info.map((x, i) => x.ch === c ? nodeHtml(x, i - info.findIndex(y => y.ch === c)) : '').join('')}</ol>`).join('');
     const wish = D.WISH_LIST.map(w => `<button class="rs-chip${s.wish === w ? ' on' : ''}" data-wish="${w}" aria-pressed="${s.wish === w}">${esc(D.WISH_NAME[w])}</button>`).join('');
-    const a = s.active, nOver = s.progress.step >= D.ROUTE.length;
+    const a = s.active, nOver = !q && s.progress.step >= D.ROUTE.length;
     return frame('ぼうけん', `
       <div class="rs-panel"><div class="rs-h2">いまの ぼうけん</div>
-        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(D.REGIONS[r.region].name)}・${esc(r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
+        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
         ${a && a.basic.n > 0 ? `<div class="rs-note">ぼうけん ${a.basic.n} / ${C.ADV_UNIT}もん（つづきから）</div>` : ''}
         <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button></div>
       <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
       <div class="rs-panel"><div class="rs-h2">宝箱の おねがい</div><p class="rs-p">朝星の宝箱から レアが出るとき、この種類から えらばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
-      <div class="rs-panel">${chapters}<div class="rs-next">第2章・第3章の 敵の つよさは まだ 調整中です（仮）。</div></div>`, { back: false });
+      <div class="rs-panel">${chapters}</div>`, { back: false });
   };
   AFTER.adv = function () {
-    const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = D.ROUTE[Math.min(s.progress.step, D.ROUTE.length - 1)]; enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
+    const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = A.currentRoute(s); enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
     doc.getElementById('rsStart').onclick = () => root.home();
     app().querySelectorAll('[data-wish]').forEach(b => b.onclick = () => { M.setWish(save(), b.dataset.wish); commit(); rerender(); });
   };
@@ -339,8 +339,10 @@
     let body = '';
     if (UI.codexTab === 'enemy') {
       body = D.REGIONS.map(r => `<div class="rs-h2">${esc(r.name)}</div><div class="rs-cgrid">${r.enemies.concat([r.boss]).map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e === r.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい${e.weak ? '　よわてん：' + esc(D.EL_NAME[e.weak]) : ''}` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
+      const regIds = D.REGIONS.map(r => r.id), ex = {}; Object.values(D.ENEMIES).forEach(e => { if (!regIds.includes(e.region)) (ex[e.region] = ex[e.region] || []).push(e); });
+      body += Object.keys(ex).map(bg => `<div class="rs-h2">${esc(W.BG_NAMES[bg] || bg)}（クリアごなど）</div><div class="rs-cgrid">${ex[bg].map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
     } else {
-      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s))).map(i => { const got = !!s.codex.items[i.id]; return `<div class="rs-item${got ? '' : ' ng'}"><div><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}</div></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
+      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s) || i.relic) && (!i.unique || i.relic || /_1$/.test(i.id))).map(i => { const got = M.codexHas(s, i.id); return `<div class="rs-item${got ? '' : ' ng'}"><div><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}</div></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
     }
     return frame('ずかん', `<div class="rs-tabs2">${tabs}</div>${body}`);
   };
@@ -358,6 +360,168 @@
   // ---------- ゲームのデータ（バックアップ） ----------
   VIEWS.data = function () { return frame('ゲームのデータ', `<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () { const d = app().querySelector('.rpg-bk'); if (d) d.open = true; RPG.bindHome(); };
+
+  // ===================== 第3段 =====================
+  // ---------- おはなし（区間ごとの短い会話。スキップ・読み返しできる） ----------
+  const storyKey = r => r.quest ? `q:${r.quest}:${r.step}` : `g:${r.g}`;
+  function startStory(route, back) { UI.story = { pages: ST.pagesFor(route), i: 0, key: storyKey(route), back: back || 'adv' }; go('story', {}); }
+  VIEWS.story = function () {
+    const S = UI.story || { pages: [{ who: null, text: '' }], i: 0 }, p = S.pages[S.i], last = S.i >= S.pages.length - 1;
+    return frame('おはなし', `<div class="rs-panel rs-story"><div class="rs-story-who">${p.who ? esc(p.who) : '　'}</div><p class="rs-story-text">${esc(p.text)}</p><div class="rs-story-n">${S.i + 1} / ${S.pages.length}</div></div>
+      <div class="rs-row2"><button class="rs-btn" id="stSkip">とばす</button><button class="rs-big" id="stNext">${last ? 'おわり' : 'つぎへ'}</button></div>`);
+  };
+  AFTER.story = function () {
+    const S = UI.story, done = () => { save().seen[S.key] = 1; commit(); go(S.back || 'adv'); };
+    doc.getElementById('stNext').onclick = () => { if (S.i >= S.pages.length - 1) done(); else { S.i++; rerender(); } };
+    doc.getElementById('stSkip').onclick = done;
+  };
+  VIEWS.storylist = function () {
+    const s = save(), st = s.progress.step, grp = [];
+    D.REGIONS.forEach((r, ri) => {
+      const st0 = D.REGION_START[ri]; if (st0 > st) return; const nn = r.points.length * 3, b = [`<button class="rs-chip" data-sg="${st0}">はじまり</button>`];
+      r.points.forEach((p, pi) => { if (pi > 0 && st0 + pi * 3 <= st) b.push(`<button class="rs-chip" data-sg="${st0 + pi * 3}">${esc(p)}</button>`); });
+      if (st0 + nn <= st) b.push(`<button class="rs-chip" data-sg="${st0 + nn}">ボスの まえ</button>`);
+      grp.push(`<div class="rs-h2">${esc(r.name)}</div><div class="rs-chips">${b.join('')}</div>`);
+    });
+    const qs = W.QUEST_ORDER.filter(id => W.QUESTS[id].kind !== 'rematch' && ((s.quests[id] || {}).step > 0 || (s.quests[id] || {}).cleared)).map(id => `<button class="rs-chip" data-sq="${id}">${esc(W.QUESTS[id].name)}</button>`).join('');
+    return frame('おはなしを よみかえす', `<div class="rs-panel">${grp.join('') || '<p class="rs-p">まだ ありません。</p>'}${qs ? `<div class="rs-h2">クリアごの ぼうけん</div><div class="rs-chips">${qs}</div>` : ''}</div>`);
+  };
+  AFTER.storylist = function () {
+    app().querySelectorAll('[data-sg]').forEach(b => b.onclick = () => startStory(D.ROUTE[+b.dataset.sg], 'storylist'));
+    app().querySelectorAll('[data-sq]').forEach(b => b.onclick = () => startStory(W.QUESTS[b.dataset.sq].segs[0], 'storylist'));
+  };
+
+  // ---------- ぼうけんの えらびかた（ほんぺん・さいせん・しれん・秘境・孤島） ----------
+  function questPanel(s) {
+    const L = M.questList(s), by = k => L.filter(q => q.kind === k);
+    const btn = q => {
+      const st = q.locked && !q.cleared ? q.locked : q.cleared ? 'クリアずみ' : q.kind === 'rematch' ? `やった回数 ${q.count}` : q.step > 0 ? `${q.step} / ${q.total}（つづき）` : `ぜんぶで ${q.total}くかん`;
+      const nm = q.kind === 'rematch' ? q.boss ? '' : '' : '';
+      return `<button class="rs-qbtn${q.current ? ' on' : ''}${q.locked ? ' lock' : ''}" data-q="${q.id}" ${q.locked ? 'aria-disabled="true"' : ''} aria-pressed="${q.current}"><b>${q.current ? '✓ ' : ''}${esc(q.kind === 'rematch' ? q.name : q.name)}</b><small>${esc(st)}</small></button>${nm}`;
+    };
+    const re = by('rematch').filter(q => !q.locked);
+    const mainDone = M.mainCleared(s);
+    return `<div class="rs-panel"><div class="rs-h2">ほかの ぼうけん</div>
+      <button class="rs-qbtn${!s.progress.quest ? ' on' : ''}" data-q="" aria-pressed="${!s.progress.quest}"><b>${!s.progress.quest ? '✓ ' : ''}ほんぺん</b><small>${mainDone ? 'ぜんぶ クリア（さいごの ボスと さいせん）' : '18の ちいきを すすむ'}</small></button>
+      <details class="rs-det"><summary>さいせん（たおした ボスと もういちど）${re.length ? ' ' + re.length : ''}</summary><p class="rs-p">ボスの ざいりょうが ふえます。ざいりょう3こで 固有そうびが つくれます（かじや）。</p>${re.map(btn).join('') || '<small>まだ ありません。ボスを たおすと ひらきます。</small>'}</details>
+      <div class="rs-h3">しれん（最上級職への てんしょく）</div>${by('trial').map(btn).join('')}
+      <div class="rs-h3">6つの ひきょう（ほんぺんクリアご）</div>${by('secret').map(btn).join('')}
+      <div class="rs-h3">夜明けの 孤島</div>${by('island').map(btn).join('')}
+      ${s.active ? '<div class="rs-note">ぼうけんの 途中は えらびなおせません。</div>' : ''}</div>`;
+  }
+
+  // ---------- エンディング・記念 ----------
+  VIEWS.ending = function () {
+    const s = save(), i = UI.endI || 0, E = ST.ENDING, N = 4;
+    const regs = D.REGIONS.filter(r => r.ch === 3).concat(D.REGIONS.filter(r => r.ch === 2)).slice(0, 12).map(r => esc(r.name)).join('・');
+    const jl = C.jobLevels(s), jobs = D.JOB_IDS.filter(j => jl[j] > 1).map(j => `${esc(D.JOBS[j].name)} Lv${jl[j]}`).join('／') || '（これから）';
+    const memos = D.REGIONS.filter(r => (s.inv.mats['bm_' + r.id] || 0) > 0 || s.progress.bossKills[r.boss.id]).map(r => esc(r.mat)).join('、') || '（ボスの ざいりょう）';
+    const p = [
+      `<canvas class="rs-herocv" id="rsEndHero" aria-hidden="true"></canvas><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-sub">${esc(D.JOBS[s.job].name)} Lv${jl[s.job]}</div><p class="rs-story-text">${esc(E[0][1])}</p>`,
+      `<p class="rs-story-text">${esc(E[1][1])}</p><div class="rs-h2">たすけた ちいき</div><p class="rs-p">${regs}</p>`,
+      `<div class="rs-h2">そだてた しるし</div><p class="rs-p">${jobs}</p><div class="rs-h2">きねんひん</div><p class="rs-p">${memos}</p>`,
+      `<p class="rs-story-text">${esc(E[2][1])}</p><p class="rs-story-text">${esc(E[3][1])}</p><p class="rs-p">ほんぺんは クリア！ ぼうけんの ちずから 「6つの ひきょう」に ちょうせんできます。</p>`
+    ];
+    const last = i >= N - 1;
+    return frame('エンディング', `<div class="rs-panel rs-story c">${p[i]}<div class="rs-story-n">${i + 1} / ${N}</div></div><div class="rs-row2"><button class="rs-btn" id="enSkip">とばす</button><button class="rs-big" id="enNext">${last ? 'おわり' : 'つぎへ'}</button></div><p class="rs-p c">この ぎゃめんは がぞうが まだ「仮」です。</p>`);
+  };
+  AFTER.ending = function () {
+    const c = doc.getElementById('rsEndHero'); if (c) hero(c, save().job, 6, { bg: 'crown' });
+    const done = () => { const s = save(); s.ending.seen = true; commit(); UI.endI = 0; if (UI.params && UI.params.from === 'result') root.home(); else go('adv'); };
+    doc.getElementById('enNext').onclick = () => { if ((UI.endI || 0) >= 3) done(); else { UI.endI = (UI.endI || 0) + 1; rerender(); } };
+    doc.getElementById('enSkip').onclick = done;
+  };
+  VIEWS.memorial = function () {
+    const s = save(); return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ（仮の絵）"></canvas><p class="rs-p">「${esc((s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだ ありません')}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p><p class="rs-p">これは コードで かいた 仮の絵です。</p></div>`);
+  };
+  AFTER.memorial = function () {
+    const c = doc.getElementById('rsMemo'), s = save(), w = 100, h = 66, k = Math.max(2, Math.floor(Math.min(360, c.parentNode.clientWidth - 24) / w));
+    c.width = w; c.height = h; c.style.width = (w * k) + 'px'; c.style.height = (h * k) + 'px'; const g = c.getContext('2d');
+    SP.drawBackground(g, w, h, 'dawnisle'); g.fillStyle = '#ffe27a'; g.beginPath(); g.arc(70, 24, 9, 0, 7); g.fill();
+    g.save(); g.scale(2, 2); SP.drawHero(g, s.job, 12, 32, { look: look(), outfit: M.costumeColor(s) }); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2 }); g.restore();
+  };
+
+  // ---------- せってい（音・振動。どちらも初期オフ） ----------
+  VIEWS.settings = function () {
+    const st = save().settings;
+    return frame('せってい', `<div class="rs-panel"><div class="rs-h2">おと</div><p class="rs-p">ぼうけん中の 小さな 音（せいかい・こうげき・ごほうびなど）。BGMは ありません。はじめは オフです。</p>
+      <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">おとを ならす</button></div>
+      <div class="rs-h2">しんどう</div><p class="rs-p">ごほうびの ときに ふるえます（たんまつが たいおうしている ときだけ）。はじめは オフです。</p>
+      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div>`);
+  };
+  AFTER.settings = function () {
+    const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); rerender(); };
+    doc.getElementById('snOn').onclick = () => set('sound', true); doc.getElementById('snOff').onclick = () => set('sound', false);
+    doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
+    doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
+  };
+
+  // しょうごう・いしょう（クリア後の ごほうび）
+  function rewardsPanel(s) {
+    const R = s.rewards, cs = M.allCostumes().filter(c => R.costumes.includes(c.id));
+    if (!R.titles.length && !cs.length) return '';
+    const t = R.titles.map(x => `<button class="rs-chip${s.title === x ? ' on' : ''}" data-title="${esc(x)}" aria-pressed="${s.title === x}">${esc(x)}</button>`).join('');
+    const o = cs.map(c => `<button class="rs-chip${s.look.outfit === c.id ? ' on' : ''}" data-outfit="${c.id}" aria-pressed="${s.look.outfit === c.id}"><span class="rs-dotc" style="background:${c.color}"></span>${esc(c.name)}</button>`).join('');
+    return `<div class="rs-panel"><div class="rs-h2">しょうごう・いしょう</div>${t ? `<div class="rs-chips">${t}</div>` : ''}${o ? `<div class="rs-h3">いしょう</div><div class="rs-chips"><button class="rs-chip${!s.look.outfit ? ' on' : ''}" data-outfit="">しょくぎょうの いろ</button>${o}</div>` : ''}${R.lamp ? '<button class="rs-btn" data-go="memorial">きねんえを みる</button>' : ''}</div>`;
+  }
+
+  // ---------- かじや：固有そうび ----------
+  function uniquePanel(s) {
+    const rows = W.UNIQ.map(u => {
+      const i = M.uniqueInfo(s, u.key), reg = u.region.name;
+      const act = i.owned
+        ? (i.reErr ? `<small class="rs-why">${esc(i.reErr)}</small>` : `<small>さいたんぞう：ランク${D.RANK_NAME[i.rank - 1]} → ${D.RANK_NAME[i.target - 1]}（${i.reCoin}コイン ＋ ${esc(C.oreName(i.target))} ×${i.reOre}）</small>`) + `<button class="rs-btn sm" data-reforge="${u.key}" ${i.reErr ? 'disabled' : ''}>さいたんぞうする</button>`
+        : `<small>${esc(u.matName)} ${i.have} / ${i.need}（${esc(reg)}のボス）</small><button class="rs-btn sm" data-craft="${u.key}" ${i.err ? 'disabled' : ''}>つくる</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`;
+      return `<div class="rs-item"><div><b>${esc(u.name)}</b><i class="rs-rare">固有</i>${i.owned ? rankTag(D.ITEMS[i.owned]) : ''}<i class="rs-prov">だい${u.ch}章</i></div><small>${esc(i.text)}</small>${act}</div>`;
+    }).join('');
+    const n = W.UNIQ.filter(u => M.ownedUnique(s, u.key)).length;
+    return `<details class="rs-det rs-panel"><summary>固有そうび（${n} / ${W.UNIQ.length}）</summary><p class="rs-p">ボスの ざいりょう3こで つくれます。ざいりょうは ぼうけんの ちずの「さいせん」で あつまります。さいたんぞうで ランクが あがっても、効果・きょうかは そのままです。</p><div class="rs-list">${rows}</div></details>`;
+  }
+  const oldForge = VIEWS.forge, oldForgeAfter = AFTER.forge;
+  VIEWS.forge = function () {
+    let h = oldForge.apply(this, arguments);
+    h = h.replace('<p class="rs-p">ボスの そざいで つくる 固有そうびは、まだ つくれません（じっそうまえ）。</p>', '').replace('<div class="rs-list">', uniquePanel(save()) + '<div class="rs-list">');
+    return h;
+  };
+  AFTER.forge = function () {
+    oldForgeAfter.apply(this, arguments);
+    app().querySelectorAll('[data-craft]').forEach(b => b.onclick = () => { const r = M.craftUnique(save(), b.dataset.craft); UI.msg = r.ok ? `${D.ITEMS[r.id].name} を つくりました！` : r.err; if (r.ok) { commit(); RPG.sound && RPG.sound.play('chest'); } rerender(); });
+    app().querySelectorAll('[data-reforge]').forEach(b => b.onclick = () => { const r = M.reforgeUnique(save(), b.dataset.reforge); UI.msg = r.ok ? `ランク${D.RANK_NAME[r.to - 1]} に さいたんぞうしました！` : r.err; if (r.ok) commit(); rerender(); });
+  };
+
+  // ---------- 追加の導線（ぼうけん・じぶん・ずかん） ----------
+  const oldAdv = VIEWS.adv, oldAdvAfter = AFTER.adv;
+  VIEWS.adv = function () {
+    const s = save(), r = A.currentRoute(s), q = r.quest ? W.QUESTS[r.quest] : null;
+    let h = oldAdv.apply(this, arguments);
+    const seen = !!s.seen[storyKey(r)], ending = M.mainCleared(s);
+    const st = `<div class="rs-panel"><div class="rs-h2">おはなし</div><p class="rs-p">${seen ? 'この くかんの おはなしは よみました。' : '<b class="rs-new">あたらしい おはなしが あります。</b>'}</p><div class="rs-row2"><button class="rs-btn" id="rsStory">${seen ? 'もういちど よむ' : 'おはなしを よむ'}</button><button class="rs-btn" data-go="storylist">よみかえす</button></div>${ending ? '<button class="rs-btn" data-go="ending">エンディングを みる</button>' : ''}</div>`;
+    h = h.replace('<div class="rs-panel"><div class="rs-h2">わざと さくせん</div>', st + questPanel(s) + '<div class="rs-panel"><div class="rs-h2">わざと さくせん</div>');
+    return h;
+  };
+  AFTER.adv = function () {
+    oldAdvAfter.apply(this, arguments);
+    const s = save(), r = A.currentRoute(s), sb = doc.getElementById('rsStory'); if (sb) sb.onclick = () => startStory(r, 'adv');
+    app().querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
+      const id = b.dataset.q || null, e = M.selectQuest(s, id);
+      if (!e.ok) { UI.msg = e.err; rerender(); return; }
+      commit(); UI.msg = id ? `「${W.QUESTS[id].name}」を えらびました。` : 'ほんぺんに もどしました。'; rerender();
+    });
+  };
+  const oldMe = VIEWS.me, oldMeAfter = AFTER.me;
+  VIEWS.me = function () {
+    const s = save(); let h = oldMe.apply(this, arguments);
+    h = h.replace('<div class="rs-hc-job">', (s.title ? `<div class="rs-hc-sub">「${esc(s.title)}」</div>` : '') + '<div class="rs-hc-job">');
+    h = h.replace('<div class="rs-panel rs-links">', rewardsPanel(s) + '<div class="rs-panel rs-links">').replace('<button class="rs-btn" data-go="data">ゲームのデータ</button>', '<button class="rs-btn" data-go="settings">せってい（おと・しんどう）</button><button class="rs-btn" data-go="data">ゲームのデータ</button>');
+    return h;
+  };
+  AFTER.me = function () {
+    oldMeAfter.apply(this, arguments); const s = save();
+    app().querySelectorAll('[data-title]').forEach(b => b.onclick = () => { M.setTitle(s, s.title === b.dataset.title ? null : b.dataset.title); commit(); rerender(); });
+    app().querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => { M.setOutfit(s, b.dataset.outfit || null); commit(); rerender(); });
+  };
+  PARENT.story = 'adv'; PARENT.storylist = 'adv'; PARENT.ending = 'adv'; PARENT.memorial = 'me'; PARENT.settings = 'me';
+  ROOT_OF.story = 'adv'; ROOT_OF.storylist = 'adv'; ROOT_OF.ending = 'adv'; ROOT_OF.memorial = 'me'; ROOT_OF.settings = 'me';
 
   // 学習を止めないための保険：画面側の例外は RPG を止めて、学習ホームに戻す
   ['open', 'homeTop', 'bindHomeTop', 'navHtml'].forEach(k => {
