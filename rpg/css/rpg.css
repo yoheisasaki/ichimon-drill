@@ -1,0 +1,51 @@
+/* RPG：下端の冒険帯・結果画面・案内。既存の問題カード・地図・選択肢の寸法は変えない */
+#app.inq{display:flex;flex-direction:column}
+.rpg-strip{margin-top:auto;padding-top:12px;pointer-events:none;user-select:none;-webkit-user-select:none}
+.rpg-strip[hidden]{display:none}
+.rpg-strip canvas{display:block;width:100%;height:44px;image-rendering:pixelated;image-rendering:crisp-edges;border-radius:10px;box-shadow:0 2px 0 #ddd8f0}
+.rpg-notice{background:#fff6e0;border:2px solid #f0c060;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:15px;line-height:1.7;font-weight:700;color:#6a4a00}
+.rpg-note{text-align:center;color:#6d6b85;font-weight:800;font-size:16px;margin:6px 0 12px}
+.rpg-bk{margin:18px 0 6px;background:#fff;border:2px solid #e1ddf2;border-radius:16px;padding:8px 14px;font-size:14px;line-height:1.7;color:#4c4a63}
+.rpg-bk summary{min-height:44px;display:flex;align-items:center;font-weight:800;font-size:15px;cursor:pointer}
+.rpg-bkb{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.rpg-bkb button,.rpg-file{min-height:44px;padding:0 18px;border:2px solid #e1ddf2;border-radius:999px;background:#fff;font-weight:800;font-size:15px;display:inline-flex;align-items:center;cursor:pointer}
+.rpg-file input{position:absolute;opacity:0;width:1px;height:1px}
+.rpg-file{position:relative}
+
+/* 結果（報酬）画面：濃紺・金枠 */
+body:has(.rw){background:#0b1329}
+.rw{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px calc(-20px - env(safe-area-inset-bottom));padding:14px 14px calc(22px + env(safe-area-inset-bottom));background:var(--navy);min-height:100vh;font-weight:700}
+.rw-title{text-align:center;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:.06em;margin:4px 0 6px;padding:8px;border:2px solid var(--gold);border-radius:14px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy),inset 0 0 0 4px #8a7036}
+.rw-place{text-align:center;font-size:16px;margin:0 0 8px;color:var(--ink)}
+.rw-scene{position:relative;border:2px solid var(--gold);border-radius:12px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 3px var(--navy)}
+.rw-scene canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges}
+.rw-cap{text-align:center;background:var(--navy2);border-top:2px solid var(--gold);padding:10px 8px;font-size:19px;font-weight:900;line-height:1.5}
+.rw-panel{margin-top:12px;border:2px solid var(--gold);border-radius:14px;padding:14px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy)}
+.rw-h{text-align:center;font-size:21px;font-weight:900;margin-bottom:8px}
+.rw-score{text-align:center;font-size:22px;background:#f3e2b0;color:#2a2210;border:2px solid #b8913c;border-radius:12px;padding:6px 8px}
+.rw-score b{font-size:28px;margin-left:8px}
+.rw-sub{text-align:center;font-size:15px;margin:6px 0;color:#cfd6ea}
+.rw-link{display:block;margin:4px auto 8px;background:none;border:0;color:var(--cyan);font-size:17px;font-weight:800;min-height:44px;text-decoration:underline}
+#rwWrongBox{margin-bottom:10px}
+#rwWrongBox .wrong-list h2{color:var(--ink)}
+#rwWrongBox .wi{background:#f4f1e4;color:#1d2547}
+.rw-row{display:flex;align-items:center;gap:10px;border-top:1px solid #3a4a7a;padding:10px 4px;font-size:20px}
+.rw-row span{flex:1}
+.rw-row b{font-size:24px;color:#ffe27a}
+.rw-row.sm{font-size:16px;padding:6px 4px}
+.rw-badge{font-style:normal;font-size:13px;background:#4a3a14;border:1px solid var(--gold);color:#ffe9a8;border-radius:8px;padding:3px 8px}
+.rw-note{font-size:13px;color:#b6bfd8;padding:0 4px 8px}
+.rw-job{border-top:1px solid #3a4a7a;padding:10px 4px 6px}
+.rw-jobt{display:flex;justify-content:space-between;gap:8px;font-size:16px;flex-wrap:wrap}
+.rw-bar{height:14px;border-radius:99px;background:#07102a;border:1px solid #3a4a7a;margin-top:6px;overflow:hidden}
+.rw-bar i{display:block;height:100%;background:linear-gradient(#6be08a,#2fae5a)}
+.rw-new{margin:6px 4px;color:#ffe27a;font-size:16px}
+.rw-drop{margin-top:10px;border:2px solid var(--gold);border-radius:12px;padding:10px;text-align:center;background:linear-gradient(#1a2a5a,#0f1a3c)}
+.rw-chest{font-size:14px;color:#ffe27a}
+.rw-dropline{text-wrap:balance;font-size:19px;font-weight:900;margin-top:4px;line-height:1.5}
+.rw-btns{display:flex;gap:10px;margin-top:14px}
+.rw-btn{flex:1;min-height:60px;border-radius:14px;border:2px solid var(--gold);background:linear-gradient(#1f9a95,#136e73);color:#fff;font-size:21px;font-weight:900;box-shadow:inset 0 0 0 2px #0d5058}
+.rw-btn:active{transform:translateY(2px)}
+.rw-btn.alt{display:block;width:100%;min-height:52px;font-size:17px;background:#2a3a6a;margin-top:6px}
+.rw rt{color:#b6bfd8}
+@media (prefers-reduced-motion:reduce){.rw-btn:active{transform:none}}

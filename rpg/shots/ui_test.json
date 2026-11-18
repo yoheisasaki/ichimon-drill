@@ -1,0 +1,237 @@
+{
+ "checks": {
+  "chromium:rpg_ok": true,
+  "chromium:strip": {
+   "sh": 44,
+   "sw": 362,
+   "top": 780,
+   "bottom": 824,
+   "lastChoiceBottom": 546,
+   "skipBottom": 608,
+   "choiceH": [
+    68,
+    68,
+    68,
+    68
+   ],
+   "cardH": 130,
+   "doc": 844,
+   "vh": 844,
+   "aria": "true"
+  },
+  "chromium:strip_no_overlap": true,
+  "chromium:strip_height_44": true,
+  "chromium:reviews_seen": {
+   "ok": true,
+   "v": 4
+  },
+  "chromium:reward_text": "ぼうけんの成果 | 草原・風車の小道 | はっぱスライムを たおした！ | 10もん おつかれさま！ | せいかい 6 / 10 | ふくしゅう せいこう 4こ | ▶ まちがえた問題をみる | ★ 経験値 | +450 | 初回ボーナス ×3 | ● コイン | +319 | こたえ 104 ＋ とうばつ 15 ＋ はじめのおいわい 160 | 戦士 Lv1 → Lv2 | つぎの技まで あと 830 | あたらしい技：強打きょうだ | ぼうけん者 Lv1 → | Lv2 | 朝星の宝箱 | コイン +40 と ランクIのこうせき ×2 を 手に入れた！ | おわる | つぎの10もん",
+  "chromium:reward_buttons_equal": {
+   "ok": true,
+   "v": [
+    [
+     "おわる",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ],
+    [
+     "つぎの10もん",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ]
+   ]
+  },
+  "chromium:reward_no_hscroll": true,
+  "chromium:saved_settled": {
+   "ok": true,
+   "v": {
+    "xp": 450,
+    "coins": 319,
+    "rev": 21
+   }
+  },
+  "chromium:rows_shape_unchanged": {
+   "ok": true,
+   "v": 14
+  },
+  "chromium:reload_no_double": true,
+  "webkit:rpg_ok": true,
+  "webkit:strip": {
+   "sh": 44,
+   "sw": 362,
+   "top": 780,
+   "bottom": 824,
+   "lastChoiceBottom": 565,
+   "skipBottom": 627,
+   "choiceH": [
+    69,
+    69,
+    69,
+    69
+   ],
+   "cardH": 145,
+   "doc": 844,
+   "vh": 844,
+   "aria": "true"
+  },
+  "webkit:strip_no_overlap": true,
+  "webkit:strip_height_44": true,
+  "webkit:reviews_seen": {
+   "ok": true,
+   "v": 4
+  },
+  "webkit:reward_text": "ぼうけんの成果 | 草原・風車の小道 | はっぱスライムを たおした！ | 10もん おつかれさま！ | せいかい 6 / 10 | ふくしゅう せいこう 4こ | ▶ まちがえた問題をみる | ★ 経験値 | +450 | 初回ボーナス ×3 | ● コイン | +279 | こたえ 104 ＋ とうばつ 15 ＋ はじめのおいわい 160 | 戦士 Lv1 → Lv2 | つぎの技まで あと 830 | あたらしい技：強打きょうだ | ぼうけん者 Lv1 → | Lv2 | 朝星の宝箱 | ランクIのこうせき ×4 を 手に入れた！ | おわる | つぎの10もん",
+  "webkit:reward_buttons_equal": {
+   "ok": true,
+   "v": [
+    [
+     "おわる",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ],
+    [
+     "つぎの10もん",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ]
+   ]
+  },
+  "webkit:reward_no_hscroll": true,
+  "webkit:saved_settled": {
+   "ok": true,
+   "v": {
+    "xp": 450,
+    "coins": 279,
+    "rev": 21
+   }
+  },
+  "webkit:rows_shape_unchanged": {
+   "ok": true,
+   "v": 14
+  },
+  "webkit:reload_no_double": true,
+  "w320:question_map_choice_same_as_without_rpg": true,
+  "w320:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     724
+    ],
+    "map": [
+     [
+      44,
+      810
+     ],
+     798
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     572
+    ]
+   }
+  },
+  "w320:no_hscroll": true,
+  "w320:strip_44": true,
+  "w375:question_map_choice_same_as_without_rpg": true,
+  "w375:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      843
+     ],
+     831
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     595
+    ]
+   }
+  },
+  "w375:no_hscroll": true,
+  "w375:strip_44": true,
+  "w390:question_map_choice_same_as_without_rpg": true,
+  "w390:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      851
+     ],
+     839
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     601
+    ]
+   }
+  },
+  "w390:no_hscroll": true,
+  "w390:strip_44": true,
+  "w430:question_map_choice_same_as_without_rpg": true,
+  "w430:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      875
+     ],
+     863
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     618
+    ]
+   }
+  },
+  "w430:no_hscroll": true,
+  "w430:strip_44": true
+ },
+ "console": [],
+ "blocked": 0,
+ "blocked_send_requests": 0
+}

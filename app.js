@@ -93,6 +93,7 @@ function mapLabel(q) {
 
 // ---------- 画面：最初 ----------
 function home() {
+  app.className = ''; if (window.RPG) RPG.unmount();
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
   if (filter !== '全部' && filter !== 'ちず' && filter !== 'かく' && !subs.includes(filter)) filter = '全部';
@@ -113,7 +114,9 @@ function home() {
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
     <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
+    ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
+  if (window.RPG) RPG.bindHome();
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
     const g = b.dataset.g, cur = units[filter] || [];
@@ -125,10 +128,24 @@ function home() {
 }
 
 // ---------- 回 ----------
-function start(list) {
-  if (!list.length) return home();
-  S = { sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), skips: 0, seen: new Set(), locked: false, timer: null };
+function start(list, opts) {
+  // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
+  let pre = { list, reviews: [], reask: 0, rpg: false };
+  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
+  list = pre.list;
+  if (!list.length && !pre.reviews.length) return home();
+  S = { sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), locked: false, timer: null };
   question();
+}
+// 間違えた問題を3問あとにもう一度（1回の延長は最大5問）。ぼうけん中は冒険単位で数える
+function reask(q) {
+  if (S.reask >= REASK_MAX) return;
+  if (S.rpg && !RPG.queueReview(q, S)) return;
+  S.reask++;
+  const at = Math.min(S.idx + REASK_GAP, S.queue.length);
+  let w = q;
+  if (S.rpg) { w = Object.create(q); w._rv = { origin: q._rv ? q._rv.origin : S.lastOrigin }; }
+  S.queue.splice(at, 0, w);
 }
 function question() {
   const q = S.queue[S.idx];
@@ -149,7 +166,10 @@ function question() {
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
-    <div class="score">せいかい ${S.correct}こ</div>`;
+    <div class="score">せいかい ${S.correct}こ</div>
+    ${window.RPG ? RPG.stripHtml(S) : ''}`;
+  app.className = S.rpg ? 'inq' : '';
+  if (window.RPG) RPG.mount();
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
@@ -189,7 +209,7 @@ function answerInput(text) {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     inp.classList.add('ng');
-    if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
+    reask(q);
     nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>';
     S.timer = setTimeout(() => {
       nx.insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>');
@@ -214,7 +234,7 @@ function answer(i) {
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
-    if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
+    reask(q);
     const nx = document.getElementById('next');
     S.timer = setTimeout(() => {
       nx.textContent = 'タップして つぎへ ▶';
@@ -232,16 +252,28 @@ function advance() {
 // ---------- 画面：おわり ----------
 function result() {
   flush();
+  app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
-  app.innerHTML = `
+  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '';
+  const rg = window.RPG ? RPG.afterSession(S) : null;
+  const rh = rg && rg.settled ? RPG.rewardHtml(rg.res, S, wrongHtml + '<button class="rw-btn alt" id="again">まちがえたのだけ もう1回</button>', S.wrong.length > 0) : null;
+  if (rh) {
+    app.innerHTML = rh;
+    RPG.bindReward(rg.res);
+    window.scrollTo(0, 0);
+  } else {
+    app.innerHTML = `
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
+    ${rg && !rg.settled ? `<div class="rpg-note">こんかい ${S.total}もん ／ ぼうけん ${rg.n} / ${rg.unit}（つづきは つぎの スタートで）</div>` : ''}
     ${S.skips ? `<div class="skipcount">わかんない ${S.skips}こ</div>` : ''}
-    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
+    ${S.wrong.length ? wrongHtml : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
     <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
-  document.getElementById('again').onclick = () => start(shuffle(S.wrong));
+  }
+  const again = document.getElementById('again');
+  if (again) again.onclick = () => start(shuffle(S.wrong), { manual: true });
   document.getElementById('more').onclick = () => {
     const p = pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
     start(pick(fresh.length >= 3 ? fresh : p, ROUND));
@@ -263,6 +295,7 @@ function record(q, ok, picked, skipped) {
   if (skipped) row.skip = 1;
   queue.rows.push(row);
   save(LS_Q, queue);
+  if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
 }
 let sending = false;
 function post(rows, mode) {
