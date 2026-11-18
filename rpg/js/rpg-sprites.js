@@ -48,21 +48,50 @@
     if (hs === 4) { [4, 5, 6].forEach(r => { put(r, 2, 'h'); put(r, 11, 'h'); }); }   // ふたつ結び
     return rows;
   }
+  // ---- 正式素材（画像）。ASSET_MANIFEST.json の status:'正式' の png を読み込み、あれば仮絵の代わりに描く ----
+  const IMGS = {};
+  function loadImages(assets, done) {
+    Object.keys(assets || {}).forEach(id => {
+      const a = assets[id]; if (!a || !/^rpg\/assets\/.+\.png$/.test(a.path || '') || typeof Image === 'undefined') return;
+      const im = new Image(); im.onload = () => { IMGS[id] = im; if (done) done(id); }; im.src = a.path;
+    });
+  }
+  // 画像は「ctx の拡大率に関わらず 画像1ドット = 画面の1CSS px」で描く（ぼかさない）。cx は中心、gy は足元。
+  function blit(ctx, im, cx, gy, tint) {
+    const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k;
+    ctx.imageSmoothingEnabled = false;
+    let src = im;
+    if (tint) {
+      const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d');
+      g.drawImage(im, 0, 0); g.globalCompositeOperation = 'source-atop'; g.globalAlpha = 0.55; g.fillStyle = tint; g.fillRect(0, 0, c.width, c.height); src = c;
+    }
+    ctx.drawImage(src, cx - w / 2, gy - h, w, h);
+  }
   function drawHero(ctx, job, x, groundY, o) {
-    o = o || {}; const rows = heroRows(o.look), y = groundY - rows.length, pal = palForHero(job); if (o.outfit) pal.b = o.outfit;
+    o = o || {};
+    const im = o.img && IMGS['hero_' + job + (o.img === 'strip' ? '_strip' : '')];
+    if (im) {
+      blit(ctx, im, x + 7, groundY, o.tint);
+      if (o.guard) { ctx.fillStyle = '#7fd3ff'; ctx.fillRect(x + 12, groundY - 12, 2, 5); }
+      return;
+    } const rows = heroRows(o.look), y = groundY - rows.length, pal = palForHero(job); if (o.outfit) pal.b = o.outfit;
     if (o.look) { pal.s = o.look.skin; pal.h = o.look.hair; }
     draw(ctx, rows, pal, x, y, false, o.tint);
     if (o.guard) { ctx.fillStyle = '#7fd3ff'; ctx.fillRect(x + 11, y + 5, 2, 5); }
   }
   function drawEnemy(ctx, id, boss, x, groundY, o) {
-    o = o || {}; const rows = SHAPES[shapeOf(id)], y = groundY - rows.length - (o.lift || 0);
+    o = o || {};
+    const im = o.img && IMGS['enemy_' + id + (o.img === 'strip' ? '_strip' : '')];
+    if (im) { blit(ctx, im, x + 7, groundY - (o.lift || 0), o.tint); return; } const rows = SHAPES[shapeOf(id)], y = groundY - rows.length - (o.lift || 0);
     draw(ctx, rows, palForEnemy(id, boss), x, y, false, o.tint);
     if (boss) { ctx.fillStyle = '#e0b030'; ctx.fillRect(x + 4, y - 2, 1, 2); ctx.fillRect(x + 6, y - 3, 2, 3); ctx.fillRect(x + 9, y - 2, 1, 2); }
   }
   // 宝箱 12x9
   const CHEST = ['..oooooooo..', '.obbbbbbbbo.', 'obbbbbbbbbbo', 'oyyyyyyyyyyo', 'obbbyybbbbbo', 'obbbyybbbbbo', 'obbbbbbbbbbo', 'oooooooooooo'];
   const CHEST_OPEN = ['.y..y..y..y.', '..oooooooo..', '.oYYYYYYYYo.', 'oyyyyyyyyyyo', 'oddddddddddo', 'obbbbbbbbbbo', 'obbbyybbbbbo', 'oooooooooooo'];
-  function drawChest(ctx, x, groundY, open) {
+  function drawChest(ctx, x, groundY, open, kind) {
+    const im = IMGS['chest_' + (kind || 'normal') + '_' + (open ? 'open' : 'closed')];
+    if (im) { blit(ctx, im, x + 6, groundY, null); return; }
     const rows = open ? CHEST_OPEN : CHEST, pal = { o: '#3b1f12', b: '#a23a2a', y: '#e0b030', Y: '#fff3a0', d: '#4a2418' };
     rows.forEach((r, j) => { for (let i = 0; i < r.length; i++) { const ch = r[i]; if (ch === '.') continue; ctx.fillStyle = pal[ch]; ctx.fillRect(x + i, groundY - rows.length + j, 1, 1); } });
   }
@@ -87,7 +116,12 @@
     lab0: { sky: ['#8a96a8', '#cfd6e0'], far: '#667080', grass: '#505a68', tuft: '#38424e', tree: '#80a0c0' }, orchard: { sky: ['#3a2a78', '#9a80d8'], far: '#5a4a98', grass: '#6a5aa8', tuft: '#f0e090', tree: '#4a3a88' },
     dawnisle: { sky: ['#f8a878', '#fff0c8'], far: '#f0c890', grass: '#e8d8a0', tuft: '#c8b070', tree: '#8a9a5a' }
   };
-  function drawBackground(ctx, w, h, region) {
+  function drawBackground(ctx, w, h, region, img) {
+    const bim = img && IMGS['bg_' + region + (img === 'strip' ? '_strip' : '')];
+    if (bim) {   // 画像を縦横比そのままで敷き詰める（はみ出しは中央〜下基準で切る）
+      const k = ctx.getTransform().a || 1, cw = w * k, ch = h * k, sc = Math.max(cw / bim.width, ch / bim.height), dw = bim.width * sc, dh = bim.height * sc;
+      ctx.imageSmoothingEnabled = false; ctx.drawImage(bim, (cw - dw) / 2 / k, (ch - dh) / k, dw / k, dh / k); return;
+    }
     const c = REGION_COLOR[region] || REGION_COLOR.meadow, gh = Math.max(5, Math.round(h * 0.27));
     const sky = Math.floor((h - gh) / 2);
     ctx.fillStyle = c.sky[0]; ctx.fillRect(0, 0, w, h); ctx.fillStyle = c.sky[1]; ctx.fillRect(0, sky, w, h);
@@ -101,6 +135,6 @@
   }
   // 小さな点（剣のきらめきなど）
   function px(ctx, x, y, col, n) { ctx.fillStyle = col; ctx.fillRect(x, y, n || 1, n || 1); }
-  root.RPGSprites = { heroRows, PAL, JOB_COLOR, HERO, SHAPES, shapeOf, drawHero, drawEnemy, drawChest, drawBackground, px, REGION_COLOR, palForEnemy };
+  root.RPGSprites = { heroRows, PAL, JOB_COLOR, HERO, SHAPES, shapeOf, drawHero, drawEnemy, drawChest, drawBackground, px, REGION_COLOR, palForEnemy, IMGS, loadImages };
   if (typeof module === 'object' && module.exports) module.exports = root.RPGSprites;
 })(typeof self !== 'undefined' ? self : this);

@@ -21,7 +21,7 @@
     if (!r.ok) { RPG.err = r.err; RPG.errDetail = r.detail || null; RPG.ok = false; return; }
     RPG.ok = true;
     if (r.fresh) { const w = RPG.store.save(RPG.save); if (!w.ok) { RPG.ok = false; RPG.err = w.err; } }
-    fetch('rpg/ASSET_MANIFEST.json', { cache: 'no-cache' }).then(x => x.json()).then(m => { (m.assets || []).forEach(a => { if (a.status === '正式' && a.path) RPG.assets[a.id] = a; }); }).catch(() => {});
+    fetch('rpg/ASSET_MANIFEST.json', { cache: 'no-cache' }).then(x => x.json()).then(m => { (m.assets || []).forEach(a => { if (a.status === '正式' && a.path) RPG.assets[a.id] = a; }); SP.loadImages(RPG.assets, () => { try { if (ctx) drawStrip(); } catch (e) {} }); }).catch(() => {});
   };
   RPG.persist = function () {
     if (!RPG.ok) return false;
@@ -87,11 +87,11 @@
   function drawStrip(o) {
     if (!ctx) return; o = o || {};
     const si = sceneInfo(); if (!si) return;
-    ctx.clearRect(0, 0, W, H); SP.drawBackground(ctx, W, H, si.region);
+    ctx.clearRect(0, 0, W, H); SP.drawBackground(ctx, W, H, si.region, 'strip');
     const gy = H - 2, hx = 8 + Math.min(RPG.scene.walk, 8) * 6 + (o.heroDx || 0), ex = W - 26 + (o.enemyDx || 0);
     const heroTint = si.status === 'retreat' ? '#8a90a8' : (o.heroFlash ? '#ff9aa0' : null);
-    SP.drawHero(ctx, si.job, hx, gy, { tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
-    if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { tint: o.enemyFlash ? '#fff' : null });
+    SP.drawHero(ctx, si.job, hx, gy, { img: 'strip', tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
+    if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { img: 'strip', tint: o.enemyFlash ? '#fff' : null });
     if (o.slash) { SP.px(ctx, hx + 16, gy - 12, '#fff', 2); SP.px(ctx, hx + 18, gy - 10, '#ffe27a', 2); SP.px(ctx, hx + 20, gy - 8, '#fff', 2); }
     if (o.heal) { SP.px(ctx, hx + 5, gy - 18, '#5be08a', 1); SP.px(ctx, hx + 4, gy - 17, '#5be08a', 3); SP.px(ctx, hx + 5, gy - 16, '#5be08a', 1); }
   }
@@ -99,7 +99,7 @@
     cv = root.document.querySelector('.rpg-strip canvas'); ctx = null; if (!cv) return;
     const box = cv.parentNode; const cssW = Math.max(100, cv.clientWidth || box.clientWidth);
     W = Math.ceil(cssW / SCALE); H = Math.round((cv.clientHeight || 44) / SCALE) || 22;
-    cv.width = W; cv.height = H; ctx = cv.getContext('2d');
+    cv.width = W * SCALE; cv.height = H * SCALE; ctx = cv.getContext('2d'); ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
     drawStrip();
     const inp = root.document.getElementById('ans');   // 入力問題：キーボード表示中は帯を隠す
     if (inp) { inp.addEventListener('focus', () => { box.hidden = true; }); inp.addEventListener('blur', () => { box.hidden = false; }); }
@@ -187,17 +187,18 @@
       ${res.mainClear ? '<button class="rw-link" id="rwEnding">エンディングを みる</button>' : ''}
     </div>`;
   };
-  function drawChestCv(cv, open, p) {   // 開封の演出：ゆれる→ふたがひらく→光（仮絵）
+  function drawChestCv(cv, open, p) {   // 開封の演出：ゆれる→ふたがひらく→光
     const g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
     const dx = !open && p ? Math.round(Math.sin(p * 40) * 1) : 0;
-    SP.drawChest(g, 6 + dx, 13, !!open);
-    if (open) { g.fillStyle = '#fff3a0'; [[3, 2], [20, 3], [11, 0], [16, 1], [7, 1]].forEach(a => { if (p === 1 || ((a[0] * 7 + Math.floor(p * 10)) % 3)) g.fillRect(a[0], a[1], 1, 1); }); }
+    const img = SP.IMGS['chest_morning_' + (open ? 'open' : 'closed')];
+    if (img) SP.drawChest(g, cv.width / 2 - 6 + dx, cv.height - 2, !!open, 'morning'); else SP.drawChest(g, 6 + dx, 13, !!open);
+    if (open && !img) { g.fillStyle = '#fff3a0'; [[3, 2], [20, 3], [11, 0], [16, 1], [7, 1]].forEach(a => { if (p === 1 || ((a[0] * 7 + Math.floor(p * 10)) % 3)) g.fillRect(a[0], a[1], 1, 1); }); }
   }
   RPG.bindReward = function (res) {
     snd(res.adv.lvTo > res.adv.lvFrom || res.job.lvTo > res.job.lvFrom ? 'level' : 'reward');
     const enb = root.document.getElementById('rwEnding'); if (enb) enb.onclick = () => { if (RPG.open) RPG.open('ending', { from: 'result' }); };
     const ob = root.document.getElementById('rwOpen'), cc = root.document.getElementById('rwChestCv');
-    if (cc) { cc.width = 24; cc.height = 14; cc.style.width = '144px'; cc.style.height = '84px'; drawChestCv(cc, !ob, 0); }
+    if (cc) { const hasImg = !!SP.IMGS.chest_morning_closed; cc.width = hasImg ? 64 : 24; cc.height = hasImg ? 52 : 14; cc.style.width = hasImg ? '128px' : '144px'; cc.style.height = hasImg ? '104px' : '84px'; drawChestCv(cc, !ob, 0); }
     if (ob) ob.onclick = () => {
       ob.disabled = true; snd('chest');
       const fin = () => { drawChestCv(cc, true, 1); const ln = root.document.getElementById('rwChestLine'); if (ln) ln.hidden = false; ob.remove(); if (RPG.save && RPG.save.seen) { RPG.save.seen.lastChest = res.id; RPG.persist(); } };
@@ -208,14 +209,15 @@
     const w = root.document.getElementById('rwWrong'), box = root.document.getElementById('rwWrongBox');
     if (w) w.onclick = () => { const o = box.hidden; box.hidden = !o; w.setAttribute('aria-expanded', String(o)); w.textContent = (o ? '▼ ' : '▶ ') + 'まちがえた問題をみる'; };
     const c = root.document.getElementById('rwCanvas'); if (!c) return;
-    const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k); c.height = Math.round(c.width * 0.66);
-    const g = c.getContext('2d'), rg = res.bg || D.ENEMIES[res.enemy.id].region;
-    SP.drawBackground(g, c.width, c.height, rg);
-    const gy2 = Math.round(c.height * 0.88 / 2), cx = Math.round(c.width / 4);
+    const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k) * k; c.height = Math.round(c.width * 0.66 / k) * k;
+    const g = c.getContext('2d'); g.setTransform(k, 0, 0, k, 0, 0); const lw = c.width / k, lh = c.height / k;
+    const rg = res.bg || D.ENEMIES[res.enemy.id].region;
+    SP.drawBackground(g, lw, lh, rg, 'reward');
+    const gy2 = Math.round(lh * 0.88 / 2), cx = Math.round(lw / 4);
     g.save(); g.scale(2, 2);   // キャラは2倍（仮絵）
-    SP.drawHero(g, res.job.id, cx - 20, gy2, { tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
-    if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true);
-    else SP.drawEnemy(g, res.enemy.id, res.enemy.boss, cx + 8, gy2, {});
+    SP.drawHero(g, res.job.id, cx - 20, gy2, { img: 'reward', tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
+    if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true, res.enemy.boss ? 'boss' : 'normal');
+    else SP.drawEnemy(g, res.enemy.id, res.enemy.boss, cx + 8, gy2, { img: 'reward' });
     g.restore();
   };
 
