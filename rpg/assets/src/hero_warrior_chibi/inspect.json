@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/hero_warrior_chibi/hero_warrior_chibi.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  657,
+  871
+ ],
+ "out": "rpg/assets/chars/hero_warrior.png",
+ "out_size": [
+  72,
+  96
+ ],
+ "magenta_removed_px": 1227454,
+ "fringe_removed_px": 1878,
+ "magenta_left_px": 0,
+ "opaque_px": 4127,
+ "colors": 3268
+}

@@ -1,0 +1,22 @@
+seconds=858
+rc=0
+[enemy_slime.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_slime/enemy_slime.png) — 1152 × 1152 px
+
+New-Object System.Drawing.Bitmap(1152,1152)
+$g=[System.Drawing.Graphics]::FromImage($out)
+$g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
+$g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::Half
+$g.DrawImage($small,0,0,1152,1152)
+$out.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png)
+$g.Dispose();$out.Dispose();$small.Dispose();$im.Dispose()
+Write-Output $dst' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_slime
+ succeeded in 1182ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_slime\enemy_slime.png
+
+codex
+[enemy_slime.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_slime/enemy_slime.png) — 1152 × 1152 px
+hook: Stop
+hook: Stop Completed
+tokens used
+46,144
+
