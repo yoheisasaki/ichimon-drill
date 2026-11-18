@@ -1,0 +1,16 @@
+seconds=102
+rc=0
+[bg_waterland.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_waterland/bg_waterland.png) — 1774 × 887 ピクセル
+
+ages\\01a1ed52-bbf8-7de0-a62d-d15a7c525efe\\exec-47bb6574-ff63-4146-a525-4db7fbd3d7b1.png' -Destination '.\\bg_waterland.png'; Add-Type -AssemblyName System.Drawing; "'$im=[System.Drawing.Image]::FromFile((Resolve-Path -LiteralPath '"'.\\bg_waterland.png').Path); Write-Output ((Resolve-Path -LiteralPath '.\\bg_waterland.png').Path); Write-Output \""'$($im.Width)x$($im.Height)"; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_waterland
+ succeeded in 1256ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_waterland\bg_waterland.png
+1774x887
+
+codex
+[bg_waterland.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_waterland/bg_waterland.png) — 1774 × 887 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+12,263
+

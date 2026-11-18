@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_waterland_strip/bg_waterland_strip.png",
+ "src_size": [
+  2172,
+  241
+ ],
+ "out": "rpg/assets/bg/bg_waterland_strip.png",
+ "out_size": [
+  390,
+  44
+ ],
+ "magenta_px": 36,
+ "colors": 15596
+}

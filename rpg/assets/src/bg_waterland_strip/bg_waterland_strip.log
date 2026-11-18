@@ -1,0 +1,22 @@
+seconds=149
+rc=0
+[bg_waterland_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_waterland_strip/bg_waterland_strip.png) — 2172 × 241 px
+
+.Dispose() }
+      $original.Dispose()
+      $final.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+    } finally { $final.Dispose() }
+  } finally { $small.Dispose() }
+} finally { $original.Dispose() }
+$check = [System.Drawing.Image]::FromFile($path)
+try { Write-Output ("{0} {1}x{2}" -f $path, $check.Width, $check.Height) } finally { $check.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_waterland_strip
+ succeeded in 585ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_waterland_strip\bg_waterland_strip.png 2172x241
+
+codex
+[bg_waterland_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_waterland_strip/bg_waterland_strip.png) — 2172 × 241 px
+hook: Stop
+hook: Stop Completed
+tokens used
+18,691
+

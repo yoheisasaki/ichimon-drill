@@ -1,0 +1,15 @@
+seconds=104
+rc=0
+[bg_mountain_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_mountain_strip/bg_mountain_strip.png) — 2160 × 240 ピクセル
+
+.Drawing.Drawing2D.PixelOffsetMode]::Half; $g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::None; $g.DrawImage($im,0,0,2160,240); $g.Dispose(); $im.Dispose(); $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); $verify=[System.Drawing.Image]::FromFile($dst); Write-Output "$dst $($verify.Width)x$($verify.Height)"; $verify.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_mountain_strip
+ succeeded in 554ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_mountain_strip\bg_mountain_strip.png 2160x240
+
+codex
+[bg_mountain_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_mountain_strip/bg_mountain_strip.png) — 2160 × 240 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+20,691
+
