@@ -37,3 +37,15 @@
 - 失敗ID: なし。ChatGPT枠エラー: なし（2026-11-18 時点）。
 - 今回、宝箱の開3本のうち一時的に codex を3本同時に走らせた（上限2本の超過。遅くはならなかったが次回は守る）。
 - 宝箱の金の光は「光線なし・金属の色のみ」で控えめ。ボス箱は金の割合が多め（要目視）。
+
+## 2026-11-18 追記（第3担当・Codex クレジット切れで終了）
+- 済み（正式・台帳反映・画面確認済み。`rpg/shots/assets_town_*.png` `assets_room_*.png` `assets_memorial_*.png` `assets_worldmap_adv.png`）:
+  - 街: bg_town（240x254）、パーツ town_windmill / town_fountain / town_airship / town_monument（草原クリア→風車、水郷クリア→噴水、空船は常時、本編クリア→記念碑）
+  - 施設室内5: bg_room_guild / shop / forge / temple / room（480x240。場所画面の上に表示）
+  - NPC: npc_mira / npc_toto / npc_luca / npc_knight と各 _alt（表情。場所画面のNPCをタップで切替。おはなし画面は話者名で出し分け）
+  - 記念絵4: bg_memorial_ch1 / ch2 / main / dawnisle（300x200。主人公を重ねて表示）、世界地図 bg_worldmap（240x240。ぼうけんタブ。地点・線のレイヤーは未）
+  - 主人公ポーズ: hero_warrior_attack / hero_shadow_attack のみ
+- 配線: `drawHero(..., {pose})` が `hero_<職>[_strip]_<pose>.png` を優先（無ければ待機）。帯は攻撃時 attack・被弾時 hit、報酬は勝利 win・撤退 hit。画像が出来次第そのまま効く。
+- ツール: `tools/pose_pipe.py <attack|ready|hit|win|s:attack|s:hit|s:walk> <職...>`（待機と同縮尺で後処理）、`tools/npc_alt.py`、`tools/town_shots.py`
+- 残り（Codex 再開後）: 攻撃ポーズ報酬用 10職（mage priest thief magicknight paladin sage ninja ranger skyknight starseer。mage・sage は生成途中で中断→再生成）→ 帯用 s:attack 12職 → 勝利 win 12 → 帯被弾 s:hit 12 → 報酬被弾 hit 12 → 構え ready 12 → 帯歩行 s:walk 12。その後マスター衣装・上級職追加衣装・顔髪差分（03の台帳表）。
+- 注意: 中断時に batch.py/gen.py 系プロセスを名前で止めた（他担当の生成が同時にあれば巻き込んだ可能性）。
