@@ -42,3 +42,11 @@
 - 192pxボスの収まり（幅390）: rpg/tools/boss_fit.py → shots/assets_boss_fit.png。直す前は報酬画面で右に最大31pxはみ出し・帯(高さ44)で上が8px切れ（21体）。直した: 報酬は右端を枠内に寄せ、足りなければ縮小（rpg-ui.js の fitScale、rpg-sprites.js の blit に scale 引数）。帯は高さ40pxに縮小。27体すべて収まり確認。
 - 中止: 大技の専用エフェクトと技の効果の画面接続（pixelfx 採用のため別担当）。
 - 事故メモ: ChatGPT のホーム入力欄に別件(戦国タイピングの小判アイコン)の下書きが残っており、上書きした。控えは scratchpad の chatgpt_draft_backup.txt。
+
+## 背景・探索地図 2026-11-18（ブラウザ ChatGPT）
+- 背景（報酬480x240＋帯390x44）: 第2・3章12地域（rootwood〜crown）、試練2（trial_wing/star）、秘境6（garden pearl nightcity dragonvalley lab0 orchard）、孤島（dawnisle）の計21地域を正式化。説明は assets/tools/bg_data.py。台帳 bg_<id> と bg_<id>_strip は「正式」。画面は rpg-sprites.js drawBackground が台帳から自動で読む。確認: shots/assets_bg_ch23.png, shots/assets_bg_trials.png（tools/bg_shots.py）
+- 方法: 1つの会話に第1章背景2枚（bg_meadow, bg_gearcity を2倍に拡大）を添付→地域ごとに文章1つで1枚(1774x887)→ページ内JSで生成画像を Downloads に cg_bg_<id>.png で保存 → tools/bg_take.py <id>[:帯のy位置]（src へ移動・480x240・帯切り出し）→ tools/bg_manifest.py <id>。
+- 帯は生成せず、同じ絵の全幅を横長(390:44)に切り出して作成（ChatGPT は 3:1 までしか出せない。第1章の帯は別生成だが見た目は同等）。y位置の既定 0.45、rootwood だけ 0.38。
+- 探索地図: 本編18＋秘境6＋孤島1=25枚を正方形で生成 → 240x240（世界地図と同寸）bg/bg_map_<id>.png。台帳 bg_map_<id> 「正式」（planned_explore_maps 行は削除）。tools/map_take.py / map_manifest.py。地点・宝箱・進み具合は描いていない（別に重ねる）。画面への接続は未（探索地図の画面がまだ無い）。確認: 一覧は scratchpad の maps.png（shots には未保存）。
+- 使上限の表示: 出ず。生成は1枚 約20〜90秒。ChatGPT の入力欄は新規チャット（空）で作業、終了時にタブを閉じた。
+- 未着手（追加依頼）: 主人公10職の攻撃ポーズ、帯用ポーズ、衣装・顔髪差分。文脈が長くなったため停止。
