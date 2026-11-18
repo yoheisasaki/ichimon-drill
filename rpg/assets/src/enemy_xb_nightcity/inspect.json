@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_nightcity/enemy_xb_nightcity.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  470,
+  402
+ ],
+ "out": "rpg/assets/chars/enemy_xb_nightcity.png",
+ "out_size": [
+  224,
+  192
+ ],
+ "magenta_removed_px": 124726,
+ "fringe_removed_px": 2567,
+ "magenta_left_px": 11,
+ "opaque_px": 30705,
+ "colors": 23952
+}

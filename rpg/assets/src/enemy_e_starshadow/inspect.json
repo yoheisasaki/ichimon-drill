@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_starshadow/enemy_e_starshadow.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  423,
+  389
+ ],
+ "out": "rpg/assets/chars/enemy_e_starshadow.png",
+ "out_size": [
+  104,
+  96
+ ],
+ "magenta_removed_px": 172928,
+ "fringe_removed_px": 1794,
+ "magenta_left_px": 21,
+ "opaque_px": 5299,
+ "colors": 4491
+}

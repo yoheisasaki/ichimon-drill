@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_lab0/enemy_xb_lab0.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  464,
+  434
+ ],
+ "out": "rpg/assets/chars/enemy_xb_lab0.png",
+ "out_size": [
+  205,
+  192
+ ],
+ "magenta_removed_px": 105175,
+ "fringe_removed_px": 1529,
+ "magenta_left_px": 56,
+ "opaque_px": 30372,
+ "colors": 22450
+}

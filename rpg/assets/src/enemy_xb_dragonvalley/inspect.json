@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_dragonvalley/enemy_xb_dragonvalley.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  484,
+  425
+ ],
+ "out": "rpg/assets/chars/enemy_xb_dragonvalley.png",
+ "out_size": [
+  219,
+  192
+ ],
+ "magenta_removed_px": 102183,
+ "fringe_removed_px": 1979,
+ "magenta_left_px": 6,
+ "opaque_px": 32274,
+ "colors": 22888
+}

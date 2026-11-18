@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_garden/enemy_xb_garden.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  471,
+  431
+ ],
+ "out": "rpg/assets/chars/enemy_xb_garden.png",
+ "out_size": [
+  210,
+  192
+ ],
+ "magenta_removed_px": 117459,
+ "fringe_removed_px": 3645,
+ "magenta_left_px": 148,
+ "opaque_px": 28030,
+ "colors": 23526
+}
