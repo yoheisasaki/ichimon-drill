@@ -79,5 +79,42 @@ t('全装備の効果文・全技の説明文が空にならない', () => {
   Object.values(D.SKILLS).forEach(k => ok(M.skillText(k, 30), k.id));
 });
 
+// ===== 全3章のデータ検査・解放経路・全体シミュレーション =====
+t('全3章：18地域・300区間（72+96+132）・通常66体＋ボス18体、全員が道のりに出る', () => {
+  eq(D.REGIONS.length, 18); eq(D.ROUTE.length, 300); eq(D.REGION_START[6], 72); eq(D.REGION_START[12], 168);
+  const en = Object.values(D.ENEMIES); eq(en.filter(e => !e.boss).length, 66); eq(en.filter(e => e.boss).length, 18);
+  const used = new Set(D.ROUTE.map(r => r.enemy)); en.forEach(e => ok(used.has(e.id), e.id + ' が道のりに出ない'));
+  D.REGIONS.forEach((r, i) => { eq(D.ROUTE.filter(x => x.region === i && x.boss).length, r.ch === 1 ? 3 : 4); eq(D.ROUTE.filter(x => x.region === i && !x.boss).length, r.points.length * 3); eq(r.points.length, r.ch === 1 ? 3 : r.ch === 2 ? 4 : 6); });
+});
+t('全敵：能力値が正・弱点は既知の属性・行動パターンの種類が既知', () => {
+  const kinds = ['atk', 'big', 'guard', 'charge', 'brace', 'idle'];
+  D.ROUTE.forEach(r => { ok(r.stats.hp > 0 && r.stats.atk > 0 && r.stats.def >= 0, r.enemy); });
+  Object.values(D.ENEMIES).forEach(e => { ok(!e.weak || D.ELEMENTS.includes(e.weak), e.id); ok(e.pattern.length >= 1 && e.pattern.every(p => kinds.includes(p.k)), e.id); ok(e.pattern.some(p => p.k === 'atk' || p.k === 'big'), e.id + ' は攻撃しない'); });
+});
+t('全ボス：大技は直前の行動で予告できる（先頭が大技でない、または予告を持つ）', () => { Object.values(D.ENEMIES).filter(e => e.boss).forEach(e => ok(e.pattern.some(p => p.k === 'big'), e.id + ' に大技が無い')); });
+t('ボスの初回コイン・素材・地域IDの参照が全て揃う', () => { D.REGIONS.forEach(r => { ok(r.coin > 0 && r.mat && r.boss.id && D.ENEMIES[r.boss.id].region === r.id, r.id); ok(r.story, r.id + ' の短い出来事が無い'); }); });
+t('装備ランクの解放：II砂海／III第1章／IV逆さ遺跡／V第2章／VI天測の塔（循環なし・順に到達）', () => {
+  const s = C.newSave(0), clear = ids => { s.progress.clearedRegions = ids.slice(); return C.maxRank(s); };
+  const ch = n => D.REGIONS.filter(r => r.ch === n).map(r => r.id);
+  eq(clear([]), 1); eq(clear(['sandsea']), 2); eq(clear(ch(1)), 3); eq(clear(ch(1).concat('invertedruins')), 4); eq(clear(ch(1).concat(ch(2))), 5); eq(clear(ch(1).concat(ch(2), ['skytower'])), 6);
+  eq(clear(ch(1).concat(ch(2), ch(3))), 6);
+});
+t('全装備の入手経路：店売りの通常60種は、解放ランクに応じて必ず買える／レアは宝箱の候補に載る', () => {
+  const normals = Object.values(D.ITEMS).filter(i => i.rarity === 'normal' && i.rank), rares = Object.values(D.ITEMS).filter(i => i.rarity === 'rare');
+  eq(normals.length, 60); const s = C.newSave(0);
+  [1, 2, 3, 4, 5, 6].forEach(rank => { const cl = rank === 1 ? [] : rank === 2 ? ['sandsea'] : rank === 3 ? D.REGIONS.filter(r => r.ch === 1).map(r => r.id) : rank === 4 ? D.REGIONS.filter(r => r.ch === 1).map(r => r.id).concat('invertedruins') : rank === 5 ? D.REGIONS.filter(r => r.ch <= 2).map(r => r.id) : D.REGIONS.filter(r => r.ch <= 2).map(r => r.id).concat('skytower'); s.progress.clearedRegions = cl; s.coins = 1e6; eq(C.maxRank(s), rank); normals.filter(i => i.rank === rank).forEach(i => { ok(!C.canBuy(s, i.id) || s.inv.items[i.id], i.id); }); });
+  rares.forEach(i => { ok(D.WISH_LIST.includes(i.wish) && Object.values(D.ITEMS).some(x => x.rarity === 'rare' && x.wish === i.wish && x.rank === i.rank), i.id); });
+});
+t('全職の到達可能性：基本4→上級6（基本2つLv10）→最上級2（上級2つLv20＋試練）、循環なし', () => {
+  const s = fresh2(); D.JOB_IDS.filter(j => D.JOBS[j].tier === 'base').forEach(j => { s.jobXp[j] = C.cum(C.NEED.base, 10); });
+  D.JOB_IDS.filter(j => D.JOBS[j].tier === 'adv').forEach(j => { eq(C.canChangeJob(s, j), null, j); s.jobXp[j] = C.cum(C.NEED.adv, 20); });
+  s.progress.clearedRegions.push('sandsea'); D.JOB_IDS.filter(j => D.JOBS[j].tier === 'top').forEach(j => { ok(C.canChangeJob(s, j), j + ' は試練前は不可'); s.trials[D.JOBS[j].trial] = 1; eq(C.canChangeJob(s, j), null, j); });
+});
+const SIM = require('../tools/sim.js');
+const fullRows = {}; [0.3, 0.6, 0.8, 1.0].forEach(acc => { fullRows[acc] = [1, 2, 3].map(seed => SIM.playJourney({ acc, days: 600, seed, jobPath: ['warrior', 'mage', 'magicknight'], stopAtEnd: true }).stat); });
+t('全体シミュレーション：正答率60〜80%は 240〜360冒険で全3章クリア', () => { [0.6, 0.8].forEach(a => fullRows[a].forEach(r => { ok(r.endAdv >= 240 && r.endAdv <= 360, a + ': ' + r.endAdv); })); });
+t('全体シミュレーション：30%でも最後まで到達（成長が止まらない）、100%でも人為的に止めない', () => { fullRows[0.3].forEach(r => ok(r.endDay != null)); fullRows[1].forEach(r => ok(r.endAdv >= 300, String(r.endAdv))); });
+t('全体シミュレーション：60〜80%では撤退がまれ（10%未満）', () => { [0.6, 0.8].forEach(a => fullRows[a].forEach(r => ok(r.retreats / r.adv < 0.1, a + ': ' + r.retreats / r.adv))); });
+
 console.log(JSON.stringify({ pass, fail, failures }, null, 1));
 process.exit(fail ? 1 : 0);

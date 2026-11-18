@@ -90,7 +90,7 @@
     if (outcome === 'victory') {
       save.progress.enemyHp = null;
       if (a.step < D.ROUTE.length) {
-        if (ed.boss) { if (!save.progress.clearedRegions.includes(region.id)) save.progress.clearedRegions.push(region.id); save.progress.step = (route.region + 1) * (D.NORMAL_STEPS + D.BOSS_STEPS); }
+        if (ed.boss) { if (!save.progress.clearedRegions.includes(region.id)) save.progress.clearedRegions.push(region.id); save.progress.step = D.REGION_START[route.region + 1]; }
         else save.progress.step = a.step + 1;
       }
     } else save.progress.enemyHp = { id: a.enemyId, hp: b.enemy.hp };

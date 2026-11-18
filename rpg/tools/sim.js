@@ -62,10 +62,14 @@ function playJourney(opts) {
       stat.adv++; stat.coinsEarned += res.coin;
       if (res.outcome === 'victory') { stat.wins++; stat.killAdv.push(stat.adv); if (res.enemy.boss) { stat.regionDay[res.region] = d + 1; } }
       else if (res.outcome === 'retreat') stat.retreats++; else stat.continues++;
-      if (save.progress.step >= D.ROUTE.length && stat.ch1Day == null) { stat.ch1Day = d + 1; stat.ch1Adv = stat.adv; }
+      const stp = save.progress.step;
+      if (stp >= D.REGION_START[6] && stat.ch1Day == null) { stat.ch1Day = d + 1; stat.ch1Adv = stat.adv; }
+      if (stp >= D.REGION_START[12] && stat.ch2Day == null) { stat.ch2Day = d + 1; stat.ch2Adv = stat.adv; }
+      if (stp >= D.ROUTE.length && stat.endDay == null) { stat.endDay = d + 1; stat.endAdv = stat.adv; }
     }
     stat.days = d + 1;
-    if (opts.stopAtCh1 && save.progress.step >= D.ROUTE.length) break;
+    if (opts.stopAtCh1 && save.progress.step >= D.REGION_START[6]) break;
+    if (opts.stopAtEnd && save.progress.step >= D.ROUTE.length) break;
   }
   stat.final = { advLv: C.heroLevel(save.advXp).lv, advXp: save.advXp, jobs: C.jobLevels(save), coins: save.coins, job: save.job, step: save.progress.step, rank: C.maxRank(save), items: Object.keys(save.inv.items).length, pity: save.chest.pity };
   return { stat, save };

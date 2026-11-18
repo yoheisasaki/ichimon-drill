@@ -103,18 +103,19 @@
     const s = save(), info = M.mapInfo(s), r = D.ROUTE[Math.min(s.progress.step, D.ROUTE.length - 1)], ed = D.ENEMIES[r.enemy];
     const hpKeep = s.progress.enemyHp && s.progress.enemyHp.id === r.enemy ? Math.round(s.progress.enemyHp.hp / r.stats.hp * 100) : 100;
     const sk = M.currentSkills(s).map(id => D.SKILLS[id].name), tac = TACTICS.find(t => t[0] === (s.loadout.tactic || 'auto'))[1];
-    const nodes = info.map((x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? `${esc(x.points[Math.min(2, Math.floor(x.inRegion / 3))])}　${Math.min(x.inRegion + 1, x.total)} / ${x.total}` : 'まだ ここまで きていない'}</small>${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div></li>`).join('');
+    const CH = { 1: '第1章　消えた灯台', 2: '第2章　空の下の世界', 3: '第3章　十二のしるし' };
+    const nodeHtml = (x, i) => `<li class="rs-node ${x.cleared ? 'clear' : x.current ? 'cur' : 'lock'}"><span class="rs-dot">${x.cleared ? '✓' : i + 1}</span><div><b>${esc(x.name)}</b><small>${x.cleared ? 'とっぱ ずみ' : x.current ? (x.atBoss ? `ボスの たたかい　${x.inRegion - x.nNormal + 1} / ${x.total - x.nNormal}` : `${esc(x.points[Math.min(x.points.length - 1, Math.floor(x.inRegion / 3))])}　${x.inRegion + 1} / ${x.total}`) : 'まだ ここまで きていない'}</small>${x.current ? `<small>${esc(x.story)}</small>` : ''}${x.current || x.cleared ? `<small>ボス：${esc(x.boss)}</small>` : ''}</div></li>`;
+    const chapters = [1, 2, 3].map(c => `<div class="rs-h2">${CH[c]}</div><ol class="rs-map">${info.map((x, i) => x.ch === c ? nodeHtml(x, i - info.findIndex(y => y.ch === c)) : '').join('')}</ol>`).join('');
     const wish = D.WISH_LIST.map(w => `<button class="rs-chip${s.wish === w ? ' on' : ''}" data-wish="${w}" aria-pressed="${s.wish === w}">${esc(D.WISH_NAME[w])}</button>`).join('');
     const a = s.active, nOver = s.progress.step >= D.ROUTE.length;
     return frame('ぼうけん', `
       <div class="rs-panel"><div class="rs-h2">いまの ぼうけん</div>
-        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(D.REGIONS[r.region].name)}・${esc(r.point)}${nOver ? '（クリアごの さいせん・仮）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
+        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(D.REGIONS[r.region].name)}・${esc(r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
         ${a && a.basic.n > 0 ? `<div class="rs-note">ぼうけん ${a.basic.n} / ${C.ADV_UNIT}もん（つづきから）</div>` : ''}
         <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button></div>
       <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
       <div class="rs-panel"><div class="rs-h2">宝箱の おねがい</div><p class="rs-p">朝星の宝箱から レアが出るとき、この種類から えらばれます。</p><div class="rs-chips" role="group">${wish}</div></div>
-      <div class="rs-panel"><div class="rs-h2">第1章　消えた灯台</div><ol class="rs-map">${nodes}</ol>
-        <div class="rs-next">第2章・第3章は まだ ひらかれていません（じっそうまえ）。</div></div>`, { back: false });
+      <div class="rs-panel">${chapters}<div class="rs-next">第2章・第3章の 敵の つよさは まだ 調整中です（仮）。</div></div>`, { back: false });
   };
   AFTER.adv = function () {
     const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = D.ROUTE[Math.min(s.progress.step, D.ROUTE.length - 1)]; enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
@@ -208,7 +209,7 @@
       body = items.map(it => {
         const have = !!s.inv.items[it.id], can = C.canBuy(s, it.id), eff = M.effectText(it.id);
         return `<div class="rs-item"><div><b>${esc(it.name)}</b>${rankTag(it)}<i class="rs-cat">${esc(M.CAT_NAME[it.cat])}</i></div><small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}</small>${have ? '<span class="rs-small">もっている</span>' : `<button class="rs-btn sm" data-buy="${it.id}" ${can ? 'disabled' : ''}>${it.price} コインで かう</button>${can ? `<small class="rs-why">${esc(can)}</small>` : ''}`}</div>`;
-      }).join('') + `<p class="rs-p">${rank < 2 ? 'ランクIIは 砂海を とっぱすると 売りだされます。' : rank < 3 ? 'ランクIIIは 第1章を クリアすると 売りだされます。' : 'ランクIV以上は 第2章・第3章（まだ）で 売りだされます。'}</p>`;
+      }).join('') + `<p class="rs-p">${['ランクIIは 砂海を とっぱすると 売りだされます。', 'ランクIIIは 第1章を クリアすると 売りだされます。', 'ランクIVは 逆さ遺跡を とっぱすると 売りだされます。', 'ランクVは 第2章を クリアすると 売りだされます。', 'ランクVIは 天測の塔を とっぱすると 売りだされます。', ''][rank - 1]}</p>`;
     }
     return frame('そうびや', `<div class="rs-panel c">${coinHtml()}</div><div class="rs-tabs2">${tabs}</div><div class="rs-list">${body}</div>`);
   };
@@ -339,7 +340,7 @@
     if (UI.codexTab === 'enemy') {
       body = D.REGIONS.map(r => `<div class="rs-h2">${esc(r.name)}</div><div class="rs-cgrid">${r.enemies.concat([r.boss]).map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e === r.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい${e.weak ? '　よわてん：' + esc(D.EL_NAME[e.weak]) : ''}` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
     } else {
-      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= 3)).map(i => { const got = !!s.codex.items[i.id]; return `<div class="rs-item${got ? '' : ' ng'}"><div><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}</div></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">ランクIV〜VI（第2章・第3章）は まだ 図鑑に のりません。</p>';
+      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s))).map(i => { const got = !!s.codex.items[i.id]; return `<div class="rs-item${got ? '' : ' ng'}"><div><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}</div></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
     }
     return frame('ずかん', `<div class="rs-tabs2">${tabs}</div>${body}`);
   };

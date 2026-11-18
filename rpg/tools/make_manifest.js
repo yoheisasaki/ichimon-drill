@@ -9,6 +9,11 @@ Object.keys(D.ENEMIES).forEach(e => A.push(Object.assign({ id: 'enemy_' + e, use
 D.REGIONS.forEach(r => A.push(Object.assign({ id: 'bg_' + r.id, use: `背景（帯・報酬） ${r.name}（色と丘・木のコード描画）`, path: 'code:rpg-sprites.js#REGION_COLOR', src: 'コード描画', display: '帯 幅×44px / 報酬 幅×約220px', anchor: '-', status: '仮' }, base)));
 A.push(Object.assign({ id: 'chest_open', use: '宝箱（開）報酬画面', path: 'code:rpg-sprites.js#CHEST_OPEN', src: '12x8', display: '72px', anchor: '足元中央', status: '仮' }, base));
 A.push(Object.assign({ id: 'chest_closed', use: '宝箱（閉）', path: 'code:rpg-sprites.js#CHEST', src: '12x8', display: '72px', anchor: '足元中央', status: '仮' }, base));
+// 第2段で増えた仮絵（画面は全てコード/CSS描画。ホーム・街・装備・転職の「本格的な絵」は未制作）
+A.push(Object.assign({ id: 'hero_look_variants', use: '外見（顔4・髪6・肌5・髪色6）の仮ドット絵。ホーム・じぶん・装備・転職・外見画面', path: 'code:rpg-sprites.js#heroRows', src: '14x14', display: '28〜112px', anchor: '足元中央', status: '仮' }, base));
+A.push(Object.assign({ id: 'town_overview', use: '風待ちの町の俯瞰図（6施設のタップ領域つき）', path: 'code:rpg-screens.css#.rs-town', src: 'CSS描画', display: '幅いっぱい×380px', anchor: '-', status: '仮' }, base));
+A.push(Object.assign({ id: 'job_intro_pose', use: '転職の演出・職業カード・職業詳細（12職の姿。現在は衣装色だけ違う仮絵）', path: 'code:rpg-sprites.js#drawHero', src: '14x14', display: '84〜112px', anchor: '足元中央', status: '仮' }, base));
+A.push(Object.assign({ id: 'screen_frames', use: '画面の金枠・ボタン・ナビ（濃紺＋金。CSSのみ。採用見本のドット枠は未制作）', path: 'code:rpg-screens.css', src: 'CSS', display: '-', anchor: '-', status: '仮' }, base));
 // 未着手の分類（03_画像制作仕様の表）。数量は設計書のとおり
 const PLAN = [
   ['hero_base_poses', '主人公 基本職業衣装 12職×5ポーズ（待機/構え/攻撃/被弾/勝利）', 60], ['hero_master_poses', '主人公 マスター衣装 12×5', 60], ['hero_adv_extra', '上級職追加衣装 6×5', 30],

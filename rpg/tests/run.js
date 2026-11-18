@@ -48,8 +48,8 @@ t('通常装備60種（武器24・防具18・アクセ18）', () => { const n = 
 t('全技の職業・消費・ルビがある', () => Object.values(D.SKILLS).forEach(s => { ok(D.JOBS[s.job], s.id); ok([2, 3, 5, 6].includes(s.cost), s.id + ' cost'); ok(s.ruby && s.name, s.id); }));
 t('技は基本職5/上級職6/最上級6ずつ（固有除く）', () => D.JOB_IDS.forEach(j => ok(D.SKILLS_OF[j].length >= 4, j)));
 t('消費6の技が上級・最上級職に各1つ', () => D.JOB_IDS.filter(j => D.JOBS[j].tier !== 'base').forEach(j => eq(D.SKILLS_OF[j].filter(s => s.cost === 6).length, 1, j)));
-t('道のりの敵が全て存在し、能力値が固定値（乱数なし）', () => { D.ROUTE.forEach(r => { ok(D.ENEMIES[r.enemy], r.enemy); ok(r.stats.hp > 0 && r.stats.atk > 0); }); eq(D.ROUTE.length, 72); });
-t('第1章：6地域×(通常9+ボス3)＝72冒険', () => { eq(D.ROUTE.filter(r => !r.boss).length, 54); eq(D.ROUTE.filter(r => r.boss).length, 18); });
+t('道のりの敵が全て存在し、能力値が固定値（乱数なし）', () => { D.ROUTE.forEach(r => { ok(D.ENEMIES[r.enemy], r.enemy); ok(r.stats.hp > 0 && r.stats.atk > 0); }); eq(D.ROUTE.length, 300); });
+t('第1章：6地域×(通常9+ボス3)＝72冒険', () => { const c1 = D.ROUTE.filter(r => D.REGIONS[r.region].ch === 1); eq(c1.filter(r => !r.boss).length, 54); eq(c1.filter(r => r.boss).length, 18); eq(D.REGION_START[6], 72); });
 t('最初の敵はスライム（正解5件前後で倒せる強さ）', () => { eq(D.ROUTE[0].enemy, 'e_leafslime'); const h = B.heroStats(1, 'warrior', 1, {}); const d = B.calcDamage({ atk: h.atk }, { def: D.ROUTE[0].stats.def, weak: null }, [[1, null]]); const n = Math.ceil(D.ROUTE[0].stats.hp / d); ok(n >= 4 && n <= 6, '必要 ' + n); });
 t('転職条件：解放条件に循環がない（基本→上級→最上級）', () => { D.JOB_IDS.forEach(j => { const x = D.JOBS[j]; (x.req || x.reqFrom || []).forEach(r => ok(D.JOBS[r] && ({ base: 0, adv: 1, top: 2 }[D.JOBS[r].tier] < { base: 0, adv: 1, top: 2 }[x.tier]), j + '←' + r)); }); });
 

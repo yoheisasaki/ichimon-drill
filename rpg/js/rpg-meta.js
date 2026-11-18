@@ -195,12 +195,16 @@
       A('first', 'はじめの いっぽ', 'さいしょの ぼうけんを おえる', adv, 1),
       A('adv10', 'ぼうけんの なれ', 'ぼうけんを 10かい おえる', adv, 10),
       A('adv30', 'ぼうけん 30かい', 'ぼうけんを 30かい おえる', adv, 30),
-      A('adv72', 'だいいっしょうの たび', 'ぼうけんを 72かい おえる', adv, 72),
+      A('adv72', 'ぼうけん 72かい', 'ぼうけんを 72かい おえる', adv, 72),
+      A('adv150', 'ぼうけん 150かい', 'ぼうけんを 150かい おえる', adv, 150),
+      A('adv300', 'ぼうけん 300かい', 'ぼうけんを 300かい おえる', adv, 300),
       A('kill1', 'はじめての とうばつ', 'てきを たおす', kills, 1),
       A('kill20', 'てきを 20たい', 'てきを 20かい たおす', kills, 20),
       A('boss1', 'ボスを たおした', 'ボスを たおす', Object.keys(save.progress.bossKills).length, 1),
       A('region3', '3つの ちいき', 'ちいきを 3つ とっぱ', cleared.length, 3),
-      A('region6', '6つの ちいき', 'だいいっしょうの 6ちいきを とっぱ', cleared.length, 6),
+      A('region6', 'だいいっしょうの たび', 'だいいっしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 1 && cleared.includes(r.id)).length, 6),
+      A('region12', 'だいにしょうの たび', 'だいにしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 2 && cleared.includes(r.id)).length, 6),
+      A('region18', '十二のしるし', 'だいさんしょうの 6ちいきを とっぱ', D.REGIONS.filter(r => r.ch === 3 && cleared.includes(r.id)).length, 6),
       A('hero10', 'ぼうけん者 Lv10', 'ぼうけん者 Lv10', hero, 10),
       A('hero20', 'ぼうけん者 Lv20', 'ぼうけん者 Lv20', hero, 20),
       A('job5', '職業 Lv5', 'どれかの職業を Lv5に', maxJob, 5),
@@ -220,11 +224,11 @@
 
   // 冒険地図の表示用：地域ごとの進み具合
   function mapInfo(save) {
-    const step = save.progress.step, per = D.STEPS_PER_REGION;
+    const step = save.progress.step;
     return D.REGIONS.map((r, i) => {
-      const cleared = save.progress.clearedRegions.includes(r.id), cur = step < D.ROUTE.length && Math.floor(step / per) === i;
-      const inRegion = cur ? step - i * per : cleared ? per : 0;
-      return { id: r.id, name: r.name, ruby: r.ruby, points: r.points, cleared, current: cur, locked: !cleared && !cur && step < i * per, inRegion, total: per, boss: r.boss.name };
+      const st0 = D.REGION_START[i], total = D.STEPS_OF[i], cleared = save.progress.clearedRegions.includes(r.id), cur = step < D.ROUTE.length && step >= st0 && step < st0 + total;
+      const inRegion = cur ? step - st0 : cleared ? total : 0, nNormal = r.points.length * 3;
+      return { id: r.id, name: r.name, ruby: r.ruby, ch: r.ch, points: r.points, story: r.story || '', cleared, current: cur, locked: !cleared && !cur && step < st0, inRegion, total, nNormal, atBoss: cur && inRegion >= nNormal, boss: r.boss.name };
     });
   }
 

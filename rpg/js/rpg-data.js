@@ -129,7 +129,7 @@
   const ATK = { k: 'atk', m: 1 };
   const REGIONS = [
     {
-      id: 'meadow', name: '草原', ruby: '{草原|そうげん}', ch: 1, points: ['風車の小道', '木漏れ日の森', '古樹の参道'], coin: 100, mat: '古樹のかけら', item: '若葉の灯',
+      id: 'meadow', name: '草原', ruby: '{草原|そうげん}', ch: 1, points: ['風車の小道', '木漏れ日の森', '古樹の参道'], coin: 100, mat: '古樹のかけら', item: '若葉の灯', story: '消えた灯台のひとつ目。草原の古樹が、灯りをかくしている。',
       enemies: [
         { id: 'e_leafslime', name: 'はっぱスライム', hp: 0.85, atk: 0.85, def: 0.0, pattern: [ATK] },
         { id: 'e_nutbat', name: '木の実コウモリ', hp: 0.9, atk: 1.0, def: 0.0, pattern: [ATK] },
@@ -140,7 +140,7 @@
       boss: { id: 'b_ancienttree', name: '古樹の番人', hp: 3.0, atk: 1.1, def: 1.0, weak: 'fire', pattern: [{ k: 'atk', m: 1, n: '枝攻撃' }, { k: 'guard', n: '根を張る' }, { k: 'big', m: 2.0, n: '大地のうねり' }] }
     },
     {
-      id: 'waterland', name: '水郷', ruby: '{水郷|すいごう}', ch: 1, points: ['水車の川辺', 'あおい洞穴', '水晶の湖'], coin: 100, mat: '水晶のかけら', item: '水車の模型',
+      id: 'waterland', name: '水郷', ruby: '{水郷|すいごう}', ch: 1, points: ['水車の川辺', 'あおい洞穴', '水晶の湖'], coin: 100, mat: '水晶のかけら', item: '水車の模型', story: '水車のまわる水郷。水晶の湖のおくに、2つめの灯台がある。',
       enemies: [
         { id: 'e_jelly', name: 'あわクラゲ', hp: 0.9, atk: 0.9, def: 0.0, weak: 'thunder', pattern: [ATK] },
         { id: 'e_crab', name: 'よろいガニ', hp: 1.0, atk: 1.0, def: 1.6, pattern: [ATK] },
@@ -151,7 +151,7 @@
       boss: { id: 'b_crystalturtle', name: '水晶ガメ', hp: 3.0, atk: 1.1, def: 1.2, weak: 'thunder', pattern: [{ k: 'guard', n: '防御' }, ATK, { k: 'charge', n: '吸水' }, { k: 'big', m: 2.0, n: '大波' }] }
     },
     {
-      id: 'sandsea', name: '砂海', ruby: '{砂海|さかい}', ch: 1, points: ['砂風の道', '埋もれた市場', '砂時計の回廊'], coin: 150, mat: '時砂のかけら', item: '遺跡の鍵',
+      id: 'sandsea', name: '砂海', ruby: '{砂海|さかい}', ch: 1, points: ['砂風の道', '埋もれた市場', '砂時計の回廊'], coin: 150, mat: '時砂のかけら', item: '遺跡の鍵', story: '砂の海にしずんだ市場。砂時計の回廊をぬけて、灯台をさがす。',
       enemies: [
         { id: 'e_sandlizard', name: '砂トカゲ', hp: 1.0, atk: 1.0, def: 0.4, pattern: [ATK] },
         { id: 'e_jarmonster', name: 'つぼの魔物', hp: 1.0, atk: 1.0, def: 0.8, pattern: [ATK] },
@@ -162,7 +162,7 @@
       boss: { id: 'b_hourglass', name: '砂時計の巨人', hp: 3.0, atk: 1.1, def: 1.0, pattern: [ATK, ATK, { k: 'charge', n: '砂が落ちていく' }, { k: 'big', m: 2.2, n: '砂の大波' }] }
     },
     {
-      id: 'mountain', name: '山脈', ruby: '{山脈|さんみゃく}', ch: 1, points: ['雪灯の道', '氷の城門', '白銀の回廊'], coin: 150, mat: '白銀のうろこ', item: '雪結晶',
+      id: 'mountain', name: '山脈', ruby: '{山脈|さんみゃく}', ch: 1, points: ['雪灯の道', '氷の城門', '白銀の回廊'], coin: 150, mat: '白銀のうろこ', item: '雪結晶', story: '雪灯の道をのぼる。氷の城門のむこうに、灯台の光がゆれている。',
       enemies: [
         { id: 'e_snowrabbit', name: '雪ウサギ', hp: 0.9, atk: 0.9, def: 0.0, weak: 'fire', pattern: [ATK] },
         { id: 'e_icearmor', name: '氷のよろい', hp: 1.1, atk: 1.0, def: 1.4, weak: 'fire', pattern: [ATK] },
@@ -173,7 +173,7 @@
       boss: { id: 'b_silverdragon', name: '白銀の竜', hp: 3.0, atk: 1.1, def: 1.0, weak: 'fire', pattern: [{ k: 'big', m: 1.8, n: '氷息' }, { k: 'guard', n: '翼で防御' }, ATK, { k: 'charge', n: '息を吸う' }, { k: 'big', m: 2.0, n: '氷息' }] }
     },
     {
-      id: 'gearcity', name: '機工都市', ruby: '{機工都市|きこうとし}', ch: 1, points: ['配管街', '歯車橋', '騎士の砦'], coin: 200, mat: '黒鋼のかけら', item: '騎士の記録',
+      id: 'gearcity', name: '機工都市', ruby: '{機工都市|きこうとし}', ch: 1, points: ['配管街', '歯車橋', '騎士の砦'], coin: 200, mat: '黒鋼のかけら', item: '騎士の記録', story: 'はいかん街と歯車の橋。黒い鎧の騎士が、灯台の前でまっている。',
       enemies: [
         { id: 'e_screwbird', name: 'ねじ鳥', hp: 0.9, atk: 1.0, def: 0.2, weak: 'thunder', pattern: [ATK] },
         { id: 'e_steamsoldier', name: '蒸気兵', hp: 1.1, atk: 1.0, def: 1.0, weak: 'water', pattern: [ATK] },
@@ -184,7 +184,7 @@
       boss: { id: 'b_blackknight', name: '黒鎧の騎士', hp: 3.0, atk: 1.2, def: 1.2, pattern: [ATK, { k: 'guard', n: '構えを変える' }, { k: 'charge', n: '剣を掲げる' }, { k: 'big', m: 2.2, n: '黒鎧の一閃' }, { k: 'idle', n: '隙' }] }
     },
     {
-      id: 'skycastle', name: '空城', ruby: '{空城|くうじょう}', ch: 1, points: ['雲の庭', '鏡の回廊', '機神の門'], coin: 300, mat: '機神の核片', item: '灯の冒険者衣装',
+      id: 'skycastle', name: '空城', ruby: '{空城|くうじょう}', ch: 1, points: ['雲の庭', '鏡の回廊', '機神の門'], coin: 300, mat: '機神の核片', item: '灯の冒険者衣装', story: '雲の上の城。天蓋の機神をとめれば、第1章がおわる。',
       enemies: [
         { id: 'e_starjelly', name: '星くらげ', hp: 0.9, atk: 1.0, def: 0.2, weak: 'thunder', pattern: [ATK] },
         { id: 'e_castleguard', name: '空城の守衛', hp: 1.1, atk: 1.0, def: 1.0, pattern: [ATK] },
@@ -193,12 +193,127 @@
         { id: 'e_floatdevice', name: '浮遊の魔導器', hp: 1.1, atk: 1.0, def: 0.8, pattern: [ATK] }
       ],
       boss: { id: 'b_machinegod', name: '天蓋の機神', hp: 3.2, atk: 1.2, def: 1.2, pattern: [{ k: 'charge', n: '光を集める' }, { k: 'big', m: 2.4, n: '集光砲' }, { k: 'guard', n: '装置を切替' }, ATK] }
+    },
+    // ---- 第2章 空の下の世界（4地点×3区間＋ボス4＝16冒険/地域）。敵の能力値は仮（未調整。DECISIONS D-21）----
+    {
+      id: 'rootwood', name: '地底樹海', ruby: '{地底樹海|ちていじゅかい}', ch: 2, points: ['根の回廊', '琥珀の泉', '埋もれた村', '根源の祭壇'], coin: 200, mat: '根源の琥珀', item: '再鍛造', story: '世界を支える根が弱っている。ほこらの泉で、根の声をきく。',
+      enemies: [
+        { id: 'e_rootsnake', name: '根絡みヘビ', hp: 1.0, atk: 1.0, def: 0.5, weak: 'fire', pattern: [ATK] },
+        { id: 'e_amberbee', name: '琥珀バチ', hp: 0.9, atk: 1.1, def: 0.2, pattern: [ATK] },
+        { id: 'e_rootstatue', name: '根守りの石像', hp: 1.1, atk: 1.0, def: 1.4, pattern: [ATK, { k: 'guard', n: 'こおりつく' }] }
+      ],
+      boss: { id: 'b_rootserpent', name: '根喰いの大蛇', hp: 4.0, atk: 1.2, def: 1.0, weak: 'fire', pattern: [ATK, { k: 'guard', n: '脱皮' }, { k: 'idle', n: '防御がさがる' }, { k: 'big', m: 2.2, n: 'とぐろ締め' }] }
+    },
+    {
+      id: 'sunkencity', name: '沈んだ都', ruby: '{沈|しず}んだ{都|みやこ}', ch: 2, points: ['水門', '水没広場', '鐘楼', '潮の神殿'], coin: 200, mat: '潮音の真珠', item: '水郷の部屋装飾', story: '水に沈んだ都に、鐘の音がひびく。歌の主をさがそう。',
+      enemies: [
+        { id: 'e_lanternfish', name: 'ランタン魚', hp: 0.9, atk: 1.0, def: 0.2, weak: 'thunder', pattern: [ATK] },
+        { id: 'e_shellknight', name: '貝殻騎士', hp: 1.1, atk: 1.0, def: 1.5, pattern: [ATK, { k: 'brace', n: 'かまえる' }] },
+        { id: 'e_tidedancer', name: '潮の踊り子', hp: 1.0, atk: 1.1, def: 0.4, weak: 'light', pattern: [ATK, ATK, { k: 'big', m: 1.8, n: 'うずまきの舞' }] }
+      ],
+      boss: { id: 'b_siren', name: '潮騒のセイレーン', hp: 4.0, atk: 1.2, def: 1.0, weak: 'thunder', pattern: [ATK, { k: 'big', m: 2.2, n: '攻撃の歌' }, { k: 'guard', n: '防御の歌' }, ATK] }
+    },
+    {
+      id: 'invertedruins', name: '逆さ遺跡', ruby: '{逆|さか}さ{遺跡|いせき}', ch: 2, points: ['逆さ階段', '星図の間', '砂の回廊', '封印室'], coin: 250, mat: '双面の紋章', item: '古代航路図', story: '天地が逆さの遺跡。星図の示す先に、封印された部屋がある。',
+      enemies: [
+        { id: 'e_starscarab', name: '星図スカラベ', hp: 1.0, atk: 1.0, def: 0.8, pattern: [ATK] },
+        { id: 'e_sandmirror', name: '砂鏡の精', hp: 0.9, atk: 1.1, def: 0.2, weak: 'light', pattern: [ATK] },
+        { id: 'e_sealhound', name: '封印の番犬', hp: 1.1, atk: 1.1, def: 0.6, pattern: [ATK, { k: 'big', m: 1.8, n: 'ほえる' }] }
+      ],
+      boss: { id: 'b_sphinx', name: '双面のスフィンクス', hp: 4.0, atk: 1.2, def: 1.1, pattern: [ATK, { k: 'brace', n: '顔をかえる（守り）' }, { k: 'big', m: 2.2, n: '顔をかえる（攻め）' }, { k: 'guard', n: '石の顔' }] }
+    },
+    {
+      id: 'icevolcano', name: '氷下火山', ruby: '{氷下火山|ひょうかかざん}', ch: 2, points: ['氷の裂け目', '蒸気洞', '赤熱の橋', '火口'], coin: 250, mat: '熔晶石', item: '上級職の衣装依頼', story: '氷の下で火山が目ざめている。熱がもれる火口をめざす。',
+      enemies: [
+        { id: 'e_steamlizard', name: '蒸気トカゲ', hp: 1.0, atk: 1.0, def: 0.5, weak: 'water', pattern: [ATK] },
+        { id: 'e_obsidiancrab', name: '黒曜カニ', hp: 1.1, atk: 1.0, def: 1.6, pattern: [ATK] },
+        { id: 'e_emberbat', name: '熾火コウモリ', hp: 0.9, atk: 1.1, def: 0.2, weak: 'ice', pattern: [ATK] }
+      ],
+      boss: { id: 'b_lavabeast', name: '熔岩の巨獣', hp: 4.0, atk: 1.2, def: 1.2, weak: 'water', pattern: [{ k: 'guard', n: '甲殻' }, ATK, { k: 'charge', n: '赤熱する' }, { k: 'big', m: 2.4, n: '熔岩の一撃' }] }
+    },
+    {
+      id: 'oldfactory', name: '旧式工廠', ruby: '{旧式工廠|きゅうしきこうしょう}', ch: 2, points: ['搬送路', '組立室', '動力炉', '管制室'], coin: 300, mat: '巨兵の歯車', item: '修復船の完成', story: 'ねむっていた工場が動きだす。動力炉をとめて、船をなおす部品をさがす。',
+      enemies: [
+        { id: 'e_rivetsoldier', name: 'リベット兵', hp: 1.1, atk: 1.0, def: 1.0, pattern: [ATK] },
+        { id: 'e_cablesnake', name: 'ケーブルヘビ', hp: 1.0, atk: 1.0, def: 0.4, weak: 'water', pattern: [ATK] },
+        { id: 'e_coresprite', name: '炉心の精', hp: 0.9, atk: 1.1, def: 0.2, weak: 'water', pattern: [ATK, { k: 'big', m: 1.8, n: '熱風' }] }
+      ],
+      boss: { id: 'b_balga', name: '機工巨兵バルガ', hp: 4.0, atk: 1.2, def: 1.3, weak: 'thunder', pattern: [{ k: 'brace', n: '盾をかまえる' }, ATK, { k: 'charge', n: '大砲の準備' }, { k: 'big', m: 2.4, n: '大砲' }] }
+    },
+    {
+      id: 'skybackside', name: '空城裏側', ruby: '{空城裏側|くうじょううらがわ}', ch: 2, points: ['逆さ庭園', '星の書庫', '記憶の回廊', '観測塔'], coin: 300, mat: '記憶の頁', item: '第3章・試練への道', story: '空城のうら側には、わすれられた書庫がある。観測塔から世界のようすが見える。',
+      enemies: [
+        { id: 'e_memorybird', name: '記憶の紙鳥', hp: 0.9, atk: 1.0, def: 0.2, weak: 'fire', pattern: [ATK] },
+        { id: 'e_starplate', name: '星盤の番人', hp: 1.1, atk: 1.0, def: 1.0, pattern: [ATK, { k: 'guard', n: '星盤をまわす' }] },
+        { id: 'e_hollowarmor', name: '虚ろな鎧', hp: 1.1, atk: 1.1, def: 1.4, pattern: [ATK] }
+      ],
+      boss: { id: 'b_librarian', name: '忘却の司書', hp: 4.0, atk: 1.2, def: 1.1, weak: 'fire', pattern: [{ k: 'charge', n: '本をひらく' }, { k: 'big', m: 2.4, n: 'ひらいた術' }, { k: 'guard', n: '本をとじる' }, ATK] }
+    },
+    // ---- 第3章 十二のしるし（6地点×3区間＋ボス4＝22冒険/地域。地点名は補完）----
+    {
+      id: 'worldtree', name: '世界樹の枝先', ruby: '{世界樹|せかいじゅ}の{枝先|えださき}', ch: 3, points: ['根もとの階段', '風の橋', '花冠の広場', '空葉の回廊', '樹冠の道', '支柱の間'], coin: 300, mat: '翠天の羽根', item: '支柱1・伝承装備', story: '樹冠へのぼり、1つめの支柱をおこす。',
+      enemies: [
+        { id: 'e_leafdragon', name: '空葉の竜', hp: 1.1, atk: 1.1, def: 0.8, weak: 'fire', pattern: [ATK, { k: 'big', m: 1.8, n: '葉の嵐' }] },
+        { id: 'e_crownbeast', name: '花冠の獣', hp: 1.0, atk: 1.0, def: 0.5, weak: 'fire', pattern: [ATK] },
+        { id: 'e_crownguard', name: '樹冠の守衛', hp: 1.1, atk: 1.0, def: 1.3, pattern: [ATK, { k: 'guard', n: '枝でまもる' }] }
+      ],
+      boss: { id: 'b_griffon', name: '翠天のグリフォン', hp: 4.0, atk: 1.3, def: 1.1, weak: 'thunder', pattern: [ATK, { k: 'guard', n: '空にまいあがる' }, { k: 'big', m: 2.2, n: '急降下' }, ATK] }
+    },
+    {
+      id: 'moonfall', name: '月映えの大瀑布', ruby: '{月映|つきば}えの{大瀑布|だいばくふ}', ch: 3, points: ['滝つぼの船着き場', '月泡の岸', '水車の裏道', '滝裏の洞', '水門の通路', '大水車の機関室'], coin: 300, mat: '深碧のうろこ', item: '支柱2・月映え家具', story: '大きな水車をなおして、2つめの支柱をつなぐ。',
+      enemies: [
+        { id: 'e_waterdragonfish', name: '滝登りの竜魚', hp: 1.0, atk: 1.1, def: 0.6, weak: 'thunder', pattern: [ATK] },
+        { id: 'e_moonfoam', name: '月泡の精', hp: 0.9, atk: 1.1, def: 0.2, weak: 'fire', pattern: [ATK] },
+        { id: 'e_gategiant', name: '水門の巨兵', hp: 1.2, atk: 1.0, def: 1.5, pattern: [ATK, { k: 'big', m: 1.8, n: '水門ぱんち' }] }
+      ],
+      boss: { id: 'b_leviathan', name: '深碧のリヴァイアサン', hp: 4.0, atk: 1.3, def: 1.2, weak: 'thunder', pattern: [ATK, { k: 'charge', n: '水位が上がる' }, { k: 'big', m: 2.4, n: '大波' }, { k: 'guard', n: '水にもぐる' }] }
+    },
+    {
+      id: 'skytower', name: '天測の塔', ruby: '{天測|てんそく}の{塔|とう}', ch: 3, points: ['星見の階段', '砂時計の間', '天秤の回廊', '観測の屋上', '砂嵐の外壁', '天測の心臓部'], coin: 300, mat: '天秤の金片', item: '支柱3・装備VI', story: '観測そうちをなおし、島の位置をあわせる。',
+      enemies: [
+        { id: 'e_sunscarab', name: '太陽スカラベ', hp: 1.0, atk: 1.1, def: 0.9, weak: 'ice', pattern: [ATK] },
+        { id: 'e_balanceguard', name: '天秤の守衛', hp: 1.1, atk: 1.0, def: 1.2, pattern: [ATK, { k: 'brace', n: 'つりあう' }] },
+        { id: 'e_sandstormbird', name: '砂嵐の鳥', hp: 0.9, atk: 1.2, def: 0.3, weak: 'thunder', pattern: [ATK] }
+      ],
+      boss: { id: 'b_balancelion', name: '天秤の獅子', hp: 4.0, atk: 1.3, def: 1.2, pattern: [ATK, { k: 'guard', n: '防御のしせい' }, { k: 'big', m: 2.4, n: '攻撃のしせい' }, ATK] }
+    },
+    {
+      id: 'aurora', name: '極光の頂', ruby: '{極光|きょっこう}の{頂|いただき}', ch: 3, points: ['氷晶の参道', '聖域の門', '霜翼の崖', '極光の祭壇', '熱源の洞', '頂の火床'], coin: 300, mat: '極光の結晶', item: '支柱4・武器の外見', story: '聖域をこえて、熱の源にもういちど火をともす。',
+      enemies: [
+        { id: 'e_auroraWolf', name: '極光オオカミ', hp: 1.0, atk: 1.1, def: 0.5, weak: 'fire', pattern: [ATK] },
+        { id: 'e_frostwing', name: '霜翼の竜', hp: 1.1, atk: 1.1, def: 0.9, weak: 'fire', pattern: [ATK, { k: 'big', m: 1.8, n: '氷の息' }] },
+        { id: 'e_icecrystalgiant', name: '氷晶の巨兵', hp: 1.2, atk: 1.0, def: 1.5, weak: 'fire', pattern: [ATK] }
+      ],
+      boss: { id: 'b_ourne', name: '極光竜オルネ', hp: 4.0, atk: 1.3, def: 1.2, weak: 'fire', pattern: [ATK, { k: 'charge', n: 'うろこが光る' }, { k: 'big', m: 2.4, n: '極光のブレス' }, { k: 'guard', n: 'うろこで防ぐ' }] }
+    },
+    {
+      id: 'skyfactory', name: '天をつなぐ工場', ruby: '{天|てん}をつなぐ{工場|こうじょう}', ch: 3, points: ['搬入ドック', '浮遊レール', '雷磁の発電所', '組立の大広間', '防衛線', '中央空路の接続点'], coin: 300, mat: '城塞の炉心', item: '支柱5・最終航路', story: '船を守りながら、中央の空路を組み立てる。',
+      enemies: [
+        { id: 'e_flyengineer', name: '飛行工兵', hp: 1.0, atk: 1.1, def: 0.8, pattern: [ATK] },
+        { id: 'e_thundermagnet', name: '雷磁の獣', hp: 1.1, atk: 1.1, def: 0.7, weak: 'water', pattern: [ATK, { k: 'big', m: 1.8, n: '雷磁砲' }] },
+        { id: 'e_crownvanguard', name: '王冠の尖兵', hp: 1.1, atk: 1.1, def: 1.2, pattern: [ATK] }
+      ],
+      boss: { id: 'b_garde', name: '城塞機兵ガルド', hp: 4.0, atk: 1.3, def: 1.4, weak: 'thunder', pattern: [{ k: 'charge', n: '砲撃の予告' }, { k: 'big', m: 2.6, n: '砲撃' }, { k: 'idle', n: '冷却の隙' }, ATK] }
+    },
+    {
+      id: 'crown', name: '王冠の中枢', ruby: '{王冠|おうかん}の{中枢|ちゅうすう}', ch: 3, points: ['避難の港', '光の橋', '王冠の外環', '近衛の回廊', '星喰いの影の間', '中枢の玉座'], coin: 500, mat: '王冠の星核', item: '支柱6・衣装と称号・クリア後', story: '最後の支柱をつなぎ、虚空の王冠の中枢へ。',
+      enemies: [
+        { id: 'e_voidwing', name: '虚空の翼', hp: 1.0, atk: 1.2, def: 0.6, weak: 'light', pattern: [ATK] },
+        { id: 'e_crownguardian', name: '王冠の近衛', hp: 1.2, atk: 1.1, def: 1.4, pattern: [ATK, { k: 'big', m: 1.8, n: '近衛の一閃' }] },
+        { id: 'e_starshadow', name: '星喰いの影', hp: 1.0, atk: 1.2, def: 0.4, weak: 'light', pattern: [ATK] }
+      ],
+      boss: { id: 'b_voidcrown', name: '虚空の王冠', hp: 4.4, atk: 1.4, def: 1.3, weak: 'light', pattern: [{ k: 'guard', n: '防衛装置' }, ATK, { k: 'charge', n: '星の光を集める' }, { k: 'big', m: 2.6, n: '虚空の光' }] }
     }
   ];
   // 区間：道中は 3地点×3区間=9体、ボスは標準3冒険（HP継続）。1章=12冒険×6地域=72
-  const NORMAL_STEPS = 9, BOSS_STEPS = 3, STEPS_PER_REGION = NORMAL_STEPS + BOSS_STEPS;
-  // 敵の基準能力値は「道のり番号 g」の曲線。主人公の育ち方（rpg/tools/sim.js --steps）から作成し、プレイ中は変えない
-  const CURVE = { hp: g => g <= 0 ? 64 : 221 + 5.85 * g, atk: g => 1.3 * (5 + 0.19 * g), def: g => 2 + 0.35 * g };
+  const SEG = 3, bossSteps = r => (r.ch === 1 ? 3 : 4), normalSteps = r => r.points.length * SEG;
+  // 敵の基準能力値は「道のり番号 g」の曲線。第1章（g<72）は主人公の育ち方（rpg/tools/sim.js --steps）から作成。第2・3章は仮（D-21）
+  const G1 = 72, CH23 = { hp: 4.0, atk: 0.20, def: 0.08 };
+  const CURVE = {
+    hp: g => g <= 0 ? 64 : g < G1 ? 221 + 5.85 * g : 221 + 5.85 * G1 + CH23.hp * (g - G1),
+    atk: g => g < G1 ? 1.3 * (5 + 0.19 * g) : 1.3 * (5 + 0.19 * G1) + CH23.atk * (g - G1),
+    def: g => g < G1 ? 2 + 0.35 * g : 2 + 0.35 * G1 + CH23.def * (g - G1)
+  };
   function statsAt(e, g) { return { hp: Math.round(CURVE.hp(g) * e.hp), atk: Math.max(1, Math.round(CURVE.atk(g) * e.atk)), def: Math.round(CURVE.def(g) * (e.def > 0 ? e.def : 0.5)) }; }
   const ENEMIES = {};
   REGIONS.forEach((r, i) => {
@@ -206,12 +321,16 @@
     r.enemies.forEach(e => { ENEMIES[e.id] = Object.assign({}, e, { region: r.id, boss: false, weak: e.weak || null }); });
     ENEMIES[r.boss.id] = Object.assign({}, r.boss, { region: r.id, boss: true, weak: r.boss.weak || null });
   });
-  // 冒険の道のり（第1章）。各区間に、その敵の固定能力値 stats を持たせる
-  const ROUTE = [];
+  // 冒険の道のり。各区間に、その敵の固定能力値 stats を持たせる。REGION_START[i]＝地域iの最初の道のり番号
+  const ROUTE = [], REGION_START = [];
   REGIONS.forEach((r, ri) => {
-    for (let s = 0; s < NORMAL_STEPS; s++) { const e = r.enemies[s % 5], g = ri * STEPS_PER_REGION + s; ROUTE.push({ g, region: ri, step: s, point: r.points[Math.floor(s / 3)], seg: (s % 3) + 1, enemy: e.id, boss: false, stats: statsAt(e, g) }); }
-    for (let s = 0; s < BOSS_STEPS; s++) { const g = ri * STEPS_PER_REGION + NORMAL_STEPS; ROUTE.push({ g: ri * STEPS_PER_REGION + NORMAL_STEPS + s, region: ri, step: NORMAL_STEPS + s, point: r.name + 'のボス', seg: s + 1, enemy: r.boss.id, boss: true, stats: statsAt(r.boss, g) }); }
+    REGION_START.push(ROUTE.length);
+    const nn = normalSteps(r), nb = bossSteps(r), base = ROUTE.length;
+    for (let s = 0; s < nn; s++) { const e = r.enemies[s % r.enemies.length], g = base + s; ROUTE.push({ g, region: ri, step: s, point: r.points[Math.floor(s / SEG)], seg: (s % SEG) + 1, enemy: e.id, boss: false, stats: statsAt(e, g) }); }
+    for (let s = 0; s < nb; s++) { const g = base + nn + s; ROUTE.push({ g, region: ri, step: nn + s, point: r.name + 'のボス', seg: s + 1, enemy: r.boss.id, boss: true, stats: statsAt(r.boss, g) }); }
   });
+  REGION_START.push(ROUTE.length);
+  const STEPS_OF = REGIONS.map((r, i) => REGION_START[i + 1] - REGION_START[i]);
 
   // ---------- 装備 ----------
   const RANK_NAME = ['I', 'II', 'III', 'IV', 'V', 'VI'];
@@ -273,5 +392,5 @@
   const WISH_LIST = ['sword', 'staff', 'dagger', 'bow', 'armor', 'acc'];
   const WISH_NAME = { sword: 'つるぎ', staff: 'つえ', dagger: 'たんけん', bow: 'ゆみ', armor: 'ぼうぐ', acc: 'アクセサリー' };
 
-  return { ELEMENTS, EL_NAME, JOBS, JOB_IDS, FIRST_JOB, SKILLS, SKILLS_OF, PASSIVES, REGIONS, ENEMIES, ROUTE, NORMAL_STEPS, BOSS_STEPS, STEPS_PER_REGION, CURVE, statsAt, ITEMS, ENH_MAX, ENH_STEP, enhBonus, RANK_NAME, WISH_LIST, WISH_NAME, START_WEAPON };
+  return { ELEMENTS, EL_NAME, JOBS, JOB_IDS, FIRST_JOB, SKILLS, SKILLS_OF, PASSIVES, REGIONS, ENEMIES, ROUTE, REGION_START, STEPS_OF, CH23, CURVE, statsAt, ITEMS, ENH_MAX, ENH_STEP, enhBonus, RANK_NAME, WISH_LIST, WISH_NAME, START_WEAPON };
 });

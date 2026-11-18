@@ -49,11 +49,14 @@
   function rngFrom(seed) { let a = hashStr(String(seed)) || 1; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
   // ---------- 装備ランク解放・素材 ----------
-  // I開始 / II 砂海クリア後 / III 第1章完了 （IV〜VI は第2・3章実装後）
+  // I開始 / II 砂海クリア後 / III 第1章完了 / IV 逆さ遺跡クリア後 / V 第2章完了 / VI 天測の塔クリア後
   function maxRank(save) {
-    const c = save.progress.clearedRegions; let r = 1;
+    const c = save.progress.clearedRegions, all = ch => D.REGIONS.filter(x => x.ch === ch).every(x => c.includes(x.id)); let r = 1;
     if (c.includes('sandsea')) r = 2;
-    if (D.REGIONS.filter(x => x.ch === 1).every(x => c.includes(x.id))) r = 3;
+    if (all(1)) r = 3;
+    if (r === 3 && c.includes('invertedruins')) r = 4;
+    if (r === 4 && all(2)) r = 5;
+    if (r === 5 && c.includes('skytower')) r = 6;
     return r;
   }
   const oreId = r => 'ore_' + r, oreName = r => 'ランク' + D.RANK_NAME[r - 1] + 'のこうせき';

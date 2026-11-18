@@ -12,7 +12,7 @@
     "nav": true
    }
   },
-  "chromium:adv_map6": true,
+  "chromium:adv_map18": true,
   "chromium:adv_ok": {
    "ok": true,
    "v": {
@@ -149,7 +149,7 @@
     "nav": true
    }
   },
-  "webkit:adv_map6": true,
+  "webkit:adv_map18": true,
   "webkit:adv_ok": {
    "ok": true,
    "v": {

@@ -1,0 +1,1229 @@
+{
+ "tag": "after3",
+ "widths": {
+  "chromium/320": {
+   "choice": {
+    "card": {
+     "w": 292,
+     "h": 173,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 292,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 292,
+     "h": 172,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 874,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 292,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 292,
+     "h": 122,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 111,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 292,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 292,
+     "h": 172,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "chromium/375": {
+   "choice": {
+    "card": {
+     "w": 347,
+     "h": 130,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 347,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 347,
+     "h": 204,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 907,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 347,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 347,
+     "h": 145,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 111,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 347,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 347,
+     "h": 129,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "chromium/390": {
+   "choice": {
+    "card": {
+     "w": 362,
+     "h": 130,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 362,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 362,
+     "h": 213,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 915,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 362,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 362,
+     "h": 151,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 111,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 362,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 362,
+     "h": 129,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "chromium/430": {
+   "choice": {
+    "card": {
+     "w": 402,
+     "h": 130,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 402,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 402,
+     "h": 236,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 939,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 402,
+     "h": 67,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 402,
+     "h": 168,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 111,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 402,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 402,
+     "h": 129,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "webkit/320": {
+   "choice": {
+    "card": {
+     "w": 292,
+     "h": 193,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 292,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 292,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 292,
+     "h": 172,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 292,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 887,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 292,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 292,
+     "h": 122,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 112,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 292,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 292,
+     "h": 183,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 292,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "webkit/375": {
+   "choice": {
+    "card": {
+     "w": 347,
+     "h": 145,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 347,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 347,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 347,
+     "h": 204,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 347,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 919,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 347,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 347,
+     "h": 145,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 112,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 347,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 347,
+     "h": 135,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 347,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "webkit/390": {
+   "choice": {
+    "card": {
+     "w": 362,
+     "h": 145,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 362,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 362,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 362,
+     "h": 213,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 362,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 928,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 362,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 362,
+     "h": 151,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 112,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 362,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 362,
+     "h": 135,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 362,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  },
+  "webkit/430": {
+   "choice": {
+    "card": {
+     "w": 402,
+     "h": 145,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 402,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "map": {
+    "card": {
+     "w": 402,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 402,
+     "h": 236,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": {
+     "w": 402,
+     "h": 69,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     69,
+     69,
+     69,
+     69
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 951,
+    "vh": 844,
+    "hscroll": false
+   },
+   "input": {
+    "card": {
+     "w": 402,
+     "h": 75,
+     "fs": "23px",
+     "minH": "0px"
+    },
+    "map": {
+     "w": 402,
+     "h": 168,
+     "fs": "16px",
+     "minH": "auto"
+    },
+    "choice1": null,
+    "nChoice": 0,
+    "choiceH": [],
+    "skip": {
+     "w": 112,
+     "h": 44,
+     "fs": "16px",
+     "minH": "44px"
+    },
+    "ans": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "submit": {
+     "w": 402,
+     "h": 64,
+     "fs": "24px",
+     "minH": "64px"
+    },
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false
+   },
+   "long": {
+    "card": {
+     "w": 402,
+     "h": 135,
+     "fs": "25px",
+     "minH": "120px"
+    },
+    "map": null,
+    "choice1": {
+     "w": 402,
+     "h": 68,
+     "fs": "24px",
+     "minH": "68px"
+    },
+    "nChoice": 4,
+    "choiceH": [
+     68,
+     68,
+     68,
+     68
+    ],
+    "skip": {
+     "w": 132,
+     "h": 48,
+     "fs": "17px",
+     "minH": "48px"
+    },
+    "ans": null,
+    "submit": null,
+    "doc": 844,
+    "vh": 844,
+    "hscroll": false,
+    "len": 30
+   }
+  }
+ },
+ "ops": {
+  "chromium": {
+   "units_chip": 7,
+   "sel_saved": "{\"filter\":\"社会\",\"units\":{\"社会\":[\"山梨・静岡・埼玉\"]}}",
+   "correct_auto_advance": true,
+   "wrong_reask_inserted_at_offset": 3,
+   "queue_rows": [
+    {
+     "ok": true,
+     "skip": 0,
+     "keys": "ok,pick,qid,rid,sess,t,test"
+    },
+    {
+     "ok": false,
+     "skip": 0,
+     "keys": "ok,pick,qid,rid,sess,t,test"
+    },
+    {
+     "ok": false,
+     "skip": 1,
+     "keys": "ok,pick,qid,rid,sess,skip,t,test"
+    }
+   ],
+   "stats_keys": 3,
+   "result_kind": "reward",
+   "result_text": "せいかい 8 / 10",
+   "result_buttons": [
+    "おわる",
+    "つぎの10もん"
+   ]
+  },
+  "webkit": {
+   "units_chip": 7,
+   "sel_saved": "{\"filter\":\"社会\",\"units\":{\"社会\":[\"山梨・静岡・埼玉\"]}}",
+   "correct_auto_advance": true,
+   "wrong_reask_inserted_at_offset": 3,
+   "queue_rows": [
+    {
+     "ok": true,
+     "skip": 0,
+     "keys": "ok,pick,qid,rid,sess,t,test"
+    },
+    {
+     "ok": false,
+     "skip": 0,
+     "keys": "ok,pick,qid,rid,sess,t,test"
+    },
+    {
+     "ok": false,
+     "skip": 1,
+     "keys": "ok,pick,qid,rid,sess,skip,t,test"
+    }
+   ],
+   "stats_keys": 3,
+   "result_kind": "reward",
+   "result_text": "せいかい 8 / 10",
+   "result_buttons": [
+    "おわる",
+    "つぎの10もん"
+   ]
+  }
+ },
+ "console": [],
+ "send_blocked_requests": 0
+}

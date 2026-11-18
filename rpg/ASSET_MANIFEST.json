@@ -2,7 +2,7 @@
  "note": "状態: 予定=未制作 / 仮=コード描画の仮絵（完成扱いにしない）/ 正式=制作済み・組み込み済み。画像生成の手段が無く、正式素材は0件。",
  "updated": "2026-11-18",
  "counts": {
-  "仮": 56,
+  "仮": 60,
   "予定": 23
  },
  "assets": [
@@ -728,6 +728,58 @@
    "src": "12x8",
    "display": "72px",
    "anchor": "足元中央",
+   "status": "仮",
+   "transparent": true,
+   "ref": "references/approved-answer-reward.png（見本）",
+   "prompt": null,
+   "inspect": "未検品（仮絵。完成扱いにしない）"
+  },
+  {
+   "id": "hero_look_variants",
+   "use": "外見（顔4・髪6・肌5・髪色6）の仮ドット絵。ホーム・じぶん・装備・転職・外見画面",
+   "path": "code:rpg-sprites.js#heroRows",
+   "src": "14x14",
+   "display": "28〜112px",
+   "anchor": "足元中央",
+   "status": "仮",
+   "transparent": true,
+   "ref": "references/approved-answer-reward.png（見本）",
+   "prompt": null,
+   "inspect": "未検品（仮絵。完成扱いにしない）"
+  },
+  {
+   "id": "town_overview",
+   "use": "風待ちの町の俯瞰図（6施設のタップ領域つき）",
+   "path": "code:rpg-screens.css#.rs-town",
+   "src": "CSS描画",
+   "display": "幅いっぱい×380px",
+   "anchor": "-",
+   "status": "仮",
+   "transparent": true,
+   "ref": "references/approved-answer-reward.png（見本）",
+   "prompt": null,
+   "inspect": "未検品（仮絵。完成扱いにしない）"
+  },
+  {
+   "id": "job_intro_pose",
+   "use": "転職の演出・職業カード・職業詳細（12職の姿。現在は衣装色だけ違う仮絵）",
+   "path": "code:rpg-sprites.js#drawHero",
+   "src": "14x14",
+   "display": "84〜112px",
+   "anchor": "足元中央",
+   "status": "仮",
+   "transparent": true,
+   "ref": "references/approved-answer-reward.png（見本）",
+   "prompt": null,
+   "inspect": "未検品（仮絵。完成扱いにしない）"
+  },
+  {
+   "id": "screen_frames",
+   "use": "画面の金枠・ボタン・ナビ（濃紺＋金。CSSのみ。採用見本のドット枠は未制作）",
+   "path": "code:rpg-screens.css",
+   "src": "CSS",
+   "display": "-",
+   "anchor": "-",
    "status": "仮",
    "transparent": true,
    "ref": "references/approved-answer-reward.png（見本）",
