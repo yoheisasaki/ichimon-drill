@@ -1,0 +1,17 @@
+seconds=195
+rc=0
+[hero_warrior_attack.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_attack/hero_warrior_attack.png) — 1278 × 1230 ピクセル
+
+ $n=0; for($y=0;$y -lt $bmp.Height;$y++){for($x=0;$x -lt $bmp.Width;$x++){ $c=$bmp.GetPixel($x,$y); if($c.R -gt 170 -and $c.B -gt 170 -and $c.G -lt 90){$bmp.SetPixel($x,$y,$magenta);$n++}}}; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$dst`n$($bmp.Width)x$($bmp.Height)`nnormalized=$n"; $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_warrior_attack
+ succeeded in 14521ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_warrior_attack\hero_warrior_attack.png
+1278x1230
+normalized=1268064
+
+codex
+[hero_warrior_attack.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_attack/hero_warrior_attack.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+31,036
+

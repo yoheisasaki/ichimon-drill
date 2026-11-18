@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_attack/hero_shadow_attack.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  916,
+  786
+ ],
+ "out": "rpg/assets/chars/hero_shadow_attack.png",
+ "out_size": [
+  101,
+  87
+ ],
+ "magenta_removed_px": 1265532,
+ "fringe_removed_px": 2045,
+ "magenta_left_px": 0,
+ "opaque_px": 3700,
+ "colors": 2987
+}

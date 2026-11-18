@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_hit/hero_sage_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  382,
+  343
+ ],
+ "out": "rpg/assets/chars/hero_sage_hit.png",
+ "out_size": [
+  98,
+  88
+ ],
+ "magenta_removed_px": 1499714,
+ "fringe_removed_px": 1419,
+ "magenta_left_px": 1,
+ "opaque_px": 4722,
+ "colors": 4536
+}

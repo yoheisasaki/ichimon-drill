@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_paladin_hit/hero_paladin_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  324,
+  373
+ ],
+ "out": "rpg/assets/chars/hero_paladin_hit.png",
+ "out_size": [
+  78,
+  90
+ ],
+ "magenta_removed_px": 1492609,
+ "fringe_removed_px": 902,
+ "magenta_left_px": 1,
+ "opaque_px": 4617,
+ "colors": 4391
+}

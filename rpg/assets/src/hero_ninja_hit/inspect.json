@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_hit/hero_ninja_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  364,
+  368
+ ],
+ "out": "rpg/assets/chars/hero_ninja_hit.png",
+ "out_size": [
+  88,
+  89
+ ],
+ "magenta_removed_px": 1512013,
+ "fringe_removed_px": 5134,
+ "magenta_left_px": 224,
+ "opaque_px": 3247,
+ "colors": 3102
+}

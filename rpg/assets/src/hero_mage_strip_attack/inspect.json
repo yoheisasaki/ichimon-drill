@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_mage_strip_attack/hero_mage_strip_attack.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  592,
+  457
+ ],
+ "out": "rpg/assets/chars/hero_mage_strip_attack.png",
+ "out_size": [
+  34,
+  26
+ ],
+ "magenta_removed_px": 1459549,
+ "fringe_removed_px": 5857,
+ "magenta_left_px": 25,
+ "opaque_px": 354,
+ "colors": 338
+}

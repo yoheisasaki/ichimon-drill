@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_win/hero_shadow_win.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  282,
+  465
+ ],
+ "out": "rpg/assets/chars/hero_shadow_win.png",
+ "out_size": [
+  69,
+  113
+ ],
+ "magenta_removed_px": 1511838,
+ "fringe_removed_px": 1112,
+ "magenta_left_px": 1,
+ "opaque_px": 3570,
+ "colors": 3306
+}

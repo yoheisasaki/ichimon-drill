@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_strip_walk/hero_warrior_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  448,
+  437
+ ],
+ "out": "rpg/assets/chars/hero_warrior_strip_walk.png",
+ "out_size": [
+  28,
+  27
+ ],
+ "magenta_removed_px": 1474252,
+ "fringe_removed_px": 1171,
+ "magenta_left_px": 0,
+ "opaque_px": 373,
+ "colors": 358
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_strip_attack/hero_warrior_strip_attack.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  511,
+  424
+ ],
+ "out": "rpg/assets/chars/hero_warrior_strip_attack.png",
+ "out_size": [
+  31,
+  26
+ ],
+ "magenta_removed_px": 1463464,
+ "fringe_removed_px": 1432,
+ "magenta_left_px": 0,
+ "opaque_px": 403,
+ "colors": 393
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_thief_strip_walk/hero_thief_strip_walk.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  311,
+  485
+ ],
+ "out": "rpg/assets/chars/hero_thief_strip_walk.png",
+ "out_size": [
+  17,
+  27
+ ],
+ "magenta_removed_px": 1477927,
+ "fringe_removed_px": 1117,
+ "magenta_left_px": 0,
+ "opaque_px": 280,
+ "colors": 276
+}

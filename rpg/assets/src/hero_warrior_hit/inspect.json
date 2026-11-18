@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_hit/hero_warrior_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  367,
+  388
+ ],
+ "out": "rpg/assets/chars/hero_warrior_hit.png",
+ "out_size": [
+  87,
+  92
+ ],
+ "magenta_removed_px": 1497327,
+ "fringe_removed_px": 1302,
+ "magenta_left_px": 0,
+ "opaque_px": 4163,
+ "colors": 3903
+}

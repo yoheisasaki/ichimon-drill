@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_paladin_attack/hero_paladin_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  423,
+  366
+ ],
+ "out": "rpg/assets/chars/hero_paladin_attack.png",
+ "out_size": [
+  102,
+  88
+ ],
+ "magenta_removed_px": 1479495,
+ "fringe_removed_px": 901,
+ "magenta_left_px": 2,
+ "opaque_px": 5359,
+ "colors": 4783
+}

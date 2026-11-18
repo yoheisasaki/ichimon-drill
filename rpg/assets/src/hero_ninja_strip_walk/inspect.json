@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_strip_walk/hero_ninja_strip_walk.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  347,
+  500
+ ],
+ "out": "rpg/assets/chars/hero_ninja_strip_walk.png",
+ "out_size": [
+  20,
+  29
+ ],
+ "magenta_removed_px": 1481826,
+ "fringe_removed_px": 3784,
+ "magenta_left_px": 26,
+ "opaque_px": 287,
+ "colors": 264
+}

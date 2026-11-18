@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_attack/hero_ranger_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  427,
+  384
+ ],
+ "out": "rpg/assets/chars/hero_ranger_attack.png",
+ "out_size": [
+  101,
+  91
+ ],
+ "magenta_removed_px": 1484161,
+ "fringe_removed_px": 1290,
+ "magenta_left_px": 0,
+ "opaque_px": 4893,
+ "colors": 4649
+}

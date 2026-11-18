@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_win/hero_warrior_win.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  314,
+  415
+ ],
+ "out": "rpg/assets/chars/hero_warrior_win.png",
+ "out_size": [
+  74,
+  98
+ ],
+ "magenta_removed_px": 1499207,
+ "fringe_removed_px": 1066,
+ "magenta_left_px": 0,
+ "opaque_px": 4054,
+ "colors": 3848
+}

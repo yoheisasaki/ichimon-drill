@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_thief_hit/hero_thief_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  332,
+  387
+ ],
+ "out": "rpg/assets/chars/hero_thief_hit.png",
+ "out_size": [
+  79,
+  92
+ ],
+ "magenta_removed_px": 1501803,
+ "fringe_removed_px": 854,
+ "magenta_left_px": 0,
+ "opaque_px": 3948,
+ "colors": 3754
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_skyknight_win/hero_skyknight_win.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  343,
+  469
+ ],
+ "out": "rpg/assets/chars/hero_skyknight_win.png",
+ "out_size": [
+  86,
+  117
+ ],
+ "magenta_removed_px": 1495578,
+ "fringe_removed_px": 1130,
+ "magenta_left_px": 1,
+ "opaque_px": 4759,
+ "colors": 4518
+}

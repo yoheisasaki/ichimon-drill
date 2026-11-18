@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_ready/hero_ranger_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  405,
+  374
+ ],
+ "out": "rpg/assets/chars/hero_ranger_ready.png",
+ "out_size": [
+  96,
+  89
+ ],
+ "magenta_removed_px": 1485926,
+ "fringe_removed_px": 1265,
+ "magenta_left_px": 1,
+ "opaque_px": 4838,
+ "colors": 4608
+}

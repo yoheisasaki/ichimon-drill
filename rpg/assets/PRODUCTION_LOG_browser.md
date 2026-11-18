@@ -50,3 +50,10 @@
 - 探索地図: 本編18＋秘境6＋孤島1=25枚を正方形で生成 → 240x240（世界地図と同寸）bg/bg_map_<id>.png。台帳 bg_map_<id> 「正式」（planned_explore_maps 行は削除）。tools/map_take.py / map_manifest.py。地点・宝箱・進み具合は描いていない（別に重ねる）。画面への接続は未（探索地図の画面がまだ無い）。確認: 一覧は scratchpad の maps.png（shots には未保存）。
 - 使上限の表示: 出ず。生成は1枚 約20〜90秒。ChatGPT の入力欄は新規チャット（空）で作業、終了時にタブを閉じた。
 - 未着手（追加依頼）: 主人公10職の攻撃ポーズ、帯用ポーズ、衣装・顔髪差分。文脈が長くなったため停止。
+
+## 主人公ポーズ 2026-11-18（ブラウザ ChatGPT）
+- 方法: 職ごとに新規チャット→待機絵(src の元絵を800pxに縮小)を添付→「同じ人物でポーズ違いのシート」を1枚（マゼンタ背景）。報酬用=3列x2行（待機/攻撃/構え/被弾/勝利）、帯用=2列x2行（待機/攻撃/被弾/歩行）。1枚 約30〜60秒。ページ内JSで生成画像を Downloads に rpgpose_<職>.png / rpgpose_s_<職>.png で保存 → `python tools/pose_sheet_take.py <職>`（帯は STRIP=1。待機セルの高さで chars/ の待機と同縮尺にして切り出し。KEEP=attack で既存の攻撃を残す）→ `python tools/pose_manifest.py`（台帳を読み直し自分のIDだけ「正式」）。
+- 済み: 報酬用 attack/ready/hit/win を12職（warrior・shadow の attack は Codex 製を残した）＝46枚。帯用 attack/hit/walk を12職＝36枚。計82枚、台帳「正式」。
+- 確認: `python tools/poses_shots.py` → shots/assets_poses_reward.png（待機/攻撃/構え/被弾/勝利）、assets_poses_strip.png（待機/攻撃/被弾/歩行）。実画面の drawHero で全職すべて別の絵が出る。回帰 95 pass / 0 fail、コンソールエラー0。
+- 気づき: ranger 報酬の被弾は弓が消えている（要目視）。ninja は紫の服でマゼンタ除去が少し荒い（magenta_left 数百px）。帯の歩行は画面側が walk を使っていない（rpg-ui.js は attack/hit のみ）ので素材のみ。
+- 残り: マスター衣装（12職x5ポーズ）、上級職の追加衣装（6x5）、顔4・髪6の差分は未着手（文脈長のため停止。同じ方法で、衣装違いを文章で指定し待機の絵を参照に付ければ作れる）。使用上限の表示は出なかった。タブは閉じた。

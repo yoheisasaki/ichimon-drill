@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_priest_strip_walk/hero_priest_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  358,
+  509
+ ],
+ "out": "rpg/assets/chars/hero_priest_strip_walk.png",
+ "out_size": [
+  19,
+  27
+ ],
+ "magenta_removed_px": 1449918,
+ "fringe_removed_px": 1219,
+ "magenta_left_px": 0,
+ "opaque_px": 341,
+ "colors": 311
+}

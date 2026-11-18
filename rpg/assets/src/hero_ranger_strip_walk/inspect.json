@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_strip_walk/hero_ranger_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  343,
+  421
+ ],
+ "out": "rpg/assets/chars/hero_ranger_strip_walk.png",
+ "out_size": [
+  23,
+  28
+ ],
+ "magenta_removed_px": 1477859,
+ "fringe_removed_px": 1178,
+ "magenta_left_px": 1,
+ "opaque_px": 419,
+ "colors": 416
+}

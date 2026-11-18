@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_skyknight_attack/hero_skyknight_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  461,
+  354
+ ],
+ "out": "rpg/assets/chars/hero_skyknight_attack.png",
+ "out_size": [
+  115,
+  88
+ ],
+ "magenta_removed_px": 1500447,
+ "fringe_removed_px": 1250,
+ "magenta_left_px": 0,
+ "opaque_px": 4408,
+ "colors": 4144
+}

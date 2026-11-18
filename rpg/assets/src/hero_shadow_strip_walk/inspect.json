@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_strip_walk/hero_shadow_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  306,
+  425
+ ],
+ "out": "rpg/assets/chars/hero_shadow_strip_walk.png",
+ "out_size": [
+  20,
+  28
+ ],
+ "magenta_removed_px": 1500052,
+ "fringe_removed_px": 1442,
+ "magenta_left_px": 0,
+ "opaque_px": 301,
+ "colors": 298
+}
