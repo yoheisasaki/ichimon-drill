@@ -2,7 +2,7 @@
 // 送信先（学習ボードの Apps Script Webアプリ）
 const SEND_URL = 'https://script.google.com/macros/s/AKfycbwR6PPGrKn5HL1yJ8-xc_sjV-kaEDY2dv0jD_e7XyRSjQUd2E_2_Pq-rGE6tWxHRj3QFg/exec';
 const PARAMS = new URLSearchParams(location.search);
-const MAMA = PARAMS.get('mama') === '1'; // ママモード：送信せず、保存キーも別名
+const MAMA = PARAMS.get('mama') === '1' || /mama\.html$/.test(location.pathname); // ママモード：送信せず、保存キーも別名
 const NOSEND = PARAMS.get('nosend') === '1' || MAMA;
 const SEND_OVERRIDE = PARAMS.get('send'); // テスト用：送信先を差し替え
 const ROUND = 10, MASTER = 3, REASK_GAP = 3, REASK_MAX = 5, BATCH = 200;

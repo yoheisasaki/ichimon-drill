@@ -16,5 +16,5 @@
 
 ## ママ用（保護者）
 - 問題の一覧：https://yoheisasaki.github.io/ichimon-drill/list.html （全問を回・教科・まとまり別に表示。教科の絞り込み・文字検索・「こたえをかくす」＝タップで1問ずつ表示、口頭で出題できる）。端末の記録は読まず、送信もしない。
-- 試しに解く：https://yoheisasaki.github.io/ichimon-drill/?mama=1 （送信しない。保存キーは末尾 `.mama` で、息子の成績・選び・送信待ちとは混ざらない。ホーム上部にママ用の帯と一覧へのリンクが出る）。
+- 試しに解く：https://yoheisasaki.github.io/ichimon-drill/mama.html （送信しない。保存キーは末尾 `.mama` で、息子の成績・選び・送信待ちとは混ざらない。ホーム上部にママ用の帯と一覧へのリンクが出る）。
 - 共通部分（まとまり・ふりがな）は `common.js`。

@@ -43,7 +43,7 @@ function render() {
   });
   const keep = term;
   root.innerHTML = `<div class="lhead">
-    <div class="lt">問題の一覧（ママ用）<a href="index.html?mama=1">もどる</a></div>
+    <div class="lt">問題の一覧（ママ用）<a href="mama.html">もどる</a></div>
     <div class="lf">${['全部'].concat(subs).map(s => `<button class="fb ${subj === s ? 'sel' : ''}" data-s="${s}">${s === '全部' ? 'ぜんぶ' : s}</button>`).join('')}</div>
     <div class="lq"><input id="qs" type="search" placeholder="問題・こたえ・単元でさがす" value="${esc(keep).replace(/"/g, '&quot;')}"><button class="fb ${hide ? 'sel' : ''}" id="hd">こたえをかくす</button></div>
     <div class="cnt" id="cnt">${shown.length}問 ／ 全${all.length}問</div></div>${body || '<div class="empty">ありません</div>'}`;
