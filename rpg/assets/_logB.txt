@@ -1,0 +1,4 @@
+hero_priest rc 0 sec 165 exists True
+
+hero_priest_strip rc 0 sec 71 exists True
+

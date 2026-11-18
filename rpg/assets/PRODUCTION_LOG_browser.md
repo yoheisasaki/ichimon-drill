@@ -3,10 +3,9 @@
 実測: 1シートの生成 約60〜90秒。
 
 ## 済み
-- 通常 剣 w_sword_1〜6（パイロット。shots/assets_icons_pilot.png）
+- 通常装備60すべて（w_sword/w_staff/w_dagger/w_bow/a_heavy/a_light/a_robe/x_charm/x_shieldorn/x_ring ×1〜6）。台帳は icon_<id> で正式。shots/assets_icons_pilot.png, assets_icons_normal.png
 
 ## 残り
-- 通常: staff, dagger, bow, heavy, light, robe, charm, shieldorn, ring（各6）
 - レア60、固有18、素材・家具・記念品、職業しるし12
 
 ## 失敗

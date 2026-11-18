@@ -1,0 +1,1 @@
+同会話で6個の短剣シート（銅/鉄/銀/影鋼/星鉄/夜明け）。基準 src/icons_w_sword/prompt.txt

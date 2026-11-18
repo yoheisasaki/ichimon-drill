@@ -1,0 +1,4 @@
+hero_mage rc 0 sec 145 exists True
+
+hero_mage_strip rc 0 sec 162 exists True
+
