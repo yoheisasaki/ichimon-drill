@@ -53,13 +53,13 @@
   "D04 formula matches": {
    "ok": true,
    "v": [
-    "学習・討伐295＋宝箱0＝合計295",
-    295
+    "学習・討伐295＋宝箱40＝合計335",
+    335
    ]
   },
   "D04 opened line shown & saved": {
    "ok": true,
-   "v": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）"
+   "v": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！"
   },
   "home no chestbox when none sealed": true,
   "D06 home shows sealed chest entry": true,
@@ -193,9 +193,9 @@
   "cap": "はっぱスライムを倒した！",
   "drops": 1,
   "chestCanvases": 2,
-  "total": "学習・討伐295＋宝箱0＝合計295",
+  "total": "学習・討伐295＋宝箱40＝合計335",
   "base": "+295",
-  "line": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）",
+  "line": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！",
   "lineHidden": false,
   "open": false,
   "btnSame": true,

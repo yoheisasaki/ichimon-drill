@@ -187,8 +187,8 @@
   },
   "390/quiz": {
    "hscroll": false,
-   "skipBottom": 598,
-   "lastChoice": 536,
+   "skipBottom": 608,
+   "lastChoice": 546,
    "stripTop": 768,
    "vh": 844
   },
@@ -224,8 +224,8 @@
   },
   "430/quiz": {
    "hscroll": false,
-   "skipBottom": 608,
-   "lastChoice": 546,
+   "skipBottom": 598,
+   "lastChoice": 536,
    "stripTop": 768,
    "vh": 844
   }

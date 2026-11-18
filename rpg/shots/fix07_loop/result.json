@@ -22,7 +22,7 @@
     "wrong": 2,
     "skip": 2,
     "review": 4,
-    "input": 0
+    "input": 1
    }
   },
   "E3 sealed chest exists, coins=base only": {
@@ -227,7 +227,7 @@
   "E6 save sane at end (coins>=0, job kept, chests all opened)": {
    "ok": true,
    "v": [
-    675,
+    635,
     2
    ]
   },
@@ -257,7 +257,7 @@
   "wrong": 2,
   "skip": 2,
   "review": 4,
-  "input": 0
+  "input": 1
  },
  "result_before_open": {
   "outcome": "victory",

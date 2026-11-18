@@ -1,0 +1,22 @@
+{
+ "checked": 1930,
+ "below_4.5": 0,
+ "bad": {
+  "home_range_open": [],
+  "adv": [],
+  "town": [],
+  "me": [],
+  "equip": [],
+  "shop": [],
+  "forge": [],
+  "jobs": [],
+  "jobdetail": [],
+  "look": [],
+  "settings": [],
+  "codex": [],
+  "ach": [],
+  "loadout": [],
+  "place": [],
+  "reward": []
+ }
+}
