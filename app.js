@@ -107,24 +107,36 @@ function home() {
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>にがて ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id));
-  app.innerHTML = `
+  const rangeOpen = !!window.__rangeOpen;
+  const rpgOn = !!(window.RPG && RPG.ok);   // ぼうけんが動いているとき：主人公と開始ボタンを先に、教科カードは「学習範囲の変更」の中へ
+  const subjectsHtml = `<div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
+    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}`;
+  const startHtml = `<button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
+    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>`;
+  app.innerHTML = rpgOn ? `
+    <div class="sub rs-subtop">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
+    ${RPG.homeTop()}
+    ${startHtml}
+    ${RPG.homeBonus()}
+    <details class="rs-range"${rangeOpen ? ' open' : ''}><summary>学習範囲の変更　<small>${esc(filter === '全部' ? 'ぜんぶ' : filter)}</small></summary>${subjectsHtml}</details>
+    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>
+    ${RPG.navHtml('home')}` : `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
-    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
-    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
-    <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
+    ${subjectsHtml}
+    ${startHtml}
     ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>
     ${window.RPG ? RPG.navHtml('home') : ''}`;
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
-  app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
+  app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
-    const g = b.dataset.g, cur = units[filter] || [];
+    window.__rangeOpen = true; const g = b.dataset.g, cur = units[filter] || [];
     units[filter] = !g ? [] : cur.includes(g) ? cur.filter(x => x !== g) : cur.concat(g);
     saveSel(); home();
   });
+  const rd = app.querySelector('.rs-range'); if (rd) rd.ontoggle = () => { window.__rangeOpen = rd.open; };
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
 }

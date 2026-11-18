@@ -48,7 +48,7 @@
    }
   },
   "chromium:chest_closed_first": true,
-  "chromium:chest_result_already_saved": true,
+  "chromium:chest_sealed_saved": true,
   "chromium:chest_opened_shows_item": true,
   "chromium:chest_open_no_reroll": true,
   "chromium:postgame_shows_cleared": {
@@ -73,7 +73,6 @@
    "ok": true,
    "v": 8
   },
-  "chromium:outfit_saved": true,
   "chromium:title_saved": true,
   "chromium:memorial_canvas": true,
   "chromium:memorial_ok": {
@@ -167,7 +166,7 @@
    }
   },
   "webkit:chest_closed_first": true,
-  "webkit:chest_result_already_saved": true,
+  "webkit:chest_sealed_saved": true,
   "webkit:chest_opened_shows_item": true,
   "webkit:chest_open_no_reroll": true,
   "webkit:postgame_shows_cleared": {
@@ -192,7 +191,6 @@
    "ok": true,
    "v": 8
   },
-  "webkit:outfit_saved": true,
   "webkit:title_saved": true,
   "webkit:memorial_canvas": true,
   "webkit:memorial_ok": {

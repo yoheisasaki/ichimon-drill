@@ -29,7 +29,7 @@ with sync_playwright() as p:
     for engine in ('chromium', 'webkit'):
         b = getattr(p, engine).launch(headless=True)
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        pg = ctx.new_page()
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
         pg.on('console', lambda m, e=engine: R['console'].append(f'{e}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e, en=engine: R['console'].append(f'{en}:pageerror:{e}'))
         pg.route('**/script.google.com/**', blk)
@@ -94,7 +94,7 @@ with sync_playwright() as p:
         pg.click('.rs-tab[data-tab=town]'); pg.click('[data-place=guild]'); pg.click('[data-go=jobs]'); pg.wait_for_selector('.rs-jobgrid')
         pg.click('[data-tier=adv]'); pg.click('.rs-jobcard >> nth=0'); pg.wait_for_selector('#jobDo')
         chk(E + 'adv_locked', pg.get_attribute('#jobDo', 'disabled') is not None)
-        chk(E + 'adv_req_progress', '戦士 Lv10' in pg.inner_text('.rs-app'))
+        chk(E + 'adv_req_progress', '戦士 Lv10' in pg.evaluate("() => { const c = document.querySelector('.rs-app').cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; }"))
         pg.click('#jobGoal'); pg.wait_for_timeout(100); chk(E + 'goal_saved', (pg.evaluate(SAVE).get('goal') or {}).get('job') == 'magicknight')
         if engine == 'chromium': shot(pg, 'p2_jobdetail')
         pg.click('#rsBack'); pg.click('[data-tier=base]'); pg.click('.rs-jobcard >> nth=1'); pg.wait_for_selector('#jobDo')
@@ -112,7 +112,7 @@ with sync_playwright() as p:
         # --- 外見 ---
         pg.click('.rs-tab[data-tab=me]'); pg.click('[data-go=look]'); pg.wait_for_selector('#rsName')
         pg.fill('#rsName', 'ゆうた'); pg.click('[data-lk=hair][data-v="4"]'); pg.click('[data-lk=face][data-v="2"]'); pg.click('[data-lk=skin][data-v="3"]'); pg.click('#lookOk'); pg.wait_for_timeout(100)
-        sv = pg.evaluate(SAVE); chk(E + 'look_saved', sv['name'] == 'ゆうた' and sv['look'] == {'face': 2, 'hair': 4, 'skin': 3, 'hairColor': 0}, [sv['name'], sv['look']])
+        sv = pg.evaluate(SAVE); chk(E + 'look_saved', sv['name'] == 'ゆうた' and sv['look'] == {'face': 2, 'hair': 4, 'skin': 3, 'hairColor': 0, 'outfit': None}, [sv['name'], sv['look']])
         m = metrics(pg); chk(E + 'look_ok', not m['hscroll'] and not m['small'], m)
         if engine == 'chromium': shot(pg, 'p2_look')
         # --- 図鑑・実績・データ・じぶん ---
@@ -125,7 +125,7 @@ with sync_playwright() as p:
         pg.click('#rsBack'); pg.click('[data-go=ach]'); pg.wait_for_selector('.rs-item')
         chk(E + 'ach_list', len(pg.query_selector_all('.rs-item')) >= 20)
         if engine == 'chromium': shot(pg, 'p2_ach')
-        pg.click('#rsBack'); pg.wait_for_selector('.rs-list') ; pg.click('.rs-tab[data-tab=me]'); pg.click('[data-go=data]'); pg.wait_for_selector('#rpgExport')
+        pg.click('#rsBack'); pg.wait_for_selector('.rs-list') ; pg.click('.rs-tab[data-tab=me]'); pg.click('[data-go=settings]'); pg.wait_for_selector('#rpgExport')
         chk(E + 'data_screen', pg.query_selector('#rpgImport') is not None)
         # --- 再読込しても保持 ---
         pg.reload(); pg.wait_for_selector('.subj')
@@ -153,7 +153,7 @@ with sync_playwright() as p:
     # 幅320/375/430 の はみ出し
     b = p.chromium.launch(headless=True)
     for w in (320, 375, 430):
-        ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True); pg = ctx.new_page()
+        ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True); ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
         pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m, w=w: R['console'].append(f'w{w}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.goto(URL); pg.wait_for_selector('.subj')

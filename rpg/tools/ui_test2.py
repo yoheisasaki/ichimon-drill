@@ -26,7 +26,7 @@ def answer(pg, ok):
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     def newpage(ctx):
-        pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m: R['console'].append(f'{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}')); return pg
     # ---- A. 保存不能（setItem が例外）でも学習は動き、案内が出る

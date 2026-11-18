@@ -1,5 +1,5 @@
 # 最終提出（FINAL_REPORT）— 一問一答 RPG 実装（rpg ブランチ）
-更新：2026-11-18。**「完成」ではない。** 正式素材が0件（全て仮絵）、skip受信側・実機Safari・体感は未確認。push・公開・デプロイはしていない。
+更新：2026-11-18（修正指示書06の2章・3章を反映）。**「完成」ではない。** 主人公の部品・第1章ボス3体の画像が未着、skip受信側・実機Safari・体感は未確認。状態は IMPLEMENTATION_STATUS.md の「修正指示書06」節を正とする。push・公開・デプロイはしていない。
 
 ## 1. 実装済み範囲
 第1段：下端の冒険帯・自動戦闘12職・成長/日次/抽選/保存・結果画面。第2段：ホーム・街・装備・店・鍛冶・転職・技設定・外見・図鑑・実績・本編3章18地域300区間。
@@ -39,45 +39,14 @@ p3_adv_quests／p3_adv_postgame（ぼうけん・クエスト選択）、p3_stor
 ## 6. 仕様補完・変更の一覧
 IMPLEMENTATION_DECISIONS.md の D-01〜D-38。第3段は D-28〜D-38（固有装備の効果量とランク、再鍛造の費用、クエスト構成と強さ、おはなし、報酬、宝箱演出、音、エンディング、試験用セーブ、調整根拠）。
 
-## 7. 素材の充足状況
-正式 0／仮 206／予定 23（ASSET_MANIFEST.json）。画像を生成する手段が無く、全て未制作または仮絵（コード描画）。
-**足りない画像（正式素材が必要なもの。仮の画像ID）**
-- hero（13）：warrior、mage、priest、thief、magicknight、paladin、shadow、sage、ninja、ranger、skyknight、starseer、look_variants
-- enemy（159）：159体ぶん（全て形4種の色替え）。IDは ASSET_MANIFEST.json の enemy_*
-- bg（27）：meadow、waterland、sandsea、mountain、gearcity、skycastle、rootwood、sunkencity、invertedruins、icevolcano、oldfactory、skybackside、worldtree、moonfall、skytower、aurora、skyfactory、crown、trial_wing、trial_star、garden、pearl、nightcity、dragonvalley、lab0、orchard、dawnisle
-- sound（1）：original
-- memorial（1）：picture
-- chest（2）：open、closed
-- town（1）：overview
-- job（1）：intro_pose
-- screen（1）：frames
-**未制作（予定）**
-- planned_hero_base_poses（60）：主人公 基本職業衣装 12職×5ポーズ（待機/構え/攻撃/被弾/勝利）
-- planned_hero_master_poses（60）：主人公 マスター衣装 12×5
-- planned_hero_adv_extra（30）：上級職追加衣装 6×5
-- planned_face_hair（20）：顔4・髪6（正面寄り/戦闘向き、肌・髪色マスク）
-- planned_strip_sprites（48）：回答帯用小型キャラ 12職×(待機/歩行/攻撃/被弾)
-- planned_job_emblem_intro（24）：職業しるし/紹介絵 各12
-- planned_hero_overlay（8）：主人公特殊状態（翼/影/魔法剣/星等）透明重ね
-- planned_enemy_normal（66）：通常敵 66体（帯用縮小版つき。現在は仮絵36体分）
-- planned_enemy_boss（18）：本編ボス 18体＋形態差分（仮絵は第1章6体）
-- planned_enemy_extra（9）：試練2/秘境6/隠し1
-- planned_bg_battle_reward（27）：戦闘/報酬背景 本編18＋秘境6＋孤島1＋試練2＝27（仮は第1章6）
-- planned_town（8）：街 基本1＋進行差分パーツ
-- planned_rooms（5）：施設室内 ギルド/店/鍛冶屋/神殿/自室
-- planned_world_map（1）：世界地図（地点・線は別レイヤー）
-- planned_explore_maps（25）：探索地図 本編18＋秘境6＋孤島1
-- planned_icons_normal（60）：通常装備アイコン 60
-- planned_icons_rare_unique（78）：レア/固有アイコン（レア60＋固有18）
-- planned_weapon_inhand（24）：手持ち武器（装備可能武器の全種）
-- planned_materials_furniture（40）：素材/家具/記念品
-- planned_chests（6）：宝箱 通常/朝星/ボス×閉/開=6（仮は2）
-- planned_skill_fx（20）：技効果（斬撃/炎/氷/雷/水/光/回復/盾/煙/星＋専用大技）
-- planned_npc（4）：主要NPC ミラ/トト/ルカ/黒鎧の騎士（立ち絵＋表情）
-- planned_memorial（4）：記念絵 章1/章2/本編/孤島
+## 7. 素材の充足状況（2026-11-18 更新。台帳 ASSET_MANIFEST.json）
+正式 766／仮 9／予定 22。台帳に「画面に接続したか」（connected／connectedWhere）を、制作状態（status）とは別の欄として足した（rpg/tools/annotate_manifest.js）。
+- 接続済み：主人公の1枚絵（待機・構え・攻撃・被弾・勝利・マスター・帯）、装備アイコン、敵、背景、探索地図、宝箱（朝星）、NPC、街、技エフェクト。未接続（正式だが画面に出していない）：素材・職業・称号のアイコン、通常/ボス宝箱（未使用資産として保管）
+- 足りない画像：主人公の部品（身体・頭24・手。rpg/assets/parts/）、第1章ボス3体（砂時計の巨人・黒鎧の騎士・天蓋の機神）、手持ち武器の絵、衣装（上級職の追加衣装など）、レア55品の正式な名前（仮名）
+- 仮（コード/CSS 描画の台帳行）：音、町の俯瞰図（CSS）、画面の枠（CSS）ほか。子ども画面に「仮」の文字は出していない
 
 ## 8. 既知の制約・未確認
-- 正式素材なし。ホーム・街・装備・転職の「本格的な絵」は未制作（CSS・ドット仮絵）。採用見本どおりの見た目ではない
+- 主人公は正式な1枚絵（職業ごと）で、顔・髪・肌・髪色・武器の変更は部品が届くまで絵に出ない（仕組みは実装・試験済み）。ホーム・装備・店・転職の画面構成は採用見本に合わせて作り直した（ドット枠の飾りは未制作）
 - 学習ボード側の skip 受信保存＝未確認。実機Safari＝未実施（WebKit headless 390pxのみ）。画像ロード計測＝未計測（画像0枚）
 - 手で遊んだ体感は未確認。第2章末が設計書より約7日遅い（保守的な買い方のため。強化・レア・固有を使う遊び方では短くなる見込みだが未計測）
 - セッション途中の画面復元（再読込で今の問題へ戻る）は未実装。冒険の状態・回答済みの基本問題・未完了の復習は保存される

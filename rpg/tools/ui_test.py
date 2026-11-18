@@ -21,7 +21,7 @@ with sync_playwright() as p:
     for engine in ('chromium', 'webkit'):
         b = getattr(p, engine).launch(headless=True)
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        pg = ctx.new_page()
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
         pg.on('console', lambda m, e=engine: R['console'].append(f'{e}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e, en=engine: R['console'].append(f'{en}:pageerror:{e}'))
         pg.route('**/script.google.com/**', blk)
@@ -74,7 +74,7 @@ with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     def measure(w, rpg_on):
         ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m: R['console'].append(f'cmp:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.goto(URL + ('' if rpg_on else '&rpg=0')); pg.wait_for_selector('.subj')
         out = {}

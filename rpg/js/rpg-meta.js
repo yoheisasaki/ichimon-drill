@@ -153,9 +153,11 @@
     D.JOBS[job].weapons.forEach(cat => {   // 未所有の武器系統の支給（ランクI・通常品、無料）
       if (!Object.keys(save.inv.items).some(i => D.ITEMS[i].slot === 'weapon' && D.ITEMS[i].cat === cat)) { const id = `w_${cat}_1`; save.inv.items[id] = 1; save.codex.items[id] = 1; gifts.push(id); }
     });
-    const w = C.bestOwned(save, 'weapon', job); if (w) save.equip.weapon = w;
+    // 武器：いま持っているものが新しい職業で使えるなら、そのまま（はじまりの武器だけは、より強い適合品があれば替える）。使えないときは、持っている適合武器（無ければ上の無料支給品）に替える
+    const prevW = save.equip.weapon || null; let swapped = null;
+    if (!prevW || prevW === 'w_start' || canEquip(save, prevW, job)) { const w = C.bestOwned(save, 'weapon', job); if (w && w !== prevW) { save.equip.weapon = w; swapped = { from: prevW, to: w }; } }
     if (save.goal && save.goal.job === job) save.goal = null;
-    return { ok: true, gifts };
+    return { ok: true, gifts, swapped };
   }
   function setGoal(save, job) { save.goal = job ? { job } : null; }
   function setLoadout(save, skills, tactic) {
@@ -184,7 +186,8 @@
     const nm = String(name == null ? '' : name).replace(/[\u0000-\u001f<>&"']/g, '').trim().slice(0, NAME_MAX);
     const ok = Number.isInteger(look.face) && look.face >= 0 && look.face < FACE_N && Number.isInteger(look.hair) && look.hair >= 0 && look.hair < HAIR_N && Number.isInteger(look.skin) && look.skin >= 0 && look.skin < SKIN.length && Number.isInteger(look.hairColor) && look.hairColor >= 0 && look.hairColor < HAIR_COLOR.length;
     if (!ok) return { ok: false, err: '外見が不正' };
-    save.name = nm; save.look = { face: look.face, hair: look.hair, skin: look.skin, hairColor: look.hairColor }; return { ok: true };
+    const o = look.outfit === 'master' ? (masterOwned(save, save.job) ? 'master' : null) : (look.outfit === undefined ? save.look.outfit : (look.outfit && (save.rewards.costumes || []).includes(look.outfit) ? look.outfit : null));
+    save.name = nm; save.look = { face: look.face, hair: look.hair, skin: look.skin, hairColor: look.hairColor, outfit: o || null }; return { ok: true };
   }
   const lookOf = save => ({ skin: SKIN[save.look.skin], hair: HAIR_COLOR[save.look.hairColor], face: save.look.face, hairStyle: save.look.hair });
   function setWish(save, w) { if (!D.WISH_LIST.includes(w)) return false; save.wish = w; return true; }
@@ -284,9 +287,15 @@
     if (q.kind === 'island') { R.lamp = true; rep.lamp = true; }
     return rep;
   }
+  // マスター衣装：その職業を Lv30 にすると獲得（設計書 02）。絵は職業ごと（hero_<職>_master）。
+  const masterOwned = (save, job) => C.jobLevel(job, save.jobXp[job] || 0).lv >= 30;
+  // 画面に出す衣装（'master' か null）。選んでいて、いまの職業のマスター衣装を獲得済みのときだけ
+  const costumeOf = (save, job) => { ensure(save); return save.look.outfit === 'master' && masterOwned(save, job || save.job) ? 'master' : null; };
+  // 武器の絵に使うアイテムID。はじまりの武器・アイコンの無い物は、職業の最初の武器系統のランクIで描く
+  const artWeapon = (job, id) => { const it = id && D.ITEMS[id]; if (it && it.slot === 'weapon' && it.cat !== 'any') return id; return 'w_' + D.JOBS[job].weapons[0] + '_1'; };
   const costumeColor = save => { ensure(save); const o = save.look.outfit; if (!o) return null; for (const q of Object.values(W.QUESTS)) if (q.costume && q.costume.id === o && save.rewards.costumes.includes(o)) return q.costume.color; return null; };
   const allCostumes = () => Object.values(W.QUESTS).filter(q => q.costume).map(q => ({ id: q.costume.id, name: q.costume.name, color: q.costume.color, from: q.name }));
-  function setOutfit(save, id) { ensure(save); if (id && !save.rewards.costumes.includes(id)) return false; save.look.outfit = id || null; return true; }
+  function setOutfit(save, id) { ensure(save); if (id === 'master') { if (!masterOwned(save, save.job)) return false; save.look.outfit = 'master'; return true; } if (id && !save.rewards.costumes.includes(id)) return false; save.look.outfit = id || null; return true; }
   function setTitle(save, t) { ensure(save); if (t && !save.rewards.titles.includes(t)) return false; save.title = t || null; return true; }
 
   // 固有装備（18）。製作：ボス素材3個。再鍛造：解放済みの最高ランクまで（外見・効果・強化値を保持）
@@ -325,5 +334,5 @@
     return W.QUEST_ORDER.map(id => { const q = W.QUESTS[id], qs = save.quests[id] || {}; return { id, kind: q.kind, name: q.name, short: q.short || null, locked: questLocked(save, id), cleared: !!qs.cleared && q.kind !== 'rematch', count: qs.count || 0, step: qs.step || 0, total: q.segs.length, boss: q.boss || null, current: save.progress.quest === id }; });
   }
 
-  return { mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
+  return { masterOwned, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
 });

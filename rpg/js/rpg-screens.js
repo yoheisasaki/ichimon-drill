@@ -1,6 +1,6 @@
 'use strict';
 // 画面（第2段）：ホームの上部・下部ナビ・ぼうけん（地図）・まち・じぶん・装備・店・鍛冶・転職・技設定・外見・図鑑・実績
-// 絵は全て仮（コード描画・CSS）。ロジックは rpg-meta.js。ここはDOMだけ。
+// 主人公は heroCv→drawHeroLayered、敵は enemyCv。ロジックは rpg-meta.js。ここはDOMだけ。
 (function (root) {
   const RPG = root.RPG; if (!RPG) return;
   const D = root.RPGData, C = root.RPGCore, B = root.RPGBattle, M = root.RPGMeta, SP = root.RPGSprites, A = root.RPGAdv, W = root.RPGWorld, ST = root.RPGStory;
@@ -9,22 +9,63 @@
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const save = () => RPG.save;
-  const UI = { screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
-  const TABS = [['home', 'ホーム'], ['adv', 'ぼうけん'], ['town', 'まち'], ['me', 'じぶん']];
+  const UI = { shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
+  const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['me', '{自分|じぶん}']];
   const ROOT_OF = { adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const PARENT = { place: 'town', equip: 'me', shop: 'place', forge: 'place', jobs: 'place', jobdetail: 'jobs', loadout: 'adv', look: 'me', codex: 'me', ach: 'place', data: 'me' };
   const TACTICS = [['auto', 'おまかせ', 'ようすを見て 自動でえらぶ'], ['attack', 'せめる', 'こうげきを おもに。回復は HPがひくい時だけ'], ['guard', 'まもる', '予告された大技にそなえ、回復も早め']];
 
   // ---------- 小さな部品 ----------
   function look() { return M.lookOf(save()); }
-  function hero(canvas, job, k, o) {   // 主人公（仮絵）。canvas に 14x(16) ドットを k 倍で描く
-    if (!canvas) return; const W = 20, H = 18; canvas.width = W; canvas.height = H; canvas.style.width = (W * k) + 'px'; canvas.style.height = (H * k) + 'px';
-    const g = canvas.getContext('2d'); g.clearRect(0, 0, W, H); o = o || {};
-    if (o.bg) SP.drawBackground(g, W, H, o.bg);
-    SP.drawHero(g, job, 3, H - 1, { look: o.look === false ? null : (o.look || look()), tint: o.tint, outfit: o.look === false ? null : M.costumeColor(save()) });
+  const rb = s => (typeof root.ruby === 'function' ? root.ruby(s) : esc(String(s).replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1')));   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
+  const jobRb = j => rb(D.JOBS[j].ruby || D.JOBS[j].name), skRb = id => rb(D.SKILLS[id].ruby || D.SKILLS[id].name);
+  const PARAMS = new URLSearchParams(root.location ? root.location.search : '');
+  // 主人公の絵は全て heroCv（canvas＋data-hero）→ paintHeroes → SP.drawHeroLayered。画像の読込が終わると SP.onUpdate で描き直す
+  // 舞台（背景）：用途ごとの背景画像・大きさ（canvas の1px＝CSSの1px。主人公は整数倍）
+  const STAGE = {
+    home: { bg: 'bg_town', h: 232, k: 2, pose: 'idle', at: 0.5 }, self: { bg: 'bg_room_room', w: 128, h: 120, k: 1, pose: 'idle', at: 0.5 },
+    equip: { bg: 'bg_room_shop', w: 168, h: 208, k: 2, pose: 'idle', at: 0.5 }, job: { bg: 'bg_room_temple', h: 224, k: 2, pose: 'idle', at: 0.5 },
+    jobcard: { bg: 'bg_room_temple', w: 120, h: 112, k: 1, pose: 'idle', at: 0.5 }, look: { bg: 'bg_room_room', h: 208, k: 2, pose: 'idle', at: 0.5 },
+    ending: { bg: 'bg_crown', h: 232, k: 2, pose: 'win', at: 0.5 }, fx: { bg: 'bg_room_temple', w: 240, h: 232, k: 2, pose: 'idle', at: 0.5 }, mini: { w: 44, h: 36, k: 1, pose: 'idle', at: 0.5, plain: true, strip: true }
+  };
+  function heroOpts(use, o) {
+    const s = save(), job = (o && o.job) || s.job, a = Object.assign({ use, job }, o || {});
+    if (a.weaponId === undefined) a.weaponId = job === s.job ? M.artWeapon(job, s.equip.weapon) : M.artWeapon(job, C.bestOwned(s, 'weapon', job));
+    else a.weaponId = M.artWeapon(job, a.weaponId);
+    if (a.costume === undefined) a.costume = M.costumeOf(s, job);
+    return a;
   }
-  function enemyCv(canvas, id, boss, k) { const W = 18, H = 16; canvas.width = W; canvas.height = H; canvas.style.width = W * k + 'px'; canvas.style.height = H * k + 'px'; const g = canvas.getContext('2d'); SP.drawEnemy(g, id, boss, 2, H - 1, {}); }
-  function jobSprites() { app().querySelectorAll('canvas[data-job]').forEach(c => hero(c, c.dataset.job, +c.dataset.k || 3, { look: c.dataset.plain ? false : undefined })); }
+  const heroCv = (use, o) => `<canvas class="rs-hcv rs-hcv-${use}" data-hero="${esc(JSON.stringify(heroOpts(use, o)))}" aria-hidden="true"></canvas>`;
+  function paintHero(c) {
+    const a = JSON.parse(c.dataset.hero), st = STAGE[a.use] || STAGE.self;
+    const W = st.w || Math.max(200, Math.round(c.parentNode.clientWidth || 300)), H = st.h; if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
+    c.style.width = st.w ? W + 'px' : '100%'; c.style.height = H + 'px';
+    const g = c.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H); g.imageSmoothingEnabled = false;
+    const bg = st.bg && SP.IMGS[st.bg];
+    if (bg) { const sc = Math.max(W / bg.width, H / bg.height), dw = bg.width * sc, dh = bg.height * sc; g.drawImage(bg, (W - dw) / 2, (H - dh) * (a.use === 'home' ? 0.62 : 1), dw, dh); }
+    else if (st.bg) { g.fillStyle = '#16244d'; g.fillRect(0, 0, W, H); }
+    if (a.use !== 'mini') { g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(W * st.at, H - 8, 30 * st.k, 5 * st.k, 0, 0, 7); g.fill(); }
+    const look0 = a.look || look();
+    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - 8, scale: st.k, outline: st.strip ? '#0d1630' : null });
+    c.dataset.drawn = r;
+  }
+  function paintHeroes(rootEl) { (rootEl || doc).querySelectorAll('canvas[data-hero]').forEach(c => { try { paintHero(c); } catch (e) { if (root.console) console.error('paintHero', e); } }); }
+  function enemyCv(canvas, id, boss, box) {   // 敵：正式画像を枠(box)に収めて描く。無ければ暫定絵（開発用検査に出る）
+    const bw = box || 96, bh = Math.round(bw * 0.84); canvas.width = bw; canvas.height = bh; canvas.style.width = bw + 'px'; canvas.style.height = bh + 'px';
+    const g = canvas.getContext('2d'), im = SP.IMGS['enemy_' + id], sc = im ? Math.min(1, (bw - 4) / im.width, (bh - 2) / im.height) : 1;
+    g.clearRect(0, 0, bw, bh); SP.drawEnemy(g, id, boss, Math.round(bw / 2) - 7, bh - 1, { img: 'full', scale: sc });
+  }
+  const paintEnemies = rootEl => (rootEl || app()).querySelectorAll('canvas[data-en]').forEach(c => enemyCv(c, c.dataset.en, c.dataset.boss === '1', +c.dataset.box || 96));
+  SP.onUpdate(() => { if (!RPG.ok) return; const A_ = app(); paintHeroes(doc); if (A_) paintEnemies(A_); if (UI.screen === 'memorial' && AFTER.memorial && A_ && A_.querySelector('canvas[data-m],#rsMemo')) AFTER.memorial(); devPanel(); });
+  function devPanel() {   // ?devcheck=1：1枚絵で描いている主人公・正式画像の無い敵を一覧に出す
+    if (!RPG.devcheck) return; root.__rpgDev = SP.devReport(); if (PARAMS.get('devpanel') !== '1') return; let d = doc.getElementById('rsDev');
+    if (!d) { d = doc.createElement('div'); d.id = 'rsDev'; d.style.cssText = 'position:fixed;left:4px;top:4px;z-index:99;max-width:70vw;max-height:40vh;overflow:auto;background:#000c;color:#9ff;font:11px/1.4 monospace;padding:4px 6px;border-radius:6px;pointer-events:none'; doc.body.appendChild(d); }
+    const r = SP.devReport(); root.__rpgDev = r;
+    d.textContent = `devcheck parts=${r.parts} 部品:${r.layered.length} 1枚絵:${r.whole.length} 無し:${r.missing.length} 敵絵なし:${r.enemyMissing.length}\n` + r.whole.map(e => '1枚絵 ' + e.key + ' ' + e.reason).concat(r.missing.map(e => '無し ' + e.key)).concat(r.enemyMissing.map(e => '敵 ' + e)).join('\n');
+  }
+  root.RPG.devReport = () => SP.devReport();
+  const outfitNow = () => M.costumeOf(save());
+  function jobSprites() { paintHeroes(app()); }
   const bar = (v, max) => `<div class="rs-bar"><i style="width:${max ? Math.min(100, Math.round(v / max * 100)) : 100}%"></i></div>`;
   const coinHtml = () => `<span class="rs-coin">● ${save().coins}</span>`;
   const itemLine = id => { const it = D.ITEMS[id]; return it ? it.name : '（なし）'; };
@@ -32,41 +73,63 @@
     const st = M.statOf(save(), id), it = D.ITEMS[id]; if (!it) return '';
     return st.atk != null ? `こうげき ${st.atk}` : st.def != null ? `ぼうぎょ ${st.def}` : '';
   }
-  const iconOf = id => { const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); return a && a.path ? `<img class="rs-ic" src="${a.path}" width="32" height="32" alt="" aria-hidden="true">` : ''; };
+  const iconOf = (id, px) => { const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); px = px || 32; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="${px}" height="${px}" style="width:${px}px;height:${px}px" alt="" aria-hidden="true">` : ''; };
+  // 新しく作る文章の漢字は辞書（漢字→よみ）でルビにする。長い語を先に照合
+  const RUBY = [['冒険者', 'ぼうけんしゃ'], ['目標', 'もくひょう'], ['冒険', 'ぼうけん'], ['装備', 'そうび'], ['転職', 'てんしょく'], ['職業', 'しょくぎょう'], ['経験値', 'けいけんち'], ['宝箱', 'たからばこ'], ['朝星', 'あさぼし'], ['武器', 'ぶき'], ['防具', 'ぼうぐ'], ['攻撃', 'こうげき'], ['防御', 'ぼうぎょ'], ['街', 'まち'], ['自分', 'じぶん'], ['学習', 'がくしゅう'], ['範囲', 'はんい'], ['変更', 'へんこう'], ['今日', 'きょう'], ['次', 'つぎ'], ['技', 'わざ'], ['見た目', 'みため'], ['強さ', 'つよさ'], ['試着', 'しちゃく'], ['取り消し', 'とりけし'], ['条件', 'じょうけん'], ['特徴', 'とくちょう'], ['属性', 'ぞくせい'], ['回復', 'かいふく'], ['連続', 'れんぞく'], ['敵', 'てき'], ['魔法', 'まほう'], ['弱点', 'じゃくてん'], ['剣', 'けん'], ['弓', 'ゆみ'], ['守', 'まも'], ['覚', 'おぼ'], ['詳', 'くわ'], ['効果', 'こうか'], ['能力', 'のうりょく'], ['持', 'も'], ['店', 'みせ'], ['使', 'つか'], ['別', 'べつ'], ['現在', 'げんざい'], ['動', 'うご'], ['選', 'えら'], ['未解放', 'みかいほう'], ['解放', 'かいほう'], ['必要', 'ひつよう'], ['初回', 'しょかい'], ['支給', 'しきゅう'], ['無料', 'むりょう'], ['適合', 'てきごう'], ['替', 'か'], ['合', 'あ'], ['決定', 'けってい'], ['保存', 'ほぞん'], ['外見', 'がいけん'], ['髪型', 'かみがた'], ['髪', 'かみ'], ['顔', 'かお'], ['肌', 'はだ'], ['色', 'いろ'], ['衣装', 'いしょう'], ['通常', 'つうじょう'], ['購入', 'こうにゅう'], ['金', 'かね'], ['全部', 'ぜんぶ'], ['全て', 'すべて'], ['種類', 'しゅるい'], ['強化', 'きょうか'], ['必殺', 'ひっさつ'], ['炎', 'ほのお'], ['氷', 'こおり'], ['雷', 'かみなり'], ['光', 'ひかり'], ['水', 'みず'], ['闇', 'やみ'], ['風', 'かぜ'], ['土', 'つち'], ['聖', 'せい'], ['戦', 'たたか'], ['倒', 'たお'], ['中', 'ちゅう'], ['途中', 'とちゅう'], ['学', 'まな']];
+  const RUBY_SORTED = RUBY.slice().sort((a, b) => b[0].length - a[0].length);
+  function kr(t) {
+    t = String(t); let out = '', i = 0;
+    while (i < t.length) {
+      const hit = RUBY_SORTED.find(([k]) => t.startsWith(k, i));
+      if (hit) { out += '<ruby>' + esc(hit[0]) + '<rt>' + esc(hit[1]) + '</rt></ruby>'; i += hit[0].length; } else { out += esc(t[i]); i++; }
+    }
+    return out;
+  }
+  // 技の短い説明（最初の画面用。詳しい倍率は折りたたみの中）
+  function skillBlurb(sk) {
+    if (!sk) return '';
+    const e = D.EL_NAME && sk.el ? D.EL_NAME[sk.el] : null;
+    if (sk.heal) return 'HPを回復する';
+    if (sk.guard) return '次の攻撃を軽くする';
+    if (sk.atkDown) return '敵の攻撃を弱める';
+    if (sk.hits) return '連続で攻撃する';
+    if (sk.stack) return 'ためた力で攻撃する';
+    return e ? e + 'の力で攻撃する' : '強く攻撃する';
+  }
   const rankTag = it => it.rank ? `<i class="rs-rank">ランク${D.RANK_NAME[it.rank - 1]}</i>` : '';
-  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + (it.provisional ? '<i class="rs-prov">仮名</i>' : '');
+  const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + '';
   const tierName = t => ({ base: 'きほん職', adv: '上級職', top: '最上級職' })[t];
   const noticeBox = () => RPG.noticeHtml();
   function commit() { const ok = RPG.persist(); if (!ok) UI.msg = RPG.err === 'stale' ? 'ほかの画面で すすんでいます。よみこみなおしてね。' : 'ほぞんできませんでした（「ゲームのデータ」でかきだしてね）。'; return ok; }
 
   // ---------- 下部ナビ ----------
   RPG.navHtml = function (active) {
-    return `<div class="rs-navspace"></div><nav class="rs-nav" aria-label="メニュー">${TABS.map(([id, nm]) => `<button class="rs-tab${id === active ? ' on' : ''}" data-tab="${id}"${id === active ? ' aria-current="page"' : ''}>${nm}</button>`).join('')}</nav>`;
+    return `<div class="rs-navspace"></div><nav class="rs-nav" aria-label="メニュー">${TABS.map(([id, nm]) => `<button class="rs-tab${id === active ? ' on' : ''}" data-tab="${id}"${id === active ? ' aria-current="page"' : ''}>${rb(nm)}</button>`).join('')}</nav>`;
   };
   function bindNav() {
     app().querySelectorAll('.rs-tab').forEach(b => b.onclick = () => { const id = b.dataset.tab; if (id === 'home') { root.home(); } else go(id); });
   }
 
-  // ---------- ホームの上部（既存の学習ホームの上に出す） ----------
+  // ---------- ホーム（学習ホームの上：主人公のいる情景・職業と次の技。開始ボタンは app.js が直後に置く） ----------
   RPG.homeTop = function () {
     if (!RPG.ok) return RPG.noticeHtml();
-    const s = save(), job = s.job, jd = D.JOBS[job], jl = C.jobLevel(job, s.jobXp[job]), hl = C.heroLevel(s.advXp);
-    const key = C.todayKey(s, NOW()), used = s.daily.used[key] || 0, nx = C.nextSkill(job, s.jobXp[job]);
-    const chip = (n, label) => `<div class="rs-bonus${used >= n ? ' used' : ''}"><b>${label}</b><small>${used >= n ? 'つかった' : 'まだ つかえる'}</small></div>`;
+    const s = save(), job = s.job, jl = C.jobLevel(job, s.jobXp[job]), hl = C.heroLevel(s.advXp), nx = C.nextSkill(job, s.jobXp[job]);
     const a = s.active, resume = a && a.basic.n > 0 && a.basic.n < C.ADV_UNIT;
-    const g = s.goal && D.JOBS[s.goal.job] ? s.goal.job : null;
-    let goalTxt = ''; if (g) { const pr = M.jobProgress(s, g).filter(r => !r.pending); const left = pr.filter(r => !r.done); goalTxt = `もくひょう：${esc(D.JOBS[g].name)}${left.length ? '（' + left.map(r => esc(r.text)).join('、') + ' まで）' : '（もう なれる！）'}`; }
-    return `${noticeBox()}<section class="rs-homecard" aria-label="ぼうけん者のようす">
-      <div class="rs-hc-top"><canvas class="rs-herocv" id="rsHomeHero" aria-hidden="true"></canvas>
-        <div class="rs-hc-info"><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-job">${esc(jd.name)} Lv${jl.lv}</div><div class="rs-hc-sub">ぼうけん者 Lv${hl.lv} ／ ${coinHtml()}</div></div></div>
-      <div class="rs-hc-b"><span>きょうの ぼうけんボーナス</span><div class="rs-bonuses">${chip(1, 'けいけんち ×3')}${chip(2, 'けいけんち ×2')}</div></div>
-      ${resume ? `<button class="rs-resume" id="rsResume">つづきから（${a.basic.n} / ${C.ADV_UNIT}）</button>` : ''}
-      <div class="rs-hc-line">${nx ? `つぎの わざ：<b>${esc(nx.skill.name)}</b>（あと ${Math.max(0, nx.remain)}）` : 'この職業の わざは ぜんぶ おぼえた'}</div>
-      ${goalTxt ? `<div class="rs-hc-line">${goalTxt}</div>` : ''}${RPG.homeChestHtml ? RPG.homeChestHtml() : ''}</section>`;
+    return `${noticeBox()}<section class="rs-home" aria-label="冒険者のようす">
+      <div class="rs-stage">${heroCv('home')}<div class="rs-stage-name"><b>${esc(s.name || 'ぼうけん者')}</b><span>${jobRb(job)} Lv${jl.lv}</span></div></div>
+      <div class="rs-hc-meta"><span>${kr('冒険者')} Lv${hl.lv}</span>${coinHtml()}${resume ? `<span class="rs-resume-note">${kr('冒険')}の途中 ${a.basic.n} / ${C.ADV_UNIT}</span>` : ''}</div>
+      <div class="rs-nextskill">${nx ? `<span>${kr('次の技')}</span><b>${skRb(nx.skill.id)}</b><small>${kr(skillBlurb(nx.skill))}</small><i>あと ${Math.max(0, nx.remain)}</i>` : `<span>${kr('この職業の技は、ぜんぶ覚えた')}</span>`}</div></section>`;
+  };
+  // 日次ボーナス・目標・受け取った宝箱（開始ボタンの下）
+  RPG.homeBonus = function () {
+    if (!RPG.ok) return '';
+    const s = save(), key = C.todayKey(s, NOW()), used = s.daily.used[key] || 0, g = s.goal && D.JOBS[s.goal.job] ? s.goal.job : null;
+    const chip = (n, label) => `<div class="rs-bonus${used >= n ? ' used' : ''}"><b>${label}</b><small>${used >= n ? '使った' : 'まだ使える'}</small></div>`;
+    let goalTxt = ''; if (g) { const left = M.jobProgress(s, g).filter(r => !r.pending && !r.done); goalTxt = `<div class="rs-hc-line">${kr('目標')}：${jobRb(g)}${left.length ? '' : '（もうなれる！）'}</div>`.replace('目標', '目標'); }
+    return `<section class="rs-homecard" aria-label="今日のボーナス"><div class="rs-hc-b"><span>${rb('{今日|きょう}の{冒険|ぼうけん}ボーナス')}</span><div class="rs-bonuses">${chip(1, rb('{経験値|けいけんち} ×3'))}${chip(2, rb('{経験値|けいけんち} ×2'))}</div></div>${goalTxt}${RPG.homeChestHtml ? RPG.homeChestHtml() : ''}</section>`;
   };
   RPG.bindHomeTop = function () {
-    const c = doc.getElementById('rsHomeHero'); if (c) hero(c, save().job, 4);
-    const r = doc.getElementById('rsResume'); if (r) r.onclick = () => { const go = doc.getElementById('go'); if (go) go.click(); };
+    paintHeroes(app());
     if (RPG.bindHomeChests) RPG.bindHomeChests();
     bindNav();
   };
@@ -78,7 +141,7 @@
   }
   function go(name, params) {
     UI.screen = name; UI.params = params || {}; UI.msg = '';
-    if (name === 'equip') { UI.eq = Object.assign({}, save().equip); UI.slot = 'weapon'; }
+    if (name === 'equip') { UI.eq = Object.assign({}, save().equip); UI.slot = 'weapon'; const ti = params && params.tryItem && D.ITEMS[params.tryItem]; if (ti) { UI.slot = ti.slot; UI.eq[ti.slot] = ti.id; } }
     if (name === 'loadout') { UI.sel = M.currentSkills(save()).slice(); UI.tactic = save().loadout.tactic || 'auto'; }
     if (name === 'look') { UI.look = Object.assign({}, save().look); UI.name = save().name || ''; }
     if (name === 'jobs') UI.tier = (params && params.tier) || UI.tier;
@@ -90,7 +153,7 @@
     const f = VIEWS[UI.screen] || VIEWS.me; A.innerHTML = f(UI.params);
     const back = doc.getElementById('rsBack');
     if (back) back.onclick = () => { if (UI.params && UI.params.from === 'result') return root.home(); if (UI.params && UI.params.back) return go(UI.params.back); const p = PARENT[UI.screen]; if (p === 'place') go('place', { id: (UI.params && UI.params.place) || 'guild' }); else go(p || 'me'); };
-    bindNav(); jobSprites();
+    bindNav(); jobSprites(); paintEnemies(A);
     const after = AFTER[UI.screen]; if (after) after(UI.params);
     A.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go, b.dataset.p ? JSON.parse(b.dataset.p) : {}));
   }
@@ -113,7 +176,7 @@
     const a = s.active, nOver = !q && s.progress.step >= D.ROUTE.length;
     return frame('ぼうけん', `
       <div class="rs-panel"><div class="rs-h2">いまの ぼうけん</div>
-        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
+        <div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" data-en="${r.enemy}" data-boss="${ed.boss ? 1 : 0}" data-box="96" aria-hidden="true"></canvas><div><b>${esc(ed.name)}</b>${ed.boss ? '<i class="rs-rare">ボス</i>' : ''}<small>${esc(q ? (q.kind === 'rematch' ? q.name : q.name + '・' + r.point) : D.REGIONS[r.region].name + '・' + r.point)}${nOver ? '（ぜんぶ クリア！ さいごの ボスと さいせん）' : ''}</small>${ed.weak ? `<small>よわてん：${esc(D.EL_NAME[ed.weak])}</small>` : ''}${hpKeep < 100 ? `<small>のこりHP ${hpKeep}%（つづきの たたかい）</small>` : ''}</div></div>
         ${a && a.basic.n > 0 ? `<div class="rs-note">ぼうけん ${a.basic.n} / ${C.ADV_UNIT}もん（つづきから）</div>` : ''}
         <button class="rs-big" id="rsStart">がくしゅうを えらんで スタート</button>${nowKey ? `<button class="rs-btn" data-go="regionmap" data-p='{"id":"${nowKey}"}'>いまの ちずを ひらく</button>` : ''}</div>
       <div class="rs-panel"><div class="rs-h2">わざと さくせん</div><p class="rs-p">${sk.map(esc).join('・')}／さくせん：${esc(tac)}</p><button class="rs-btn" data-go="loadout">わざ・さくせんを かえる</button></div>
@@ -121,7 +184,6 @@
       <div class="rs-panel">${imgOf('bg_worldmap') ? `<div class="rs-h2">せかいちず（浮島世界ルミナリア）</div><p class="rs-p">ちいきの「ちず」を おすと、その ちいきの たんけんちずが ひらきます。</p><img class="rs-wmap" alt="浮島世界ルミナリアの ちず" src="${imgOf('bg_worldmap').src}">` : ''}${chapters}</div>`, { back: false });
   };
   AFTER.adv = function () {
-    const c = doc.getElementById('rsEnemy'); if (c) { const s = save(), r = A.currentRoute(s); enemyCv(c, r.enemy, D.ENEMIES[r.enemy].boss, 4); }
     doc.getElementById('rsStart').onclick = () => root.home();
     app().querySelectorAll('[data-wish]').forEach(b => b.onclick = () => { M.setWish(save(), b.dataset.wish); commit(); rerender(); });
   };
@@ -147,7 +209,7 @@
     const spots = [['guild', 'ギルド', 5, 36], ['shop', 'そうびや', 37, 45], ['forge', 'かじや', 67, 34], ['temple', 'しんでん', 8, 8], ['room', 'じしつ', 66, 4], ['ship', 'くうせん', 38, 0]];
     const bg = imgOf('bg_town'), s = save(), cl = s.progress.clearedRegions || [], main = mainCleared(s);
     const parts = bg ? TOWN_PARTS.filter(([id, need]) => imgOf(id) && (!need || (need === 'main' ? main : cl.includes(need)))).map(([id, , x, y]) => { const im = imgOf(id); return `<img class="rs-tpart" alt="" src="${im.src}" style="left:${x}%;top:${y}%;width:${(im.width / 240 * 100).toFixed(1)}%">`; }).join('') : '';
-    return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ${bg ? '' : '（仮の絵です）'}</p>
+    return frame('風待ちの町', `<p class="rs-p c">行きたい ばしょを タップ</p>
       <div class="rs-town${bg ? ' img' : ''}" role="group" aria-label="まちの地図"${bg ? ` style="background-image:url(${bg.src})"` : ''}>${parts}${spots.map(([id, nm, x, y]) => `<button class="rs-spot s-${id}" style="left:${x}%;top:${y}%" data-place="${id}"><span class="rs-bld"></span><b>${nm}</b></button>`).join('')}${bg ? '' : '<div class="rs-sea"></div>'}</div>`, { back: false });
   };
   AFTER.town = function () {
@@ -168,71 +230,89 @@
     const jobs = D.JOB_IDS.map(j => { const lv = C.jobLevel(j, s.jobXp[j]); return `<div class="rs-jl${j === s.job ? ' me' : ''}"><span>${esc(D.JOBS[j].name)}</span><b>Lv${lv.lv}</b></div>`; }).join('');
     const cs = M.codexSummary(s);
     return frame('じぶん', `
-      <div class="rs-panel rs-me"><canvas class="rs-herocv" id="rsMeHero" aria-hidden="true"></canvas><div><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-job">${esc(jd.name)} Lv${jl[s.job]}</div><div class="rs-hc-sub">ぼうけん者 Lv${hl.lv}</div>${bar(hl.into, hl.need)}<div class="rs-hc-sub">${coinHtml()}</div></div></div>
+      <div class="rs-panel rs-me">${heroCv('self')}<div><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-job">${esc(jd.name)} Lv${jl[s.job]}</div><div class="rs-hc-sub">ぼうけん者 Lv${hl.lv}</div>${bar(hl.into, hl.need)}<div class="rs-hc-sub">${coinHtml()}</div></div></div>
       <div class="rs-panel"><div class="rs-h2">つよさ</div><div class="rs-stats"><div>HP <b>${st.maxHp}</b></div><div>こうげき <b>${st.atk}</b></div><div>ぼうぎょ <b>${st.def}</b></div></div></div>
       <div class="rs-panel"><div class="rs-h2">いまの そうび</div>
         ${['weapon', 'armor', 'acc'].map(sl => `<div class="rs-eqrow"><small>${M.SLOT_NAME[sl]}</small><b>${esc(itemLine(s.equip[sl]))}${s.equip[sl] && M.enhLv(s, s.equip[sl]) ? ' +' + M.enhLv(s, s.equip[sl]) : ''}</b></div>`).join('')}
         <button class="rs-btn" data-go="equip" data-p='{"back":"me"}'>そうびを みる・かえる</button></div>
       <div class="rs-panel"><div class="rs-h2">職業レベル</div><div class="rs-jls">${jobs}</div><button class="rs-btn" data-go="jobs" data-p='{"back":"me"}'>てんしょく</button></div>
-      <div class="rs-panel rs-links"><button class="rs-btn" data-go="look">なまえ・みため</button><button class="rs-btn" data-go="codex">ずかん（てき ${cs.enemies.seen}/${cs.enemies.total}・そうび ${cs.items.got}/${cs.items.total}）</button><button class="rs-btn" data-go="ach">じっせき</button><button class="rs-btn" data-go="data">ゲームのデータ</button></div>`, { back: false });
+      <div class="rs-panel rs-links"><button class="rs-btn" data-go="look">なまえ・みため</button><button class="rs-btn" data-go="codex">ずかん（てき ${cs.enemies.seen}/${cs.enemies.total}・そうび ${cs.items.got}/${cs.items.total}）</button><button class="rs-btn" data-go="ach">じっせき</button><button class="rs-btn" data-go="settings">せってい（おと・バックアップ）</button></div>`, { back: false });
   };
-  AFTER.me = function () { hero(doc.getElementById('rsMeHero'), save().job, 5); };
+  AFTER.me = function () {};
 
-  // ---------- 装備 ----------
+  // ---------- 装備（上：大きな主人公・武器・変更前後。試着→「これを装備する」で保存） ----------
+  const eqDiff = (a, b) => b === a ? '<i class="rs-same">±0</i>' : b > a ? `<i class="rs-up">+${b - a}</i>` : `<i class="rs-down">${b - a}</i>`;
+  function eqRow(s, it) {
+    const err = M.canEquip(s, it.id), on = UI.eq[UI.slot] === it.id, lv = M.enhLv(s, it.id), now = s.equip[UI.slot] === it.id;
+    const label = now ? `<i class="rs-now2">${kr('装備')}中</i>` : on ? `<i class="rs-try">${kr('試着')}中</i>` : '';
+    return `<button class="rs-item rs-eqitem${on ? ' on' : ''}${err ? ' ng' : ''}" data-eq="${it.id}" aria-pressed="${on}" ${err ? 'aria-disabled="true"' : ''}>${iconOf(it.id, 40)}<span class="rs-it-t"><b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${label}<small>${esc(statLine(it.id))}${err ? '　' + esc(err) : ''}</small></span></button>`;
+  }
+  const fitsJob = (job, it) => it.slot !== 'weapon' || it.cat === 'any' || D.JOBS[job].weapons.includes(it.cat);
   VIEWS.equip = function (p) {
     const s = save(), cur = M.statsWith(s, s.equip), tr = M.statsWith(s, UI.eq), changed = ['weapon', 'armor', 'acc'].some(k => (UI.eq[k] || null) !== (s.equip[k] || null));
-    const diff = (a, b) => b === a ? '<i class="rs-same">±0</i>' : b > a ? `<i class="rs-up">+${b - a}</i>` : `<i class="rs-down">${b - a}</i>`;
-    const slots = ['weapon', 'armor', 'acc'].map(sl => `<button class="rs-tab2${UI.slot === sl ? ' on' : ''}" data-slot="${sl}">${M.SLOT_NAME[sl]}</button>`).join('');
+    const slots = ['weapon', 'armor', 'acc'].map(sl => `<button class="rs-tab2${UI.slot === sl ? ' on' : ''}" data-slot="${sl}">${kr(M.SLOT_NAME[sl])}</button>`).join('');
     const owned = Object.keys(s.inv.items).map(i => D.ITEMS[i]).filter(i => i.slot === UI.slot).sort((a, b) => (b.rank - a.rank) || (a.rarity < b.rarity ? 1 : -1));
-    const rows = owned.map(it => {
-      const err = M.canEquip(s, it.id), on = UI.eq[UI.slot] === it.id, lv = M.enhLv(s, it.id), eff = M.effectText(it.id);
-      return `<button class="rs-item${on ? ' on' : ''}${err ? ' ng' : ''}" data-eq="${it.id}" ${err ? 'aria-disabled="true"' : ''}><div>${iconOf(it.id)}<b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}${s.equip[UI.slot] === it.id ? '<i class="rs-now2">そうびちゅう</i>' : ''}</div><small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${err ? '　（' + esc(err) + '）' : ''}</small></button>`;
-    }).join('') || '<p class="rs-p">まだ もっていません。</p>';
-    return frame('そうび', `
-      <div class="rs-panel rs-eqhead"><canvas class="rs-herocv" id="rsEqHero" aria-hidden="true"></canvas>
-        <table class="rs-cmp"><tr><th></th><th>いま</th><th>ためし</th><th></th></tr>
-          <tr><td>HP</td><td>${cur.maxHp}</td><td>${tr.maxHp}</td><td>${diff(cur.maxHp, tr.maxHp)}</td></tr>
-          <tr><td>こうげき</td><td>${cur.atk}</td><td>${tr.atk}</td><td>${diff(cur.atk, tr.atk)}</td></tr>
-          <tr><td>ぼうぎょ</td><td>${cur.def}</td><td>${tr.def}</td><td>${diff(cur.def, tr.def)}</td></tr></table></div>
+    const usable = owned.filter(i => !M.canEquip(s, i.id)), other = owned.filter(i => M.canEquip(s, i.id));
+    const sel = UI.eq[UI.slot] ? D.ITEMS[UI.eq[UI.slot]] : null, selOwned = sel && s.inv.items[sel.id], selNow = sel && s.equip[UI.slot] === sel.id;
+    const eff = sel ? M.effectText(sel.id) : '';
+    const list = usable.map(it => eqRow(s, it)).join('') + (UI.slot !== 'weapon' ? `<button class="rs-item rs-eqitem${!UI.eq[UI.slot] ? ' on' : ''}" data-eq=""><span class="rs-it-t"><b>はずす</b></span></button>` : '') || '<p class="rs-p">まだ持っていません。</p>';
+    return frame(rb('{装備|そうび}'), `
+      <div class="rs-panel rs-eqtop"><div class="rs-eqrow1"><div class="rs-stage rs-stage-eq">${heroCv('equip', { weaponId: UI.eq.weapon || null })}</div>
+        <div class="rs-eqweapon">${sel ? `${iconOf(sel.id, 64)}<b>${esc(sel.name)}</b>${selNow ? `<i class="rs-now2">${kr('装備')}中</i>` : selOwned ? `<i class="rs-try">${kr('試着')}中</i>` : `<i class="rs-try">${kr('試着')}中（${kr('店')}で買える）</i>`}` : '<b>武器なし</b>'}</div></div>
+        <table class="rs-cmp"><tr><th></th><th>${kr('現在')}</th><th>${kr('試着')}</th><th></th></tr>
+          <tr><td>HP</td><td>${cur.maxHp}</td><td>${tr.maxHp}</td><td>${eqDiff(cur.maxHp, tr.maxHp)}</td></tr>
+          <tr><td>${kr('攻撃')}</td><td>${cur.atk}</td><td>${tr.atk}</td><td>${eqDiff(cur.atk, tr.atk)}</td></tr>
+          <tr><td>${kr('防御')}</td><td>${cur.def}</td><td>${tr.def}</td><td>${eqDiff(cur.def, tr.def)}</td></tr></table>
+        ${sel ? `<details class="rs-det"><summary>${kr('効果')}を${kr('詳')}しく</summary><p class="rs-p">${esc(statLine(sel.id))}${sel.rank ? '　' + kr('種類') + '：' + esc(M.CAT_NAME[sel.cat] || '') + '　ランク' + D.RANK_NAME[sel.rank - 1] : ''}</p><p class="rs-p">${eff ? esc(eff) : 'とくべつな 効果は ありません。'}</p></details>` : ''}</div>
       <div class="rs-tabs2" role="tablist">${slots}</div>
-      <div class="rs-list">${rows}${UI.slot !== 'weapon' ? `<button class="rs-item${!UI.eq[UI.slot] ? ' on' : ''}" data-eq=""><b>はずす</b></button>` : ''}</div>
-      ${s.active ? '<div class="rs-note">ぼうけんの 途中は そうびを かえられません。</div>' : ''}
-      <div class="rs-row2"><button class="rs-btn" id="eqRec">おすすめに する</button><button class="rs-btn" id="eqReset" ${changed ? '' : 'disabled'}>もとに もどす</button></div>
-      <button class="rs-big" id="eqOk" ${changed && !s.active ? '' : 'disabled'}>これで けってい</button>
-      <p class="rs-p c">「けってい」を おすまでは そうびは かわりません。</p>`, { back: true });
+      <div class="rs-list">${list}</div>
+      ${other.length ? `<details class="rs-det rs-panel"><summary>${kr('別')}の${kr('職業')}用（${other.length}）</summary><div class="rs-list">${other.map(it => eqRow(s, it)).join('')}</div></details>` : ''}
+      ${s.active ? `<div class="rs-note">${kr('冒険')}の${kr('途中')}は ${kr('装備')}を かえられません。</div>` : ''}
+      <button class="rs-big" id="eqOk" ${changed && !s.active && (!sel || selOwned) ? '' : 'disabled'}>${rb('これを{装備|そうび}する')}</button>
+      <div class="rs-row2"><button class="rs-btn" id="eqReset" ${changed ? '' : 'disabled'}>${rb('{取|と}り{消|け}し')}</button><button class="rs-btn" id="eqRec">おすすめ</button></div>
+      <p class="rs-p c">${rb('「これを{装備|そうび}する」を{押|お}すまで、{保存|ほぞん}されません。')}</p>`, { back: true });
   };
   AFTER.equip = function () {
-    const s = save(); hero(doc.getElementById('rsEqHero'), s.job, 4);
+    const s = save();
     app().querySelectorAll('[data-slot]').forEach(b => b.onclick = () => { UI.slot = b.dataset.slot; rerender(); });
     app().querySelectorAll('[data-eq]').forEach(b => b.onclick = () => { const id = b.dataset.eq; if (id && M.canEquip(s, id)) { UI.msg = M.canEquip(s, id); rerender(); UI.msg = ''; return; } UI.eq[UI.slot] = id || null; UI.msg = ''; rerender(); });
-    doc.getElementById('eqRec').onclick = () => { UI.eq = M.recommendEquip(s); UI.msg = 'おすすめを ためしています。きまったら「けってい」。'; rerender(); UI.msg = ''; };
-    doc.getElementById('eqReset').onclick = () => { UI.eq = Object.assign({}, s.equip); rerender(); };
+    doc.getElementById('eqRec').onclick = () => { UI.eq = M.recommendEquip(s); UI.msg = 'おすすめを ためしています。きまったら「これを そうびする」。'; rerender(); UI.msg = ''; };
+    doc.getElementById('eqReset').onclick = () => { UI.eq = Object.assign({}, s.equip); UI.msg = ''; rerender(); };
     doc.getElementById('eqOk').onclick = () => { const r = M.setEquip(s, UI.eq); if (!r.ok) { UI.msg = r.err; rerender(); return; } commit(); UI.msg = UI.msg || 'そうびを かえました。'; UI.eq = Object.assign({}, s.equip); rerender(); };
   };
 
-  // ---------- 店 ----------
+  // ---------- 店（買う・試着・売る。全商品にアイコン。いまの職業で使える武器を先に） ----------
   VIEWS.shop = function () {
-    const s = save(), rank = C.maxRank(s), tabs = [['weapon', 'ぶき'], ['armor', 'ぼうぐ'], ['acc', 'アクセ'], ['sell', 'うる・かえす']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${nm}</button>`).join('');
+    const s = save(), rank = C.maxRank(s), tabs = [['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセ'], ['sell', 'うる・かえす']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${kr(nm)}</button>`).join('');
     let body;
     if (UI.shopTab === 'sell') {
       const own = Object.keys(s.inv.items).filter(i => i !== 'w_start').map(i => D.ITEMS[i]);
       body = own.length ? own.map(it => {
         const ref = M.canRefund(s, it.id), eqd = M.isEquipped(s, it.id), conf = UI.confirm === it.id;
-        const act = eqd ? '<span class="rs-small">そうびちゅう</span>' : ref ? `<button class="rs-btn sm" data-refund="${it.id}">${conf ? 'ほんとうに かえす' : `かえす +${s.inv.fresh[it.id]}`}</button>` : `<button class="rs-btn sm" data-sell="${it.id}">${conf ? 'ほんとうに うる' : `うる +${M.sellPrice(it.id)}`}</button>`;
-        return `<div class="rs-item"><div><b>${esc(it.name)}${M.enhLv(s, it.id) ? ' +' + M.enhLv(s, it.id) : ''}</b>${rankTag(it)}${rareTag(it)}</div><small>${esc(statLine(it.id))}${ref ? '　まだ つかっていない：同じ ねだんで かえせる' : '　店の ねだんの 25%で うれる'}</small>${act}</div>`;
+        const act = eqd ? `<span class="rs-small">${kr('装備')}中</span>` : ref ? `<button class="rs-btn sm" data-refund="${it.id}">${conf ? 'ほんとうに かえす' : `かえす +${s.inv.fresh[it.id]}`}</button>` : `<button class="rs-btn sm" data-sell="${it.id}">${conf ? 'ほんとうに うる' : `うる +${M.sellPrice(it.id)}`}</button>`;
+        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 40)}<span class="rs-it-t"><b>${esc(it.name)}${M.enhLv(s, it.id) ? ' +' + M.enhLv(s, it.id) : ''}</b>${rankTag(it)}${rareTag(it)}<small>${esc(statLine(it.id))}${ref ? '　まだ つかっていない：同じ ねだんで かえせる' : '　店の ねだんの 25%で うれる'}</small>${act}</span></div>`;
       }).join('') : '<p class="rs-p">うれるものが ありません。</p>';
     } else {
-      const items = Object.values(D.ITEMS).filter(i => i.slot === UI.shopTab && i.rarity === 'normal' && i.rank && i.rank <= rank);
-      body = items.map(it => {
-        const have = !!s.inv.items[it.id], can = C.canBuy(s, it.id), eff = M.effectText(it.id);
-        return `<div class="rs-item"><div><b>${esc(it.name)}</b>${rankTag(it)}<i class="rs-cat">${esc(M.CAT_NAME[it.cat])}</i></div><small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}</small>${have ? '<span class="rs-small">もっている</span>' : `<button class="rs-btn sm" data-buy="${it.id}" ${can ? 'disabled' : ''}>${it.price} コインで かう</button>${can ? `<small class="rs-why">${esc(can)}</small>` : ''}`}</div>`;
-      }).join('') + `<p class="rs-p">${['ランクIIは 砂海を とっぱすると 売りだされます。', 'ランクIIIは 第1章を クリアすると 売りだされます。', 'ランクIVは 逆さ遺跡を とっぱすると 売りだされます。', 'ランクVは 第2章を クリアすると 売りだされます。', 'ランクVIは 天測の塔を とっぱすると 売りだされます。', ''][rank - 1]}</p>`;
+      let items = Object.values(D.ITEMS).filter(i => i.slot === UI.shopTab && i.rarity === 'normal' && i.rank && i.rank <= rank), hidden = 0;
+      if (UI.shopTab === 'weapon') {   // いまの職業で使える武器を先に。別職用は「すべて」で見られる
+        const fits = i => fitsJob(s.job, i);
+        const f = items.filter(fits), o = items.filter(i => !fits(i));
+        if (UI.shopAll) items = f.concat(o); else { items = f; hidden = o.length; }
+      }
+      const toggle = UI.shopTab === 'weapon' ? `<div class="rs-chips" role="group"><button class="rs-chip${!UI.shopAll ? ' on' : ''}" data-shopall="0" aria-pressed="${!UI.shopAll}">${kr('現在')}の${kr('職業')}で${kr('使')}える</button><button class="rs-chip${UI.shopAll ? ' on' : ''}" data-shopall="1" aria-pressed="${!!UI.shopAll}">${kr('全て')}</button></div>` : '';
+      body = toggle + items.map(it => {
+        const have = !!s.inv.items[it.id], can = C.canBuy(s, it.id), eff = M.effectText(it.id), eqd = M.isEquipped(s, it.id), notFit = !fitsJob(s.job, it);
+        return `<div class="rs-item rs-shopitem">${iconOf(it.id, 48)}<span class="rs-it-t"><b>${esc(it.name)}</b>${eqd ? `<i class="rs-now2">${kr('装備')}中</i>` : have ? '<i class="rs-have">もっている</i>' : ''}${rankTag(it)}<small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${notFit ? '　（' + kr('別') + 'の' + kr('職業') + '用）' : ''}</small>
+          <span class="rs-shopbtns">${have ? '' : `<button class="rs-btn sm" data-buy="${it.id}" ${can ? 'disabled' : ''}>${it.price} コインで ${kr('購入')}</button>`}<button class="rs-btn sm" data-try="${it.id}">${kr('試着')}</button></span>${!have && can ? `<small class="rs-why">${esc(can)}</small>` : ''}</span></div>`;
+      }).join('') + (hidden ? `<p class="rs-p">${kr('別')}の${kr('職業')}用の ${kr('武器')}が ${hidden}こ あります（「${kr('全て')}」で ${kr('見')}られます）。</p>` : '') + `<p class="rs-p">${['ランクIIは 砂海を とっぱすると 売りだされます。', 'ランクIIIは 第1章を クリアすると 売りだされます。', 'ランクIVは 逆さ遺跡を とっぱすると 売りだされます。', 'ランクVは 第2章を クリアすると 売りだされます。', 'ランクVIは 天測の塔を とっぱすると 売りだされます。', ''][rank - 1]}</p>`;
     }
     return frame('そうびや', `<div class="rs-panel c">${coinHtml()}</div><div class="rs-tabs2">${tabs}</div><div class="rs-list">${body}</div>`);
   };
   AFTER.shop = function () {
     const s = save();
     app().querySelectorAll('[data-st]').forEach(b => b.onclick = () => { UI.shopTab = b.dataset.st; UI.confirm = null; rerender(); });
+    app().querySelectorAll('[data-shopall]').forEach(b => b.onclick = () => { UI.shopAll = b.dataset.shopall === '1'; rerender(); });
+    app().querySelectorAll('[data-try]').forEach(b => b.onclick = () => go('equip', { back: 'shop', tryItem: b.dataset.try }));
     app().querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { const r = M.buyChecked(s, b.dataset.buy); UI.msg = r.ok ? `${D.ITEMS[b.dataset.buy].name} を かいました。` : r.err; if (r.ok) commit(); rerender(); });
     app().querySelectorAll('[data-sell],[data-refund]').forEach(b => b.onclick = () => {
       const id = b.dataset.sell || b.dataset.refund; if (UI.confirm !== id) { UI.confirm = id; rerender(); return; }
@@ -260,49 +340,71 @@
     app().querySelectorAll('[data-enh]').forEach(b => b.onclick = () => { const r = M.enhance(save(), b.dataset.enh); UI.msg = r.ok ? `+${r.lv} に なりました！` : r.err; if (r.ok) commit(); rerender(); });
   };
 
-  // ---------- 転職 ----------
+  // ---------- 転職（姿→特徴→条件✓→「この職業になる」を先に。技・強さは折りたたみ） ----------
+  const JOB_BLURB = {
+    warrior: '{剣|けん}で{正面|しょうめん}から{戦|たたか}う', mage: '{魔法|まほう}で{敵|てき}の{弱点|じゃくてん}をつく', priest: '{回復|かいふく}と{守|まも}りで{長|なが}く{戦|たたか}う', thief: 'すばやい{連続攻撃|れんぞくこうげき}で{戦|たたか}う',
+    magicknight: '{属性|ぞくせい}をまとった{剣|けん}で{戦|たたか}う', paladin: '{守|まも}りと{回復|かいふく}をあやつる{騎士|きし}', shadow: '{影|かげ}にまぎれて{連続|れんぞく}で{攻|せ}める', sage: '{魔法|まほう}と{回復|かいふく}をあやつる{賢者|けんじゃ}',
+    ninja: 'すばやい{動|うご}きで{敵|てき}をまどわす', ranger: '{弓|ゆみ}で{遠|とお}くから{狙|ねら}う', skyknight: '{翼|つばさ}で{空|そら}をかける{騎士|きし}', starseer: '{星|ほし}の{力|ちから}で{未来|みらい}を{読|よ}む'
+  };
   VIEWS.jobs = function () {
-    const s = save(), tabs = ['base', 'adv', 'top'].map(t => `<button class="rs-tab2${UI.tier === t ? ' on' : ''}" data-tier="${t}">${tierName(t)}</button>`).join('');
+    const s = save(), tabs = ['base', 'adv', 'top'].map(t => `<button class="rs-tab2${UI.tier === t ? ' on' : ''}" data-tier="${t}">${rb(tierRb(t))}</button>`).join('');
     const cards = D.JOB_IDS.filter(j => D.JOBS[j].tier === UI.tier).map(j => {
       const lv = C.jobLevel(j, s.jobXp[j]).lv, e = C.canChangeJob(s, j), me = s.job === j, goal = s.goal && s.goal.job === j;
-      return `<button class="rs-jobcard${me ? ' me' : ''}${e && !me ? ' lock' : ''}" data-go="jobdetail" data-p='${JSON.stringify({ job: j })}'><canvas data-job="${j}" data-k="3" aria-hidden="true"></canvas><div><b>${esc(D.JOBS[j].name)}</b><small>Lv${lv}${me ? '（いまの職業）' : e ? '' : '（なれる）'}${goal ? '　★もくひょう' : ''}</small></div></button>`;
+      return `<button class="rs-jobcard${me ? ' me' : ''}${e && !me ? ' lock' : ''}" data-go="jobdetail" data-p='${JSON.stringify({ job: j })}'>${heroCv('jobcard', { job: j })}<div><b>${jobRb(j)}</b><small>Lv${lv}${me ? '（' + kr('現在') + 'の' + kr('職業') + '）' : e ? '' : '（なれる）'}${goal ? '　★' + kr('目標') : ''}</small></div></button>`;
     }).join('');
-    return frame('てんしょく', `<div class="rs-tabs2" role="tablist">${tabs}</div><div class="rs-jobgrid">${cards}</div><p class="rs-p c">転職は むりょうです。職業ごとの レベルは そのまま のこります。ぼうけんの 途中は かえられません。</p>`);
+    return frame(rb('{転職|てんしょく}'), `<div class="rs-tabs2" role="tablist">${tabs}</div><div class="rs-jobgrid">${cards}</div><p class="rs-p c">${rb('{転職|てんしょく}は{無料|むりょう}です。{職業|しょくぎょう}ごとのレベルは そのまま{残|のこ}ります。')}</p>`);
   };
+  const tierRb = t => ({ base: '{基本職|きほんしょく}', adv: '{上級職|じょうきゅうしょく}', top: '{最上級職|さいじょうきゅうしょく}' })[t];
   AFTER.jobs = function () { app().querySelectorAll('[data-tier]').forEach(b => b.onclick = () => { UI.tier = b.dataset.tier; rerender(); }); };
   VIEWS.jobdetail = function (p) {
     const s = save(), j = p.job || s.job, jd = D.JOBS[j], jl = C.jobLevel(j, s.jobXp[j]), e = C.canChangeJob(s, j), me = s.job === j, goal = s.goal && s.goal.job === j;
     UI.params = p;
-    const sk = D.SKILLS_OF[j].map(k => `<div class="rs-sk${k.lv > jl.lv ? ' lock' : ''}"><div><b>${esc(k.name)}</b><i class="rs-cost">ゲージ${k.cost}</i><i class="rs-lv">Lv${k.lv}</i>${k.inh ? '<i class="rs-rare">けいしょう○</i>' : ''}</div><small>${esc(M.skillText(k, jl.lv))}</small></div>`).join('');
+    const sk = D.SKILLS_OF[j].map(k => `<div class="rs-sk${k.lv > jl.lv ? ' lock' : ''}"><div><b>${skRb(k.id)}</b><i class="rs-cost">ゲージ${k.cost}</i><i class="rs-lv">Lv${k.lv}</i>${k.inh ? `<i class="rs-rare">${rb('{引|ひ}き{継|つ}げる{技|わざ}')}</i>` : ''}</div><small>${kr(skillBlurb(k))}　${esc(M.skillText(k, jl.lv))}</small></div>`).join('');
     const ps = (D.PASSIVES[j] || []).map(x => `<div class="rs-sk${x[0] > jl.lv ? ' lock' : ''}"><div><b>${esc(x[1])}</b><i class="rs-lv">Lv${x[0]}</i></div><small>${esc(x[2])}</small></div>`).join('');
-    const reqs = M.jobProgress(s, j).map(r => `<div class="rs-req${r.done ? ' ok' : ''}"><span>${r.done ? '✓' : '・'}</span>${esc(r.text)}${r.pending ? '' : `　（${r.now}${r.unit || ''} / ${r.need}${r.unit || ''}）`}</div>`).join('');
+    const prog = M.jobProgress(s, j);
+    const reqs = jd.tier === 'adv' ? jd.req.map(r => { const lv = C.jobLevel(r, s.jobXp[r]).lv, ok = lv >= 10; return `<div class="rs-req${ok ? ' ok' : ''}"><span>${ok ? '✓' : '・'}</span>${jobRb(r)} Lv10　（${lv} / 10）</div>`; }).join('')
+      : prog.map(r => `<div class="rs-req${r.done ? ' ok' : ''}"><span>${r.done ? '✓' : '・'}</span>${esc(r.text)}${r.pending ? '' : `　（${r.now}${r.unit || ''} / ${r.need}${r.unit || ''}）`}</div>`).join('');
     const cats = jd.weapons.map(c => M.CAT_NAME[c]).join('・');
-    return frame(esc(jd.name), `
-      <div class="rs-panel rs-jobhead"><canvas data-job="${j}" data-k="6" aria-hidden="true"></canvas><div><b>${esc(tierName(jd.tier))}</b><div>Lv${jl.lv}${jl.capped ? '（上限）' : ''}</div>${bar(jl.into, jl.need)}<small>つかえる ぶき：${esc(cats)}</small></div></div>
-      ${reqs ? `<div class="rs-panel"><div class="rs-h2">てんしょく じょうけん</div>${reqs}</div>` : ''}
-      <div class="rs-panel"><div class="rs-h2">とくべつな 力</div>${ps}<div class="rs-h2">わざ</div>${sk}</div>
-      <div class="rs-note">${me ? 'いま この職業です。' : e ? esc(e) : 'この職業に なれます！'}</div>
-      <button class="rs-big gold" id="jobDo" ${e || me ? 'disabled' : ''}>この職業に なる</button>
-      ${jd.tier !== 'base' ? `<button class="rs-btn" id="jobGoal">${goal ? 'もくひょうを やめる' : 'もくひょうに する'}</button>` : ''}`);
+    return frame(jobRb(j), `
+      <div class="rs-panel rs-jobtop"><div class="rs-stage">${heroCv('job', { job: j })}</div>
+        <div class="rs-jobname"><b>${jobRb(j)}</b><i class="rs-rank">${rb(tierRb(jd.tier))}</i>${me ? `<i class="rs-now2">${kr('現在')}</i>` : ''}</div>
+        <p class="rs-blurb">${rb(JOB_BLURB[j] || '')}</p></div>
+      ${reqs ? `<div class="rs-panel"><div class="rs-h2">${rb('{転職|てんしょく}{条件|じょうけん}')}</div>${reqs}</div>` : ''}
+      <div class="rs-note" id="jobNote">${me ? kr('現在') + 'の' + kr('職業') + 'です。' : e ? esc(e) : 'この' + kr('職業') + 'に なれます！'}</div>
+      <button class="rs-big gold" id="jobDo" ${e || me ? 'disabled' : ''}>${rb('この{職業|しょくぎょう}になる')}</button>
+      <div class="rs-row2"><button class="rs-btn" id="jobPlay">${rb('{動|うご}きを{見|み}る')}</button>${jd.tier !== 'base' ? `<button class="rs-btn" id="jobGoal">${goal ? rb('{目標|もくひょう}をやめる') : rb('{目標|もくひょう}にする')}</button>` : ''}</div>
+      <details class="rs-det rs-panel"><summary>${rb('{覚|おぼ}える{技|わざ}')}</summary>${sk}</details>
+      <details class="rs-det rs-panel"><summary>${rb('{詳|くわ}しい{強|つよ}さ')}</summary><p class="rs-p">${kr('使')}える${kr('武器')}：${esc(cats)}　Lv${jl.lv}${jl.capped ? '（上限）' : ''}</p>${bar(jl.into, jl.need)}${ps}</details>`);
   };
   AFTER.jobdetail = function (p) {
     const s = save(), j = p.job;
     const d = doc.getElementById('jobDo'); if (d) d.onclick = () => {
-      const first = !s.seen['job_' + j], r = M.changeJob(s, j); if (!r.ok) { UI.msg = r.err; rerender(); return; }
-      s.seen['job_' + j] = 1; commit(); showJobFx(j, first, r.gifts, () => go('me'));
+      const prev = s.job, first = !s.seen['job_' + j], r = M.changeJob(s, j); if (!r.ok) { UI.msg = r.err; rerender(); return; }
+      s.seen['job_' + j] = 1; commit();
+      const sw = r.swapped && r.swapped.to ? `${D.ITEMS[r.swapped.to].name} に ぶきを かえました（${D.JOBS[j].name}は ${r.swapped.from ? D.ITEMS[r.swapped.from].name : 'いまの ぶき'}を つかえないため）。` : '';
+      showJobFx(j, first, r.gifts, msg => { go('me'); UI.msg = msg; rerender(); }, prev, sw);
     };
     const g = doc.getElementById('jobGoal'); if (g) g.onclick = () => { M.setGoal(s, s.goal && s.goal.job === j ? null : j); commit(); rerender(); };
+    const pl = doc.getElementById('jobPlay'); if (pl) pl.onclick = () => {   // 短い試演。セーブには触らない
+      const cv = app().querySelector('canvas[data-hero]'), a = JSON.parse(cv.dataset.hero), seq = reduceMotion() ? [['attack', 0], ['idle', 900]] : [['ready', 0], ['attack', 350], ['attack', 700], ['idle', 1100]];
+      pl.disabled = true; seq.forEach(([pose, t]) => setTimeout(() => { if (!cv.isConnected) return; cv.dataset.hero = JSON.stringify(Object.assign({}, a, { pose })); paintHero(cv); if (pose === 'idle') pl.disabled = false; }, t));
+    };
   };
-  // 転職の演出（初回のみ。スキップできる。動きが苦手な設定では静止）
-  function showJobFx(j, first, gifts, done) {
-    const gift = gifts && gifts.length ? `<div class="rs-fx-gift">${gifts.map(g => esc(D.ITEMS[g].name)).join('、')} を もらった！</div>` : '';
-    if (!first) { UI.msg = `${D.JOBS[j].name} に なりました。`; return done(); }
-    const o = doc.createElement('div'); o.className = 'rs-fx' + (reduceMotion() ? ' still' : ''); o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', '転職');
-    o.innerHTML = `<div class="rs-fx-in"><canvas data-job="${j}" data-k="8" aria-hidden="true"></canvas><div class="rs-fx-t">${esc(D.JOBS[j].name)} に なった！</div>${gift}<button class="rs-big" id="fxSkip">とじる</button></div>`;
-    doc.body.appendChild(o);
-    o.querySelectorAll('canvas[data-job]').forEach(c => hero(c, c.dataset.job, 8));
-    const close = () => { o.remove(); done(); }; o.querySelector('#fxSkip').onclick = close;
-    if (!reduceMotion()) setTimeout(() => { if (o.isConnected) close(); }, 2600);
+  // 転職の演出（初回のみ。旧姿→しるしの光→新しい姿。宝箱・NPCには何も当てない。とばせる。動きが苦手な設定では静止）
+  function showJobFx(j, first, gifts, done, prev, extra) {
+    const gift = gifts && gifts.length ? `<div class="rs-fx-gift">${gifts.map(g => esc(D.ITEMS[g].name)).join('、')} を もらった！</div>` : '', ex = extra ? `<div class="rs-fx-gift">${esc(extra)}</div>` : '';
+    if (!first) return done(`${D.JOBS[j].name} に なりました。${extra ? ' ' + extra : ''}`);
+    const still = reduceMotion(), o = doc.createElement('div'); o.className = 'rs-fx' + (still ? ' still' : ''); o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', '転職');
+    o.innerHTML = `<div class="rs-fx-in"><div class="rs-fx-stage" id="fxStage">${heroCv('fx', { job: still ? j : (prev || j), pose: still ? 'win' : 'idle' })}<div class="rs-fx-glow"></div></div><div class="rs-fx-t" id="fxT">${still ? jobRb(j) + ' に なった！' : jobRb(prev || j)}</div><div id="fxExtra"${still ? '' : ' hidden'}>${gift}${ex}</div><button class="rs-big" id="fxSkip">${still ? 'とじる' : 'とばす'}</button></div>`;
+    doc.body.appendChild(o); paintHeroes(o);
+    let closed = false; const close = () => { if (closed) return; closed = true; o.remove(); done(`${D.JOBS[j].name} に なりました。${extra ? ' ' + extra : ''}`); };
+    o.querySelector('#fxSkip').onclick = close;
+    if (still) return;
+    const cv = o.querySelector('canvas[data-hero]'), t = o.querySelector('#fxT'), a = JSON.parse(cv.dataset.hero), at = (ms, f) => setTimeout(() => { if (!closed && o.isConnected) f(); }, ms);
+    at(700, () => { o.querySelector('#fxStage').classList.add('glow'); t.textContent = 'しるしが かがやく…'; });
+    at(1500, () => { cv.dataset.hero = JSON.stringify(heroOpts('fx', { job: j, pose: 'attack' })); paintHero(cv); t.innerHTML = jobRb(j) + ' に なった！'; o.querySelector('#fxExtra').hidden = false; o.querySelector('#fxSkip').textContent = 'とじる'; });
+    at(2100, () => { const b = heroOpts('fx', { job: j, pose: 'win' }); cv.dataset.hero = JSON.stringify(b); paintHero(cv); });
+    at(4500, close);
   }
 
   // ---------- 技設定 ----------
@@ -332,21 +434,25 @@
   };
 
   // ---------- 外見 ----------
+  const lookPrev = () => ({ skin: M.SKIN[UI.look.skin], hair: M.HAIR_COLOR[UI.look.hairColor], face: UI.look.face, hairStyle: UI.look.hair });
+  const lookCostume = () => (UI.look.outfit === 'master' && M.masterOwned(save(), save().job) ? 'master' : null);
   VIEWS.look = function () {
-    const L = UI.look, sw = (key, arr) => arr.map((c, i) => `<button class="rs-sw${L[key] === i ? ' on' : ''}" style="background:${c}" data-lk="${key}" data-v="${i}" aria-label="${i + 1}ばん" aria-pressed="${L[key] === i}"></button>`).join('');
+    const L = UI.look, s = save(), sw = (key, arr) => arr.map((c, i) => `<button class="rs-sw${L[key] === i ? ' on' : ''}" style="background:${c}" data-lk="${key}" data-v="${i}" aria-label="${i + 1}ばん" aria-pressed="${L[key] === i}"></button>`).join('');
     const num = (key, n) => Array.from({ length: n }, (_, i) => `<button class="rs-chip${L[key] === i ? ' on' : ''}" data-lk="${key}" data-v="${i}" aria-pressed="${L[key] === i}">${i + 1}</button>`).join('');
-    return frame('なまえ・みため', `
-      <div class="rs-panel c"><canvas class="rs-herocv" id="rsLookHero" aria-hidden="true"></canvas></div>
-      <div class="rs-panel"><label class="rs-h2" for="rsName">なまえ（8もじまで）</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="ぼうけん者"><p class="rs-p">なまえは この たんまつの なかだけに のこります。公開されません。</p></div>
-      <div class="rs-panel"><div class="rs-h2">かお</div><div class="rs-chips">${num('face', M.FACE_N)}</div><div class="rs-h2">かみがた</div><div class="rs-chips">${num('hair', M.HAIR_N)}</div>
-        <div class="rs-h2">はだの いろ</div><div class="rs-chips">${sw('skin', M.SKIN)}</div><div class="rs-h2">かみの いろ</div><div class="rs-chips">${sw('hairColor', M.HAIR_COLOR)}</div>
-        <p class="rs-p">みための へんこうは むりょう。職業や そうびには えいきょうしません。</p></div>
-      <button class="rs-big" id="lookOk">これで けってい</button>`);
+    const mo = M.masterOwned(s, s.job), outfits = `<button class="rs-chip${!L.outfit || L.outfit !== 'master' ? ' on' : ''}" data-outfit="" aria-pressed="${L.outfit !== 'master'}">${kr('通常')}</button><button class="rs-chip${L.outfit === 'master' && mo ? ' on' : ''}" data-outfit="master" aria-pressed="${L.outfit === 'master' && mo}" ${mo ? '' : 'aria-disabled="true" disabled'}>マスター${kr('衣装')}</button>`;
+    return frame(rb('{名前|なまえ}・{見|み}た{目|め}'), `
+      <div class="rs-panel c"><div class="rs-stage">${heroCv('look', { look: lookPrev(), costume: lookCostume() })}</div></div>
+      <div class="rs-panel"><label class="rs-h2" for="rsName">${rb('{名前|なまえ}（8{文字|もじ}まで）')}</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="ぼうけん者"><p class="rs-p">${rb('{名前|なまえ}はこの{端末|たんまつ}の{中|なか}だけに{残|のこ}ります。')}</p></div>
+      <div class="rs-panel"><div class="rs-h2">${kr('顔')}</div><div class="rs-chips">${num('face', M.FACE_N)}</div><div class="rs-h2">${kr('髪型')}</div><div class="rs-chips">${num('hair', M.HAIR_N)}</div>
+        <div class="rs-h2">${kr('肌')}の${kr('色')}</div><div class="rs-chips">${sw('skin', M.SKIN)}</div><div class="rs-h2">${kr('髪')}の${kr('色')}</div><div class="rs-chips">${sw('hairColor', M.HAIR_COLOR)}</div>
+        <div class="rs-h2">${kr('衣装')}</div><div class="rs-chips">${outfits}</div>${mo ? '' : `<p class="rs-p">マスター${kr('衣装')}は、${jobRb(s.job)}を Lv30にすると ${kr('解放')}されます。</p>`}
+        <p class="rs-p" id="lookNote">${rb('{見|み}た{目|め}を{変|か}えても、{強|つよ}さや{覚|おぼ}えた{技|わざ}は{変|か}わりません。')}</p></div>
+      <button class="rs-big" id="lookOk">${rb('{決定|けってい}')}</button>`);
   };
   AFTER.look = function () {
-    const prev = () => hero(doc.getElementById('rsLookHero'), save().job, 7, { look: { skin: M.SKIN[UI.look.skin], hair: M.HAIR_COLOR[UI.look.hairColor], face: UI.look.face, hairStyle: UI.look.hair } }); prev();
     const nm = doc.getElementById('rsName'); nm.oninput = () => { UI.name = nm.value; };
     app().querySelectorAll('[data-lk]').forEach(b => b.onclick = () => { UI.look[b.dataset.lk] = +b.dataset.v; rerender(); });
+    app().querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => { if (b.disabled) return; UI.look.outfit = b.dataset.outfit || null; rerender(); });
     doc.getElementById('lookOk').onclick = () => { const r = M.setLook(save(), UI.name, UI.look); UI.msg = r.ok ? 'けっていしました。' : r.err; if (r.ok) commit(); rerender(); };
   };
 
@@ -359,13 +465,12 @@
       const regIds = D.REGIONS.map(r => r.id), ex = {}; Object.values(D.ENEMIES).forEach(e => { if (!regIds.includes(e.region)) (ex[e.region] = ex[e.region] || []).push(e); });
       body += Object.keys(ex).map(bg => `<div class="rs-h2">${esc(W.BG_NAMES[bg] || bg)}（クリアごなど）</div><div class="rs-cgrid">${ex[bg].map(e => { const c = s.codex.enemies[e.id], seen = !!(c && c.seen); return `<div class="rs-cell${seen ? '' : ' un'}">${seen ? `<canvas data-en="${e.id}" data-boss="${e.boss ? 1 : 0}" aria-hidden="true"></canvas>` : '<div class="rs-q">？</div>'}<b>${seen ? esc(e.name) : '？？？'}</b><small>${seen ? `たおした ${c.kills}かい` : 'まだ であっていない'}</small></div>`; }).join('')}</div>`).join('');
     } else {
-      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s) || i.relic) && (!i.unique || i.relic || /_1$/.test(i.id))).map(i => { const got = M.codexHas(s, i.id); return `<div class="rs-item${got ? '' : ' ng'}"><div><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}</div></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
+      body = ['weapon', 'armor', 'acc'].map(sl => `<div class="rs-h2">${M.SLOT_NAME[sl]}</div><div class="rs-list">${Object.values(D.ITEMS).filter(i => i.slot === sl && i.id !== 'w_start' && (i.rank <= C.maxRank(s) || i.relic) && (!i.unique || i.relic || /_1$/.test(i.id))).map(i => { const got = M.codexHas(s, i.id); const eff = got ? M.effectText(i.id) : ''; return `<div class="rs-item rs-eqitem${got ? '' : ' ng'}">${got ? iconOf(i.id, 40) : ''}<span class="rs-it-t"><b>${got ? esc(i.name) : '？？？'}</b>${got ? rankTag(i) + rareTag(i) : ''}${got ? `<small>${esc(statLine(i.id))}${eff ? '　' + esc(eff) : ''}</small>` : ''}</span></div>`; }).join('')}</div>`).join('') + '<p class="rs-p">うりだされていない ランクの そうびは、ひらくと 図鑑に のります。</p>';
     }
     return frame('ずかん', `<div class="rs-tabs2">${tabs}</div>${body}`);
   };
   AFTER.codex = function () {
     app().querySelectorAll('[data-ct]').forEach(b => b.onclick = () => { UI.codexTab = b.dataset.ct; rerender(); });
-    app().querySelectorAll('canvas[data-en]').forEach(c => enemyCv(c, c.dataset.en, c.dataset.boss === '1', 3));
   };
 
   // ---------- 実績 ----------
@@ -436,16 +541,15 @@
     const jl = C.jobLevels(s), jobs = D.JOB_IDS.filter(j => jl[j] > 1).map(j => `${esc(D.JOBS[j].name)} Lv${jl[j]}`).join('／') || '（これから）';
     const memos = D.REGIONS.filter(r => (s.inv.mats['bm_' + r.id] || 0) > 0 || s.progress.bossKills[r.boss.id]).map(r => esc(r.mat)).join('、') || '（ボスの ざいりょう）';
     const p = [
-      `<canvas class="rs-herocv" id="rsEndHero" aria-hidden="true"></canvas><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-sub">${esc(D.JOBS[s.job].name)} Lv${jl[s.job]}</div><p class="rs-story-text">${esc(E[0][1])}</p>`,
+      `<div class="rs-stage">${heroCv('ending')}</div><div class="rs-hc-name">${esc(s.name || 'ぼうけん者')}</div><div class="rs-hc-sub">${esc(D.JOBS[s.job].name)} Lv${jl[s.job]}</div><p class="rs-story-text">${esc(E[0][1])}</p>`,
       `<p class="rs-story-text">${esc(E[1][1])}</p><div class="rs-h2">たすけた ちいき</div><p class="rs-p">${regs}</p>`,
       `<div class="rs-h2">そだてた しるし</div><p class="rs-p">${jobs}</p><div class="rs-h2">きねんひん</div><p class="rs-p">${memos}</p>`,
       `<p class="rs-story-text">${esc(E[2][1])}</p><p class="rs-story-text">${esc(E[3][1])}</p><p class="rs-p">ほんぺんは クリア！ ぼうけんの ちずから 「6つの ひきょう」に ちょうせんできます。</p>`
     ];
     const last = i >= N - 1;
-    return frame('エンディング', `<div class="rs-panel rs-story c">${p[i]}<div class="rs-story-n">${i + 1} / ${N}</div></div><div class="rs-row2"><button class="rs-btn" id="enSkip">とばす</button><button class="rs-big" id="enNext">${last ? 'おわり' : 'つぎへ'}</button></div><p class="rs-p c">この ぎゃめんは がぞうが まだ「仮」です。</p>`);
+    return frame('エンディング', `<div class="rs-panel rs-story c">${p[i]}<div class="rs-story-n">${i + 1} / ${N}</div></div><div class="rs-row2"><button class="rs-btn" id="enSkip">とばす</button><button class="rs-big" id="enNext">${last ? 'おわり' : 'つぎへ'}</button></div>`);
   };
   AFTER.ending = function () {
-    const c = doc.getElementById('rsEndHero'); if (c) hero(c, save().job, 6, { bg: 'crown' });
     const done = () => { const s = save(); s.ending.seen = true; commit(); UI.endI = 0; if (UI.params && UI.params.from === 'result') root.home(); else go('adv'); };
     doc.getElementById('enNext').onclick = () => { if ((UI.endI || 0) >= 3) done(); else { UI.endI = (UI.endI || 0) + 1; rerender(); } };
     doc.getElementById('enSkip').onclick = done;
@@ -454,7 +558,7 @@
   const memoImg = id => imgOf('bg_memorial_' + id);
   VIEWS.memorial = function () {
     const s = save(), title = (s.rewards.titles.includes('空の果てを見た者')) ? '空の果てを見た者' : 'まだ ありません';
-    if (!memoImg('dawnisle')) return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ（仮の絵）"></canvas><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p><p class="rs-p">これは コードで かいた 仮の絵です。</p></div>`);
+    if (!memoImg('dawnisle')) return frame('きねんえ', `<div class="rs-panel c"><canvas id="rsMemo" class="rs-memo" aria-label="夜明けの きねんえ"></canvas><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p></div>`);
     const list = MEMOS.filter(m => memoImg(m[0]) && m[2](s));
     return frame('きねんえ', list.map(m => `<div class="rs-panel c"><div class="rs-h3">${esc(m[1])}の きねんえ</div><canvas ${m[0] === 'dawnisle' ? 'id="rsMemo" ' : ''}class="rs-memo" data-m="${m[0]}" aria-label="${esc(m[1])}の きねんえ"></canvas></div>`).join('') + `<div class="rs-panel c"><p class="rs-p">「${esc(title)}」　${s.rewards.lamp ? '夜明けの灯を ともした。' : ''}</p></div>`);
   };
@@ -464,14 +568,14 @@
       app().querySelectorAll('canvas[data-m]').forEach(c => {
         const im = memoImg(c.dataset.m), w = im.width, h = im.height; c.width = w; c.height = h; c.style.width = '100%'; c.style.maxWidth = (w * 1.2) + 'px'; c.style.height = 'auto';
         const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(im, 0, 0);
-        SP.drawHero(g, s.job, Math.round(w * 0.34) - 7, h - 14, { img: 'reward', pose: 'win', look: look(), outfit: M.costumeColor(s) });
+        SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), look: look(), pose: 'win', use: 'reward', x: Math.round(w * 0.34), groundY: h - 14, scale: 1 });
       });
       return;
     }
     const c = doc.getElementById('rsMemo'), w = 100, h = 66, k = Math.max(2, Math.floor(Math.min(360, c.parentNode.clientWidth - 24) / w));
     c.width = w; c.height = h; c.style.width = (w * k) + 'px'; c.style.height = (h * k) + 'px'; const g = c.getContext('2d');
     SP.drawBackground(g, w, h, 'dawnisle'); g.fillStyle = '#ffe27a'; g.beginPath(); g.arc(70, 24, 9, 0, 7); g.fill();
-    g.save(); g.scale(2, 2); SP.drawHero(g, s.job, 12, 32, { look: look(), outfit: M.costumeColor(s) }); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2 }); g.restore();
+    SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), look: look(), pose: 'win', use: 'reward', x: 36, groundY: 62, scale: 1 }); g.save(); g.scale(2, 2); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2, img: 'full' }); g.restore();
   };
 
   // ---------- せってい（音・振動。どちらも初期オフ） ----------
@@ -480,21 +584,22 @@
     return frame('せってい', `<div class="rs-panel"><div class="rs-h2">おと</div><p class="rs-p">ぼうけん中の 小さな 音（せいかい・こうげき・ごほうびなど）。BGMは ありません。はじめは オフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">おとを ならす</button></div>
       <div class="rs-h2">しんどう</div><p class="rs-p">ごほうびの ときに ふるえます（たんまつが たいおうしている ときだけ）。はじめは オフです。</p>
-      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div>`);
+      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
     const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); rerender(); };
     doc.getElementById('snOn').onclick = () => set('sound', true); doc.getElementById('snOff').onclick = () => set('sound', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
+    const bk = app().querySelector('.rpg-bk'); if (bk) bk.open = true; RPG.bindHome();
   };
 
   // しょうごう・いしょう（クリア後の ごほうび）
   function rewardsPanel(s) {
     const R = s.rewards, cs = M.allCostumes().filter(c => R.costumes.includes(c.id));
-    if (!R.titles.length && !cs.length) return '';
+    if (!R.titles.length && !R.lamp) return '';
     const t = R.titles.map(x => `<button class="rs-chip${s.title === x ? ' on' : ''}" data-title="${esc(x)}" aria-pressed="${s.title === x}">${esc(x)}</button>`).join('');
-    const o = cs.map(c => `<button class="rs-chip${s.look.outfit === c.id ? ' on' : ''}" data-outfit="${c.id}" aria-pressed="${s.look.outfit === c.id}"><span class="rs-dotc" style="background:${c.color}"></span>${esc(c.name)}</button>`).join('');
+    const o = '';   // 色だけの衣装は選べない（専用の絵ができるまで。IMPLEMENTATION_STATUS 参照）
     return `<div class="rs-panel"><div class="rs-h2">しょうごう・いしょう</div>${t ? `<div class="rs-chips">${t}</div>` : ''}${o ? `<div class="rs-h3">いしょう</div><div class="rs-chips"><button class="rs-chip${!s.look.outfit ? ' on' : ''}" data-outfit="">しょくぎょうの いろ</button>${o}</div>` : ''}${R.lamp ? '<button class="rs-btn" data-go="memorial">きねんえを みる</button>' : ''}</div>`;
   }
 
@@ -545,7 +650,7 @@
   VIEWS.me = function () {
     const s = save(); let h = oldMe.apply(this, arguments);
     h = h.replace('<div class="rs-hc-job">', (s.title ? `<div class="rs-hc-sub">「${esc(s.title)}」</div>` : '') + '<div class="rs-hc-job">');
-    h = h.replace('<div class="rs-panel rs-links">', rewardsPanel(s) + '<div class="rs-panel rs-links">').replace('<button class="rs-btn" data-go="data">ゲームのデータ</button>', '<button class="rs-btn" data-go="settings">せってい（おと・しんどう）</button><button class="rs-btn" data-go="data">ゲームのデータ</button>');
+    h = h.replace('<div class="rs-panel rs-links">', rewardsPanel(s) + '<div class="rs-panel rs-links">');
     return h;
   };
   AFTER.me = function () {
@@ -619,7 +724,7 @@
       o.nodes.forEach((n, i) => {
         const p = md.nodes[i], pos = `left:${(p[0] / 2.4).toFixed(2)}%;top:${(p[1] / 2.4).toFixed(2)}%`;
         over += `<button class="rs-mn ${n.state}${n.boss ? ' boss' : ''}${i === sel ? ' sel' : ''}" style="${pos}" data-mn="${i}" aria-pressed="${i === sel}" aria-label="${n.boss ? 'ボス' : 'ちてん' + (i + 1)}：${esc(nm(n, i))}（${stTxt(n)}）"><span class="rs-mn-c">${n.state === 'done' ? '✓' : n.boss ? '★' : i + 1}</span></button>`;
-        if (n.state === 'cur' && o.here) over += `<canvas class="rs-mhero" id="rsMapHero" aria-hidden="true" style="${pos}"></canvas>`;
+        if (n.state === 'cur' && o.here) over += `<canvas class="rs-mhero rs-hcv rs-hcv-mini" id="rsMapHero" data-hero="${esc(JSON.stringify(heroOpts('mini', {})))}" aria-hidden="true" style="${pos}"></canvas>`;
         if (n.boss) over += `<span class="rs-mboss${o.chestOpen ? ' open' : ''}" id="rsMapBoss" aria-hidden="true" style="${pos}">初回報酬${o.chestOpen ? '✓' : ''}</span>`;
       });
     }
@@ -635,7 +740,6 @@
   AFTER.regionmap = function (prm) {
     const s = save(), key = (prm && prm.id) || (UI.params && UI.params.id);
     app().querySelectorAll('[data-mn]').forEach(b => b.onclick = () => { UI.mapSel = +b.dataset.mn; UI.mapKey = key; rerender(); });
-    const h = doc.getElementById('rsMapHero'); if (h) hero(h, s.job, 2);
   };
   PARENT.regionmap = 'adv'; ROOT_OF.regionmap = 'adv';
 

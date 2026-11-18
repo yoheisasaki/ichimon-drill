@@ -178,3 +178,61 @@ body:has(.rs){background:#0b1329}
 .rs-mrow-t{flex:1;min-width:0}.rs-mrow-t b{display:block;font-size:15px}.rs-mrow-t small{display:block;font-size:12px;color:#b6bfd8;font-weight:600}
 @media (prefers-reduced-motion:no-preference){.rs-mn.cur .rs-mn-c{animation:rsmp 1.6s ease-in-out infinite}}
 @keyframes rsmp{50%{transform:scale(1.12)}}
+
+/* ===== 修正指示書 06 3章：主人公は共通の舞台（canvas）に。ホームは主人公と開始ボタンを最初の画面内に ===== */
+.rs-hcv{display:block;image-rendering:pixelated;image-rendering:crisp-edges;border-radius:12px;border:2px solid var(--gold,#d4af5a);background:#16244d;max-width:100%}
+.rs-hcv-mini{border:0;border-radius:0;background:none}
+.rs-stage{position:relative;line-height:0}
+.rs-stage .rs-hcv{width:100%}
+.rs-subtop{margin:4px 0 6px;text-align:center}
+.rs-home{margin:0 0 10px}
+.rs-stage-name{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:8px;align-items:baseline;white-space:nowrap;line-height:1.2;background:rgba(13,22,48,.88);border:2px solid #d4af5a;border-radius:10px;padding:3px 10px;color:#f4f1e4;font-weight:800;font-size:15px}
+.rs-stage-name b{font-size:16px;font-weight:900}.rs-stage-name span{color:#ffe27a;font-size:15px}
+.rs-hc-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 2px;font-size:14px;font-weight:800;color:#33305a}
+.rs-resume-note{width:100%;text-align:center;color:#136e73}
+.rs-nextskill{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;background:#0d1630;color:#f4f1e4;border:2px solid #d4af5a;border-radius:12px;padding:8px 10px;font-size:14px;font-weight:700;line-height:1.5}
+.rs-nextskill>span{color:#b6bfd8;font-size:13px}.rs-nextskill b{color:#ffe27a;font-size:16px}.rs-nextskill small{font-size:12px;color:#cfd6ea;flex:1 1 100%;font-weight:600}.rs-nextskill i{font-style:normal;margin-left:auto;font-size:13px;color:#9fe0b0}
+.rs-homecard{margin:12px 0}
+.rs-range{margin:12px 0;background:#fff;border:2px solid #e1ddf2;border-radius:16px;padding:6px 12px}
+.rs-range>summary{min-height:48px;display:flex;align-items:center;font-weight:900;font-size:16px;cursor:pointer;color:#33305a}
+.rs-range>summary small{font-weight:700;color:#6d6b85;margin-left:4px}
+.rs-range .subjects{margin-top:8px}
+/* ナビ：ルビ付きでも高さを固定し、本文末尾の余白と同じ高さにする */
+:root{--rs-nav-h:72px}
+.rs-nav{height:calc(var(--rs-nav-h) + env(safe-area-inset-bottom));box-sizing:border-box;align-items:stretch}
+.rs-navspace{height:calc(var(--rs-nav-h) + env(safe-area-inset-bottom) + 8px)}
+.rs-tab{font-size:14px;line-height:1.3;padding:2px 0}
+.rs-tab rt,.rs-nav rt{font-size:8px;color:inherit;opacity:.85}
+.rs ruby rt,.rw ruby rt{font-weight:600}
+/* 装備・店・図鑑の一覧：アイコンつき */
+.rs-eqitem,.rs-shopitem{display:flex;gap:10px;align-items:center}
+.rs-it-t{flex:1;min-width:0;display:block}
+.rs-it-t b{display:inline}
+.rs-it-t small{display:block}
+.rs-ic{flex:none;image-rendering:pixelated;margin-right:0}
+.rs-try{font-style:normal;font-size:12px;border-radius:7px;padding:2px 6px;margin-left:6px;font-weight:800;background:#3a2f12;border:1px solid #ffd75a;color:#ffe9a8;vertical-align:middle}
+.rs-have{font-style:normal;font-size:12px;border-radius:7px;padding:2px 6px;margin-left:6px;font-weight:800;background:#25366a;border:1px solid #6b7aa8;vertical-align:middle}
+.rs-shopbtns{display:flex;gap:8px;flex-wrap:wrap}
+.rs-shopbtns .rs-btn.sm{margin:6px 0 2px}
+.rs-eqtop .rs-eqrow1{display:flex;gap:10px;align-items:stretch}
+.rs-eqtop .rs-stage-eq{flex:0 0 168px}
+.rs-eqweapon{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:15px}
+.rs-eqweapon b{font-size:16px;line-height:1.3;word-break:keep-all}
+.rs-eqtop .rs-cmp{width:100%;margin-top:8px}
+.rs-eqtop .rs-hcv{width:168px}
+@media (max-width:359px){.rs-eqtop .rs-eqrow1{flex-direction:column;align-items:center}.rs-eqtop .rs-stage-eq{flex:none}}
+.rs-jobtop{text-align:center}
+.rs-jobtop .rs-stage{margin-bottom:8px}
+.rs-jobname{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
+.rs-jobname b{font-size:24px;color:#ffe27a;font-weight:900}
+.rs-blurb{font-size:17px;line-height:1.8;margin:6px 0 2px;font-weight:700}
+.rs-det .rs-sk{margin-top:6px}
+.rs-jobcard .rs-hcv{width:120px;height:112px;border-width:2px}
+.rs-fx-stage{position:relative;line-height:0;border-radius:16px;overflow:hidden}
+.rs-fx-stage .rs-hcv{width:240px;margin:0 auto;animation:none}
+.rs-fx-glow{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 70%,rgba(255,240,170,.85),rgba(255,240,170,0) 62%);transition:opacity .5s}
+.rs-fx-stage.glow .rs-fx-glow{opacity:1}
+.rs-fx .rs-big{margin-top:12px}
+@media (prefers-reduced-motion:reduce){.rs-fx-glow{transition:none}}
+.rs-data .rpg-bk summary{color:#f4f1e4}
+.rs-hc-meta .rs-coin{color:#8a6a00}

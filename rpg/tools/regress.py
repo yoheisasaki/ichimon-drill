@@ -24,7 +24,7 @@ with sync_playwright() as p:
         b = getattr(p, engine).launch(headless=True)
         for w in (320, 375, 390, 430):
             ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-            pg = ctx.new_page()
+            ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
             pg.on('console', lambda m, e=engine, w=w: M['console'].append(f'{e}/{w}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
             pg.on('pageerror', lambda e, en=engine, w=w: M['console'].append(f'{en}/{w}:pageerror:{e}'))
             pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
@@ -45,7 +45,7 @@ with sync_playwright() as p:
             M['widths'][f'{engine}/{w}'] = res
             ctx.close()
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        pg = ctx.new_page(); pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
         ops = {}
         pg.goto(URL); pg.wait_for_selector('.subj')
         ops['units_chip'] = pg.evaluate("() => { document.querySelector('button[data-f=\"社会\"]').click(); return document.querySelectorAll('.chip').length; }")

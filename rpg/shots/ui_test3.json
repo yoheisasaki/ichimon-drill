@@ -106,7 +106,8 @@
      "face": 2,
      "hair": 4,
      "skin": 3,
-     "hairColor": 0
+     "hairColor": 0,
+     "outfit": null
     }
    ]
   },
@@ -243,7 +244,8 @@
      "face": 2,
      "hair": 4,
      "skin": 3,
-     "hairColor": 0
+     "hairColor": 0,
+     "outfit": null
     }
    ]
   },

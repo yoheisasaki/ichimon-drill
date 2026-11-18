@@ -40,7 +40,7 @@ with sync_playwright() as p:
         b = getattr(p, engine).launch(headless=True)
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
         ctx.add_init_script(INIT)
-        pg = ctx.new_page()
+        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
         pg.on('console', lambda m, e=engine: R['console'].append(f'{e}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e, en=engine: R['console'].append(f'{en}:pageerror:{e}'))
         pg.route('**/script.google.com/**', blk)
@@ -112,8 +112,7 @@ with sync_playwright() as p:
         chk(E + 'ending_4_pages', k == 4, k)
         pg.click('#enNext'); pg.wait_for_selector('.rs-map'); chk(E + 'ending_seen_saved', pg.evaluate(SAVE)['ending']['seen'] is True)
         pg.click('.rs-tab[data-tab=me]'); pg.wait_for_selector('.rs-me')
-        chk(E + 'me_titles_costumes', len(pg.query_selector_all('[data-title]')) >= 7 and len(pg.query_selector_all('[data-outfit]')) >= 8, len(pg.query_selector_all('[data-title]')))
-        pg.click('[data-outfit=dawn]'); pg.wait_for_timeout(100); chk(E + 'outfit_saved', pg.evaluate(SAVE)['look']['outfit'] == 'dawn')
+        chk(E + 'me_titles_costumes', len(pg.query_selector_all('[data-title]')) >= 7 and len(pg.query_selector_all('[data-outfit]')) == 0, len(pg.query_selector_all('[data-title]')))   # 色だけの衣装は選べない（専用の絵ができるまで）
         pg.click('[data-title="空の果てを見た者"]'); pg.wait_for_timeout(100); chk(E + 'title_saved', pg.evaluate(SAVE)['title'] == '空の果てを見た者')
         if engine == 'chromium': shot(pg, 'p3_me_rewards')
         pg.click('[data-go=memorial]'); pg.wait_for_selector('#rsMemo'); chk(E + 'memorial_canvas', pg.evaluate("() => document.getElementById('rsMemo').width") in (100, 300))
@@ -139,7 +138,7 @@ with sync_playwright() as p:
     # 幅320/375/430：新しい画面のはみ出し
     b = p.chromium.launch(headless=True)
     for w in (320, 375, 430):
-        ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True); pg = ctx.new_page()
+        ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True); ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
         pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m, w=w: R['console'].append(f'w{w}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.goto(URL); pg.wait_for_selector('.subj'); put(pg, 'postgame', "s.active = null; s.seen = {};")

@@ -38,3 +38,8 @@
 - シミュレーション：sim_full 本編 60%=344冒険/172日・80%=321/161日・30%=554・100%=317。sim_post（`baseline/sim_post_20261118.txt`）：試練9〜10冒険・秘境15〜20冒険/個・孤島36〜38冒険
 - 試験用セーブ6の数値：`baseline/saves_report_20261118.json`（初日 Lv3・14日 戦士10/魔法使い10・第1章末 36日72冒険・第2章末 91日182冒険・本編末 171日342冒険・クリア後 242日484冒険）
 - 未確認：skip受信側、実機Safari、画像ロード計測、手で遊んだ体感
+
+## 修正指示書06（2026-11-18）
+- node：run 95／meta 29／reward 31／stage3 36／hero 12（新規：色の列・色の置換・武器の置き場・台帳・外見・衣装・転職の武器）
+- ブラウザ（headless、nosend=1）：ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／ui_test_map 36／ui_test_fx／regress（fix06）、新規 ui_test_hero.py（rpg/shots/fix06_screens/result.json）。試験用の主人公部品は rpg/tests/fixtures/（make_parts_fixture.py で生成。実物ではない）。
+- 結果と確認票の対応は IMPLEMENTATION_STATUS.md「修正指示書06」節。
