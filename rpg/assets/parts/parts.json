@@ -1,0 +1,1152 @@
+{
+ "version": 1,
+ "body": {
+  "warrior_idle_L": {
+   "w": 70,
+   "h": 96,
+   "foot": [
+    47.6,
+    95
+   ],
+   "neck": [
+    46.2,
+    32.0
+   ],
+   "grip": [
+    65.0,
+    63.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_idle_L.png",
+   "handPos": [
+    61,
+    59
+   ]
+  },
+  "warrior_attack_L": {
+   "w": 93,
+   "h": 94,
+   "foot": [
+    35.5,
+    93
+   ],
+   "neck": [
+    59.1,
+    32.0
+   ],
+   "grip": [
+    87.5,
+    31.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_attack_L.png",
+   "handPos": [
+    83,
+    27
+   ]
+  },
+  "warrior_ready_L": {
+   "w": 81,
+   "h": 93,
+   "foot": [
+    39.7,
+    92
+   ],
+   "neck": [
+    53.4,
+    32.0
+   ],
+   "grip": [
+    75.0,
+    51.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_ready_L.png",
+   "handPos": [
+    71,
+    46
+   ]
+  },
+  "warrior_hit_L": {
+   "w": 74,
+   "h": 95,
+   "foot": [
+    45.1,
+    94
+   ],
+   "neck": [
+    34.7,
+    32.0
+   ],
+   "grip": [
+    65.0,
+    42.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_hit_L.png",
+   "handPos": [
+    61,
+    38
+   ]
+  },
+  "warrior_win_L": {
+   "w": 76,
+   "h": 97,
+   "foot": [
+    50.5,
+    96
+   ],
+   "neck": [
+    46.6,
+    32.0
+   ],
+   "grip": [
+    71.0,
+    63.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_win_L.png",
+   "handPos": [
+    67,
+    60
+   ]
+  },
+  "warrior_idle_S": {
+   "w": 19,
+   "h": 26,
+   "foot": [
+    12.1,
+    25
+   ],
+   "neck": [
+    12.5,
+    10.0
+   ],
+   "grip": [
+    17.5,
+    18.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_idle_S.png",
+   "handPos": [
+    16,
+    16
+   ]
+  },
+  "warrior_attack_S": {
+   "w": 23,
+   "h": 25,
+   "foot": [
+    7.3,
+    24
+   ],
+   "neck": [
+    13.9,
+    10.0
+   ],
+   "grip": [
+    21.0,
+    11.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_attack_S.png",
+   "handPos": [
+    19,
+    9
+   ]
+  },
+  "warrior_hit_S": {
+   "w": 22,
+   "h": 26,
+   "foot": [
+    11.8,
+    25
+   ],
+   "neck": [
+    9.2,
+    10.0
+   ],
+   "grip": [
+    17.0,
+    11.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_hit_S.png",
+   "handPos": [
+    15,
+    10
+   ]
+  },
+  "warrior_walk_S": {
+   "w": 19,
+   "h": 26,
+   "foot": [
+    10.0,
+    25
+   ],
+   "neck": [
+    11.4,
+    10.0
+   ],
+   "grip": [
+    13.0,
+    20.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_walk_S.png",
+   "handPos": [
+    11,
+    18
+   ]
+  },
+  "magicknight_idle_L": {
+   "w": 71,
+   "h": 96,
+   "foot": [
+    46.9,
+    95
+   ],
+   "neck": [
+    45.7,
+    32.1
+   ],
+   "grip": [
+    65.5,
+    60.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_idle_L.png",
+   "handPos": [
+    62,
+    56
+   ]
+  },
+  "magicknight_attack_L": {
+   "w": 89,
+   "h": 91,
+   "foot": [
+    35.1,
+    90
+   ],
+   "neck": [
+    54.0,
+    32.1
+   ],
+   "grip": [
+    82.5,
+    33.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_attack_L.png",
+   "handPos": [
+    77,
+    29
+   ]
+  },
+  "magicknight_ready_L": {
+   "w": 78,
+   "h": 88,
+   "foot": [
+    38.6,
+    87
+   ],
+   "neck": [
+    48.2,
+    32.1
+   ],
+   "grip": [
+    68.5,
+    42.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_ready_L.png",
+   "handPos": [
+    65,
+    37
+   ]
+  },
+  "magicknight_hit_L": {
+   "w": 78,
+   "h": 94,
+   "foot": [
+    39.2,
+    93
+   ],
+   "neck": [
+    34.0,
+    32.1
+   ],
+   "grip": [
+    72.0,
+    37.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_hit_L.png",
+   "handPos": [
+    68,
+    33
+   ]
+  },
+  "magicknight_win_L": {
+   "w": 74,
+   "h": 98,
+   "foot": [
+    46.1,
+    97
+   ],
+   "neck": [
+    43.5,
+    32.1
+   ],
+   "grip": [
+    68.0,
+    61.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_win_L.png",
+   "handPos": [
+    63,
+    56
+   ]
+  },
+  "magicknight_idle_S": {
+   "w": 20,
+   "h": 26,
+   "foot": [
+    12.5,
+    25
+   ],
+   "neck": [
+    12.5,
+    10.0
+   ],
+   "grip": [
+    11.0,
+    19.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_idle_S.png",
+   "handPos": [
+    9,
+    18
+   ]
+  },
+  "magicknight_attack_S": {
+   "w": 25,
+   "h": 26,
+   "foot": [
+    11.7,
+    25
+   ],
+   "neck": [
+    15.6,
+    10.0
+   ],
+   "grip": [
+    22.5,
+    10.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_attack_S.png",
+   "handPos": [
+    20,
+    8
+   ]
+  },
+  "magicknight_hit_S": {
+   "w": 22,
+   "h": 26,
+   "foot": [
+    14.4,
+    25
+   ],
+   "neck": [
+    10.1,
+    10.0
+   ],
+   "grip": [
+    19.0,
+    11.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_hit_S.png",
+   "handPos": [
+    17,
+    9
+   ]
+  },
+  "magicknight_walk_S": {
+   "w": 19,
+   "h": 26,
+   "foot": [
+    11.6,
+    25
+   ],
+   "neck": [
+    12.6,
+    10.0
+   ],
+   "grip": [
+    15.2,
+    15.6
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null
+  }
+ },
+ "head": {
+  "head_f0_h0_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    18.3,
+    32.0
+   ]
+  },
+  "head_f1_h0_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    18.3,
+    32.0
+   ]
+  },
+  "head_f2_h0_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    18.3,
+    32.0
+   ]
+  },
+  "head_f3_h0_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    18.3,
+    32.0
+   ]
+  },
+  "head_f0_h1_L": {
+   "w": 30,
+   "h": 29,
+   "neck": [
+    15.2,
+    29.0
+   ]
+  },
+  "head_f1_h1_L": {
+   "w": 30,
+   "h": 29,
+   "neck": [
+    15.3,
+    29.0
+   ]
+  },
+  "head_f2_h1_L": {
+   "w": 30,
+   "h": 29,
+   "neck": [
+    15.3,
+    29.0
+   ]
+  },
+  "head_f3_h1_L": {
+   "w": 30,
+   "h": 29,
+   "neck": [
+    15.2,
+    29.0
+   ]
+  },
+  "head_f0_h2_L": {
+   "w": 31,
+   "h": 30,
+   "neck": [
+    15.6,
+    30.0
+   ]
+  },
+  "head_f1_h2_L": {
+   "w": 31,
+   "h": 30,
+   "neck": [
+    15.6,
+    30.0
+   ]
+  },
+  "head_f2_h2_L": {
+   "w": 31,
+   "h": 30,
+   "neck": [
+    15.6,
+    30.0
+   ]
+  },
+  "head_f3_h2_L": {
+   "w": 31,
+   "h": 30,
+   "neck": [
+    15.4,
+    30.0
+   ]
+  },
+  "head_f0_h3_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    16.6,
+    32.0
+   ]
+  },
+  "head_f1_h3_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    16.6,
+    32.0
+   ]
+  },
+  "head_f2_h3_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    17.0,
+    32.0
+   ]
+  },
+  "head_f3_h3_L": {
+   "w": 33,
+   "h": 32,
+   "neck": [
+    17.4,
+    32.0
+   ]
+  },
+  "head_f0_h4_L": {
+   "w": 34,
+   "h": 28,
+   "neck": [
+    18.8,
+    28.0
+   ]
+  },
+  "head_f1_h4_L": {
+   "w": 34,
+   "h": 28,
+   "neck": [
+    18.7,
+    28.0
+   ]
+  },
+  "head_f2_h4_L": {
+   "w": 34,
+   "h": 28,
+   "neck": [
+    18.6,
+    28.0
+   ]
+  },
+  "head_f3_h4_L": {
+   "w": 34,
+   "h": 28,
+   "neck": [
+    18.6,
+    28.0
+   ]
+  },
+  "head_f0_h5_L": {
+   "w": 31,
+   "h": 31,
+   "neck": [
+    17.0,
+    31.0
+   ]
+  },
+  "head_f1_h5_L": {
+   "w": 31,
+   "h": 31,
+   "neck": [
+    16.9,
+    31.0
+   ]
+  },
+  "head_f2_h5_L": {
+   "w": 31,
+   "h": 31,
+   "neck": [
+    16.8,
+    31.0
+   ]
+  },
+  "head_f3_h5_L": {
+   "w": 31,
+   "h": 31,
+   "neck": [
+    16.8,
+    31.0
+   ]
+  },
+  "head_h0_S": {
+   "w": 10,
+   "h": 10,
+   "neck": [
+    5.3,
+    10.0
+   ]
+  },
+  "head_h1_S": {
+   "w": 9,
+   "h": 9,
+   "neck": [
+    4.7,
+    9.0
+   ]
+  },
+  "head_h2_S": {
+   "w": 10,
+   "h": 9,
+   "neck": [
+    4.9,
+    9.0
+   ]
+  },
+  "head_h3_S": {
+   "w": 10,
+   "h": 10,
+   "neck": [
+    6.0,
+    10.0
+   ]
+  },
+  "head_h4_S": {
+   "w": 11,
+   "h": 9,
+   "neck": [
+    6.0,
+    9.0
+   ]
+  },
+  "head_h5_S": {
+   "w": 10,
+   "h": 9,
+   "neck": [
+    5.0,
+    9.0
+   ]
+  }
+ },
+ "weapon": {
+  "w_sword_1.png": {
+   "itemId": "w_sword_1",
+   "name": "青銅のつるぎ",
+   "grip": [
+    6,
+    22
+   ],
+   "tipAngle": 45
+  },
+  "rw_sword_1.png": {
+   "itemId": "rw_sword_1",
+   "name": "火花のつるぎ",
+   "grip": [
+    7,
+    25
+   ],
+   "tipAngle": 45
+  }
+ },
+ "palette": {
+  "skin": {
+   "body_warrior_idle_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_attack_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_ready_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_hit_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_win_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_idle_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_attack_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_hit_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_walk_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_idle_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_attack_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_ready_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_hit_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_win_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_idle_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_attack_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_hit_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_walk_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f0_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f1_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f2_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_f3_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h0_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h1_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h3_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h4_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_h5_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ]
+  },
+  "hair": {
+   "head_f0_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f0_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f0_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f0_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f0_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f0_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f1_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f2_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_f3_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h0_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h1_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h2_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h3_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h4_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_h5_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ]
+  }
+ }
+}
