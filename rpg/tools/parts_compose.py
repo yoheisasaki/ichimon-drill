@@ -57,14 +57,17 @@ def compose(job, pose, size, head, icon, skin=0, hair=0, costume='', canvas_pad=
     hd = PJ['head'][head]; hi = part(f'{head}.png', skin=skin, hair=hair)
     W, H = body.width + canvas_pad * 2, body.height + canvas_pad * 2
     cv = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ox = oy = canvas_pad
-    cv.alpha_composite(body, (ox, oy))
-    hx = round(ox + b['neck'][0] - hd['neck'][0]); hy = round(oy + b['neck'][1] - hd['neck'][1])
-    cv.alpha_composite(hi, (hx, hy))
-    if icon:
+    back = b.get('weaponLayer') == 'back'   # S: 武器は身体より後ろ（胴体に重ならない）
+    def put_weapon():
         wi, (gx, gy) = weapon(icon, b['gripAngle'], b['weaponScale'])
         px = round(ox + b['grip'][0] - gx); py = round(oy + b['grip'][1] - gy)
         layer = Image.new('RGBA', (W, H), (0, 0, 0, 0)); layer.paste(wi, (px, py)); cv.alpha_composite(layer)
-    if b.get('hand'):
+    if icon and back: put_weapon()
+    cv.alpha_composite(body, (ox, oy))
+    hx = round(ox + b['neck'][0] - hd['neck'][0]); hy = round(oy + b['neck'][1] - hd['neck'][1])
+    cv.alpha_composite(hi, (hx, hy))
+    if icon and not back: put_weapon()
+    if b.get('hand') and not back:
         hand = part(b['hand'], skin=skin); cv.alpha_composite(hand, (ox + b['handPos'][0], oy + b['handPos'][1]))
     return cv, (ox + b['foot'][0], oy + b['foot'][1])
 

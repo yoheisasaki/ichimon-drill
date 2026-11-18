@@ -41,3 +41,19 @@ items = [compose(j, p, 'S', f'head_h{i}_S', BRONZE if i % 2 == 0 else SPARK)[0] 
 a1 = row(items, 1, gap=8); a4 = row(items, 4, gap=8)
 stack([row(items, 1, gap=8), row(items, 4, gap=8)]).save(os.path.join(OUT, 'e_strip_size.png'))
 print('done', os.listdir(OUT))
+
+# ---- 全職 ----
+ALLJOBS = ['warrior', 'mage', 'priest', 'thief', 'magicknight', 'paladin', 'shadow', 'sage', 'ninja', 'ranger', 'skyknight', 'starseer']
+def job_row(j, size, k, head, gap=4):
+    P = LP if size == 'L' else SP
+    ims = [compose(j, p, size, head, PJ['jobWeapon'][j])[0] for p in P]
+    return row([crop(i) for i in ims], k, gap)
+rows = [job_row(j, 'L', 3, 'head_f0_h0_L') for j in ALLJOBS]
+def two_cols(rows):
+    a, b = stack(rows[:6], 2), stack(rows[6:], 2); cv = bg_sheet(a.width + b.width + 6, max(a.height, b.height)); cv.alpha_composite(a, (0, 0)); cv.alpha_composite(b, (a.width + 6, 0)); return cv
+two_cols(rows).save(os.path.join(OUT, 'f_all_jobs.png'))
+rows = []
+for j in ALLJOBS:
+    ims = [crop(compose(j, p, 'S', 'head_h0_S', PJ['jobWeapon'][j])[0]) for p in SP]
+    rows.append(stack([row(ims, 1, 8), row(ims, 4, 8)], 0))
+big = two_cols(rows); big.save(os.path.join(OUT, 'g_all_jobs_S.png')); print('all', big.size)

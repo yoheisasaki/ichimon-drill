@@ -18,6 +18,8 @@ SKIN_RGB = [hexc(c) for c in SKIN_RAMP]; HAIR_RGB = [hexc(c) for c in HAIR_RAMP]
 
 def magenta_mask(a):
     r, g, b = [a[..., i].astype(int) for i in range(3)]
+    if os.environ.get('PARTS_STRICT') == '1':   # 紫の服の職(魔法使い等)用: 背景の純マゼンタだけ消す
+        return (r > 200) & (b > 200) & (g < 80) & ((r + b) // 2 - g > 150)
     return (r > 140) & (b > 140) & (g < 120) & ((r + b) // 2 - g > 80)
 
 def green_mask(a):

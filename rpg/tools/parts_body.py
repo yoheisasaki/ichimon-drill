@@ -24,11 +24,13 @@ WEAPON_SCALE = {'L': 1.0, 'S': 0.5}
 
 job, size = sys.argv[1], sys.argv[2]
 sheet = sys.argv[3] if len(sys.argv) > 3 else os.path.join(SRC, f'sheet_body_{job}_{size}.png')
-a = np.array(Image.open(sheet).convert('RGB')); H, W = a.shape[:2]
+a = np.array(Image.open(sheet).convert('RGB')); H0, W0 = a.shape[:2]
+PAD = 80   # 頭の余白が元画像の上端を越えても切り出せるよう、マゼンタで周囲を足す
+a = np.pad(a, ((PAD, PAD), (PAD, PAD), (0, 0)), constant_values=0); a[:PAD] = a[-PAD:] = (255, 0, 255); a[:, :PAD] = a[:, -PAD:] = (255, 0, 255); H, W = a.shape[:2]
 mag = magenta_mask(a); grn = green_mask(a); fg = ~mag; smsrc = skin_mask_src(a)
 cells = {}
 for m in components(fg):
-    ys, xs = np.nonzero(m); key = (int(ys.mean() > H / 2), min(NCOL[size] - 1, int(xs.mean() / (W / NCOL[size]))))
+    ys, xs = np.nonzero(m); key = (int(ys.mean() - PAD > H0 / 2), min(NCOL[size] - 1, int((xs.mean() - PAD) / (W0 / NCOL[size]))))
     cells.setdefault(key, []).append(m)
 raw = {}
 for key, pose in POSES[size].items():
@@ -90,6 +92,8 @@ for pose, o in outs.items():
         if abs(xx.mean() - nx) < 6 and abs(yy.mean() - ny) < 7: continue   # 首
         comps.append((xx.mean(), yy.mean(), m))
     gx, gy, gm = max(comps, key=lambda c: c[0]) if comps else (w * 0.8, h * 0.6, np.zeros_like(op))
+    if gx < nx + 2:   # 右手が袖と一体で肌色の塊にならなかった（左手を拾った）→ 首の右前を握り位置にし、手の小片は作らない
+        gx, gy, gm = nx + (5 if size == 'S' else 18), ny + (8 if size == 'S' else 30), np.zeros_like(op)
     hm = ndi.binary_dilation(gm, iterations=1) & op
     hand = None; hpos = None
     if gm.any():
@@ -105,7 +109,7 @@ for pose, o in outs.items():
     key = f'{job}_{pose}_{size}'
     def mut(dj, key=key, hpos=hpos, w=w, h=h, foot=foot, o=o, gx=gx, gy=gy, pose=pose, hand=hand, name=name, skinset=skinset):
         dj['body'][key] = {'w': w, 'h': h, 'foot': foot, 'neck': [round(o['neck'][0], 1), round(o['neck'][1], 1)], 'grip': [round(gx, 1), round(gy, 1)],
-                           'gripAngle': GRIP_ANGLE[size][pose], 'weaponScale': WEAPON_SCALE[size], 'hand': hand, 'handPos': hpos}
+                           'gripAngle': GRIP_ANGLE[size][pose], 'weaponScale': WEAPON_SCALE[size], 'hand': hand, 'handPos': hpos, 'weaponLayer': 'back' if size == 'S' else 'front'}
         dj['palette']['skin'][name] = SKIN_RAMP
     save_parts_json(mut)
     print(name, (w, h), 'colors', ncol, 'foot', foot, 'neck', [round(v, 1) for v in o['neck']], 'grip', (round(gx, 1), round(gy, 1)), 'hand', hand, 'skin', len(skinset))
