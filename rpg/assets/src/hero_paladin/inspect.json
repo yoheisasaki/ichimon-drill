@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_paladin/hero_paladin.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  753,
+  869
+ ],
+ "out": "rpg/assets/chars/hero_paladin.png",
+ "out_size": [
+  83,
+  96
+ ],
+ "magenta_removed_px": 1172133,
+ "fringe_removed_px": 2525,
+ "magenta_left_px": 0,
+ "opaque_px": 4846,
+ "colors": 4007
+}

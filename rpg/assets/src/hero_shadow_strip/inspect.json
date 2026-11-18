@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_strip/hero_shadow_strip.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  557,
+  856
+ ],
+ "out": "rpg/assets/chars/hero_shadow_strip.png",
+ "out_size": [
+  18,
+  28
+ ],
+ "magenta_removed_px": 1286859,
+ "fringe_removed_px": 2646,
+ "magenta_left_px": 0,
+ "opaque_px": 300,
+ "colors": 269
+}

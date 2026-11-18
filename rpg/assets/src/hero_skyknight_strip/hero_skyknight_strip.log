@@ -1,0 +1,15 @@
+seconds=185
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight_strip\hero_skyknight_strip.png](C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight_strip\hero_skyknight_strip.png) — 1199 × 1312 ピクセル
+
+ght_strip.fixed.png'; "'$out.Save($temp,[System.Drawing.Imaging.ImageFormat]::Png); $out.Dispose(); Move-Item -LiteralPath $temp -Destination $src -Force; $check=[System.Drawing.Bitmap]::FromFile($src); $c=$check.GetPixel(0,0); Write-Output ('"'{0}x{1} background #{2:X2}{3:X2}{4:X2}' -f "'$check.Width,$check.Height,$c.R,$c.G,$c.B); $check.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight_strip
+ succeeded in 7684ms:
+1199x1312 background #FF00FF
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight_strip\hero_skyknight_strip.png](C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight_strip\hero_skyknight_strip.png) — 1199 × 1312 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+26,431
+

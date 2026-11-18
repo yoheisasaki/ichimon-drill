@@ -1,0 +1,25 @@
+seconds=155
+rc=0
+[hero_ninja.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ninja/hero_ninja.png) — 1278 × 1230 px
+
+ry { [pscustomobject]@{ Path=$path; Width=$check.Width; Height=$check.Height; Corner=$check.GetPixel(0,0).ToArgb().ToString('"'X8'); BackgroundPixelsCorrected="'$count } | Format-List } finally { $check.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ninja
+ succeeded in 14047ms:
+
+
+Path                      : C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ninja\hero_ninja.pn
+                            g
+Width                     : 1278
+Height                    : 1230
+Corner                    : FFFF00FF
+BackgroundPixelsCorrected : 1255491
+
+
+
+
+codex
+[hero_ninja.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ninja/hero_ninja.png) — 1278 × 1230 px
+hook: Stop
+hook: Stop Completed
+tokens used
+29,184
+

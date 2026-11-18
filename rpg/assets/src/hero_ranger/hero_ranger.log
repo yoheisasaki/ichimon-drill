@@ -1,0 +1,25 @@
+seconds=133
+rc=0
+[hero_ranger.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ranger/hero_ranger.png) — 1278 × 1230 ピクセル
+
+.Height; y++)
+        for (int x = 0; x < image.Width; x++) {
+          Color c = image.GetPixel(x, y);
+          if (c.R > 180 && c.B > 180 && c.G < 100) image.SetPixel(x, y, magenta);
+        }
+      image.Save(target, ImageFormat.Png);
+    }
+  }
+}
+'@; [MagentaFix]::Save("'$src,$dst); $img=[System.Drawing.Image]::FromFile($dst); Write-Output "$dst`n$($img.Width)x$($img.Height)"; $img.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ranger
+ succeeded in 1681ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ranger\hero_ranger.png
+1278x1230
+
+codex
+[hero_ranger.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ranger/hero_ranger.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+31,362
+

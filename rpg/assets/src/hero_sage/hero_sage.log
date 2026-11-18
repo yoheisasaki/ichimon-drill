@@ -1,0 +1,22 @@
+seconds=169
+rc=0
+[hero_sage.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_sage/hero_sage.png) — 1278 × 1230 ピクセル
+
+ets\\src\\hero_sage\\hero_sage.png'); "'$b=[System.Drawing.Bitmap]::FromFile((Resolve-Path -LiteralPath .'"\\hero_sage.png)); Write-Output \""'$($b.Width)x$($b.Height)"; foreach($xy in @(@(0,0),@(100,100),@(1200,100),@(0,600),@(1200,600),@(0,1200),@(1200,1200))) { $c=$b.GetPixel($xy[0],$xy[1]); Write-Output "$($xy[0]),$($xy[1]): $($c.R),$($c.G),$($c.B)" }; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_sage
+ succeeded in 1662ms:
+1278x1230
+0,0: 255,0,255
+100,100: 255,0,255
+1200,100: 255,0,255
+0,600: 255,0,255
+1200,600: 255,0,255
+0,1200: 255,0,255
+1200,1200: 255,0,255
+
+codex
+[hero_sage.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_sage/hero_sage.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+28,000
+

@@ -1,0 +1,15 @@
+seconds=187
+rc=0
+[hero_paladin_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_paladin_strip/hero_paladin_strip.png) — 1312 × 1199 px
+
+=[System.Drawing.Color]::FromArgb(255,0,255); for($y=0;$y -lt $bmp.Height;$y++){ for($x=0;$x -lt $bmp.Width;$x++){ $c=$bmp.GetPixel($x,$y); if($c.R -gt 180 -and $c.B -gt 180 -and $c.G -lt 100){$bmp.SetPixel($x,$y,$mag)} } }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output ($dst+'"' '+"'$bmp.Width+'"'x'+"'$bmp.Height); $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_paladin_strip
+ succeeded in 6469ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_paladin_strip\hero_paladin_strip.png 1312x1199
+
+codex
+[hero_paladin_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_paladin_strip/hero_paladin_strip.png) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,918
+

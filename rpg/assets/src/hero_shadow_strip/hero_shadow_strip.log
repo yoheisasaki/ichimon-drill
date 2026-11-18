@@ -1,0 +1,19 @@
+seconds=167
+rc=0
+[hero_shadow_strip.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow_strip/hero_shadow_strip.png>) — 1278 × 1230 ピクセル
+
+\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $p=Join-Path (Get-Location) '"'hero_shadow_strip.png'; "'$im=[System.Drawing.Bitmap]::new($p); Write-Output "$($im.Width)x$($im.Height)"; @(@(0,0),@($($im.Width-1),0),@(0,$($im.Height-1)),@($($im.Width-1),$($im.Height-1))) | ForEach-Object { $c=$im.GetPixel($_[0],$_[1]); Write-Output "#$('"'{0:X2}{1:X2}{2:X2}' -f "'$c.R,$c.G,$c.B)" }; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_shadow_strip
+ succeeded in 507ms:
+1278x1230
+#FF00FF
+#FF00FF
+#FF00FF
+#FF00FF
+
+codex
+[hero_shadow_strip.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow_strip/hero_shadow_strip.png>) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+25,394
+

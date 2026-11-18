@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_paladin_strip/hero_paladin_strip.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  749,
+  989
+ ],
+ "out": "rpg/assets/chars/hero_paladin_strip.png",
+ "out_size": [
+  21,
+  28
+ ],
+ "magenta_removed_px": 1113858,
+ "fringe_removed_px": 2716,
+ "magenta_left_px": 0,
+ "opaque_px": 370,
+ "colors": 320
+}
