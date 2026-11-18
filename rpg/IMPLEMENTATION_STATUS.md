@@ -35,6 +35,9 @@ node run.js 95件＋meta.js 29件 全通過／画面 ui_test 38・ui_test2 21・
 - 試験用セーブ6（tests/saves）、全体シミュレーション（sim_full／sim_post）、保存異常系・既存送信（モック）・データ検査・画面確認（chromium＋webkit、390px中心）
 - テスト起動：`node rpg/tests/run.js`／`meta.js`／`stage3.js`、`python rpg/tools/ui_test.py`／`ui_test2.py`／`ui_test3.py`／`ui_test4.py`／`regress.py <tag> <port>`、`node rpg/tools/sim_post.js`／`make_saves.js`
 
+## 技エフェクト（pixelfx）：完了（2026-11-18）
+- 技の効果を pixelfx の動くドット絵に（帯は小さく、報酬画面の勝利時は大きく＋hit stop・ゆれ）。読めないときは静止画 fx_*→コード描画。詳細 DECISIONS D-39、取り込み記録 `rpg/vendor/pixelfx/README_取り込み.md`、確認 `python rpg/tools/ui_test_fx.py`。未確認：実機Safari・体感。
+
 ## 未完・未確認
 1. 正式素材（画像）は0件。全て仮絵。生成手段なし。台帳 ASSET_MANIFEST.json（仮206・予定23）
 2. 学習ボード側の skip 受信保存＝このリポからは確認できない（未確認）。実機Safari・画像ロード計測（画像0枚）＝未実施

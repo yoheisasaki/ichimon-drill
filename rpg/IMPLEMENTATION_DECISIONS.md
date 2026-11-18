@@ -42,3 +42,24 @@
 - D-36 エンディング：本編クリア時の結果画面と、ぼうけん画面から見る。主人公・助けた地域・育てたしるし・記念品の4画面（仮絵）。
 - D-37 試験用セーブ6：`tools/make_saves.js`（70%・毎日2回・seed1・戦士→魔法使い→僧侶→魔法戦士・聖騎士→天翔騎士。買い物は店売りの最上位のみ）。数値は `baseline/saves_report_20261118.json`。
 - D-38 調整の根拠（sim_full／sim_post）：本編 60%＝344冒険172日、80%＝321冒険161日、30%＝554冒険（止まらない）。最上級職の試練に着手できるのは約100日（設計書の約101日と一致）。第2章末は91日（設計書84日よりやや遅い。強化・レア・固有を使わない保守的な買い方のため。調整はしていない）。本編の数値は第2段から変更なし。
+
+# 技の効果＝pixelfx（2026-11-18）
+- D-39 技の動くエフェクトは外部 pixelfx（https://github.com/patch-gg/pixelfx 、MIT、コミット 5294518）を `rpg/vendor/pixelfx/` に取り込み（core＋使う effect 20種。npm 不使用、gallery/fonts は持ち込まない）。描画は `rpg/js/rpg-fx.js`（classic script から動的 import。ビルドなし）。通常攻撃は従来のまま（技だけ差し替え）。戻り順：pixelfx →（読めない・失敗）静止画 fx_*（ChatGPT制作12種）→ コード描画。
+  - 帯（高さ44px）：エフェクト1ドット＝0.36論理ドット、最大0.9秒で止めて消す。hit stop・画面ゆれは切る。問題文・地図・選択肢の寸法は不変（学習画面の寸法差0）。
+  - 報酬画面（勝利時のみ）：職の大技エフェクトを宝箱の上で1回。大きめ（2.7 CSS px/ドット）、hit stop 0.09秒と画面ゆれ0.24秒を使う。「動きを減らす」設定では出さない。
+  - 色：斬撃・突き・盾・crit は職の色（palette を6段に展開）。炎・氷・雷・水・光・回復は属性の色のまま。
+  - effect 20種：slash=sword-slash, double=double-slash, flurry=dagger-flurry, cleave=heavy-cleave, thrust=thrust, fire=fireball, ice=ice-lance, nova=frost-nova, zap=zap-hit, clap=thunderclap, heal=heal, shield=divine-shield, block=shield-block, smite=smite, pillar=holy-pillar, crit=crit-hit, smoke=smoke-bomb, star=star-fall, burst=mana-burst, splash=splash。
+  - 技→効果（技ID接尾=効果キー。ID接頭は職）：
+  - 戦士：strike=slash, shield=block, rock=crit, brave=cleave
+  - 魔法使い：fire=fire, ice=ice, thunder=zap, rain=star
+  - 僧侶：heal=heal, arrow=thrust, barrier=shield, holy=pillar
+  - 盗賊：twin=double, parry=slash, gap=thrust, gale=flurry
+  - 魔法戦士：fire=fire, ice=ice, thunder=zap, release=burst, dance=double, rainbow=nova
+  - 聖騎士：shield=shield, sword=heal, smite=crit, wall=shield, light=smite, dawn=pillar
+  - 影武者：copy=slash, after=slash, pinch=double, pass=thrust, three=flurry, dance=crit
+  - 賢者：spark=zap, wind=heal, elem=nova, ward=shield, flow=star, harmony=pillar
+  - 忍者：fire=fire, water=splash, thunder=zap, smoke=smoke, three=flurry, secret=clap
+  - レンジャー：aim=thrust, grace=heal, stop=thrust, wind=thrust, star=star, tree=pillar
+  - 天翔騎士：wing=slash, guard=shield, meteor=star, blade=double, slash=flurry, dawn=pillar
+  - 星詠み：arrow=thrust, ward=shield, comet=star, drop=heal, night=star, create=burst
+  - 報酬画面の大技：戦士=cleave、魔法使い=star、僧侶・聖騎士・賢者・レンジャー・天翔騎士=pillar、盗賊=flurry、魔法戦士=nova、影武者=crit、忍者=clap、星詠み=burst。

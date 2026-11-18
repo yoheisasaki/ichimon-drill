@@ -1,7 +1,7 @@
 'use strict';
 // 画面側：下端の冒険帯・結果（報酬）画面・保存の失敗表示・バックアップ。app.js から window.RPG 経由で呼ばれる
 (function (root) {
-  const D = root.RPGData, C = root.RPGCore, A = root.RPGAdv, M = root.RPGMeta, SP = root.RPGSprites;
+  const D = root.RPGData, C = root.RPGCore, A = root.RPGAdv, M = root.RPGMeta, SP = root.RPGSprites, FXL = root.RPGFX;
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const rb = s => (typeof root.ruby === 'function' ? root.ruby(s) : esc(s.replace(/\{([^|{}]+)\|([^{}]+)\}/g, '$1')));
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
@@ -20,6 +20,7 @@
     RPG.save = M.ensure(r.save);
     if (!r.ok) { RPG.err = r.err; RPG.errDetail = r.detail || null; RPG.ok = false; return; }
     RPG.ok = true;
+    try { if (FXL) setTimeout(() => FXL.load(), 400); } catch (e) {}   // 技の動くエフェクトは後から読む（失敗しても静止画・コード描画で動く）
     if (r.fresh) { const w = RPG.store.save(RPG.save); if (!w.ok) { RPG.ok = false; RPG.err = w.err; } }
     fetch('rpg/ASSET_MANIFEST.json', { cache: 'no-cache' }).then(x => x.json()).then(m => { (m.assets || []).forEach(a => { if (a.status === '正式' && a.path) RPG.assets[a.id] = a; }); SP.loadImages(RPG.assets, () => { try { if (ctx) drawStrip(); } catch (e) {} }); }).catch(() => {});
   };
@@ -84,6 +85,11 @@
     const b = a.battle, ed = D.ENEMIES[a.enemyId];
     return { job: b.hero.job, region: a.route.bg || D.REGIONS[a.route.region].id, outfit: M.costumeColor(RPG.save), enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0) };
   }
+  const REWARD_FXS = 0.9;   // 報酬画面：報酬の canvas は 1ドット＝CSS 3px。エフェクト1ドットを 2.7 CSS px に
+  const STRIP_FXS = 0.36;   // 帯：エフェクト1ドット＝帯の0.3ドット（小さく控えめ）。報酬画面は REWARD_FXS
+  const fxLive = [];
+  // 画像が枠（CSS px）に収まらないとき、縮小率を返す（収まるなら1）。192pxボスの帯・報酬画面用
+  function fitScale(im, maxW, maxH) { if (!im) return 1; return Math.min(1, maxW ? maxW / im.width : 1, maxH ? maxH / im.height : 1); }
   function drawStrip(o) {
     if (!ctx) return; o = o || {};
     const si = sceneInfo(); if (!si) return;
@@ -91,7 +97,9 @@
     const gy = H - 2, hx = 8 + Math.min(RPG.scene.walk, 8) * 6 + (o.heroDx || 0), ex = W - 26 + (o.enemyDx || 0);
     const heroTint = si.status === 'retreat' ? '#8a90a8' : (o.heroFlash ? '#ff9aa0' : null);
     SP.drawHero(ctx, si.job, hx, gy, { img: 'strip', tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
-    if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { img: 'strip', tint: o.enemyFlash ? '#fff' : null });
+    if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { img: 'strip', tint: o.enemyFlash ? '#fff' : null, scale: fitScale(SP.IMGS['enemy_' + si.enemyId + '_strip'], 0, 40) });
+    if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cx = o.still.hero ? hx + 7 : ex + 7; ctx.drawImage(im, cx - w / 2, gy - h - 2, w, h); ctx.restore(); } }
+    fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx + 7 : f.at === 'melee' ? ex - 10 : ex + 7, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1); });
     if (o.slash) { SP.px(ctx, hx + 16, gy - 12, '#fff', 2); SP.px(ctx, hx + 18, gy - 10, '#ffe27a', 2); SP.px(ctx, hx + 20, gy - 8, '#fff', 2); }
     if (o.heal) { SP.px(ctx, hx + 5, gy - 18, '#5be08a', 1); SP.px(ctx, hx + 4, gy - 17, '#5be08a', 3); SP.px(ctx, hx + 5, gy - 16, '#5be08a', 1); }
   }
@@ -105,7 +113,7 @@
     if (inp) { inp.addEventListener('focus', () => { box.hidden = true; }); inp.addEventListener('blur', () => { box.hidden = false; }); }
     if (RPG.deferred.length) { const d = RPG.deferred; RPG.deferred = []; setTimeout(() => RPG.play(d), 120); }
   };
-  RPG.unmount = function () { cancelAnimationFrame(raf); cv = ctx = null; anim = null; };
+  RPG.unmount = function () { cancelAnimationFrame(raf); cv = ctx = null; anim = null; fxLive.length = 0; };
   // 出来事を短く再生。演出は計算結果に影響しない（省略しても同じ）
   const snd = n => { try { if (RPG.sound) RPG.sound.play(n); } catch (e) {} };
   RPG.play = function (events) {
@@ -113,16 +121,33 @@
     if (!ctx || !events.length) { if (events.some(e => e.t === 'explore')) RPG.scene.walk++; return; }
     const steps = [];
     events.forEach(e => {
-      if (e.t === 'hero') steps.push({ d: 360, f: p => ({ heroDx: p < .3 ? p / .3 * 8 : p < .6 ? 8 : (1 - (p - .6) / .4) * 8, slash: p > .25 && p < .55, enemyFlash: p > .3 && p < .6 && e.dmg > 0, heal: e.heal > 0 && p > .5 }) });
+      if (e.t === 'hero') {
+        const key = e.act !== 'normal' && FXL ? FXL.keyFor(e.act) : null, job = RPG.save && RPG.save.active ? RPG.save.active.battle.hero.job : null;
+        const st = { d: 360, key, f: p => {
+          const r = { heroDx: p < .3 ? p / .3 * 8 : p < .6 ? 8 : (1 - (p - .6) / .4) * 8, enemyFlash: p > .3 && p < .6 && e.dmg > 0 };
+          if (!key) { r.slash = p > .25 && p < .55; r.heal = e.heal > 0 && p > .5; }
+          else if (!st.played && p > .2 && p < .6) { const kind = FXL.stillOf(key), hero = (FXL.AT[key] === 'hero'); if (kind && SP.IMGS['fx_' + kind + '_strip']) r.still = { kind, hero }; else { r.slash = !hero; r.heal = hero && e.heal > 0; } }
+          return r;
+        } };
+        st.spawn = () => {   // 帯では hit stop・画面ゆれは出さない（弱めるのではなく切る）
+          const inst = FXL.spawn(key, { jobColor: job ? SP.JOB_COLOR[job] : null, cap: 0.9, delay: 0.08, light: 1 });
+          if (inst) { st.played = true; fxLive.push(inst); }
+        };
+        steps.push(st);
+      }
       else if (e.t === 'heal') steps.push({ d: 280, f: p => ({ heal: true }) });
       else if (e.t === 'enemy' && e.dmg > 0) steps.push({ d: 360, f: p => ({ enemyDx: p < .3 ? -p / .3 * 8 : p < .6 ? -8 : -(1 - (p - .6) / .4) * 8, heroFlash: p > .3 && p < .6, guard: e.reduced > 0 && p > .2 && p < .7 }) });
       else if (e.t === 'explore') RPG.scene.walk++;
     });
     if (reduceMotion() || !steps.length) { drawStrip(); return; }
-    const t0 = performance.now(); let i = 0, start = t0; cancelAnimationFrame(raf);
+    const t0 = performance.now(); let i = 0, start = t0, last = t0; cancelAnimationFrame(raf);
     const tick = now => {
       if (!ctx) return;
-      const st = steps[i]; if (!st) { drawStrip(); return; }
+      const dt = Math.max(0, (now - last) / 1000); last = now;
+      fxLive.forEach(f => f.update(dt)); for (let j = fxLive.length - 1; j >= 0; j--) if (fxLive[j].started() && fxLive[j].done()) fxLive.splice(j, 1);
+      const st = steps[i];
+      if (!st) { drawStrip(); if (fxLive.length) raf = requestAnimationFrame(tick); return; }
+      if (!st.s) { st.s = 1; if (st.spawn) st.spawn(); }
       const p = Math.min(1, (now - start) / st.d); drawStrip(st.f(p));
       if (p >= 1) { i++; start = now; }
       raf = requestAnimationFrame(tick);
@@ -212,13 +237,40 @@
     const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k) * k; c.height = Math.round(c.width * 0.66 / k) * k;
     const g = c.getContext('2d'); g.setTransform(k, 0, 0, k, 0, 0); const lw = c.width / k, lh = c.height / k;
     const rg = res.bg || D.ENEMIES[res.enemy.id].region;
-    SP.drawBackground(g, lw, lh, rg, 'reward');
     const gy2 = Math.round(lh * 0.88 / 2), cx = Math.round(lw / 4);
-    g.save(); g.scale(2, 2);   // キャラは2倍（仮絵）
-    SP.drawHero(g, res.job.id, cx - 20, gy2, { img: 'reward', tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
-    if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true, res.enemy.boss ? 'boss' : 'normal');
-    else SP.drawEnemy(g, res.enemy.id, res.enemy.boss, cx + 8, gy2, { img: 'reward' });
-    g.restore();
+    const paint = () => {
+      SP.drawBackground(g, lw, lh, rg, 'reward');
+      g.save(); g.scale(2, 2);   // キャラは2倍（仮絵）
+      SP.drawHero(g, res.job.id, cx - 20, gy2, { img: 'reward', tint: res.outcome === 'retreat' ? '#8a90a8' : null, outfit: M.costumeColor(RPG.save) });
+      if (res.outcome === 'victory') SP.drawChest(g, cx + 4, gy2, true, res.enemy.boss ? 'boss' : 'normal');
+      else {
+        // 192pxボスは幅が220px超になることがあり、右端が切れる／主人公に重なる。右端を枠の内側に寄せ、足りなければ縮小する
+        const eim = SP.IMGS['enemy_' + res.enemy.id], k6 = 6; let ex2 = cx + 8, sc = 1;
+        if (eim && eim.width > 0) { const room = c.width - 8 - 143; sc = fitScale(eim, room, 0); const half = eim.width * sc / 2; ex2 = Math.min(ex2, (c.width - 8 - half) / k6 - 7); }
+        SP.drawEnemy(g, res.enemy.id, res.enemy.boss, ex2, gy2, { img: 'reward', scale: sc });
+      }
+      g.restore();
+    };
+    paint();
+    // 勝ったときだけ、職の大技を宝箱の上で1回（報酬画面は大きめ。hit stop と短い画面ゆれを使ってよい）。読めなければ静止画→何もしない
+    if (res.outcome !== 'victory' || reduceMotion() || !FXL) return;
+    const key = FXL.BIG[res.job.id], kind = key && FXL.stillOf(key), still = kind && SP.IMGS['fx_' + kind];
+    const melee = FXL.AT[key] === 'melee', ax = melee ? (cx - 13) * 2 + 6 : (cx + 10) * 2, ay = gy2 * 2;
+    const run = (inst) => {
+      const box = c.parentNode; let last = performance.now(), n = 0, stillT = 0;
+      if (box && box.classList) { setTimeout(() => { box.classList.add('rw-shake'); setTimeout(() => box.classList.remove('rw-shake'), 240); }, 260); }
+      const tick = now => {
+        if (!root.document.body.contains(c)) return;
+        const dt = Math.max(0, (now - last) / 1000); last = now; n++;
+        if (inst) { inst.update(dt); paint(); if (inst.started()) inst.blit(g, ax, ay, REWARD_FXS, 1); if (inst.done()) { paint(); return; } }
+        else { stillT += dt; paint(); if (stillT >= 0.6) return; g.save(); g.globalAlpha = Math.min(1, (0.6 - stillT) * 4); g.imageSmoothingEnabled = false; const k2 = g.getTransform().a || 1; g.drawImage(still, ax - still.width / k2 * 2, ay - still.height / k2 * 2 - 6, still.width / k2 * 4, still.height / k2 * 4); g.restore(); }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const go = () => { if (!root.document.body.contains(c)) return; const inst = FXL.spawn(key, { jobColor: SP.JOB_COLOR[res.job.id], cap: 1.6, delay: 0.25, hitstop: [0.45, 0.09], light: 1 }); if (inst) run(inst); else if (still) run(null); };
+    if (FXL.state === 'ready') go(); else if (FXL.state === 'loading' || FXL.state === 'idle') { FXL.load().then(go); }
+    else if (still) run(null);
   };
 
   // ---------- ホームの「ゲームのデータ」 ----------

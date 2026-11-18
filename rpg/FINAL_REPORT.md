@@ -84,3 +84,7 @@ IMPLEMENTATION_DECISIONS.md の D-01〜D-38。第3段は D-28〜D-38（固有装
 - 端末の時計を進める不正は防げない（巻き戻しは防ぐ）
 - ランクII〜VIの通常装備・レア名は仮名。会話の文はひらがな中心だが一部の漢字はルビなし
 - 全条件を満たしていないため「完成」とは言えない
+
+
+## 9. ライセンス（外部素材・ライブラリ）
+- pixelfx（https://github.com/patch-gg/pixelfx 、MIT、コミット 5294518）：`rpg/vendor/pixelfx/`（LICENSE・NOTICE.md 同梱。Sprite Fusion/Hugo Duprez、Hollow Crown/rehan-remade の MIT 改作を含む）。技の動くエフェクトに使用。gallery/fonts（MIT対象外）は不使用。記録：vendor/pixelfx/README_取り込み.md、ASSET_MANIFEST.json の vendor、DECISIONS D-39。
