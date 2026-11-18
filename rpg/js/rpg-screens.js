@@ -32,6 +32,7 @@
     const st = M.statOf(save(), id), it = D.ITEMS[id]; if (!it) return '';
     return st.atk != null ? `こうげき ${st.atk}` : st.def != null ? `ぼうぎょ ${st.def}` : '';
   }
+  const iconOf = id => { const a = RPG.assets && RPG.assets['icon_' + id]; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="32" height="32" alt="" aria-hidden="true">` : ''; };
   const rankTag = it => it.rank ? `<i class="rs-rank">ランク${D.RANK_NAME[it.rank - 1]}</i>` : '';
   const rareTag = it => (it.rarity === 'rare' ? '<i class="rs-rare">レア</i>' : it.relic ? '<i class="rs-rare">ひきょう</i>' : it.rarity === 'unique' ? '<i class="rs-rare">固有</i>' : '') + (it.provisional ? '<i class="rs-prov">仮名</i>' : '');
   const tierName = t => ({ base: 'きほん職', adv: '上級職', top: '最上級職' })[t];
@@ -169,7 +170,7 @@
     const owned = Object.keys(s.inv.items).map(i => D.ITEMS[i]).filter(i => i.slot === UI.slot).sort((a, b) => (b.rank - a.rank) || (a.rarity < b.rarity ? 1 : -1));
     const rows = owned.map(it => {
       const err = M.canEquip(s, it.id), on = UI.eq[UI.slot] === it.id, lv = M.enhLv(s, it.id), eff = M.effectText(it.id);
-      return `<button class="rs-item${on ? ' on' : ''}${err ? ' ng' : ''}" data-eq="${it.id}" ${err ? 'aria-disabled="true"' : ''}><div><b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}${s.equip[UI.slot] === it.id ? '<i class="rs-now2">そうびちゅう</i>' : ''}</div><small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${err ? '　（' + esc(err) + '）' : ''}</small></button>`;
+      return `<button class="rs-item${on ? ' on' : ''}${err ? ' ng' : ''}" data-eq="${it.id}" ${err ? 'aria-disabled="true"' : ''}><div>${iconOf(it.id)}<b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}${s.equip[UI.slot] === it.id ? '<i class="rs-now2">そうびちゅう</i>' : ''}</div><small>${esc(statLine(it.id))}${eff ? '　' + esc(eff) : ''}${err ? '　（' + esc(err) + '）' : ''}</small></button>`;
     }).join('') || '<p class="rs-p">まだ もっていません。</p>';
     return frame('そうび', `
       <div class="rs-panel rs-eqhead"><canvas class="rs-herocv" id="rsEqHero" aria-hidden="true"></canvas>
