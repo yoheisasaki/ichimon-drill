@@ -61,7 +61,7 @@
   function grantItem(save, id) {
     const it = D.ITEMS[id];
     if (save.inv.items[id]) { addMat(save, oreId(it.rank), 3); return { dup: true, ore: 3, item: id }; }   // レア重複 → 同ランク素材3
-    save.inv.items[id] = 1; return { dup: false, item: id };
+    save.inv.items[id] = 1; if (save.codex) save.codex.items[id] = 1; return { dup: false, item: id };
   }
 
   // ---------- 宝箱（開封前に結果を確定して保存） ----------
@@ -125,11 +125,11 @@
     return {
       v: SAVE_VERSION, rev: 0, created: ms || 0, name: '', look: { face: 0, hair: 0, skin: 0, hairColor: 0 },
       advXp: 0, job: D.FIRST_JOB, jobXp, coins: 0, welcomeDone: false, firstDone: false,
-      inv: { items: { w_start: 1 }, mats: {}, enhance: {} }, equip: { weapon: 'w_start', armor: null, acc: null },
+      inv: { items: { w_start: 1 }, mats: {}, enhance: {}, fresh: {} }, equip: { weapon: 'w_start', armor: null, acc: null },
       loadout: { skills: null, tactic: 'auto' }, wish: 'sword',
       progress: { step: 0, enemyHp: null, clearedRegions: [], bossKills: {} },
       daily: { maxKey: '', used: {} }, chest: { pity: 0 },
-      active: null, lastResult: null, ledger: { settled: {} }, trials: {}, stats: { adventures: 0 }, settings: { sound: false, vibrate: false }
+      codex: { enemies: {}, items: {} }, goal: null, seen: {}, active: null, lastResult: null, ledger: { settled: {} }, trials: {}, stats: { adventures: 0 }, settings: { sound: false, vibrate: false }
     };
   }
   function validateSave(o) {

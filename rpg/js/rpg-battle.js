@@ -19,12 +19,13 @@
     const b = baseStats(advLv, job), it = id => (id && D.ITEMS[id]) || null;
     const w = it(equip && equip.weapon) || D.START_WEAPON, a = it(equip && equip.armor), x = it(equip && equip.acc);
     const fx = {};
-    [a, x, w].forEach(i => { if (i && i.fx) Object.keys(i.fx).forEach(k => { fx[k] = k === 'elemAdd' ? i.fx[k] : (fx[k] || 0) + i.fx[k]; }); });
+    const enh = (equip && equip.enh) || {}, xe = 1 + D.ENH_STEP * (enh.acc || 0);   // 強化：武器・防具は数値、アクセサリーは効果量に掛ける
+    [a, x, w].forEach(i => { if (i && i.fx) Object.keys(i.fx).forEach(k => { fx[k] = k === 'elemAdd' ? i.fx[k] : (fx[k] || 0) + i.fx[k] * (i === x ? xe : 1); }); });
     let hpPct = fx.hpPct || 0;
     if (job === 'warrior' && jobLv >= 3) hpPct += 0.15;
     if (D.JOBS[job].tier === 'base' && jobLv >= 20) hpPct += 0.05;
     const maxHp = Math.floor(b.hp * (1 + hpPct));
-    return { maxHp, atk: Math.floor(b.atk) + (w.atk || 0), def: Math.floor(b.def) + (a ? a.def || 0 : 0), fx };
+    return { maxHp, atk: Math.floor(b.atk) + (w.atk || 0) + D.enhBonus(w, enh.weapon), def: Math.floor(b.def) + (a ? (a.def || 0) + D.enhBonus(a, enh.armor) : 0), fx };
   }
 
   // ---------- 技の有効値（職業レベルによる強化） ----------

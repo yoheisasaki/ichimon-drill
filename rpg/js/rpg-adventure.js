@@ -2,9 +2,9 @@
 // 冒険（10基本回答＋復習）の進行。セーブデータを直接更新する。回答イベントは rid で重複を弾く
 (function (root, factory) {
   const isN = typeof module === 'object' && module.exports;
-  const m = factory(isN ? require('./rpg-data.js') : root.RPGData, isN ? require('./rpg-core.js') : root.RPGCore, isN ? require('./rpg-battle.js') : root.RPGBattle);
+  const m = factory(isN ? require('./rpg-data.js') : root.RPGData, isN ? require('./rpg-core.js') : root.RPGCore, isN ? require('./rpg-battle.js') : root.RPGBattle, isN ? require('./rpg-meta.js') : root.RPGMeta);
   if (isN) module.exports = m; else root.RPGAdv = m;
-})(typeof self !== 'undefined' ? self : this, function (D, C, B) {
+})(typeof self !== 'undefined' ? self : this, function (D, C, B, M) {
   const UNIT = C.ADV_UNIT, EVENT_KEEP = 80;
 
   function routeAt(step) { return D.ROUTE[Math.min(step, D.ROUTE.length - 1)]; }
@@ -15,7 +15,7 @@
     const advLv = C.heroLevel(save.advXp).lv, jobs = C.jobLevels(save), job = save.job, jobLv = jobs[job];
     let skills = save.loadout.skills;
     if (!skills || B.validateLoadout(job, jobs, skills, jobs.warrior >= 5 || jobs.mage >= 5 || jobs.priest >= 5 || jobs.thief >= 5).length) skills = B.recommendLoadout(job, jobs);
-    return { job, jobLv, advLv, equip: Object.assign({}, save.equip), skills, tactic: save.loadout.tactic };
+    return { job, jobLv, advLv, equip: Object.assign({}, save.equip, { enh: { weapon: M.enhLv(save, save.equip.weapon), armor: M.enhLv(save, save.equip.armor), acc: M.enhLv(save, save.equip.acc) } }), skills, tactic: save.loadout.tactic };
   }
   function begin(save, ms) {
     if (save.active) return save.active;
@@ -27,6 +27,7 @@
       enemyId: r.enemy, hero: snap, slot: null, basic: { n: 0, c: 0 }, reviews: { ok: [], pending: [], used: 0 }, seq: 0, events: {},
       battle: B.newBattle(Object.assign({ enemyId: r.enemy, enemyStats: r.stats, enemyHp: hp }, snap))
     };
+    M.onBegin(save);
     return save.active;
   }
   const remainingBasics = save => save.active ? Math.max(0, UNIT - save.active.basic.n) : UNIT;
@@ -83,6 +84,7 @@
       else if (a.hero.job === 'thief' && a.hero.jobLv >= 3 && C.rngFrom(a.id + ':treasure')() < 0.2) { const r = C.maxRank(save); C.addMat(save, C.oreId(r), 1); drops.push({ mat: C.oreId(r), name: C.oreName(r), n: 1, thief: true }); }
     }
     save.coins += coin;
+    if (outcome === 'victory') M.killEnemy(save, ed.id);
     // 道のり
     const route = D.ROUTE[Math.min(a.step, D.ROUTE.length - 1)];
     if (outcome === 'victory') {

@@ -263,8 +263,15 @@
   }
   const START_WEAPON = { id: 'w_start', slot: 'weapon', cat: 'any', wish: 'sword', rank: 0, rarity: 'normal', name: 'はじまりの武器', atk: 3, price: 0 };
   ITEMS.w_start = START_WEAPON;
+  // 強化：+1ごとに基準性能+5%（最大+3。必ず成功）。レア補正（約+10%）は店売りの基準値に加算。基準値＝同ランク・同系統の通常品
+  const ENH_MAX = 3, ENH_STEP = 0.05;
+  function enhBase(it) { const n = it.rarity === 'rare' ? ITEMS[it.id.replace(/^r/, '')] : it; return n || it; }
+  function enhBonus(it, lv) {   // 武器の攻撃・防具の防御に加える値
+    if (!it || !lv || !it.rank) return 0; const b = enhBase(it);
+    return Math.round((b.atk || b.def || 0) * ENH_STEP * lv);
+  }
   const WISH_LIST = ['sword', 'staff', 'dagger', 'bow', 'armor', 'acc'];
   const WISH_NAME = { sword: 'つるぎ', staff: 'つえ', dagger: 'たんけん', bow: 'ゆみ', armor: 'ぼうぐ', acc: 'アクセサリー' };
 
-  return { ELEMENTS, EL_NAME, JOBS, JOB_IDS, FIRST_JOB, SKILLS, SKILLS_OF, PASSIVES, REGIONS, ENEMIES, ROUTE, NORMAL_STEPS, BOSS_STEPS, STEPS_PER_REGION, CURVE, statsAt, ITEMS, RANK_NAME, WISH_LIST, WISH_NAME, START_WEAPON };
+  return { ELEMENTS, EL_NAME, JOBS, JOB_IDS, FIRST_JOB, SKILLS, SKILLS_OF, PASSIVES, REGIONS, ENEMIES, ROUTE, NORMAL_STEPS, BOSS_STEPS, STEPS_PER_REGION, CURVE, statsAt, ITEMS, ENH_MAX, ENH_STEP, enhBonus, RANK_NAME, WISH_LIST, WISH_NAME, START_WEAPON };
 });
