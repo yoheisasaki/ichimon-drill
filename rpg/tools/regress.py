@@ -66,16 +66,17 @@ with sync_playwright() as p:
         pg.click('#quit'); pg.wait_for_selector('.subj')
         pg.evaluate("() => { filter='全部'; home(); }"); pg.click('#go'); pg.wait_for_selector('.choice')
         for _ in range(14):
-            if pg.query_selector('.res-score'): break
+            if pg.query_selector('.res-score') or pg.query_selector('#rwRoot'): break
             if pg.query_selector('#ans'):
                 pg.evaluate("() => { const q = S.cur; const inp = document.getElementById('ans'); inp.value = q.accept[0]; inp.dispatchEvent(new Event('input')); document.getElementById('submit').click(); }")
             elif pg.query_selector('.choice'):
                 pg.evaluate(CORRECT)
             pg.wait_for_timeout(900)
-        pg.wait_for_selector('.res-score', timeout=5000)
-        ops['result_text'] = pg.inner_text('.res-score')
+        pg.wait_for_selector('.res-score, #rwRoot', timeout=5000)
+        ops['result_kind'] = 'reward' if pg.query_selector('#rwRoot') else 'plain'
+        ops['result_text'] = pg.inner_text('.res-score, .rw-score')
         if engine == 'chromium': pg.screenshot(path=os.path.join(OUT, '6_result.png'))
-        ops['result_buttons'] = pg.evaluate("() => [...document.querySelectorAll('.big')].map(b => b.textContent)")
+        ops['result_buttons'] = pg.evaluate("() => [...document.querySelectorAll('.big, .rw-btns .rw-btn')].map(b => b.textContent)")
         M['ops'][engine] = ops; ctx.close(); b.close()
 M['send_blocked_requests'] = len(blocked)
 srv.shutdown()

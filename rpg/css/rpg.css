@@ -49,3 +49,4 @@ body:has(.rw){background:#0b1329}
 .rw-btn.alt{display:block;width:100%;min-height:52px;font-size:17px;background:#2a3a6a;margin-top:6px}
 .rw rt{color:#b6bfd8}
 @media (prefers-reduced-motion:reduce){.rw-btn:active{transform:none}}
+#app.inq>*{flex-shrink:0}

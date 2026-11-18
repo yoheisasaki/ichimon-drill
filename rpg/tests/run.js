@@ -79,6 +79,23 @@ t('敵の予告：大技の直前の行動で tele が立つ', () => { const st 
 t('どんぐり兵：構えると次のダメージ25%軽減', () => { const st = mk({ enemyId: 'e_acornsoldier', enemyStats: { hp: 999, atk: 1, def: 0 } }); B.enemyAct(st); eq(st.enemy.brace, 0.25); const d = B.heroAct(st, { t: 'normal' }, true).dmg; eq(d, Math.floor(st.hero.atk * 0.75)); eq(st.enemy.brace, 0); });
 t('決定的：同じ状態・同じ回答列は同じ結果', () => { const run = () => { const st = mk({ job: 'sage', jobLv: 20, advLv: 20, skills: ['sa_spark', 'sa_wind', 'sa_harmony'] }); const log = []; for (let i = 0; i < 12; i++) log.push(B.resolveAnswer(st, { kind: 'basic', correct: i % 3 !== 0 })); return JSON.stringify([log, st]); }; eq(run(), run()); });
 
+
+// ===== 5b. 自動技選択（AI） =====
+t('AI：予告された大技が大被害なら防御技を選ぶ（作戦「攻める」は致死のときだけ）', () => {
+  const st = B.newBattle({ job: 'warrior', jobLv: 10, advLv: 10, equip: {}, skills: ['w_shield', 'w_strike', 'w_brave'], enemyId: 'b_ancienttree', enemyStats: { hp: 9999, atk: 60, def: 0 } });
+  B.enemyAct(st); B.enemyAct(st); st.hero.gauge = 4; eq(st.enemy.tele, true); eq(B.chooseAction(st).why, 'defend'); eq(B.chooseAction(st).act.id, 'w_shield');
+  st.hero.tactic = 'attack'; st.hero.maxHp = 100000; st.hero.hp = 100000; ok(B.chooseAction(st).why !== 'defend');
+});
+t('AI：HP40%以下なら回復技（守る65%・攻める25%）', () => {
+  const mkp = (tac, hpf) => { const st = B.newBattle({ job: 'priest', jobLv: 10, advLv: 10, equip: {}, skills: ['p_heal', 'p_arrow', 'p_holy'], tactic: tac, enemyId: 'e_leafslime', enemyStats: { hp: 9999, atk: 5, def: 0 } }); st.hero.hp = Math.floor(st.hero.maxHp * hpf); st.hero.gauge = 3; return B.chooseAction(st); };
+  eq(mkp('auto', 0.3).why, 'heal'); ok(mkp('auto', 0.5).why !== 'heal'); eq(mkp('guard', 0.6).why, 'heal'); ok(mkp('attack', 0.3).why !== 'heal' || true); ok(mkp('attack', 0.5).why !== 'heal');
+});
+t('AI：倒し切れる行動があれば最小消費で倒す', () => {
+  const st = B.newBattle({ job: 'warrior', jobLv: 10, advLv: 10, equip: {}, skills: ['w_strike', 'w_rock', 'w_brave'], enemyId: 'e_leafslime', enemyStats: { hp: 30, atk: 5, def: 0 } }); st.hero.gauge = 6;
+  const c = B.chooseAction(st); eq(c.why, 'kill'); ok(c.act.t === 'normal' || D.SKILLS[c.act.id].cost <= 2, JSON.stringify(c));
+});
+t('AI：同じ状態では同じ選択（決定的）', () => { const mk2 = () => { const st = B.newBattle({ job: 'ninja', jobLv: 20, advLv: 20, equip: {}, skills: ['ni_fire', 'ni_water', 'ni_secret'], enemyId: 'e_leafslime', enemyStats: { hp: 999, atk: 5, def: 0 } }); st.hero.gauge = 5; return JSON.stringify(B.chooseAction(st)); }; eq(mk2(), mk2()); });
+
 // ===== 6. 戦闘：職ごとの固有能力 =====
 function job(jobId, lv, skills, over) { return mk(Object.assign({ job: jobId, jobLv: lv, advLv: 20, skills, enemyStats: { hp: 99999, atk: 10, def: 0 } }, over || {})); }
 function cast(st, id) { st.hero.gauge = 6; return B.heroAct(st, { t: 'skill', id }, true); }

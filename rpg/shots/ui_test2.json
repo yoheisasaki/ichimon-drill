@@ -1,0 +1,78 @@
+{
+ "checks": {
+  "A:rpg_disabled_on_storage_error": true,
+  "A:home_notice": true,
+  "A:no_strip_when_disabled": true,
+  "A:learning_still_records": true,
+  "B:stale_tab_stops": true,
+  "B:stale_not_overwritten": true,
+  "B:stale_notice_shown": true,
+  "C:active_kept_after_quit": {
+   "ok": true,
+   "v": {
+    "n": 3,
+    "pending": 1,
+    "used": 1
+   }
+  },
+  "C:home_progress_note": true,
+  "C:active_kept_after_reload": {
+   "ok": true,
+   "v": {
+    "n": 3,
+    "pending": 1
+   }
+  },
+  "C:resume_caps_basics_to_7_and_prepends_review": {
+   "ok": true,
+   "v": {
+    "total": 7,
+    "queue": 8,
+    "firstIsReview": true,
+    "reask": 1
+   }
+  },
+  "C:settled_once_after_accumulation": {
+   "ok": true,
+   "v": {
+    "adv": 1,
+    "xp": 450
+   }
+  },
+  "C:next_adventure_slot2": true,
+  "D:short_session_note": {
+   "ok": true,
+   "v": "おわり！ 3 / 3 せいかい こんかい 3もん ／ ぼうけん 3 / 10（つづきは つぎの スタートで） ぜんぶ せいかい！ すごい！ まちがえたのだけ もう1回 つぎの10もん おわる"
+  },
+  "D:no_reward_screen_for_short": true,
+  "D:buttons_still_work": true,
+  "E:strip_hidden_while_typing": {
+   "ok": true,
+   "v": [
+    true,
+    false,
+    true
+   ]
+  },
+  "F:enemy_action_deferred_until_next": {
+   "ok": true,
+   "v": {
+    "deferred": 1,
+    "hp": 50,
+    "max": 55
+   }
+  },
+  "F:deferred_played_on_next_question": true,
+  "F:double_tap_single_event": {
+   "ok": true,
+   "v": [
+    1,
+    2
+   ]
+  },
+  "G:reduce_motion_ok": true
+ },
+ "console": [],
+ "blocked": 0,
+ "blocked_send_requests": 0
+}
