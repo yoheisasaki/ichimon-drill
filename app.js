@@ -75,7 +75,7 @@ function home() {
   }
   const card = (label, list, cls, key) => {
     const c = counts(list);
-    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>にがて ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
+    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id));
   app.innerHTML = `
@@ -83,9 +83,9 @@ function home() {
     ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
-    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>にがて ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
+    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>にがてだけ（${hard.length}こ）</button>
+    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}こ）</button>
     <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
