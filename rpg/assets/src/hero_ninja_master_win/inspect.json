@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_master_win/hero_ninja_master_win.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  681,
+  689
+ ],
+ "out": "rpg/assets/chars/hero_ninja_master_win.png",
+ "out_size": [
+  96,
+  97
+ ],
+ "magenta_removed_px": 1367725,
+ "fringe_removed_px": 2221,
+ "magenta_left_px": 46,
+ "opaque_px": 4009,
+ "colors": 3768
+}

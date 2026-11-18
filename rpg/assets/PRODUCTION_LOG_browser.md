@@ -65,3 +65,9 @@
 - 済み(6枚): warrior・ranger の master / master_win / strip_master。台帳「正式」。画面は未接続（drawHero は master を読まない）。帯のマスターは飾りが細かく少しぼやける。次は帯用の飾りを控えめにと指示して作り直すとよい。
 - 残り: マスター10職(mage priest thief magicknight paladin shadow sage ninja(STRICT) skyknight starseer)、上級職追加衣装6種(kind=alt)、顔4・髪6の差分（案: 画像の肌・髪を色分けして色替え。ポーズとの適合は未試作）、画面接続（Lv30で master 画像、外見画面の反映）、assets_master_*.png / assets_look_*.png の撮影。
 - 備考: 外見画面(rpg-screens.js hero)は画像でなく仮ドット絵で描いており、画像の待機/勝利は外見(肌・髪)を反映しない。接続時に要設計。使用上限の表示は出なかった。タブは閉じた。
+
+## マスター衣装 残り10職 2026-11-18（続き）
+- 済み: mage priest thief magicknight paladin shadow sage ninja(STRICT=1) skyknight starseer の master / master_win / strip_master 30枚。台帳「正式」（master_manifest.py）。全12職の確認画像は shots/assets_master_all.png（左=報酬待機 中=勝利 右=帯待機、PILで並べた。drawHero はまだ master を読まない）。
+- 方法は既存どおり（新規チャット→通常の待機・勝利・帯待機を8倍/24倍・マゼンタ背景で3枚添付→横1列3マスのシート→Downloads rpgmaster_<職>.png→master_take.py）。職ごとに衣装の方向を文章で足した。1枚 約60〜90秒、全て1回で採用。使用上限の表示は出なかった。タブは閉じた。
+- 失敗・気づき: (1) 帯のマスターは細部がぼやける（ChatGPTに「控えめに」と指示しても絵が細かい。縮小で面積平均のため）。見分けは付くが粗い。 (2) ninja は紫の服が紺＋金＋赤帯の別配色に出た（マゼンタ回避のため）。穴は無し。 (3) priest・magicknight・paladin・sage・skyknight・starseer の勝利は驚きの線(効果線)が入り、切り出しに含まれている。 (4) ページ内JSの待機は45秒で切れるため35秒ずつ繰り返した。
+- 残り: 上級職の追加衣装(kind=alt)6種、顔・髪差分、画面接続。

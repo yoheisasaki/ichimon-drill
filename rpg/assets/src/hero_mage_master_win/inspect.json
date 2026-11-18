@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_mage_master_win/hero_mage_master_win.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  697,
+  687
+ ],
+ "out": "rpg/assets/chars/hero_mage_master_win.png",
+ "out_size": [
+  99,
+  98
+ ],
+ "magenta_removed_px": 1299995,
+ "fringe_removed_px": 4455,
+ "magenta_left_px": 145,
+ "opaque_px": 5431,
+ "colors": 4928
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_magicknight_master/hero_magicknight_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  543,
+  669
+ ],
+ "out": "rpg/assets/chars/hero_magicknight_master.png",
+ "out_size": [
+  78,
+  96
+ ],
+ "magenta_removed_px": 1339150,
+ "fringe_removed_px": 2098,
+ "magenta_left_px": 3,
+ "opaque_px": 4773,
+ "colors": 4405
+}

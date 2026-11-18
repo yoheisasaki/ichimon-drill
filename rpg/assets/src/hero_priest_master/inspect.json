@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_priest_master/hero_priest_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  645,
+  710
+ ],
+ "out": "rpg/assets/chars/hero_priest_master.png",
+ "out_size": [
+  87,
+  96
+ ],
+ "magenta_removed_px": 1272442,
+ "fringe_removed_px": 2355,
+ "magenta_left_px": 0,
+ "opaque_px": 5406,
+ "colors": 5027
+}

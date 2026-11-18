@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_master/hero_sage_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  652,
+  698
+ ],
+ "out": "rpg/assets/chars/hero_sage_master.png",
+ "out_size": [
+  90,
+  96
+ ],
+ "magenta_removed_px": 1279526,
+ "fringe_removed_px": 2962,
+ "magenta_left_px": 0,
+ "opaque_px": 5496,
+ "colors": 5078
+}
