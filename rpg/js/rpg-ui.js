@@ -85,8 +85,8 @@
     const b = a.battle, ed = D.ENEMIES[a.enemyId];
     return { job: b.hero.job, region: a.route.bg || D.REGIONS[a.route.region].id, outfit: M.costumeColor(RPG.save), enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0) };
   }
-  const REWARD_FXS = 0.9;   // 報酬画面：報酬の canvas は 1ドット＝CSS 3px。エフェクト1ドットを 2.7 CSS px に
-  const STRIP_FXS = 0.36;   // 帯：エフェクト1ドット＝帯の0.3ドット（小さく控えめ）。報酬画面は REWARD_FXS
+  const REWARD_FXS = 2;   // 報酬画面：エフェクト1ドット＝canvas 2px（主人公画像のドットと同程度）。整数倍・補間なし
+  const STRIP_FXS = 1, STRIP_DS = 2;   // 帯：2×2ドットを1つにまとめ、1ドット＝canvas 1px（帯の主人公のドットと同じ）。整数倍・補間なし   // 帯：エフェクト1ドット＝帯の0.3ドット（小さく控えめ）。報酬画面は REWARD_FXS
   const fxLive = [];
   // 画像が枠（CSS px）に収まらないとき、縮小率を返す（収まるなら1）。192pxボスの帯・報酬画面用
   function fitScale(im, maxW, maxH) { if (!im) return 1; return Math.min(1, maxW ? maxW / im.width : 1, maxH ? maxH / im.height : 1); }
@@ -99,7 +99,7 @@
     SP.drawHero(ctx, si.job, hx, gy, { img: 'strip', tint: heroTint, guard: o.guard || si.guard, outfit: si.outfit });
     if (si.status !== 'won') SP.drawEnemy(ctx, si.enemyId, si.boss, ex, gy, { img: 'strip', tint: o.enemyFlash ? '#fff' : null, scale: fitScale(SP.IMGS['enemy_' + si.enemyId + '_strip'], 0, 40) });
     if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cx = o.still.hero ? hx + 7 : ex + 7; ctx.drawImage(im, cx - w / 2, gy - h - 2, w, h); ctx.restore(); } }
-    fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx + 7 : f.at === 'melee' ? ex - 10 : ex + 7, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1); });
+    fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx + 7 : f.at === 'melee' ? ex - 10 : ex + 7, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1, STRIP_DS); });
     if (o.slash) { SP.px(ctx, hx + 16, gy - 12, '#fff', 2); SP.px(ctx, hx + 18, gy - 10, '#ffe27a', 2); SP.px(ctx, hx + 20, gy - 8, '#fff', 2); }
     if (o.heal) { SP.px(ctx, hx + 5, gy - 18, '#5be08a', 1); SP.px(ctx, hx + 4, gy - 17, '#5be08a', 3); SP.px(ctx, hx + 5, gy - 16, '#5be08a', 1); }
   }

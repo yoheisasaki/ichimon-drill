@@ -30,7 +30,7 @@ with sync_playwright() as p:
         chk(engine + ':all_mods', pg.evaluate("() => Object.keys(RPGFX.FX).every(k => RPGFX.ready(k))"), pg.evaluate("() => Object.keys(RPGFX._S.failed)"))
         # 全エフェクトを描いて1フレームの描画時間を測る（オフスクリーン。帯サイズ）
         perf = pg.evaluate("""() => { const out = {}; const cv = document.createElement('canvas'); cv.width = 400; cv.height = 90; const g = cv.getContext('2d');
-          for (const k of Object.keys(RPGFX.FX)) { const f = RPGFX.spawn(k, { cap: 0.9 }); let n = 0, tot = 0, mx = 0; for (let i = 0; i < 40 && !f.done(); i++) { const t0 = performance.now(); f.update(1/60); f.update(1/60); g.clearRect(0,0,400,90); f.blit(g, 100, 80, 0.6, 1); const d = performance.now() - t0; tot += d; mx = Math.max(mx, d); n++; }
+          for (const k of Object.keys(RPGFX.FX)) { const f = RPGFX.spawn(k, { cap: 0.9 }); let n = 0, tot = 0, mx = 0; for (let i = 0; i < 40 && !f.done(); i++) { const t0 = performance.now(); f.update(1/60); f.update(1/60); g.clearRect(0,0,400,90); f.blit(g, 100, 80, 1, 1, 2); const d = performance.now() - t0; tot += d; mx = Math.max(mx, d); n++; }
             out[k] = { avg: +(tot / n).toFixed(2), max: +mx.toFixed(2), n }; } return out; }""")
         R['perf'][engine] = perf
         chk(engine + ':frame_avg_lt_10ms', max(v['avg'] for v in perf.values()) < 10, max(v['avg'] for v in perf.values()))

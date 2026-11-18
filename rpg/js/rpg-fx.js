@@ -80,16 +80,32 @@
         },
         done() { return fx.done(); },
         started() { return this.delay <= 0; },
-        // ctx の座標で、アンカー(ax,ay)に s 倍で描く
-        blit(ctx, ax, ay, s, alpha) {
+        // ctx の座標で、アンカー(ax,ay)に描く。cpx＝出力の1ドットが canvas の何ピクセルか（整数）、ds＝元ドットを ds×ds 個まとめて1ドットにする（整数）。
+        // 補間は使わない（くっきり）。位置も canvas ピクセルの整数に丸める
+        blit(ctx, ax, ay, cpx, alpha, ds) {
           if (this.delay > 0) return;
+          ds = ds || 1; const ow = Math.ceil(w / ds), oh = Math.ceil(h / ds);
           if (this.dirty) {
             const t0 = root.performance ? root.performance.now() : 0;
-            core.clearFrame(frame); fx.draw(frame); core.composite(frame, img.data, null, 1); g.putImageData(img, 0, 0); this.dirty = false;
+            core.clearFrame(frame); fx.draw(frame); core.composite(frame, img.data, null, 1);
+            if (ds === 1) g.putImageData(img, 0, 0);
+            else {
+              if (!this.small) { this.small = root.document.createElement('canvas'); this.small.width = ow; this.small.height = oh; this.sg = this.small.getContext('2d'); this.simg = this.sg.createImageData(ow, oh); }
+              const s = img.data, d = this.simg.data;
+              for (let y = 0; y < oh; y++) for (let x = 0; x < ow; x++) {
+                let best = -1, bi = 0;
+                for (let j = 0; j < ds; j++) for (let i = 0; i < ds; i++) { const xx = x * ds + i, yy = y * ds + j; if (xx >= w || yy >= h) continue; const q = (yy * w + xx) * 4, sc = s[q + 3] * 1024 + s[q] + s[q + 1] + s[q + 2]; if (sc > best) { best = sc; bi = q; } }
+                const o = (y * ow + x) * 4; d[o] = s[bi]; d[o + 1] = s[bi + 1]; d[o + 2] = s[bi + 2]; d[o + 3] = s[bi + 3];
+              }
+              this.sg.putImageData(this.simg, 0, 0);
+            }
+            this.dirty = false;
             if (root.performance) { this.ms += root.performance.now() - t0; this.frames++; }
           }
-          ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.imageSmoothingEnabled = true;
-          ctx.drawImage(cv, ax - this.ox * s, ay - this.oy * s, w * s, h * s); ctx.restore();
+          const k = ctx.getTransform().a || 1, src = ds === 1 ? cv : this.small;
+          const px = Math.round(ax * k - (this.ox / ds) * cpx), py = Math.round(ay * k - (this.oy / ds) * cpx);
+          ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(src, px / k, py / k, ow * cpx / k, oh * cpx / k); ctx.restore();
         }
       };
       return inst;
