@@ -10708,6 +10708,3394 @@
    "weaponLayer": "back",
    "whole": true,
    "faceBottom": 12
+  },
+  "mage_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    46.5,
+    71.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_idle_L.png",
+   "handPos": [
+    42,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 49
+  },
+  "mage_v3b_attack_L": {
+   "w": 61,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    54.0,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_attack_L.png",
+   "handPos": [
+    48,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "mage_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.7,
+    95
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "priest_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    46.0,
+    72.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_idle_L.png",
+   "handPos": [
+    41,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "priest_v3b_attack_L": {
+   "w": 61,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    54.5,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_attack_L.png",
+   "handPos": [
+    49,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "priest_v3b_win_L": {
+   "w": 68,
+   "h": 96,
+   "foot": [
+    32.5,
+    95
+   ],
+   "grip": [
+    60.5,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    46.0,
+    72.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_idle_L.png",
+   "handPos": [
+    41,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_attack_L": {
+   "w": 61,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    54.5,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_attack_L.png",
+   "handPos": [
+    49,
+    46
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.7,
+    95
+   ],
+   "grip": [
+    60.0,
+    21.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    47.0,
+    71.5
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_idle_L.png",
+   "handPos": [
+    42,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_attack_L": {
+   "w": 61,
+   "h": 96,
+   "foot": [
+    29.8,
+    95
+   ],
+   "grip": [
+    54.5,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_attack_L.png",
+   "handPos": [
+    49,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.7,
+    95
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "paladin_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    46.5,
+    71.5
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_idle_L.png",
+   "handPos": [
+    42,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "paladin_v3b_attack_L": {
+   "w": 61,
+   "h": 95,
+   "foot": [
+    29.6,
+    94
+   ],
+   "grip": [
+    54.0,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_attack_L.png",
+   "handPos": [
+    48,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "paladin_v3b_win_L": {
+   "w": 67,
+   "h": 95,
+   "foot": [
+    32.0,
+    94
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "mage_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    30.5,
+    73.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_ready_L.png",
+   "handPos": [
+    26,
+    65
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 49
+  },
+  "mage_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    28.8,
+    92
+   ],
+   "grip": [
+    26.5,
+    57.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_guard_L.png",
+   "handPos": [
+    17,
+    53
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 49
+  },
+  "mage_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    45.8,
+    95
+   ],
+   "grip": [
+    63.0,
+    71.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.95,
+   "hand": "hand_mage_v3b_hit_L.png",
+   "handPos": [
+    58,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 49
+  },
+  "mage_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "mage_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.0,
+    95
+   ],
+   "grip": [
+    47.0,
+    71.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_idle_L.png",
+   "handPos": [
+    42,
+    66
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "sage_v3b_attack_L": {
+   "w": 61,
+   "h": 95,
+   "foot": [
+    29.6,
+    94
+   ],
+   "grip": [
+    55.0,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_attack_L.png",
+   "handPos": [
+    50,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "sage_v3b_win_L": {
+   "w": 67,
+   "h": 95,
+   "foot": [
+    31.7,
+    94
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "shadow_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    47.5,
+    72.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_idle_L.png",
+   "handPos": [
+    43,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "shadow_v3b_attack_L": {
+   "w": 62,
+   "h": 96,
+   "foot": [
+    29.9,
+    95
+   ],
+   "grip": [
+    55.5,
+    51.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_attack_L.png",
+   "handPos": [
+    50,
+    46
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "shadow_v3b_win_L": {
+   "w": 68,
+   "h": 96,
+   "foot": [
+    32.3,
+    95
+   ],
+   "grip": [
+    60.5,
+    21.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "priest_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    31.0,
+    72.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "priest_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.1,
+    92
+   ],
+   "grip": [
+    27.5,
+    56.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "priest_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.1,
+    95
+   ],
+   "grip": [
+    63.0,
+    72.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.95,
+   "hand": "hand_priest_v3b_hit_L.png",
+   "handPos": [
+    58,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "priest_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "priest_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    30.0,
+    72.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_ready_L.png",
+   "handPos": [
+    25,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    28.8,
+    92
+   ],
+   "grip": [
+    26.5,
+    56.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_guard_L.png",
+   "handPos": [
+    16,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    45.8,
+    95
+   ],
+   "grip": [
+    63.0,
+    72.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.7,
+   "hand": "hand_thief_v3b_hit_L.png",
+   "handPos": [
+    58,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "thief_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "thief_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_thief_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    31.0,
+    73.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.1,
+    92
+   ],
+   "grip": [
+    27.5,
+    56.5
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.1,
+    95
+   ],
+   "grip": [
+    63.5,
+    71.5
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.65,
+   "hand": "hand_magicknight_v3b_hit_L.png",
+   "handPos": [
+    58,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "magicknight_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "magicknight_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    28.8,
+    95
+   ],
+   "grip": [
+    30.5,
+    73.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "paladin_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    28.8,
+    92
+   ],
+   "grip": [
+    26.5,
+    56.5
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "paladin_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    45.8,
+    95
+   ],
+   "grip": [
+    63.0,
+    71.5
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.65,
+   "hand": "hand_paladin_v3b_hit_L.png",
+   "handPos": [
+    58,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "paladin_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "paladin_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    30.5,
+    72.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "shadow_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.6,
+    92
+   ],
+   "grip": [
+    26.5,
+    56.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "shadow_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.6,
+    95
+   ],
+   "grip": [
+    64.0,
+    72.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.7,
+   "hand": "hand_shadow_v3b_hit_L.png",
+   "handPos": [
+    59,
+    68
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "shadow_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "shadow_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.0,
+    95
+   ],
+   "grip": [
+    31.0,
+    74.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "sage_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.0,
+    92
+   ],
+   "grip": [
+    27.5,
+    57.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "sage_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.0,
+    95
+   ],
+   "grip": [
+    63.5,
+    71.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.95,
+   "hand": "hand_sage_v3b_hit_L.png",
+   "handPos": [
+    58,
+    66
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "sage_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "sage_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_idle_L": {
+   "w": 58,
+   "h": 96,
+   "foot": [
+    30.7,
+    95
+   ],
+   "grip": [
+    48.0,
+    71.5
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_idle_L.png",
+   "handPos": [
+    43,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_attack_L": {
+   "w": 64,
+   "h": 96,
+   "foot": [
+    32.4,
+    95
+   ],
+   "grip": [
+    57.5,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_attack_L.png",
+   "handPos": [
+    52,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.5,
+    95
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_ready_L": {
+   "w": 58,
+   "h": 96,
+   "foot": [
+    30.7,
+    95
+   ],
+   "grip": [
+    33.0,
+    73.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_ready_L.png",
+   "handPos": [
+    28,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_guard_L": {
+   "w": 58,
+   "h": 93,
+   "foot": [
+    30.7,
+    92
+   ],
+   "grip": [
+    29.5,
+    56.5
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_guard_L.png",
+   "handPos": [
+    19,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_hit_L": {
+   "w": 75,
+   "h": 96,
+   "foot": [
+    47.7,
+    95
+   ],
+   "grip": [
+    64.5,
+    71.5
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.7,
+   "hand": "hand_ninja_v3b_hit_L.png",
+   "handPos": [
+    59,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ninja_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ninja_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    47.0,
+    72.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_idle_L.png",
+   "handPos": [
+    42,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ranger_v3b_attack_L": {
+   "w": 66,
+   "h": 96,
+   "foot": [
+    34.6,
+    95
+   ],
+   "grip": [
+    59.5,
+    51.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_attack_L.png",
+   "handPos": [
+    54,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "ranger_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.7,
+    95
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "ranger_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    31.0,
+    74.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ranger_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.1,
+    92
+   ],
+   "grip": [
+    27.5,
+    57.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ranger_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.1,
+    95
+   ],
+   "grip": [
+    63.5,
+    72.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.7,
+   "hand": "hand_ranger_v3b_hit_L.png",
+   "handPos": [
+    58,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "ranger_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "ranger_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.7,
+    95
+   ],
+   "grip": [
+    47.0,
+    71.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_idle_L.png",
+   "handPos": [
+    42,
+    66
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_attack_L": {
+   "w": 62,
+   "h": 96,
+   "foot": [
+    29.6,
+    95
+   ],
+   "grip": [
+    55.5,
+    50.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_attack_L.png",
+   "handPos": [
+    50,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_win_L": {
+   "w": 67,
+   "h": 96,
+   "foot": [
+    31.7,
+    95
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.7,
+    95
+   ],
+   "grip": [
+    32.0,
+    74.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_ready_L.png",
+   "handPos": [
+    27,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.7,
+    92
+   ],
+   "grip": [
+    28.5,
+    57.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_guard_L.png",
+   "handPos": [
+    18,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.7,
+    95
+   ],
+   "grip": [
+    63.5,
+    71.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.65,
+   "hand": "hand_skyknight_v3b_hit_L.png",
+   "handPos": [
+    58,
+    66
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "skyknight_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "skyknight_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    47.0,
+    72.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_idle_L.png",
+   "handPos": [
+    42,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_attack_L": {
+   "w": 62,
+   "h": 96,
+   "foot": [
+    28.9,
+    95
+   ],
+   "grip": [
+    55.0,
+    51.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_attack_L.png",
+   "handPos": [
+    49,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_win_L": {
+   "w": 68,
+   "h": 96,
+   "foot": [
+    32.6,
+    95
+   ],
+   "grip": [
+    60.5,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_ready_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.1,
+    95
+   ],
+   "grip": [
+    31.0,
+    74.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.1,
+    92
+   ],
+   "grip": [
+    27.5,
+    57.0
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.1,
+    95
+   ],
+   "grip": [
+    63.5,
+    72.0
+   ],
+   "gripAngle": 60,
+   "weaponScale": 0.95,
+   "hand": "hand_starseer_v3b_hit_L.png",
+   "handPos": [
+    58,
+    67
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "starseer_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_idle_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_attack_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    18.0,
+    15.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_attack_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": 10,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_win_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_walk_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.0,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_walk_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_walk2_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    7.2,
+    27
+   ],
+   "grip": [
+    14.0,
+    18.0
+   ],
+   "gripAngle": 20,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_walk2_S.png",
+   "handPos": [
+    12,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    8.5,
+    27
+   ],
+   "grip": [
+    18.0,
+    6.5
+   ],
+   "gripAngle": -40,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_windup_S.png",
+   "handPos": [
+    16,
+    4
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_guard_S": {
+   "w": 18,
+   "h": 26,
+   "foot": [
+    8.5,
+    25
+   ],
+   "grip": [
+    15.0,
+    16.0
+   ],
+   "gripAngle": 5,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_guard_S.png",
+   "handPos": [
+    13,
+    14
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
+  },
+  "starseer_v3b_hit_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "grip": [
+    16.0,
+    18.0
+   ],
+   "gripAngle": 105,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_v3b_hit_S.png",
+   "handPos": [
+    14,
+    16
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 12
   }
  },
  "head": {

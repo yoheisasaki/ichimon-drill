@@ -85,6 +85,27 @@ t('新比率：全12職の通常・マスター（と追加衣装6職）×L6ポ�
   for (let h = 0; h < M.HAIR_N; h++) ok(PJ.head['head_v2_h' + h + '_S'], 'S頭なし h' + h);
   D.JOB_IDS.forEach(j => ok(PJ.weapon[PJ.jobWeapon[j]] && PJ.weapon[PJ.jobWeapon[j]].held, j + ' の基本武器の手持ち絵'));
 });
+t('v3b（一体絵）：全12職×L6ポーズ×S8ポーズの部品がそろい、身体は heads なしの一体絵・手部品あり・ファイルあり・倍率は職の武器に合わせてあり、他職・戦士の流用（代用）が無い', () => {
+  const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
+  const L = ['idle', 'ready', 'attack', 'guard', 'win', 'hit'], S = ['idle', 'walk', 'walk2', 'windup', 'attack', 'guard', 'win', 'hit'];
+  const miss = [], bad = [], hashes = {};
+  D.JOB_IDS.forEach(j => [['L', L], ['S', S]].forEach(([z, ps]) => ps.forEach(p => {
+    const k = j + '_v3b_' + p + '_' + z, b = PJ.body[k];
+    if (!b) { miss.push(k); return; }
+    if (b.heads) bad.push(k + ' heads');
+    const f = path.join(PD, 'body_' + k + '.png'); if (!fs.existsSync(f)) { miss.push(k + '.png'); return; }
+    if (!b.hand || !fs.existsSync(path.join(PD, b.hand))) miss.push(k + ' hand');
+    if (b.hand && !b.hand.includes('_' + j + '_v3b_')) bad.push(k + ' 手が他職 ' + b.hand);
+    if (!b.whole) bad.push(k + ' whole'); if (!(b.weaponScale > 0)) bad.push(k + ' 倍率');
+    const full = z === 'L' ? [85, 104] : [24, 30]; if (b.h < full[0] || b.h > full[1]) bad.push(k + ' 高さ' + b.h);
+    const h = require('crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex'); (hashes[h] = hashes[h] || []).push(k);
+  })));
+  eq(miss, [], '部品なし'); eq(bad, [], '不正');
+  const dup = Object.values(hashes).filter(a => a.length > 1 && new Set(a.map(x => x.split('_v3b_')[0])).size > 1);
+  eq(dup, [], '別の職と同じ絵（流用）');
+  const sc = {}; D.JOB_IDS.forEach(j => { const w = PJ.jobWeapon[j].replace(/^w_|_1\.png$/g, ''); sc[w] = sc[w] || new Set(); sc[w].add(PJ.body[j + '_v3b_idle_L'].weaponScale); });
+  Object.keys(sc).forEach(w => eq(sc[w].size, 1, w + ' の倍率が職で不揃い'));
+});
 t('全武器(装備できる49種)の手持ち絵(held)が部品にあり、握り位置が絵の内側。各職の装備可能武器の種別も全て held を持つ（代用なし）', () => {
   const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
   const ws = Object.values(D.ITEMS).filter(i => i.slot === 'weapon'), bad = [];
