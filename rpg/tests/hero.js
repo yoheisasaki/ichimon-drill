@@ -106,6 +106,28 @@ t('v3b（一体絵）：全12職×L6ポーズ×S8ポーズの部品がそろい�
   const sc = {}; D.JOB_IDS.forEach(j => { const w = PJ.jobWeapon[j].replace(/^w_|_1\.png$/g, ''); sc[w] = sc[w] || new Set(); sc[w].add(PJ.body[j + '_v3b_idle_L'].weaponScale); });
   Object.keys(sc).forEach(w => eq(sc[w].size, 1, w + ' の倍率が職で不揃い'));
 });
+t('v3b マスター衣装12＋追加衣装alt1(6職)：全職×L6×S8の部品・手部品・ファイルがそろい、身体は一体絵で、倍率は基本職と同じ。基本職・他衣装と同じ絵（流用）が無い', () => {
+  const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
+  const L = ['idle', 'ready', 'attack', 'guard', 'win', 'hit'], S = ['idle', 'walk', 'walk2', 'windup', 'attack', 'guard', 'win', 'hit'];
+  const names = D.JOB_IDS.map(j => j + '_master').concat(M.ALT_JOBS.map(j => j + '_alt1'));
+  eq(names.length, 18);
+  const miss = [], bad = [], hashes = {};
+  D.JOB_IDS.forEach(j => [['L', L], ['S', S]].forEach(([z, ps]) => ps.forEach(p => { const f = path.join(PD, 'body_' + j + '_v3b_' + p + '_' + z + '.png'); if (fs.existsSync(f)) (hashes[require('crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex')] = hashes[require('crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex')] || []).push(j + '_v3b_' + p + '_' + z); })));
+  names.forEach(n => { const j = n.split('_')[0]; [['L', L], ['S', S]].forEach(([z, ps]) => ps.forEach(p => {
+    const k = n + '_v3b_' + p + '_' + z, b = PJ.body[k];
+    if (!b) { miss.push(k); return; }
+    if (b.heads) bad.push(k + ' heads');
+    const f = path.join(PD, 'body_' + k + '.png'); if (!fs.existsSync(f)) { miss.push(k + '.png'); return; }
+    if (!b.hand || !fs.existsSync(path.join(PD, b.hand))) miss.push(k + ' hand');
+    if (b.hand && !b.hand.includes('_' + n + '_v3b_')) bad.push(k + ' 手が他衣装 ' + b.hand);
+    if (!b.whole) bad.push(k + ' whole'); if (!(b.weaponScale > 0)) bad.push(k + ' 倍率');
+    if (b.weaponScale !== PJ.body[j + '_v3b_' + p + '_' + z].weaponScale) bad.push(k + ' 倍率が基本職と違う');
+    const full = z === 'L' ? [85, 104] : [24, 30]; if (b.h < full[0] || b.h > full[1]) bad.push(k + ' 高さ' + b.h);
+    const h = require('crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex'); (hashes[h] = hashes[h] || []).push(k);
+  })); });
+  eq(miss, [], '部品なし'); eq(bad, [], '不正');
+  eq(Object.values(hashes).filter(a => a.length > 1 && new Set(a.map(x => x.split('_v3b_')[0])).size > 1), [], '別の衣装・職と同じ絵（流用）');
+});
 t('全武器(装備できる49種)の手持ち絵(held)が部品にあり、握り位置が絵の内側。各職の装備可能武器の種別も全て held を持つ（代用なし）', () => {
   const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
   const ws = Object.values(D.ITEMS).filter(i => i.slot === 'weapon'), bad = [];
