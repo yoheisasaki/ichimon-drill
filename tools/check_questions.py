@@ -29,7 +29,7 @@ for q in d['questions']:
         if q.get('unit') != '漢字の読み' and plain(q.get('a', '')) not in acc: e('accept に a の漢字表記が無い')
         if kana not in acc: e('accept に a のかな表記が無い')
         if any(not isinstance(x, str) or not x.strip() for x in acc): e('accept に空/文字列でないものがある')
-    elif len(ch) != 3: e(f'choices が{len(ch)}個')
+    elif len(ch) not in (2, 3): e(f'choices が{len(ch)}個（2〜3個。3択はママの問題のとき）')
     allc = [plain(c) for c in ch] + [plain(q.get('a', ''))]
     if len(set(allc)) != len(allc): e('選択肢と答えが重なる')
     for s in [q.get('q', ''), q.get('a', ''), *ch]:
