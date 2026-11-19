@@ -253,6 +253,8 @@ t('正答率30%でも成長が止まらず第1章に到達する', () => simRows
 t('100%でも第1章は人為的に止めない（60%より極端に速くならない）', () => simRows[1].forEach(r => ok(r.ch1Adv >= 66, String(r.ch1Adv))));
 t('第1章の初期資金：全正解でも通常装備ランクIII まで買い切れず、貧窮もしない', () => simRows[0.6].forEach(r => ok(r.final.coins >= 0)));
 
+// 主人公の部品・武器の検査（hero.js は単独でも実行できる。ここでも数に入れる）
+try { const out = require('child_process').spawnSync(process.execPath, [require('path').join(__dirname, 'hero.js')], { encoding: 'utf8', maxBuffer: 1 << 26 }), r = JSON.parse(out.stdout.slice(out.stdout.indexOf('{'))); pass += r.pass; fail += r.fail; r.failures.forEach(f => failures.push('hero.js: ' + f)); } catch (e) { fail++; failures.push('hero.js を実行できない: ' + e.message); }
 console.log(JSON.stringify({ pass, fail, failures }, null, 1));
 const summary = Object.keys(simRows).map(a => ({ acc: a, ch1Adv: simRows[a].map(r => r.ch1Adv), ch1Day: simRows[a].map(r => r.ch1Day), advLv: simRows[a].map(r => r.final.advLv), retreats: simRows[a].map(r => r.retreats), winsPerAdv: +(simRows[a].reduce((s, r) => s + r.wins, 0) / simRows[a].reduce((s, r) => s + r.adv, 0)).toFixed(2) }));
 if (process.argv.includes('--sim')) console.log(JSON.stringify(summary));

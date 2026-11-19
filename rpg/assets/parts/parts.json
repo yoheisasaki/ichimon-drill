@@ -10717,7 +10717,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.4,
+    21.5,
     43.0
    ]
   },
@@ -10725,7 +10725,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.4,
+    21.5,
     43.0
    ]
   },
@@ -10733,7 +10733,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.3,
+    21.5,
     43.0
    ]
   },
@@ -10741,7 +10741,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    21.4,
+    15.7,
     40.0
    ]
   },
@@ -10749,7 +10749,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.7,
+    19.9,
     40.0
    ]
   },
@@ -10757,15 +10757,15 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.6,
+    24.0,
     40.0
    ]
   },
   "head_v2_f1_h2_L": {
-   "w": 40,
+   "w": 41,
    "h": 42,
    "neck": [
-    34.7,
+    35.1,
     42.0
    ]
   },
@@ -10773,7 +10773,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.5,
+    34.8,
     42.0
    ]
   },
@@ -10781,7 +10781,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.5,
+    34.8,
     42.0
    ]
   },
@@ -10789,7 +10789,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    22.4,
     43.0
    ]
   },
@@ -10797,7 +10797,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.2,
+    22.4,
     43.0
    ]
   },
@@ -10805,7 +10805,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.1,
+    22.4,
     43.0
    ]
   },
@@ -10813,7 +10813,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    19.9,
+    24.3,
     40.0
    ]
   },
@@ -10821,7 +10821,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    24.0,
+    24.3,
     40.0
    ]
   },
@@ -10829,39 +10829,39 @@
    "w": 44,
    "h": 40,
    "neck": [
-    23.1,
+    23.2,
     40.0
    ]
   },
   "head_v2_f1_h5_L": {
-   "w": 39,
-   "h": 41,
+   "w": 40,
+   "h": 42,
    "neck": [
-    22.0,
-    41.0
+    22.3,
+    42.0
    ]
   },
   "head_v2_f1_h5_L_attack": {
-   "w": 39,
-   "h": 41,
+   "w": 40,
+   "h": 42,
    "neck": [
-    22.0,
-    41.0
+    22.1,
+    42.0
    ]
   },
   "head_v2_f1_h5_L_win": {
    "w": 40,
-   "h": 41,
+   "h": 42,
    "neck": [
-    22.0,
-    41.0
+    22.2,
+    42.0
    ]
   },
   "head_v2_f2_h0_L": {
    "w": 40,
    "h": 43,
    "neck": [
-    21.5,
+    21.4,
     43.0
    ]
   },
@@ -10869,7 +10869,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.5,
+    21.4,
     43.0
    ]
   },
@@ -10877,7 +10877,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.5,
+    21.4,
     43.0
    ]
   },
@@ -10885,7 +10885,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    21.6,
+    21.5,
     40.0
    ]
   },
@@ -10893,7 +10893,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.8,
+    22.7,
     40.0
    ]
   },
@@ -10901,7 +10901,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    21.8,
+    19.6,
     40.0
    ]
   },
@@ -10909,7 +10909,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    35.5,
     42.0
    ]
   },
@@ -10917,7 +10917,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    35.6,
     42.0
    ]
   },
@@ -10925,7 +10925,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    34.5,
     42.0
    ]
   },
@@ -10941,7 +10941,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    22.2,
     43.0
    ]
   },
@@ -10949,7 +10949,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    22.2,
     43.0
    ]
   },
@@ -10957,7 +10957,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    24.1,
+    23.1,
     40.0
    ]
   },
@@ -10965,7 +10965,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    24.2,
+    24.5,
     40.0
    ]
   },
@@ -10973,31 +10973,31 @@
    "w": 44,
    "h": 40,
    "neck": [
-    23.1,
+    25.4,
     40.0
    ]
   },
   "head_v2_f2_h5_L": {
-   "w": 40,
+   "w": 39,
    "h": 41,
    "neck": [
-    22.1,
+    22.0,
     41.0
    ]
   },
   "head_v2_f2_h5_L_attack": {
-   "w": 40,
+   "w": 39,
    "h": 41,
    "neck": [
-    22.1,
+    22.0,
     41.0
    ]
   },
   "head_v2_f2_h5_L_win": {
-   "w": 40,
+   "w": 39,
    "h": 41,
    "neck": [
-    22.1,
+    22.0,
     41.0
    ]
   },
@@ -11013,7 +11013,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.5,
+    21.6,
     43.0
    ]
   },
@@ -11021,7 +11021,7 @@
    "w": 40,
    "h": 43,
    "neck": [
-    21.4,
+    21.6,
     43.0
    ]
   },
@@ -11029,7 +11029,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.6,
+    19.8,
     40.0
    ]
   },
@@ -11037,7 +11037,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.8,
+    19.7,
     40.0
    ]
   },
@@ -11045,7 +11045,7 @@
    "w": 38,
    "h": 40,
    "neck": [
-    19.7,
+    20.8,
     40.0
    ]
   },
@@ -11053,7 +11053,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    34.8,
     42.0
    ]
   },
@@ -11061,7 +11061,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    34.9,
     42.0
    ]
   },
@@ -11069,7 +11069,7 @@
    "w": 40,
    "h": 42,
    "neck": [
-    34.7,
+    34.9,
     42.0
    ]
   },
@@ -11077,7 +11077,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    22.5,
     43.0
    ]
   },
@@ -11085,7 +11085,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    22.4,
     43.0
    ]
   },
@@ -11093,7 +11093,7 @@
    "w": 42,
    "h": 43,
    "neck": [
-    22.3,
+    26.6,
     43.0
    ]
   },
@@ -11101,7 +11101,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    24.2,
+    24.4,
     40.0
    ]
   },
@@ -11109,7 +11109,7 @@
    "w": 45,
    "h": 40,
    "neck": [
-    24.1,
+    24.4,
     40.0
    ]
   },
@@ -11117,15 +11117,15 @@
    "w": 44,
    "h": 40,
    "neck": [
-    23.1,
+    23.3,
     40.0
    ]
   },
   "head_v2_f3_h5_L": {
-   "w": 39,
+   "w": 40,
    "h": 41,
    "neck": [
-    22.1,
+    22.2,
     41.0
    ]
   },
@@ -11139,10 +11139,10 @@
   },
   "head_v2_f3_h5_L_win": {
    "w": 40,
-   "h": 42,
+   "h": 41,
    "neck": [
-    26.3,
-    42.0
+    22.3,
+    41.0
    ]
   }
  },
@@ -11166,9 +11166,14 @@
    "name": "火花のつるぎ",
    "grip": [
     7,
-    25
+    24
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_rw_sword_1_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
   },
   "w_staff_1.png": {
    "itemId": "w_staff_1",
@@ -11194,8 +11199,8 @@
    "tipAngle": 45,
    "held": "held_w_dagger_1_L.png",
    "heldGrip": [
-    11,
-    32
+    9,
+    26
    ]
   },
   "w_bow_1.png": {
@@ -11238,6 +11243,604 @@
    "heldGrip": [
     11,
     30
+   ]
+  },
+  "w_sword_3.png": {
+   "itemId": "w_sword_3",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_sword_3_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
+  },
+  "w_sword_4.png": {
+   "itemId": "w_sword_4",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_sword_4_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
+  },
+  "w_sword_5.png": {
+   "itemId": "w_sword_5",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    23
+   ],
+   "held": "held_w_sword_5_L.png",
+   "heldGrip": [
+    11,
+    30
+   ]
+  },
+  "w_sword_6.png": {
+   "itemId": "w_sword_6",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    23
+   ],
+   "held": "held_w_sword_6_L.png",
+   "heldGrip": [
+    9,
+    30
+   ]
+  },
+  "w_staff_2.png": {
+   "itemId": "w_staff_2",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    23
+   ],
+   "held": "held_w_staff_2_L.png",
+   "heldGrip": [
+    12,
+    30
+   ]
+  },
+  "w_staff_3.png": {
+   "itemId": "w_staff_3",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    23
+   ],
+   "held": "held_w_staff_3_L.png",
+   "heldGrip": [
+    11,
+    30
+   ]
+  },
+  "w_staff_4.png": {
+   "itemId": "w_staff_4",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    23
+   ],
+   "held": "held_w_staff_4_L.png",
+   "heldGrip": [
+    12,
+    30
+   ]
+  },
+  "w_staff_5.png": {
+   "itemId": "w_staff_5",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    23
+   ],
+   "held": "held_w_staff_5_L.png",
+   "heldGrip": [
+    12,
+    30
+   ]
+  },
+  "w_staff_6.png": {
+   "itemId": "w_staff_6",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    23
+   ],
+   "held": "held_w_staff_6_L.png",
+   "heldGrip": [
+    11,
+    30
+   ]
+  },
+  "w_dagger_2.png": {
+   "itemId": "w_dagger_2",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_dagger_2_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "w_dagger_3.png": {
+   "itemId": "w_dagger_3",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_dagger_3_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "w_dagger_4.png": {
+   "itemId": "w_dagger_4",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    23
+   ],
+   "held": "held_w_dagger_4_L.png",
+   "heldGrip": [
+    9,
+    24
+   ]
+  },
+  "w_dagger_5.png": {
+   "itemId": "w_dagger_5",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_dagger_5_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "w_dagger_6.png": {
+   "itemId": "w_dagger_6",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_w_dagger_6_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "w_bow_2.png": {
+   "itemId": "w_bow_2",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_w_bow_2_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "w_bow_3.png": {
+   "itemId": "w_bow_3",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_w_bow_3_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "w_bow_4.png": {
+   "itemId": "w_bow_4",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_w_bow_4_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "w_bow_5.png": {
+   "itemId": "w_bow_5",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_w_bow_5_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "w_bow_6.png": {
+   "itemId": "w_bow_6",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_w_bow_6_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_sword_2.png": {
+   "itemId": "rw_sword_2",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    24
+   ],
+   "held": "held_rw_sword_2_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
+  },
+  "rw_sword_3.png": {
+   "itemId": "rw_sword_3",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    24
+   ],
+   "held": "held_rw_sword_3_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
+  },
+  "rw_sword_4.png": {
+   "itemId": "rw_sword_4",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    24
+   ],
+   "held": "held_rw_sword_4_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
+  },
+  "rw_sword_5.png": {
+   "itemId": "rw_sword_5",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    24
+   ],
+   "held": "held_rw_sword_5_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
+  },
+  "rw_sword_6.png": {
+   "itemId": "rw_sword_6",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    24
+   ],
+   "held": "held_rw_sword_6_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
+  },
+  "rw_staff_1.png": {
+   "itemId": "rw_staff_1",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    24
+   ],
+   "held": "held_rw_staff_1_L.png",
+   "heldGrip": [
+    12,
+    32
+   ]
+  },
+  "rw_staff_2.png": {
+   "itemId": "rw_staff_2",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    24
+   ],
+   "held": "held_rw_staff_2_L.png",
+   "heldGrip": [
+    12,
+    32
+   ]
+  },
+  "rw_staff_3.png": {
+   "itemId": "rw_staff_3",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_rw_staff_3_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
+  },
+  "rw_staff_4.png": {
+   "itemId": "rw_staff_4",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_rw_staff_4_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
+  },
+  "rw_staff_5.png": {
+   "itemId": "rw_staff_5",
+   "tipAngle": 45,
+   "grip": [
+    9,
+    24
+   ],
+   "held": "held_rw_staff_5_L.png",
+   "heldGrip": [
+    12,
+    32
+   ]
+  },
+  "rw_staff_6.png": {
+   "itemId": "rw_staff_6",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_rw_staff_6_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
+  },
+  "rw_dagger_1.png": {
+   "itemId": "rw_dagger_1",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_rw_dagger_1_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "rw_dagger_2.png": {
+   "itemId": "rw_dagger_2",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_rw_dagger_2_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "rw_dagger_3.png": {
+   "itemId": "rw_dagger_3",
+   "tipAngle": 45,
+   "grip": [
+    7,
+    25
+   ],
+   "held": "held_rw_dagger_3_L.png",
+   "heldGrip": [
+    7,
+    27
+   ]
+  },
+  "rw_dagger_4.png": {
+   "itemId": "rw_dagger_4",
+   "tipAngle": 45,
+   "grip": [
+    6,
+    24
+   ],
+   "held": "held_rw_dagger_4_L.png",
+   "heldGrip": [
+    6,
+    26
+   ]
+  },
+  "rw_dagger_5.png": {
+   "itemId": "rw_dagger_5",
+   "tipAngle": 45,
+   "grip": [
+    6,
+    24
+   ],
+   "held": "held_rw_dagger_5_L.png",
+   "heldGrip": [
+    6,
+    26
+   ]
+  },
+  "rw_dagger_6.png": {
+   "itemId": "rw_dagger_6",
+   "tipAngle": 45,
+   "grip": [
+    6,
+    24
+   ],
+   "held": "held_rw_dagger_6_L.png",
+   "heldGrip": [
+    6,
+    26
+   ]
+  },
+  "rw_bow_1.png": {
+   "itemId": "rw_bow_1",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_1_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_bow_2.png": {
+   "itemId": "rw_bow_2",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_2_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_bow_3.png": {
+   "itemId": "rw_bow_3",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_3_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_bow_4.png": {
+   "itemId": "rw_bow_4",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_4_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_bow_5.png": {
+   "itemId": "rw_bow_5",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_5_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "rw_bow_6.png": {
+   "itemId": "rw_bow_6",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_rw_bow_6_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
+  },
+  "u_tenbinnotsurugi.png": {
+   "itemId": "u_tenbinnotsurugi",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    23
+   ],
+   "held": "held_u_tenbinnotsurugi_L.png",
+   "heldGrip": [
+    11,
+    30
+   ]
+  },
+  "u_chionnotsue.png": {
+   "itemId": "u_chionnotsue",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    22
+   ],
+   "held": "held_u_chionnotsue_L.png",
+   "heldGrip": [
+    11,
+    29
+   ]
+  },
+  "u_tokisunanotanken.png": {
+   "itemId": "u_tokisunanotanken",
+   "tipAngle": 45,
+   "grip": [
+    8,
+    24
+   ],
+   "held": "held_u_tokisunanotanken_L.png",
+   "heldGrip": [
+    9,
+    26
+   ]
+  },
+  "u_kyoheinoyumi.png": {
+   "itemId": "u_kyoheinoyumi",
+   "tipAngle": 45,
+   "grip": [
+    16,
+    16
+   ],
+   "held": "held_u_kyoheinoyumi_L.png",
+   "heldGrip": [
+    21,
+    21
    ]
   }
  },

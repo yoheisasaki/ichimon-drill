@@ -84,6 +84,13 @@ with sync_playwright() as pw:
         cc.append(labeled(up(L(j, 'idle', w=120, h=112), 1), j + ' 通常')); cc.append(labeled(L(j, 'idle', costume='master', w=120, h=112), j + ' master'))
         cc.append(labeled(L(j, 'idle', costume='alt1', w=120, h=112), j + ' alt1') if j in ALT else labeled(Image.new('RGBA', (120, 112), (40, 44, 70, 255)), j + ' alt1 なし'))
     rows(cc, 6).convert('RGB').save(os.path.join(OUT, 'costumes.png'))
+    # 全武器(49)の手持ち：種別ごとの代表職で L 待機（2倍）
+    wcells = []
+    for cat, job in (('sword', 'warrior'), ('staff', 'mage'), ('dagger', 'thief'), ('bow', 'ranger')):
+        for wid in (['w_start'] if cat == 'sword' else []) + [f'{pre}{cat}_{k}' for pre in ('w_', 'rw_') for k in range(1, 7)]:
+            o = {'job': job, 'pose': 'idle', 'use': 'self', 'weaponId': wid}
+            wcells.append(labeled(up(R({'w': 100, 'h': 100, 'bg': 'color', 'color': '#e8eefc', 'items': [{'kind': 'hero', 'x': 42, 'y': 94, 'o': o}]}), 2), wid))
+    rows(wcells, 7).convert('RGB').save(os.path.join(OUT, 'weapons_all.png'))
     sub = []
     for j in ALL:
         for c in (None, 'master') + (('alt1',) if j in ALT else ()):

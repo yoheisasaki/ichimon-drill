@@ -1,0 +1,101 @@
+{
+ "console": [],
+ "checks": {
+  "look_paladin_None": [
+   {
+    "k": "use,job,look,costume,weaponId",
+    "skin": "#f0c39a",
+    "hair": "#7a4a2a",
+    "face": 0,
+    "hairStyle": 0,
+    "job": "paladin"
+   }
+  ],
+  "look_paladin_master": [
+   {
+    "k": "use,job,look,costume,weaponId",
+    "skin": "#f0c39a",
+    "hair": "#7a4a2a",
+    "face": 0,
+    "hairStyle": 0,
+    "job": "paladin"
+   }
+  ],
+  "look_paladin_alt1": [
+   {
+    "k": "use,job,look,costume,weaponId",
+    "skin": "#f0c39a",
+    "hair": "#7a4a2a",
+    "face": 0,
+    "hairStyle": 0,
+    "job": "paladin"
+   }
+  ],
+  "dev": {
+   "missing": 0,
+   "whole": 0,
+   "layered": 31
+  },
+  "jobdetail_buttons": [
+   "rsBack",
+   "jobPlay",
+   "覚おぼえる技わざ",
+   "jobDo"
+  ],
+  "c05_job_after": "mage",
+  "c05_looks": [
+   [
+    {
+     "k": "use,job,look,costume,weaponId",
+     "skin": "#d9a77a",
+     "hair": "#2a2a33",
+     "face": 3,
+     "hairStyle": 4,
+     "job": "warrior"
+    }
+   ],
+   [
+    {
+     "k": "use,job,weaponId,costume",
+     "job": "mage"
+    }
+   ],
+   [
+    {
+     "k": "use,job,weaponId,costume",
+     "job": "mage"
+    }
+   ],
+   [
+    {
+     "k": "use,job,weaponId,costume",
+     "job": "mage"
+    }
+   ],
+   [
+    {
+     "k": "use,job,weaponId,costume",
+     "job": "mage"
+    }
+   ],
+   [
+    {
+     "k": "use,job,weaponId,costume",
+     "job": "mage"
+    }
+   ]
+  ],
+  "c05_save_look": {
+   "face": 3,
+   "hair": 4,
+   "skin": 2,
+   "hairColor": 1,
+   "outfit": null
+  }
+ },
+ "dev_final": {
+  "missing": 0,
+  "whole": 0,
+  "layered": 33
+ }
+}

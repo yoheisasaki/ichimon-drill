@@ -85,4 +85,18 @@ t('新比率：全12職の通常・マスター（と追加衣装6職）×L6ポ�
   for (let h = 0; h < M.HAIR_N; h++) ok(PJ.head['head_v2_h' + h + '_S'], 'S頭なし h' + h);
   D.JOB_IDS.forEach(j => ok(PJ.weapon[PJ.jobWeapon[j]] && PJ.weapon[PJ.jobWeapon[j]].held, j + ' の基本武器の手持ち絵'));
 });
+t('全武器(装備できる49種)の手持ち絵(held)が部品にあり、握り位置が絵の内側。各職の装備可能武器の種別も全て held を持つ（代用なし）', () => {
+  const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
+  const ws = Object.values(D.ITEMS).filter(i => i.slot === 'weapon'), bad = [];
+  ws.forEach(i => { const fid = i.id.replace(/^(u_.+)_\d$/, '$1'), e = PJ.weapon[fid + '.png']; if (!e || !e.held || !e.heldGrip || !e.grip) { bad.push(i.id + ' 登録なし'); return; } if (!fs.existsSync(path.join(PD, e.held))) bad.push(i.id + ' 画像なし'); const n = (i.cat === 'dagger') ? 34 : 42; if (e.heldGrip[0] < 0 || e.heldGrip[0] >= n || e.heldGrip[1] < 0 || e.heldGrip[1] >= n) bad.push(i.id + ' 握り'); });
+  eq(bad, []); ok(ws.length >= 49, '武器数 ' + ws.length);
+  D.JOB_IDS.forEach(j => D.JOBS[j].weapons.forEach(c => { const id = 'w_' + c + '_1'; ok(PJ.weapon[id + '.png'] && PJ.weapon[id + '.png'].held, j + '/' + id); eq(M.artWeapon(j, id), id); }));
+});
+t('追加衣装(alt1)：上級職6職だけ。氷下火山クリアで解放、外見で選べて costumeOf が alt1 を返す。解放前・他職では通常', () => {
+  const s = fresh(); s.job = 'paladin'; ok(!M.altOwned(s, 'paladin')); eq(M.setOutfit(s, 'alt1'), false);
+  s.progress.clearedRegions.push('icevolcano'); ok(M.altOwned(s, 'paladin')); ok(!M.altOwned(s, 'warrior'));
+  eq(M.setOutfit(s, 'alt1'), true); eq(M.costumeOf(s), 'alt1'); eq(M.costumeOf(s, 'warrior'), null);
+  s.job = 'warrior'; eq(M.setOutfit(s, 'alt1'), false); s.job = 'sage'; eq(M.setLook(s, 'テスト', { face: 1, hair: 2, skin: 0, hairColor: 0, outfit: 'alt1' }).ok, true); eq(s.look.outfit, 'alt1'); eq(M.costumeOf(s), 'alt1');
+  eq(M.ALT_JOBS.slice().sort(), ['magicknight', 'ninja', 'paladin', 'ranger', 'sage', 'shadow']);
+});
 console.log(JSON.stringify({ pass, fail, failures }, null, 1)); process.exit(fail ? 1 : 0);

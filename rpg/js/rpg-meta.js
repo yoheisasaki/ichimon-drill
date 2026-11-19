@@ -196,7 +196,7 @@
     const nm = String(name == null ? '' : name).replace(/[\u0000-\u001f<>&"']/g, '').trim().slice(0, NAME_MAX);
     const ok = Number.isInteger(look.face) && look.face >= 0 && look.face < FACE_N && Number.isInteger(look.hair) && look.hair >= 0 && look.hair < HAIR_N && Number.isInteger(look.skin) && look.skin >= 0 && look.skin < SKIN.length && Number.isInteger(look.hairColor) && look.hairColor >= 0 && look.hairColor < HAIR_COLOR.length;
     if (!ok) return { ok: false, err: '外見が不正' };
-    const o = look.outfit === 'master' ? (masterOwned(save, save.job) ? 'master' : null) : (look.outfit === undefined ? save.look.outfit : (look.outfit && (save.rewards.costumes || []).includes(look.outfit) ? look.outfit : null));
+    const o = look.outfit === 'master' ? (masterOwned(save, save.job) ? 'master' : null) : look.outfit === 'alt1' ? (altOwned(save, save.job) ? 'alt1' : null) : (look.outfit === undefined ? save.look.outfit : (look.outfit && (save.rewards.costumes || []).includes(look.outfit) ? look.outfit : null));
     save.name = nm; save.look = { face: look.face, hair: look.hair, skin: look.skin, hairColor: look.hairColor, outfit: o || null }; return { ok: true };
   }
   const lookOf = save => ({ skin: SKIN[save.look.skin], hair: HAIR_COLOR[save.look.hairColor], face: save.look.face, hairStyle: save.look.hair });
@@ -306,13 +306,16 @@
   // マスター衣装：その職業を Lv30 にすると獲得（設計書 02）。絵は職業ごと（hero_<職>_master）。
   const masterOwned = (save, job) => C.jobLevel(job, save.jobXp[job] || 0).lv >= 30;
   // 画面に出す衣装（'master' か null）。選んでいて、いまの職業のマスター衣装を獲得済みのときだけ
-  const costumeOf = (save, job) => { ensure(save); return save.look.outfit === 'master' && masterOwned(save, job || save.job) ? 'master' : null; };
+  // 追加衣装(alt1)：上級職6職だけが持つ。氷下火山(第2章)をクリアすると「上級職の衣装依頼」(rpg-data.js REGIONS.icevolcano.item)として解放。選ぶ場所はマスター衣装と同じ（外見画面）
+  const ALT_JOBS = ['magicknight', 'paladin', 'shadow', 'sage', 'ninja', 'ranger'];
+  const altOwned = (save, job) => ALT_JOBS.includes(job) && (save.progress.clearedRegions || []).includes('icevolcano');
+  const costumeOf = (save, job) => { ensure(save); const o = save.look.outfit, j = job || save.job; return o === 'master' && masterOwned(save, j) ? 'master' : o === 'alt1' && altOwned(save, j) ? 'alt1' : null; };
   // 武器の絵に使うアイテムID。はじまりの武器・アイコンの無い物は、職業の最初の武器系統のランクIで描く
   const START_ART_JOBS = ['warrior'];   // はじまりの武器（木の剣）の絵と手持ちを用意した職（新比率の職から順に足す）
   const artWeapon = (job, id) => { const it = id && D.ITEMS[id]; if (it && it.slot === 'weapon' && it.cat !== 'any') return id; if (id === 'w_start' && START_ART_JOBS.includes(job)) return 'w_start'; return 'w_' + D.JOBS[job].weapons[0] + '_1'; };
   const costumeColor = save => { ensure(save); const o = save.look.outfit; if (!o) return null; for (const q of Object.values(W.QUESTS)) if (q.costume && q.costume.id === o && save.rewards.costumes.includes(o)) return q.costume.color; return null; };
   const allCostumes = () => Object.values(W.QUESTS).filter(q => q.costume).map(q => ({ id: q.costume.id, name: q.costume.name, color: q.costume.color, from: q.name }));
-  function setOutfit(save, id) { ensure(save); if (id === 'master') { if (!masterOwned(save, save.job)) return false; save.look.outfit = 'master'; return true; } if (id && !save.rewards.costumes.includes(id)) return false; save.look.outfit = id || null; return true; }
+  function setOutfit(save, id) { ensure(save); if (id === 'alt1') { if (!altOwned(save, save.job)) return false; save.look.outfit = 'alt1'; return true; } if (id === 'master') { if (!masterOwned(save, save.job)) return false; save.look.outfit = 'master'; return true; } if (id && !save.rewards.costumes.includes(id)) return false; save.look.outfit = id || null; return true; }
   function setTitle(save, t) { ensure(save); if (t && !save.rewards.titles.includes(t)) return false; save.title = t || null; return true; }
 
   // 固有装備（18）。製作：ボス素材3個。再鍛造：解放済みの最高ランクまで（外見・効果・強化値を保持）
@@ -351,5 +354,5 @@
     return W.QUEST_ORDER.map(id => { const q = W.QUESTS[id], qs = save.quests[id] || {}; return { id, kind: q.kind, name: q.name, short: q.short || null, locked: questLocked(save, id), cleared: !!qs.cleared && q.kind !== 'rematch', count: qs.count || 0, step: qs.step || 0, total: q.segs.length, boss: q.boss || null, current: save.progress.quest === id }; });
   }
 
-  return { baseEnemyIds, variantIdsOf, codexItemIds, effectShort, masterOwned, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
+  return { baseEnemyIds, variantIdsOf, codexItemIds, effectShort, masterOwned, altOwned, ALT_JOBS, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
 });

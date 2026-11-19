@@ -537,17 +537,17 @@
 
   // ---------- 外見 ----------
   const lookPrev = () => ({ skin: M.SKIN[UI.look.skin], hair: M.HAIR_COLOR[UI.look.hairColor], face: UI.look.face, hairStyle: UI.look.hair });
-  const lookCostume = () => (UI.look.outfit === 'master' && M.masterOwned(save(), save().job) ? 'master' : null);
+  const lookCostume = () => (UI.look.outfit === 'master' && M.masterOwned(save(), save().job) ? 'master' : UI.look.outfit === 'alt1' && M.altOwned(save(), save().job) ? 'alt1' : null);
   VIEWS.look = function () {
     const L = UI.look, s = save(), sw = (key, arr) => arr.map((c, i) => `<button class="rs-sw${L[key] === i ? ' on' : ''}" style="background:${c}" data-lk="${key}" data-v="${i}" aria-label="${i + 1}ばん" aria-pressed="${L[key] === i}"></button>`).join('');
     const num = (key, n) => Array.from({ length: n }, (_, i) => `<button class="rs-chip${L[key] === i ? ' on' : ''}" data-lk="${key}" data-v="${i}" aria-pressed="${L[key] === i}">${i + 1}</button>`).join('');
-    const mo = M.masterOwned(s, s.job), outfits = `<button class="rs-chip${!L.outfit || L.outfit !== 'master' ? ' on' : ''}" data-outfit="" aria-pressed="${L.outfit !== 'master'}">${kr('通常')}</button><button class="rs-chip${L.outfit === 'master' && mo ? ' on' : ''}" data-outfit="master" aria-pressed="${L.outfit === 'master' && mo}" ${mo ? '' : 'aria-disabled="true" disabled'}>マスター${kr('衣装')}</button>`;
+    const mo = M.masterOwned(s, s.job), hasAlt = M.ALT_JOBS.includes(s.job), ao = M.altOwned(s, s.job), outfits = `<button class="rs-chip${!L.outfit || (L.outfit !== 'master' && L.outfit !== 'alt1') ? ' on' : ''}" data-outfit="" aria-pressed="${!L.outfit || (L.outfit !== 'master' && L.outfit !== 'alt1')}">${kr('通常')}</button><button class="rs-chip${L.outfit === 'master' && mo ? ' on' : ''}" data-outfit="master" aria-pressed="${L.outfit === 'master' && mo}" ${mo ? '' : 'aria-disabled="true" disabled'}>マスター${kr('衣装')}</button>${hasAlt ? `<button class="rs-chip${L.outfit === 'alt1' && ao ? ' on' : ''}" data-outfit="alt1" aria-pressed="${L.outfit === 'alt1' && ao}" ${ao ? '' : 'aria-disabled="true" disabled'}>${kr('追加')}${kr('衣装')}</button>` : ''}`;
     return frame(rb('{名前|なまえ}・{見|み}た{目|め}'), `
       <div class="rs-panel c"><div class="rs-stage">${heroCv('look', { look: lookPrev(), costume: lookCostume() })}</div></div>
       <div class="rs-panel"><label class="rs-h2" for="rsName">${rb('{名前|なまえ}（8{文字|もじ}まで）')}</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="冒険者"><p class="rs-p">${rb('{名前|なまえ}はこの{端末|たんまつ}の{中|なか}だけに{残|のこ}ります。')}</p></div>
       <div class="rs-panel"><div class="rs-h2">${kr('顔')}</div><div class="rs-chips">${num('face', M.FACE_N)}</div><div class="rs-h2">${kr('髪型')}</div><div class="rs-chips">${num('hair', M.HAIR_N)}</div>
         <div class="rs-h2">${kr('肌')}の${kr('色')}</div><div class="rs-chips">${sw('skin', M.SKIN)}</div><div class="rs-h2">${kr('髪')}の${kr('色')}</div><div class="rs-chips">${sw('hairColor', M.HAIR_COLOR)}</div>
-        <div class="rs-h2">${kr('衣装')}</div><div class="rs-chips">${outfits}</div>${mo ? '' : `<p class="rs-p">マスター${kr('衣装')}は、${jobRb(s.job)}を Lv30にすると ${kr('解放')}されます。</p>`}
+        <div class="rs-h2">${kr('衣装')}</div><div class="rs-chips">${outfits}</div>${mo ? '' : `<p class="rs-p">マスター${kr('衣装')}は、${jobRb(s.job)}を Lv30にすると ${kr('解放')}されます。</p>`}${hasAlt && !ao ? `<p class="rs-p">${kr('追加')}${kr('衣装')}は、${kr('氷下火山')}を クリアすると ${kr('解放')}されます。</p>` : ''}
         <p class="rs-p" id="lookNote">${rb('{見|み}た{目|め}を{変|か}えても、{強|つよ}さや{覚|おぼ}えた{技|わざ}は{変|か}わりません。')}</p></div>
       <button class="rs-big" id="lookOk">${rb('{決定|けってい}')}</button>`);
   };
