@@ -137,11 +137,11 @@
       if (!b) for (const fp of (POSE_FALLBACK[h.pose] || [])) { b = pickKey(J.body, bodyKeys(h.job, h.costume, fp, h.size)); if (b) { h.pose = fp; break; } }
       // 新比率の身体（body.heads === 'v2'）は専用の頭を使う（顔は戦士の確認段階では f0 のみ。表情は 攻撃/喜び を頭の差分で出す）
       const hv = b && b.v.heads, v2 = hv === 'v2' || hv === 'v3', ex = h.pose === 'attack' ? '_attack' : h.pose === 'win' ? '_win' : '';
-      const hn = v2 ? (h.size === 'S' ? ['head_' + hv + '_h' + hk + '_S'].concat(hv === 'v3' ? ['head_v3_h0_S'] : []) : ['head_' + hv + '_f' + fk + '_h' + hk + '_L' + ex, 'head_' + hv + '_f' + fk + '_h' + hk + '_L', 'head_' + hv + '_f0_h' + hk + '_L' + ex, 'head_' + hv + '_f0_h' + hk + '_L'].concat(hv === 'v3' ? ['head_v3_f0_h0_L' + ex, 'head_v3_f0_h0_L'] : [])) : h.size === 'S' ? ['head_h' + hk + '_S'] : ['head_f' + fk + '_h' + hk + '_L_' + h.pose, 'head_f' + fk + '_h' + hk + '_L'], hd = pickKey(J.head, hn.concat(hn.map(n => n.replace(/^head_/, ''))));
+      const hn = v2 ? (h.size === 'S' ? ['head_' + hv + '_h' + hk + '_S'].concat(hv === 'v3' ? ['head_v3_h0_S'] : []) : ['head_' + hv + '_f' + fk + '_h' + hk + '_L' + ex, 'head_' + hv + '_f' + fk + '_h' + hk + '_L', 'head_' + hv + '_f0_h' + hk + '_L' + ex, 'head_' + hv + '_f0_h' + hk + '_L'].concat(hv === 'v3' ? ['head_v3_f0_h0_L' + ex, 'head_v3_f0_h0_L'] : [])) : h.size === 'S' ? ['head_h' + hk + '_S'] : ['head_f' + fk + '_h' + hk + '_L_' + h.pose, 'head_f' + fk + '_h' + hk + '_L'], hd = b && !b.v.heads ? { key: '', v: {} } : pickKey(J.head, hn.concat(hn.map(n => n.replace(/^head_/, '')))), noHead = !!b && !b.v.heads;   // heads の指定が無い身体は頭込みの一体絵（頭を重ねない）
       if (!b) why = '身体の部品なし（' + bodyKeys(h.job, h.costume, h.pose, h.size)[0] + '）'; else if (!hd) why = '頭の部品なし（' + hn[hn.length - 1] + '）';
       else {
-        const bf = (b.key.startsWith('body_') ? stripPng(b.key) : 'body_' + stripPng(b.key)) + '.png', hf = (hd.key.startsWith('head_') ? stripPng(hd.key) : 'head_' + stripPng(hd.key)) + '.png', hand = b.v.hand ? String(b.v.hand) : null;
-        const files = [bf, hf].concat(hand ? [hand] : []), st = files.map(partImg);
+        const bf = (b.key.startsWith('body_') ? stripPng(b.key) : 'body_' + stripPng(b.key)) + '.png', hf = noHead ? null : (hd.key.startsWith('head_') ? stripPng(hd.key) : 'head_' + stripPng(hd.key)) + '.png', hand = b.v.hand ? String(b.v.hand) : null;
+        const files = [bf].concat(hf ? [hf] : []).concat(hand ? [hand] : []), st = files.map(partImg);
         if (st.includes('fail')) why = '部品の画像が読めない：' + files.filter((f, i) => st[i] === 'fail').join(',');
         else if (st.includes('pending')) return { mode: 'wait', h };
         else {
@@ -172,11 +172,11 @@
       if (hr) buildRamp(h.look.hair, hr.length).forEach((t, i) => pairs.push([hr[i], t]));
       recolorData(d.data, pairs); g.putImageData(d, 0, 0); return c;
     };
-    const bi = tint(PARTS.imgs[plan.bf].im, plan.bf), hi = tint(PARTS.imgs[plan.hf].im, plan.hf), b = plan.body.v, hd = plan.head.v;
+    const bi = tint(PARTS.imgs[plan.bf].im, plan.bf), hi = plan.hf ? tint(PARTS.imgs[plan.hf].im, plan.hf) : null, b = plan.body.v, hd = plan.head.v;
     const items = [];   // 重ね順：身体→頭→武器→前の手
     items.push({ im: bi, x: 0, y: 0, w: bi.width, h: bi.height });
-    const hx = Math.round((b.neck ? b.neck[0] : 0) - (hd.neck ? hd.neck[0] : 0)), hy = Math.round((b.neck ? b.neck[1] : 0) - (hd.neck ? hd.neck[1] : 0));
-    items.push({ im: hi, x: hx, y: hy, w: hi.width, h: hi.height });
+    if (hi) { const hx = Math.round((b.neck ? b.neck[0] : 0) - (hd.neck ? hd.neck[0] : 0)), hy = Math.round((b.neck ? b.neck[1] : 0) - (hd.neck ? hd.neck[1] : 0));
+      items.push({ im: hi, x: hx, y: hy, w: hi.width, h: hi.height }); }
     if (plan.wi && b.grip) {
       const we = (J.weapon && (J.weapon[plan.wk] || J.weapon[stripPng(plan.wk)])) || null;
       items.push({ im: plan.wi, weapon: weaponPlacement(b, plan.held && we.heldGrip ? { grip: we.heldGrip, tipAngle: we.tipAngle } : we, plan.wi.width, plan.wi.height), w: plan.wi.width, h: plan.wi.height });

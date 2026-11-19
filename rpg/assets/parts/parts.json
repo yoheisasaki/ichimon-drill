@@ -10400,6 +10400,138 @@
    ],
    "heads": "v3",
    "weaponLayer": "back"
+  },
+  "warrior_v3b_idle_L": {
+   "w": 57,
+   "h": 96,
+   "foot": [
+    29.7,
+    95
+   ],
+   "grip": [
+    49.5,
+    77.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3b_idle_L.png",
+   "handPos": [
+    44,
+    73
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "warrior_v3b_attack_L": {
+   "w": 67,
+   "h": 95,
+   "foot": [
+    35.8,
+    94
+   ],
+   "grip": [
+    60.5,
+    50.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3b_attack_L.png",
+   "handPos": [
+    55,
+    45
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "warrior_v3b_win_L": {
+   "w": 67,
+   "h": 95,
+   "foot": [
+    31.7,
+    94
+   ],
+   "grip": [
+    60.0,
+    22.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3b_win_L.png",
+   "handPos": [
+    54,
+    16
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 47
+  },
+  "warrior_v3b_idle_S": {
+   "w": 18,
+   "h": 28,
+   "foot": [
+    9.1,
+    27
+   ],
+   "grip": [
+    15.5,
+    23.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_v3b_idle_S.png",
+   "handPos": [
+    13,
+    21
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 14
+  },
+  "warrior_v3b_attack_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    11.2,
+    27
+   ],
+   "grip": [
+    17.0,
+    19.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_v3b_attack_S.png",
+   "handPos": [
+    15,
+    17
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 17
+  },
+  "warrior_v3b_win_S": {
+   "w": 19,
+   "h": 28,
+   "foot": [
+    10.0,
+    27
+   ],
+   "grip": [
+    7.0,
+    5.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_v3b_win_S.png",
+   "handPos": [
+    4,
+    3
+   ],
+   "weaponLayer": "back",
+   "whole": true,
+   "faceBottom": 17
   }
  },
  "head": {
