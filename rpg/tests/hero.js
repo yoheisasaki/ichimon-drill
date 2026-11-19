@@ -40,8 +40,9 @@ t('台帳：第1章ボス6体と帯用の画像は全て「正式」で、ファ
   const st = k => (man.assets.find(a => a.id === k) || {}).status;
   ['ancienttree', 'crystalturtle', 'silverdragon', 'hourglass', 'blackknight', 'machinegod'].forEach(k => { eq(st('enemy_b_' + k), '正式', k); eq(st('enemy_b_' + k + '_strip'), '正式', k + ' strip'); ok(fs.existsSync(path.join(ROOT, 'rpg/assets/chars/enemy_b_' + k + '.png')) && fs.existsSync(path.join(ROOT, 'rpg/assets/chars/enemy_b_' + k + '_strip.png')), k); });
 });
-t('武器の絵：はじまりの武器・他系統は、職業の最初の武器系統のランクIで描く（二重武器を作らない）', () => {
-  eq(M.artWeapon('priest', 'w_start'), 'w_staff_1'); eq(M.artWeapon('warrior', 'w_start'), 'w_start'); eq(M.artWeapon('thief', null), 'w_dagger_1'); eq(M.artWeapon('ranger', 'w_bow_3'), 'w_bow_3'); eq(M.artWeapon('warrior', 'rw_sword_2'), 'rw_sword_2');
+t('武器の絵：はじまりの武器は、職業の最初の武器系統の素朴な木の絵（K-02）。購入品（ランクI以上）と別の絵（二重武器を作らない）', () => {
+  eq(M.artWeapon('priest', 'w_start'), 'w_start_staff'); eq(M.artWeapon('warrior', 'w_start'), 'w_start'); eq(M.artWeapon('thief', 'w_start'), 'w_start_dagger'); eq(M.artWeapon('ranger', 'w_start'), 'w_start_bow');
+  Object.keys(D.JOBS).forEach(j => { const a = M.artWeapon(j, 'w_start'), b = M.artWeapon(j, 'w_' + D.JOBS[j].weapons[0] + '_1'); ok(a !== b, j + ' の初期と最初の購入が同じ絵'); ok(fs.existsSync(path.join(ROOT, 'rpg/assets/icons/' + a + '.png')), a + ' の絵がある'); }); eq(M.artWeapon('thief', null), 'w_dagger_1'); eq(M.artWeapon('ranger', 'w_bow_3'), 'w_bow_3'); eq(M.artWeapon('warrior', 'rw_sword_2'), 'rw_sword_2');
 });
 t('マスター衣装：その職業を Lv30 にすると獲得。未獲得は選べず、選べても別の職業では出ない', () => {
   const s = fresh(); eq(M.setOutfit(s, 'master'), false); ok(!M.masterOwned(s, 'warrior'));

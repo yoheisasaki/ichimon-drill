@@ -5,6 +5,7 @@ import numpy as np
 COL = {'O': (20, 26, 58), 'H': (136, 73, 50), 'B': (191, 135, 102), 'G': (251, 209, 164), 'W': (250, 249, 246), 'M': (229, 124, 91),
        'U': (47, 102, 194), 'V': (30, 72, 150), 'Y': (232, 161, 44), 'T': (180, 108, 50), 'C': (227, 166, 122), 'D': (250, 227, 185), 'N': (20, 26, 58), 'Q': (47, 102, 194)}
 CW = 22      # 作業幅。頭は x=3〜18
+ANGLE = {}   # ポーズ名→握り角の上書き（弓など武器種別ごと。呼び出し側が設定して戻す）
 def pad(s): return '...' + s + '...'
 
 HEAD = ['....H...HH...H..',
@@ -83,7 +84,8 @@ def build_s(J, ent, save, write_pose):
     def emit(pose, g, fist, **over):
         body, _ = to_rgba(g); hand, hp = fist_of(g, fist)
         # 手部品は、拳の塗りと拳の輪郭だけを残す
-        write_pose(J, pose, 'S', body, base, hand, hp, gripAngle=over.pop('gripAngle', 20), weaponScale=WS, refoot=True, faceBottom=12, weaponLayer='back', whole=True, **over)
+        ga = over.pop('gripAngle', 20); ga = ANGLE.get(pose, ga)
+        write_pose(J, pose, 'S', body, base, hand, hp, gripAngle=ga, weaponScale=WS, refoot=True, faceBottom=12, weaponLayer='back', whole=True, **over)
         return body
     head = head_variant('idle')
     # 待機

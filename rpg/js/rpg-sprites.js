@@ -276,8 +276,24 @@
     lab0: { sky: ['#8a96a8', '#cfd6e0'], far: '#667080', grass: '#505a68', tuft: '#38424e', tree: '#80a0c0' }, orchard: { sky: ['#3a2a78', '#9a80d8'], far: '#5a4a98', grass: '#6a5aa8', tuft: '#f0e090', tree: '#4a3a88' },
     dawnisle: { sky: ['#f8a878', '#fff0c8'], far: '#f0c890', grass: '#e8d8a0', tuft: '#c8b070', tree: '#8a9a5a' }
   };
+  // 冒険帯の背景だけ：彩度を約3割・明暗の振れ幅を約4割落とす（小石・葉・細線を人物より控えめに）。ぼかしはしない（1画素ずつの色変換なので輪郭は崩れない）
+  const MUTED = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+  function mutedStrip(im) {
+    if (typeof document === 'undefined') return im;
+    let c = MUTED && MUTED.get(im); if (c) return c;
+    c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0);
+    const d = g.getImageData(0, 0, c.width, c.height), p = d.data; let sum = 0, n = 0;
+    for (let i = 0; i < p.length; i += 4) { if (p[i + 3]) { sum += 0.3 * p[i] + 0.59 * p[i + 1] + 0.11 * p[i + 2]; n++; } }
+    const M = n ? sum / n : 128, SAT = 0.7, CON = 0.6;
+    for (let i = 0; i < p.length; i += 4) {
+      if (!p[i + 3]) continue;
+      const l = 0.3 * p[i] + 0.59 * p[i + 1] + 0.11 * p[i + 2], sh = (M - l) * (1 - CON);
+      for (let k = 0; k < 3; k++) p[i + k] = Math.max(0, Math.min(255, Math.round(l + (p[i + k] - l) * SAT + sh)));
+    }
+    g.putImageData(d, 0, 0); if (MUTED) MUTED.set(im, c); return c;
+  }
   function drawBackground(ctx, w, h, region, img) {
-    const bim = img && IMGS['bg_' + region + (img === 'strip' ? '_strip' : '')];
+    let bim = img && IMGS['bg_' + region + (img === 'strip' ? '_strip' : '')]; if (bim && img === 'strip') bim = mutedStrip(bim);
     if (bim) {   // 画像を縦横比そのままで敷き詰める（はみ出しは中央〜下基準で切る）
       const k = ctx.getTransform().a || 1, cw = w * k, ch = h * k, sc = Math.max(cw / bim.width, ch / bim.height), dw = bim.width * sc, dh = bim.height * sc;
       ctx.imageSmoothingEnabled = false; ctx.drawImage(bim, (cw - dw) / 2 / k, (ch - dh) / k, dw / k, dh / k); return;

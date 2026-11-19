@@ -15,6 +15,7 @@ OUT = F.OUT
 WS = {'sword': 0.65, 'staff': 0.95, 'dagger': 0.7, 'bow': 0.7}
 JOB_WEAPON = {'warrior': 'sword', 'magicknight': 'sword', 'paladin': 'sword', 'skyknight': 'sword', 'mage': 'staff', 'priest': 'staff', 'sage': 'staff', 'starseer': 'staff',
               'thief': 'dagger', 'shadow': 'dagger', 'ninja': 'dagger', 'ranger': 'bow'}
+S_ANGLE = {'bow': {'attack': 200, 'windup': 20, 'win': 10}}   # 弓は拳から下へ垂らす（顔の前に来ない）
 NARROW_JOBS = ('ranger', 'skyknight')
 GRIP = {'sword': (5, 12, 78, 60), 'staff': (5, 12, 78, 60), 'dagger': (5, 12, 78, 60), 'bow': (5, 12, 78, 60)}   # idle, ready, guard, hit
 
@@ -181,9 +182,10 @@ def build_s(job, J, ent, save, write_pose, ws):
             new[1] = new[1].replace('Y', 'U')
         import parts_body_v3b_s_feat as FT
         SS.BODY[:] = FT.apply(base_job, new, st, SS.COL)
+        SS.ANGLE.clear(); SS.ANGLE.update(S_ANGLE.get(JOB_WEAPON[base_job], {}))
         SS.build_s(J, ent, save, write_pose)
     finally:
-        SS.COL.clear(); SS.COL.update(old); SS.HEAD[:] = oldh; SS.BODY[:] = oldb
+        SS.ANGLE.clear(); SS.COL.clear(); SS.COL.update(old); SS.HEAD[:] = oldh; SS.BODY[:] = oldb
 
 if __name__ == '__main__':
     main(sys.argv[1])

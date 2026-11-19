@@ -13338,7 +13338,7 @@
     19.0,
     15.0
    ],
-   "gripAngle": 135,
+   "gripAngle": 200,
    "weaponScale": 0.5,
    "hand": "hand_ranger_v3b_attack_S.png",
    "handPos": [
@@ -13426,7 +13426,7 @@
     20.0,
     6.5
    ],
-   "gripAngle": -40,
+   "gripAngle": 20,
    "weaponScale": 0.5,
    "hand": "hand_ranger_v3b_windup_S.png",
    "handPos": [
@@ -16418,7 +16418,7 @@
     19.0,
     15.0
    ],
-   "gripAngle": 135,
+   "gripAngle": 200,
    "weaponScale": 0.5,
    "hand": "hand_ranger_master_v3b_attack_S.png",
    "handPos": [
@@ -16506,7 +16506,7 @@
     20.0,
     6.5
    ],
-   "gripAngle": -40,
+   "gripAngle": 20,
    "weaponScale": 0.5,
    "hand": "hand_ranger_master_v3b_windup_S.png",
    "handPos": [
@@ -19498,7 +19498,7 @@
     19.0,
     15.0
    ],
-   "gripAngle": 135,
+   "gripAngle": 200,
    "weaponScale": 0.5,
    "hand": "hand_ranger_alt1_v3b_attack_S.png",
    "handPos": [
@@ -19586,7 +19586,7 @@
     20.0,
     6.5
    ],
-   "gripAngle": -40,
+   "gripAngle": 20,
    "weaponScale": 0.5,
    "hand": "hand_ranger_alt1_v3b_windup_S.png",
    "handPos": [
