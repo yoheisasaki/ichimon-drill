@@ -356,15 +356,15 @@
     return `
     <div class="rw rw3" id="rwRoot" data-outcome="${res.outcome}">
       <header class="rw-head"><div class="rw-title">${rb('10{問|もん}おつかれさま！')}</div></header>
+      <div class="rw-stage"><div class="rw-scene"><canvas id="rwCanvas"></canvas><div class="rw-cap" id="rwCap">${cap}</div></div></div>
       <main class="rw-body" id="rwBody">
-      <div class="rw-scene"><canvas id="rwCanvas"></canvas><div class="rw-cap" id="rwCap">${cap}</div></div>
       <div class="rw-panel">
         <div class="rw-score2" aria-label="正解数">${sc}</div>
         <div class="rw-row"><span>★ ${rb('{経験値|けいけんち}')}</span><b>+${res.xp}</b>${badge ? `<i class="rw-badge">${badge}</i>` : ''}</div>
         <div class="rw-row"><span>● コイン</span><b id="rwTotal">+${tot.total}</b></div><div class="rw-coinnote" id="rwCoinNote" ${tot.chestCoin ? '' : 'hidden'}>${tot.chestCoin ? `（${rb('{宝箱|たからばこ}')} +${tot.chestCoin} を${rb('{含|ふく}')}む）` : ''}</div>
         <div class="rw-job"><div class="rw-jobt"><span>${lvTxt}</span><span>${jl.capped ? 'Lv上限' : nx ? `次の${rb('{技|わざ}')}まであと ${Math.max(0, nx.remain)}` : '全て覚えた'}</span></div><div class="rw-bar"><i style="width:${pct}%"></i></div>${advUp}</div>
         ${newSk}
-        ${res.drops.map(d => `<div class="rw-row sm">${esc(d.name)} ×${d.n}${d.thief ? '（宝の気配）' : ''}${res.firstClear ? '（初回報酬）' : ''}</div>`).join('')}
+        ${res.drops.map(d => `<div class="rw-row sm"><span>${esc(d.name)} ×${d.n}${d.thief ? '（宝の気配）' : ''}${res.firstClear ? '（初回報酬）' : ''}</span></div>`).join('')}
       </div>
       <div class="rw-more3"><button class="rw-mini" id="rwDetail">${rb('{内訳|うちわけ}')}</button>${hasWrong ? `<button class="rw-mini" id="rwWrong" aria-haspopup="dialog">${rb('{間違|まちが}えた{問題|もんだい}')}</button>` : ''}<button class="rw-mini" id="rwEquip">${rb('{装備|そうび}を{見|み}る')}</button></div>
       ${chest ? chestCardHtml(chest, true) : ''}

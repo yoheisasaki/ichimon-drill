@@ -48,6 +48,7 @@ CHECK = """(sel) => {
   let minFs = 99; const walker = document.createTreeWalker(app, NodeFilter.SHOW_TEXT); let n; const tiny = new Set();
   while ((n = walker.nextNode())) { if (!n.textContent.trim()) continue; const p = n.parentElement; if (!p || p.closest('rt') || p.closest('canvas')) continue; const cs = getComputedStyle(p); if (cs.display === 'none' || cs.visibility === 'hidden') continue; const fs = parseFloat(cs.fontSize); if (fs < minFs) minFs = fs; if (fs < 12) tiny.add(p.className + ':' + n.textContent.trim().slice(0, 12)); }
   out.boxOverflow = [...document.querySelectorAll('.rs-eqr,.rs-shopsel,.rs-cond,.rs-eqcmp,.rs-bonusrow,.rs-topbar,.rs-tile,.rs-jobcard')].filter(e => e.scrollHeight > e.clientHeight + 1 || e.scrollWidth > e.clientWidth + 1).map(e => e.className.split(' ')[0]);
+  const sg = document.querySelector('.rs-stage canvas'); out.stageH = sg ? Math.round(sg.getBoundingClientRect().height) : null; out.stageInView = sg ? (sg.getBoundingClientRect().top >= 0 && sg.getBoundingClientRect().bottom <= vh) : null;
   out.minFont = minFs; out.tinyText = [...tiny].slice(0, 6);
   return out; }"""
 def shot(pg, vp, name):
@@ -185,6 +186,9 @@ bad = []
 for vp, scr in R['viewports'].items():
     for name, c in scr.items():
         if c['hscroll']: bad.append([vp, name, 'hscroll'])
+        rng = {'home': (180, 210), 'home_chest': (180, 210), 'home_used': (180, 210), 'equip': (150, 170), 'equip20': (150, 170), 'jobdetail_ok': (180, 210), 'jobdetail_ng': (180, 210), 'me': (150, 170), 'town': (140, 160)}.get(name)
+        if rng and not (c['stageH'] is not None and rng[0] <= c['stageH'] <= rng[1]): bad.append([vp, name, 'stage height', c['stageH'], rng])
+        if rng and not c['stageInView']: bad.append([vp, name, 'stage not fully in view'])
         if c.get('boxOverflow'): bad.append([vp, name, 'boxOverflow', c['boxOverflow']])
         if c['pageScroll']: bad.append([vp, name, 'pageScroll'])
         if c.get('contentOverFoot'): bad.append([vp, name, 'contentOverFoot'])

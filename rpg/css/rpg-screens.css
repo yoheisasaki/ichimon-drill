@@ -463,3 +463,6 @@ html:has(.rw3),body:has(.rw3){overflow:hidden}
 .rw3 .rw-link{margin:0 auto}
 .rw3 .rw-h{font-size:19px;margin-bottom:4px}
 .rw3 .rw-clear{margin:0}
+
+.rw3 .rw-stage{flex:none;padding:0 14px 8px}
+.rw3 .rw-scene{flex:none}

@@ -119,6 +119,7 @@ for vp, scr in R['viewports'].items():
             if not r or not r['inView'] or not r['hit']: bad.append([vp, name, 'notinview/hit ' + k, r])
         if not c['sameSize']: bad.append([vp, name, 'end/more size differ'])
         if c['coinRows'] != 1: bad.append([vp, name, 'coinRows', c['coinRows']])
+        if not (c['scene'] and 120 <= c['scene']['h'] <= 150 and c['scene']['inView']): bad.append([vp, name, 'stage height/inView (120-150)', c['scene']])
         if c['chestSlots'] > 1: bad.append([vp, name, 'chestSlots', c['chestSlots']])
         if name == 'nochest' and c['chestSlots']: bad.append([vp, name, 'empty slot'])
         if c['bodyBottom'] > c['footTop'] + 1: bad.append([vp, name, 'body over foot'])

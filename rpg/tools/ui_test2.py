@@ -111,7 +111,7 @@ with sync_playwright() as p:
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); pg.wait_for_selector('.choice')
     pg.evaluate(WRONG); pg.wait_for_timeout(200)
     d = pg.evaluate("() => ({deferred: RPG.deferred.length, hp: RPG.save.active.battle.hero.hp, max: RPG.save.active.battle.hero.maxHp})")
-    chk('F:enemy_action_deferred_until_next', d['deferred'] == 1 and d['hp'] < d['max'], d)
+    chk('F:enemy_action_with_answer_no_carryover(08)', d['deferred'] == 0 and d['hp'] < d['max'], d)
     pg.wait_for_function("() => document.getElementById('next').textContent.includes('つぎへ')"); pg.screenshot(path=os.path.join(OUT, 'q_wrong_strip.png')); pg.click('#next'); pg.wait_for_timeout(400)
     chk('F:deferred_played_on_next_question', pg.evaluate("() => RPG.deferred.length") == 0)
     # 同じ回答を二重タップしても1回だけ
