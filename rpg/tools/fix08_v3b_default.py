@@ -12,7 +12,7 @@ srv = TS(('127.0.0.1', PORT), functools.partial(Q, directory=ROOT)); threading.T
 BASE = f'http://127.0.0.1:{PORT}/index.html?nosend=1'
 SAVE0 = open(os.path.join(ROOT, 'rpg', 'tests', 'saves', 'day14.json'), encoding='utf-8').read()   # v1・look に face/hair/skin/hairColor あり
 SETUP = re.search(r'SETUP = """(.*?)"""', open(os.path.join(ROOT, 'rpg', 'tools', 'fix08_reward.py'), encoding='utf-8').read(), re.S).group(1)
-PATCH = "s.job='%s'; s.firstDone=true; s.coins=3000; s.jobXp.warrior=9000; s.jobXp.mage=9000; s.jobXp.priest=9000; s.active=null; s.daily.used={}; s.chests=[]; s.look={face:1,hair:2,skin:1,hairColor:3,outfit:null};"
+PATCH = "s.job='%s'; s.firstDone=true; s.coins=3000; s.jobXp.warrior=9000; s.jobXp.mage=9000; s.jobXp.priest=9000; s.equip.weapon='%s'; s.active=null; s.daily.used={}; s.chests=[]; s.look={face:1,hair:2,skin:1,hairColor:3,outfit:null};"
 R = {'console': [], 'runs': {}}
 def page(b, w, h, job, urls):
     ctx = b.new_context(viewport={'width': w, 'height': h}, device_scale_factor=2, is_mobile=True, has_touch=True)
@@ -21,7 +21,7 @@ def page(b, w, h, job, urls):
     pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}')); pg.route('**/script.google.com/**', lambda r: r.abort())
     pg.on('request', lambda r: urls.append(r.url.split('/rpg/assets/')[-1]) if '/rpg/assets/parts/' in r.url and r.url.endswith('.png') else None)
     pg.goto(BASE); pg.wait_for_selector('#go', state='attached')
-    pg.evaluate("([t, js]) => { const s = JSON.parse(t); (new Function('s', js))(s); localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }", [SAVE0, PATCH % job])
+    pg.evaluate("([t, js]) => { const s = JSON.parse(t); (new Function('s', js))(s); localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }", [SAVE0, PATCH % (job, 'w_staff_1' if job in ('priest', 'sage', 'mage') else 'w_sword_1')])
     pg.reload(); pg.wait_for_selector('#go', state='attached')
     pg.wait_for_function("() => Object.keys(RPGSprites.IMGS).length >= 700 && !!window.RPG && RPG.ok", timeout=90000); pg.wait_for_timeout(700)
     return pg

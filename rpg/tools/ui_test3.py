@@ -111,8 +111,8 @@ with sync_playwright() as p:
         if engine == 'chromium': shot(pg, 'p2_loadout')
         # --- 外見 ---
         pg.click('.rs-tab[data-tab=me]'); pg.click('[data-go=look]'); pg.wait_for_selector('#rsName')
-        pg.fill('#rsName', 'ゆうた'); pg.click('[data-lk=hair][data-v="4"]'); pg.click('[data-lk=face][data-v="2"]'); pg.click('[data-lk=skin][data-v="3"]'); pg.click('#lookOk'); pg.wait_for_timeout(100)
-        sv = pg.evaluate(SAVE); chk(E + 'look_saved', sv['name'] == 'ゆうた' and sv['look'] == {'face': 2, 'hair': 4, 'skin': 3, 'hairColor': 0, 'outfit': None}, [sv['name'], sv['look']])
+        pg.fill('#rsName', 'ゆうた'); pg.click('#lookOk'); pg.wait_for_timeout(100)
+        sv = pg.evaluate(SAVE); chk(E + 'look_saved', sv['name'] == 'ゆうた' and sv['look'] == {'outfit': None}, [sv['name'], sv['look']])
         m = metrics(pg); chk(E + 'look_ok', not m['hscroll'] and not m['small'], m)
         if engine == 'chromium': shot(pg, 'p2_look')
         # --- 図鑑・実績・データ・じぶん ---

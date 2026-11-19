@@ -120,7 +120,7 @@ with sync_playwright() as p:
     chk('A03_try_changes_numbers', st1[5] != st1[4] or st1[6] != '±0', st1)
     chk('A03_try_label_and_save_untouched', pg.evaluate("() => !!document.querySelector('.rs-eqitem.on .rs-try')") and save(pg)['equip']['weapon'] == 'w_sword_1')
     # 顔・身体は変わらない：頭の部分（上40ドット＝上80px）の画素が同じ
-    same = pg.evaluate("""() => { const SP = RPGSprites, mk = w => { const c = document.createElement('canvas'); c.width = 120; c.height = 120; const g = c.getContext('2d', {willReadFrequently: true}); SP.drawHeroLayered(g, {job: 'warrior', weaponId: w, use: 'equip', pose: 'idle', look: RPGMeta.lookOf(RPG.save), x: 40, groundY: 112, scale: 1}); return g.getImageData(0, 0, 120, 120).data; };
+    same = pg.evaluate("""() => { const SP = RPGSprites, mk = w => { const c = document.createElement('canvas'); c.width = 120; c.height = 120; const g = c.getContext('2d', {willReadFrequently: true}); SP.drawHeroLayered(g, {job: 'warrior', weaponId: w, use: 'equip', pose: 'idle', x: 40, groundY: 112, scale: 1}); return g.getImageData(0, 0, 120, 120).data; };
       const a = mk('w_sword_1'), b = mk('w_sword_2'); let head = 0, all = 0; for (let y = 0; y < 120; y++) for (let x = 0; x < 120; x++) { const i = (y * 120 + x) * 4; if (a[i] !== b[i] || a[i+1] !== b[i+1] || a[i+2] !== b[i+2] || a[i+3] !== b[i+3]) { all++; if (x < 40 && y < 100) head++; } } return {all, bodyHeadDiff: head}; }""")
     chk('A03_only_weapon_pixels_differ(body/head same)', same['all'] > 0 and same['bodyHeadDiff'] == 0, same)
     pg.click('#eqReset'); pg.wait_for_timeout(400)
@@ -135,30 +135,29 @@ with sync_playwright() as p:
     chk('A04_strip_and_reward_same_weapon', {c['weaponId'] for c in cl if c['use'] in ('strip', 'reward')} == {'w_sword_2'}, sorted({str(c['weaponId']) for c in cl if c['use'] in ('strip', 'reward')}))
     pg.click('#end'); pg.wait_for_selector('#go', state='attached')
     # --- A05：杖の僧侶・短剣の盗賊・弓のレンジャー ---
-    W5 = """() => ['priest:w_staff_1', 'thief:w_dagger_1', 'ranger:w_bow_1', 'mage:w_staff_1', 'sage:w_staff_1', 'ninja:w_dagger_1'].map(x => { const [j, w] = x.split(':'); const p = RPGSprites.planHero({job: j, weaponId: RPGMeta.artWeapon(j, w), use: 'equip', pose: 'idle', look: {face: 0, hairStyle: 0, skin: '#f0c39a', hair: '#7a4a2a'}}); return [j, p.mode, p.wk]; })"""
-    pg.evaluate(W5); pg.wait_for_timeout(800); r5 = pg.evaluate(W5)
+    W5 = """() => ['priest:w_staff_1', 'thief:w_dagger_1', 'ranger:w_bow_1', 'mage:w_staff_1', 'sage:w_staff_1', 'ninja:w_dagger_1'].map(x => { const [j, w] = x.split(':'); const p = RPGSprites.planHero({job: j, weaponId: RPGMeta.artWeapon(j, w), use: 'equip', pose: 'idle'}); return [j, p.mode, p.wk]; })"""
+    pg.evaluate(W5); pg.wait_for_timeout(1500); pg.evaluate(W5); pg.wait_for_timeout(1500); r5 = pg.evaluate(W5)
     chk('A05_weapon_icon_matches_job(staff/dagger/bow, one weapon only)', all(m == 'layered' and wk == w + '.png' for (j, m, wk), w in zip(r5, ['w_staff_1', 'w_dagger_1', 'w_bow_1', 'w_staff_1', 'w_staff_1', 'w_dagger_1'])), r5)
-    # --- A06/A07：外見の変更が主要画面へ反映。全選択値の読込検査 ---
-    go(pg, 'look'); pg.wait_for_timeout(400); look0 = pix(pg); shot(pg, 'fix_look_before_390', False)
-    pg.click('[data-lk=face][data-v="2"]'); pg.click('[data-lk=hair][data-v="4"]'); pg.click('[data-lk=skin][data-v="3"]'); pg.click('[data-lk=hairColor][data-v="2"]'); pg.wait_for_timeout(300)
-    chk('A06_preview_changes', pix(pg) != look0 and has_color(pg, 'canvas[data-hero]', '#b97d56') and has_color(pg, 'canvas[data-hero]', '#d9b04a'))
-    shot(pg, 'fix_look_after_390', False)
-    chk('A06_note_text', pg.evaluate(NOTEXT).count('見た目を変えても、強さや覚えた技は変わりません。') == 1)
-    pg.click('#lookOk'); pg.wait_for_timeout(300)
-    sv = save(pg)['look']; chk('A06_look_saved', sv['face'] == 2 and sv['hair'] == 4 and sv['skin'] == 3 and sv['hairColor'] == 2, sv)
+    # --- A06/A07：外見選択（顔・髪型・肌・髪色）は撤去済み（父 11/19、D-54）。選択UIが無いこと・全画面で同じ一体絵・look を渡さないことを確かめる ---
+    go(pg, 'look'); pg.wait_for_timeout(400); shot(pg, 'fix_look_screen_390', False)
+    chk('A06_look_choice_removed(撤去済み)', pg.evaluate("() => document.querySelectorAll('[data-lk]').length === 0 && typeof RPGMeta.setLook === 'undefined' && typeof RPGMeta.SKIN === 'undefined'"))
     pg.evaluate("() => window.__calls.length = 0")
     for scr, prm in (('me', None), ('equip', None), ('jobdetail', {'job': 'warrior'})): go(pg, scr, prm)
     pg.evaluate("() => home()"); pg.wait_for_timeout(300)
     cl = pg.evaluate("() => window.__calls"); lk = {json.dumps(c['look']) for c in cl}
-    chk('A06_all_screens_new_look', lk == {json.dumps([2, 4, '#b97d56', '#d9b04a'])} and {c['use'] for c in cl} >= {'self', 'equip', 'job', 'home'}, [sorted(lk), sorted({c['use'] for c in cl})])
-    chk('A06_home_pixels_have_new_colors', has_color(pg, 'canvas[data-hero]', '#b97d56') and has_color(pg, 'canvas[data-hero]', '#d9b04a'))
-    pg.evaluate("() => { const c = document.createElement('canvas'); RPGSprites.drawHeroLayered(c.getContext('2d'), {job: 'warrior', weaponId: 'w_sword_1', use: 'strip', pose: 'idle', look: {face: 0, hairStyle: 0, skin: '#f0c39a', hair: '#7a4a2a'}, x: 10, groundY: 20, scale: 1}); [0, 1, 2, 3, 4, 5].forEach(h => RPGSprites.drawHeroLayered(c.getContext('2d'), {job: 'warrior', weaponId: 'w_sword_1', use: 'strip', pose: 'idle', look: {face: 0, hairStyle: h, skin: '#f0c39a', hair: '#7a4a2a'}, x: 10, groundY: 20, scale: 1})); [0,1,2,3].forEach(f => [0,1,2,3,4,5].forEach(h => RPGSprites.drawHeroLayered(c.getContext('2d'), {job: 'warrior', weaponId: 'w_sword_1', use: 'equip', pose: 'idle', look: {face: f, hairStyle: h, skin: '#f0c39a', hair: '#7a4a2a'}, x: 10, groundY: 20, scale: 1}))); }"); pg.wait_for_timeout(1200)
-    all_ok = pg.evaluate("""() => { const SP = RPGSprites, M = RPGMeta; let n = 0, bad = []; const c = document.createElement('canvas'); c.width = 120; c.height = 120; const g = c.getContext('2d', {willReadFrequently: true});
-      for (let f = 0; f < M.FACE_N; f++) for (let h = 0; h < M.HAIR_N; h++) for (let s = 0; s < M.SKIN.length; s++) for (let k = 0; k < M.HAIR_COLOR.length; k++) for (const use of ['equip', 'strip']) {
-        g.clearRect(0, 0, 120, 120); const r = SP.drawHeroLayered(g, {job: 'warrior', weaponId: 'w_sword_1', use, pose: 'idle', look: {face: f, hairStyle: h, skin: M.SKIN[s], hair: M.HAIR_COLOR[k]}, x: 40, groundY: 112, scale: 1});
-        const d = g.getImageData(0, 0, 120, 120).data; let cnt = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) cnt++; n++; if (r !== 'layered' || cnt < 50) bad.push([f, h, s, k, use, r, cnt]); }
+    chk('A06_all_screens_same_whole_picture(look 不使用)', lk == {'null'} and {c['use'] for c in cl} >= {'self', 'equip', 'job', 'home'}, [sorted(lk), sorted({c['use'] for c in cl})])
+    pg.evaluate("""() => { const SP = RPGSprites; let n = 0, bad = []; const c = document.createElement('canvas'); c.width = 120; c.height = 120; const g = c.getContext('2d', {willReadFrequently: true});
+      for (const job of Object.keys(RPGData.JOBS)) for (const use of ['equip', 'strip']) for (const costume of [null, 'master']) {
+        g.clearRect(0, 0, 120, 120); const r = SP.drawHeroLayered(g, {job, costume, weaponId: null, use, pose: 'idle', x: 60, groundY: 112, scale: 1});
+        const d = g.getImageData(0, 0, 120, 120).data; let cnt = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) cnt++; n++; if (r !== 'layered' || cnt < 50) bad.push([job, use, costume, r, cnt]); }
       return {n, bad: bad.slice(0, 5), nbad: bad.length}; }""")
-    chk('A07_all_look_values_load_and_draw(720x2)', all_ok['n'] == 1440 and all_ok['nbad'] == 0, all_ok)
+    pg.wait_for_timeout(4000)   # 初回の描画で部品の読込が始まる。読込を待ってからもう一度
+    all_ok = pg.evaluate("""() => { const SP = RPGSprites; let n = 0, bad = []; const c = document.createElement('canvas'); c.width = 120; c.height = 120; const g = c.getContext('2d', {willReadFrequently: true});
+      for (const job of Object.keys(RPGData.JOBS)) for (const use of ['equip', 'strip']) for (const costume of [null, 'master']) {
+        g.clearRect(0, 0, 120, 120); const r = SP.drawHeroLayered(g, {job, costume, weaponId: null, use, pose: 'idle', x: 60, groundY: 112, scale: 1});
+        const d = g.getImageData(0, 0, 120, 120).data; let cnt = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) cnt++; n++; if (r !== 'layered' || cnt < 50) bad.push([job, use, costume, r, cnt]); }
+      return {n, bad: bad.slice(0, 5), nbad: bad.length}; }""")
+    chk('A07_all_jobs_x_costume_x_use_draw_whole_picture(12職x2衣装x2用途=48)', all_ok['n'] == 48 and all_ok['nbad'] == 0, all_ok)
     # --- A08：マスター衣装 ---
     pg.context.close()
     pg = new_page(b); boot(pg, WARRIOR + "s.jobXp.warrior = 1e7;", FIX)
@@ -177,7 +176,7 @@ with sync_playwright() as p:
     # 未解放職のプレビュー：本人の顔髪で表示し、保存は変えない
     before = pg.evaluate("() => localStorage.getItem('ichimon.rpg.v1')")
     pg.evaluate("() => window.__calls.length = 0"); go(pg, 'jobs'); pg.evaluate("() => document.querySelector('[data-tier=adv]').click()"); pg.wait_for_timeout(500); go(pg, 'jobdetail', {'job': 'sage'}); pg.wait_for_timeout(400)
-    cl = pg.evaluate("() => window.__calls"); chk('A08_locked_job_preview_uses_own_look', {json.dumps(c['look']) for c in cl} == {json.dumps([1, 2, '#f6d7b8', '#c9572e'])} and {c['job'] for c in cl} >= {'sage'}, [sorted({json.dumps(c['look']) for c in cl}), sorted({c['job'] for c in cl})])
+    cl = pg.evaluate("() => window.__calls"); chk('A08_locked_job_preview_uses_own_look', {json.dumps(c['look']) for c in cl} == {'null'} and {c['job'] for c in cl} >= {'sage'}, [sorted({json.dumps(c['look']) for c in cl}), sorted({c['job'] for c in cl})])
     pg.click('#jobPlay'); pg.wait_for_timeout(1500)
     chk('A08_preview_does_not_change_save', pg.evaluate("() => localStorage.getItem('ichimon.rpg.v1')") == before)
     # --- B02：転職の順序 ---

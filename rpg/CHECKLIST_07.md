@@ -1,7 +1,26 @@
-# 試遊前確認票（記入済み）— 一問一答 RPG
+# 試遊前確認票（記入済み）— 一問一答 RPG　**2026-11-19 午後の再実行版（v3b 一体絵・外見選択撤去後。HEAD＝d674446＋本コミット）**
 
-元の票：`C:/Users/user/projects/AI事業部/_work/ichimon-rpg-spec-20261118/07_試遊前確認票.md`（A〜F）。判定は PASS／FAIL／未確認。
-根拠の種類：**自動テスト**＝node（DOM不要）／**ブラウザ操作**＝Playwright headless が実際にクリック・入力して DOM と画素を確かめた／**画像目視**＝保存した画像を自分で見た。**人間の試遊は一度もしていない。**
+元の票：07_試遊前確認票.md（A〜F）。判定は PASS／FAIL／未確認／撤去済み。根拠の種類：**自動テスト**（node）／**ブラウザ操作**（Playwright headless。chromium・webkit）／**画像目視**。**人間の試遊は一度もしていない。iPhone 実機は未確認。**
+
+## 再実行の結果（2026-11-19 午後）と、前回（午前）からの変更点
+
+|項目|結果|証拠|
+|---|---|---|
+|node run 129／meta 29／reward 31／stage3 36／hero 21|**246 全通過**|`rpg/shots/fix09_tests/node_*.log`|
+|画面 ui_test 38／ui_test2 21／ui_test3 93／ui_test4 107／ui_test_map 36／ui_test_fx／ui_test_text 20／ui_test_hero（REAL=1）59|全通過（下記の検査側の修正後）|`fix09_tests/py_*.log`|
+|一周 loop_07（390×700。新規→名前→10問→開封→購入→試着/取消/装備→魔法戦士→再読込→次の冒険→異常系）|**33 項目 全通過**、遮断0・外部リクエスト0・コンソール0|`rpg/shots/fix07_loop/`（録画 loop.webm・result.json）|
+|宝箱 d05（レア／重複レア／素材／コイン）|通過|`rpg/shots/fix07_d05/`|
+|回帰 regress（学習画面の寸法）|学習画面のカード・地図・選択肢の寸法は前回と一致（差は地図ページ全体の高さ −4px と結果文言のみ）|`rpg/baseline/fix09/metrics.json`|
+|ルビ監査 ruby_audit.js|**初回 9 件の抜け → 辞書に9語を足して 0 件**（現在地・目的・着がえる・条件・未達・習得・再開・詳細・特別）。コントラスト 1586 件中 4.5 未満 0|`fix09_tests/ruby_audit.log`・`py_contrast.log`|
+
+**前回からの変更（07 の項目の読み替え）**
+- A06（顔・髪型・肌・髪色の変更）・A07（その全選択値）：**撤去済み（D：父 11/19、D-55）**。代わりに「選択肢が無いこと」「全画面で同じ一体絵」「全12職×衣装×用途の48通りが描ける」を確認（ui_test_hero A06_*／A07_*、fix08_v3b_default.py）。
+- E の手順1「主人公を選ぶ」：名前のみ入力（外見選択なし）。保存は v2 で look＝衣装だけ。
+- 保存の移行 D08：ブラウザでも確認（v1 の day14.json を読込 → v=2・職・装備が保たれる。chromium・webkit、390×700・320×568：`fix08_v3b_default/result.json`）。
+- 検査側の追従（アプリ本体は変えていない）：ui_test3／ui_test_hero／loop_07（外見選択）、ui_test_map（範囲シート・クエストのシート化・章切替）、ui_test_text（08 の文言）、fix08_screens（webkit はホイール未対応のため背面固定は overflow で代用）。fix06_reward.py は 06 当時の報酬画面（内訳行・コイン内訳）用で 08 の配置に合わない＝**廃止扱い**。同じ D01〜D10 の確認は fix08_reward.py（chromium・webkit、7表示領域）・d05_chests.py・loop_07・node reward が担う。
+- アプリ本体の修正（本コミット）：ルビ辞書9語、報酬の素材名の途中改行、装備・自分の舞台の主人公倍率（頭の上の余白）。
+
+以下は午前の記入（基点 845fc31）の記録。A06・A07 は上のとおり撤去済み、ほかの行は上の再実行で通過を確認し直した。
 
 ## 記入欄
 
@@ -35,8 +54,8 @@
 |A03|PASS|ブラウザ操作＋画像目視|青銅の剣→鉄の剣（w_sword_2）の試着：絵の画素が変わり数値も変わる（攻撃 20→26）、顔・身体は同じ。`fix07_loop/15_equip_before_sword2.png`→`16_equip_try_sword2.png`→`17_equip_confirmed_sword2.png`、比較 `fix07_compare/06_equip.png`、`fix06_screens/result.json` A03_*。**注意：最初の「青銅の剣」は「はじまりの武器」と同じ絵（既知問題 K-02）。火花の剣の試着は `fix06_screens/fix_*`・hero テストで確認**|
 |A04|PASS|ブラウザ操作|取消で絵・保存が元に戻る（loop の E4）。確定後はホーム・帯・報酬・再読込後も同じ武器（E6：武器 w_sword_2 を魔法戦士転職後の再読込・次の冒険の帯と報酬まで保持）。試着が他画面や保存に漏れない：A04_*|
 |A05|PASS|ブラウザ操作＋画像目視|僧侶＝杖、盗賊＝短剣、レンジャー＝弓。固定の剣・二重武器なし：`fix06_screens/result.json` A05_weapon_icon_matches_job、画像 `real_jobs_*_390.png`|
-|A06|PASS|ブラウザ操作＋画像目視|顔・髪型・肌・髪色を変更して全主要画面へ反映：A06_*。変更前後 `fix07_compare/11_A06_look.png`（新規主人公の初期外見→顔3・髪4・肌2・髪色3）|
-|A07|PASS|ブラウザ操作＋自動テスト|全選択値（4顔×6髪型×5肌×6髪色×L・S＝1440通り）の読込・描画：A07_all_look_values_load_and_draw。部品の組合せ 324 通りの描画方式：`fix07_tests/coverage.json`。つなぎ目の目視は `fix06_screens/real_*` と `fix07_loop/22_home_magicknight.png`（頭・手・武器に破綻なし）。node hero 12 通過|
+|A06|撤去済み（D：父 11/19）|ブラウザ操作＋画像目視|顔・髪型・肌・髪色を変更して全主要画面へ反映：A06_*。変更前後 `fix07_compare/11_A06_look.png`（新規主人公の初期外見→顔3・髪4・肌2・髪色3）|
+|A07|撤去済み（D：父 11/19）|ブラウザ操作＋自動テスト|全選択値（4顔×6髪型×5肌×6髪色×L・S＝1440通り）の読込・描画：A07_all_look_values_load_and_draw。部品の組合せ 324 通りの描画方式：`fix07_tests/coverage.json`。つなぎ目の目視は `fix06_screens/real_*` と `fix07_loop/22_home_magicknight.png`（頭・手・武器に破綻なし）。node hero 12 通過|
 |A08|PASS|ブラウザ操作|マスター衣装（Lv30）で絵が変わり全画面に反映、未獲得は選択不可、未解放職のプレビューはセーブ不変：A08_*。追加衣装（上級職）は部品あり（coverage の alt1 54 通り）|
 |A09|PASS|ブラウザ操作＋自動テスト|第1章ボス6体と図鑑/冒険の敵が正式画像：A09_*。`devReport().enemyMissing`＝空、部品の不足＝空（読込失敗は仮絵に黙って戻らず、開発用検査に出る）。`fix07_tests/coverage.json`|
 
@@ -109,7 +128,7 @@
 
 ### 集計
 
-**PASS 32／FAIL 0／未確認 1**（A01〜D10 の 33 行）。未確認：B07（OSの文字サイズ）。B08 は初回 FAIL → ホームを直して PASS（下の再判定）。
+**午前の記入：PASS 32／FAIL 0／未確認 1。午後の再実行：PASS 31／撤去済み 2（A06・A07）／FAIL 0／未確認 1**（A01〜D10 の 33 行）。未確認：B07（OSの文字サイズ）。B08 は初回 FAIL → ホームを直して PASS（下の再判定）。
 PASS のうち実機での確認が残るもの：C02（iPhone のキーボード・safe-area）。そのほか画面全般で iPhone 実機（Safari）は未確認。
 
 ### 試遊不可の条件の点検

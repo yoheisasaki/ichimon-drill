@@ -4,15 +4,15 @@
    "ok": true,
    "v": 0
   },
-  "E1 hero chosen & saved": {
+  "E1 外見選択は撤去済み（顔・髪型・肌・髪色の選択肢が無い。名前と衣装だけ）": true,
+  "E1 name saved, look has outfit only (save v2)": {
    "ok": true,
-   "v": {
-    "face": 2,
-    "hair": 3,
-    "skin": 1,
-    "hairColor": 2,
-    "outfit": null
-   }
+   "v": [
+    {
+     "outfit": null
+    },
+    2
+   ]
   },
   "E1 range = 社会": true,
   "E2 mixed answers (ok/wrong/skip + review)": {
@@ -32,10 +32,10 @@
     279
    ]
   },
-  "E3 formula 学習討伐＋宝箱＝合計 matches balance": {
+  "E3 コイン1行：開封後は 学習討伐＋宝箱 の合算（残高と一致）": {
    "ok": true,
    "v": [
-    "学習がくしゅう・討伐とうばつ279＋宝箱たからばこ40＝合計ごうけい319",
+    "+319",
     319,
     40
    ]
@@ -84,28 +84,29 @@
    "v": [
     {
      "id": "a_heavy_1",
-     "why": "コインが足たりない"
+     "why": "コインが足りない（あと 101）",
+     "dis": true
     },
     79
    ]
   },
   "E7 job requirement unmet: button disabled & reason shown": {
    "ok": true,
-   "v": "‹ もどる\n魔法戦士まほうせんし\n魔法戦士まほうせんし\n上級職じょうきゅうしょく\n\n属性ぞくせいをまとった剣けんで戦たたかう\n\n転職てんしょく条件じょうけん\n・戦士せんし Lv10　（2 / 10）\n・魔法使まほうつかい Lv10　（1 / 10）\n基本職きほんしょく2つがLv10になると解放かいほう\nこの\n職業しょくぎょう\nになる\n動うご\nきを\n見み\nる\n目標もくひょう\nにする\n覚おぼ\nえる\n技"
+   "v": "‹ もどる\n魔法戦士まほうせんし\n動うごきを見みる\n魔法戦士まほうせんし\n上級職じょうきゅうしょく\n\n属性ぞくせいをまとった剣けんで戦たたかう\n\n転職てんしょく条件じょうけん\n・戦士せんし Lv10（2 / 10　あと 8）\n・魔法使まほうつかい Lv10（1 / 10　あと 9）\n覚おぼ\nえる\n技わざ\n目標もくひょう\nにする\nこの\n職業しょくぎょう\nになる"
   },
   "E7 job unmet: click does nothing": true,
   "E4 try sword2 sword: picture changes, face/look same": {
    "ok": true,
    "v": [
-    2549065745,
-    2339358207
+    4139897538,
+    1067894695
    ]
   },
   "E4 cancel: picture returns, save unchanged": {
    "ok": true,
    "v": [
-    2549065745,
-    2549065745
+    4139897538,
+    4139897538
    ]
   },
   "E4 equip sword2 sword: saved & same picture as try": true,
@@ -144,8 +145,8 @@
   "E6 after reload: identical hero picture": {
    "ok": true,
    "v": [
-    42535641,
-    42535641
+    526019378,
+    526019378
    ]
   },
   "E6 じぶん screen hero: magicknight + saved weapon": {
@@ -157,7 +158,7 @@
      "weaponId": "w_sword_2",
      "costume": null,
      "pose": "idle",
-     "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+     "look": null
     }
    ]
   },
@@ -172,20 +173,18 @@
       "weaponId": "w_sword_2",
       "costume": null,
       "pose": "idle",
-      "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+      "look": null
      },
      {
       "use": "strip",
       "job": "magicknight",
       "weaponId": "w_sword_2",
       "costume": null,
-      "pose": "idle",
-      "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+      "pose": "walk",
+      "look": null
      }
     ],
-    [
-     "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
-    ]
+    []
    ]
   },
   "E2 typed-answer questions played with real typing": {
@@ -208,7 +207,7 @@
       "weaponId": "w_sword_2",
       "costume": null,
       "pose": "win",
-      "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+      "look": null
      },
      {
       "use": "reward",
@@ -216,18 +215,16 @@
       "weaponId": "w_sword_2",
       "costume": null,
       "pose": "win",
-      "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+      "look": null
      }
     ],
-    [
-     "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
-    ]
+    []
    ]
   },
   "E6 save sane at end (coins>=0, job kept, chests all opened)": {
    "ok": true,
    "v": [
-    635,
+    675,
     2
    ]
   },
@@ -261,13 +258,13 @@
  },
  "result_before_open": {
   "outcome": "victory",
-  "total": "合計ごうけい +279",
-  "base": "+279",
+  "total": "+279",
+  "base": null,
   "open": true,
-  "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\nはっぱスライムを倒たおした！\n正解せいかい 6 / 10\n復習ふくしゅう成功せいこう 4件けん\n▶ 間違まちがえた問題もんだいを見みる\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン（学習がくしゅう・討伐とうばつ）\n+279\n学習がくしゅう 104 ＋ 討伐とうばつ 15 ＋ 最初さいしょのお祝いわい 160\n今回こんかいのコイン\n合計ごうけい +279\n戦士せんし Lv1 → Lv2\n次つぎの技わざまであと 830\n新あたらしい技わざ：強打きょうだ\n冒険者ぼうけんしゃ\nLv1 →\nLv2\n朝星あさぼしの宝箱たからばこ\n宝箱たからばこを開あける\nおわる\n次つぎの10問もん\n装備そうびを見みる"
+  "text": "10問もんおつかれさま！\nはっぱスライムを倒たおした！\n基本きほん\n6 / 10\n追加復習ついかふくしゅう\n成功せいこう 4件けん\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン\n+279\n戦士せんし Lv1 → Lv2\n次つぎの技わざまであと 830\n冒険者ぼうけんしゃ Lv1 → Lv2\n新あたらしい技わざ：強打きょうだ\n技わざを見みる\n内訳うちわけ\n間違まちがえた問題もんだい\n装備そうびを見みる\n朝星あさぼしの宝箱たからばこ\n宝箱たからばこを開あける\nおわる\n次つぎの10問もん"
  },
  "result_after_open": {
-  "total": "学習がくしゅう・討伐とうばつ279＋宝箱たからばこ40＝合計ごうけい319",
+  "total": "+319",
   "chest": {
    "kind": "coinmat",
    "rank": 1,
@@ -285,7 +282,7 @@
    "weaponId": "w_sword_2",
    "costume": null,
    "pose": "idle",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "look": null
   },
   {
    "use": "strip",
@@ -293,23 +290,23 @@
    "weaponId": "w_sword_2",
    "costume": null,
    "pose": "idle",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "look": null
   },
   {
    "use": "strip",
    "job": "magicknight",
    "weaponId": "w_sword_2",
    "costume": null,
-   "pose": "idle",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "pose": "walk",
+   "look": null
   },
   {
    "use": "strip",
    "job": "magicknight",
    "weaponId": "w_sword_2",
    "costume": null,
-   "pose": "idle",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "pose": "walk2",
+   "look": null
   }
  ],
  "kinds2": {
@@ -326,7 +323,7 @@
    "weaponId": "w_sword_2",
    "costume": null,
    "pose": "win",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "look": null
   },
   {
    "use": "reward",
@@ -334,9 +331,9 @@
    "weaponId": "w_sword_2",
    "costume": null,
    "pose": "win",
-   "look": "[2,3,\"#f6d7b8\",\"#d9b04a\"]"
+   "look": null
   }
  ],
- "pass": 32,
+ "pass": 33,
  "fail": []
 }

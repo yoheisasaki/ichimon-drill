@@ -5,7 +5,7 @@ import sys, json, os, threading, http.server, socketserver, functools
 from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 18521
-OUT = os.path.join(ROOT, 'rpg', 'shots', 'fix08_screens'); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(ROOT, 'rpg', 'shots', os.environ.get('OUT_NAME', 'fix08_screens')); os.makedirs(OUT, exist_ok=True)
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
 class TS(socketserver.ThreadingMixIn, http.server.HTTPServer): daemon_threads = True; allow_reuse_address = True
@@ -15,7 +15,8 @@ SAVE0 = open(os.path.join(ROOT, 'rpg', 'tests', 'saves', 'day14.json'), encoding
 R = {'viewports': {}, 'console': [], 'blocked': 0, 'flows': {}}
 def blk(r): R['blocked'] += 1; r.abort()
 PATCH = "s.job='warrior'; s.firstDone=true; s.coins=3000; s.jobXp.warrior=9000; s.jobXp.mage=0; s.jobXp.priest=0; s.jobXp.thief=0; s.active=null; s.look={face:1,hair:2,skin:1,hairColor:3,outfit:null}; s.daily.used={}; s.chests=[];"
-VPS = [('390x700', 390, 700, 1), ('390x640', 390, 640, 1), ('375x640', 375, 640, 1), ('430x800', 430, 800, 1), ('320x640', 320, 640, 1), ('390x700_t130', 390, 700, 1)]
+VPS = [('390x700', 390, 700, 1), ('390x640', 390, 640, 1), ('375x640', 375, 640, 1), ('430x800', 430, 800, 1), ('320x568', 320, 568, 1), ('320x640', 320, 640, 1), ('390x700_t130', 390, 700, 1)]
+VPS = [v for v in VPS if v[0] in os.environ['VPS'].split(',')] if os.environ.get('VPS') else VPS
 def page(b, w, h, dsf):
     ctx = b.new_context(viewport={'width': w, 'height': h}, device_scale_factor=dsf, is_mobile=True, has_touch=True)
     pg = ctx.new_page(); pg.set_default_timeout(30000)
@@ -145,12 +146,15 @@ def flows(b):
     pg.evaluate("() => { document.getElementById('rsBody').scrollTop = 120; }"); y0 = pg.evaluate("() => document.getElementById('rsBody').scrollTop")
     pg.click('[data-sheet=quests]'); pg.wait_for_timeout(300)
     sh = pg.evaluate("() => { const b = document.getElementById('rsBody'), s = document.getElementById('rsSheetB'); return { open: !!document.getElementById('rsSheet'), bodyOverflow: getComputedStyle(b).overflowY, sheetScrollable: s.scrollHeight > s.clientHeight + 1, sheetH: Math.round(document.querySelector('.rs-sheet').getBoundingClientRect().height), vh: innerHeight, closeBtn: Math.round(document.getElementById('rsSheetX').getBoundingClientRect().height) }; }")
-    pg.mouse.wheel(0, 300); pg.wait_for_timeout(200)
+    wheel_ok = True
+    try: pg.mouse.wheel(0, 300)
+    except Exception: wheel_ok = False   # モバイルWebKitはホイール未対応：背面の overflow が hidden であることで代用（bodyOverflow）
+    pg.wait_for_timeout(200)
     y1 = pg.evaluate("() => document.getElementById('rsBody').scrollTop")
     pg.click('#rsSheetX'); pg.wait_for_timeout(250)
     y2 = pg.evaluate("() => document.getElementById('rsBody').scrollTop"); closed = pg.evaluate("() => !document.getElementById('rsSheet')")
     pg.click('[data-sheet=wish]'); pg.wait_for_timeout(200); pg.keyboard.press('Escape'); pg.wait_for_timeout(200); esc_closed = pg.evaluate("() => !document.getElementById('rsSheet')")
-    R['flows']['sheet'] = dict(sh, y_before=y0, y_during_wheel=y1, y_after_close=y2, closed=closed, esc_closed=esc_closed, background_fixed=(y0 == y1), position_restored=(y0 == y2))
+    R['flows']['sheet'] = dict(sh, wheel_ok=wheel_ok, y_before=y0, y_during_wheel=y1, y_after_close=y2, closed=closed, esc_closed=esc_closed, background_fixed=(y0 == y1) if wheel_ok else (sh['bodyOverflow'] == 'hidden'), position_restored=(y0 == y2))
     # ホームの範囲シート：開く→科目選択で開いたまま→とじる
     goto(pg, 'home'); pg.click('.rs-range summary'); pg.wait_for_timeout(300)
     hs = pg.evaluate("() => ({ open: document.querySelector('.rs-range').open, sheetH: Math.round(document.querySelector('#rsRangeBg .rs-sheet').getBoundingClientRect().height), close: Math.round(document.getElementById('rsRangeX').getBoundingClientRect().height) })")
@@ -178,7 +182,7 @@ def flows(b):
     goto(pg, 'adv'); pg.click('[data-sheet=quests]'); pg.wait_for_timeout(300); pg.screenshot(path=os.path.join(OUT, '390x700_adv_sheet_quests.png'))
     pg.context.close()
 with sync_playwright() as p:
-    b = p.chromium.launch(headless=True)
+    b = getattr(p, os.environ.get('ENGINE', 'chromium')).launch(headless=True)
     for vp, w, h, d in VPS: run_vp(b, vp, w, h, d)
     flows(b); b.close()
 # 集計：主要操作がビューポート内で見え、押せる（hit）か

@@ -5,7 +5,7 @@ import sys, os, json, threading, http.server, socketserver, functools
 from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 18491
-OUT = os.path.join(ROOT, 'rpg', 'shots', 'fix08_strip'); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(ROOT, 'rpg', 'shots', os.environ.get('OUT_NAME', 'fix08_strip')); os.makedirs(OUT, exist_ok=True)
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
 class TS(socketserver.ThreadingMixIn, http.server.HTTPServer): daemon_threads = True; allow_reuse_address = True
@@ -62,7 +62,7 @@ def geom(pg):
       return {vw: innerWidth, vh: innerHeight, canvas: r(document.querySelector('.rpg-strip canvas')), box: r(document.querySelector('.rpg-strip')), lastChoice: r(last), skip: r(document.getElementById('skipc') || document.getElementById('skip')), submit: r(document.getElementById('submit')), map: r(document.getElementById('map')), score: r(document.querySelector('.score')), docH: document.documentElement.scrollHeight, sy: scrollY}; }""")
 
 with sync_playwright() as p:
-    b = p.chromium.launch(headless=True)
+    b = getattr(p, os.environ.get('ENGINE', 'chromium')).launch(headless=True)
     # ---------- A. 通常・命中・技・不正解・撃破 ----------
     c, pg = ctx_new(b)
     boot(pg, "s.jobXp.warrior = 6000; s.advXp = 3000;")

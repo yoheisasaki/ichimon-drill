@@ -18,7 +18,7 @@ def blk(r): R['blocked'] += 1; r.abort()
 def put(pg, name, patch=''):
     o = json.load(open(os.path.join(SAVES, name + '.json'), encoding='utf-8'))
     pg.evaluate("([t, js]) => { const s = JSON.parse(t); (new Function('s', js))(s); localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }", [json.dumps(o), patch])
-    pg.reload(); pg.wait_for_selector('.subj')
+    pg.reload(); pg.wait_for_selector('.subj', state='attached')
 def shot(pg, name): pg.screenshot(path=os.path.join(OUT, name + '.png'), full_page=True)
 MET = """() => {
   const small = [...document.querySelectorAll('.rs button, .rs summary')].filter(b => { const r = b.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.width < 44 || r.height < 44); }).map(b => (b.className || b.id) + ':' + Math.round(b.getBoundingClientRect().width) + 'x' + Math.round(b.getBoundingClientRect().height));
@@ -34,16 +34,16 @@ with sync_playwright() as p:
         E = engine + ':'
         b = getattr(p, engine).launch(headless=True)
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
+        ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page()
         pg.on('console', lambda m, e=engine: R['console'].append(f'{e}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e, en=engine: R['console'].append(f'{en}:pageerror:{e}'))
         pg.route('**/script.google.com/**', blk)
-        pg.goto(URL); pg.wait_for_selector('.subj')
+        pg.goto(URL); pg.wait_for_selector('.subj', state='attached')
         first = engine == 'chromium'
         # ===== 初日：せかいちずの「ちず」ボタン → 草原（2/3区間）=====
         put(pg, 'day01', "s.progress.quest = null; s.active = null;")
         pg.click('.rs-tab[data-tab=adv]'); pg.wait_for_selector('.rs-map')
-        chk(E + 'world_buttons_18', len(pg.query_selector_all('.rs-mapbtn')) == 18, len(pg.query_selector_all('.rs-mapbtn')))
+        chk(E + 'world_buttons_6(08: 冒険は章ごとに切り替え。第1章の6地域)', len(pg.query_selector_all('.rs-mapbtn')) == 6, len(pg.query_selector_all('.rs-mapbtn')))
         pg.click('.rs-mapbtn[data-p*=meadow]'); pg.wait_for_selector('#rsMapBox'); pg.wait_for_timeout(200)
         m = pg.evaluate(MET); chk(E + 'day01_meadow', m['screen'] == 'regionmap' and m['nodes'] == 4 and m['done'] == 0 and m['cur'] == 1 and m['hero'] and m['imgOk'] and not m['chestOpen'] and m['chest'], m)
         chk(E + 'day01_fit', not m['hscroll'] and not m['small'] and m['out'] == 0, m)
@@ -74,6 +74,7 @@ with sync_playwright() as p:
         m = open_map(pg, 'island'); chk(E + 'post_island_cleared', m['nodes'] == 7 and m['done'] == 7 and m['chestOpen'] and not m['hscroll'] and not m['small'] and m['out'] == 0, m)
         if first: shot(pg, 'assets_explore_post_island')
         pg.evaluate("() => RPG.go('adv')"); pg.wait_for_selector('.rs-map')
+        pg.click('[data-sheet=quests]'); pg.wait_for_timeout(300)   # 08：クエストは冒険画面のシートに移った
         chk(E + 'quest_map_buttons_7', len(pg.query_selector_all('.rs-mini')) == 7, len(pg.query_selector_all('.rs-mini')))
         pg.click('.rs-mini >> nth=0'); pg.wait_for_selector('#rsMapBox'); chk(E + 'quest_button_opens_map', pg.evaluate(MET)['screen'] == 'regionmap')
         # ===== 全25枚が開き、はみ出さない（初日・クリア後）=====
@@ -85,7 +86,7 @@ with sync_playwright() as p:
             if not (m['imgOk'] and m['nodes'] >= 4 and m['out'] == 0 and not m['small'] and not m['hscroll'] and m['rows'] == m['nodes']): bad[k] = m
         chk(E + 'all_25_maps_ok', len(keys) == 25 and not bad, {'n': len(keys), 'bad': bad})
         # 学習画面・冒険帯への影響なし（ホーム→学習開始の寸法は regress.py が確認）。ここでは地図を出したあとホームに戻れること
-        pg.evaluate("() => RPG.go('regionmap', {id: 'meadow'})"); pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('.subj'); chk(E + 'home_after_map', True)
+        pg.evaluate("() => RPG.go('regionmap', {id: 'meadow'})"); pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('.subj', state='attached'); chk(E + 'home_after_map', True)
         ctx.close(); b.close()
 srv.shutdown()
 json.dump(R, open(os.path.join(OUT, 'ui_test_map.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

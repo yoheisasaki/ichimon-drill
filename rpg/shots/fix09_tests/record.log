@@ -1,0 +1,11 @@
+STEP home (job warrior, weapon w_start)
+STEP adventure 1: answer / attack / skill / wrong / defeat
+OK  R03 通常攻撃・技・不正解（守り）・撃破が演出に出た ['attack', 'attack', 'attack+enemy', 'guard+enemy', 'skill+defeat', 'walk', 'walk', 'walk', 'walk', 'walk', 'walk']
+OK  R03 開封後に中身が操作帯に隠れない（自動スクロール後） {'lineTop': 579, 'lineBottom': 606, 'footTop': 626, 'vh': 700, 'text': 'ランクIの鉱石こうせき ×4 を手てに入いれた！'}
+OK  R03 開封後に宝箱の分だけ増える・二重加算なし [891, 891]
+STEP reward closed -> home
+OK  R03 装備を鉄の剣に変更して保存 ['w_start', 'w_sword_2']
+STEP equip changed w_start -> w_sword_2
+STEP adventure 2: new weapon in strip
+OK  R03 次の戦闘の帯が新しい武器（w_sword_2）で描かれる [{'use': 'strip', 'weaponId': 'w_sword_2', 'pose': 'idle'}, {'use': 'strip', 'weaponId': 'w_sword_2', 'pose': 'walk'}, {'use': 'strip', 'weaponId': 'w_sword_2', 'pose': 'walk2'}]
+{"pass": 5, "fail": [], "console": [], "blocked": 0, "exception": null}

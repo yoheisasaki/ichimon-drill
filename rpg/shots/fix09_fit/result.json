@@ -1,0 +1,549 @@
+{
+ "rows": {
+  "warrior": {
+   "home": [
+    {
+     "use": "self",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 34.5,
+     "right": 36.5,
+     "hero_h": 129
+    }
+   ],
+   "town": [
+    {
+     "use": "town",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 150,
+     "top": 41,
+     "bottom": 13.5,
+     "left": 151,
+     "right": 152.5,
+     "hero_h": 95.5
+    }
+   ],
+   "me": [
+    {
+     "use": "self",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 34.5,
+     "right": 36.5,
+     "hero_h": 129
+    }
+   ],
+   "equip": [
+    {
+     "use": "equip",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 132,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 25.5,
+     "right": 27.5,
+     "hero_h": 129
+    }
+   ],
+   "jobs": [
+    {
+     "use": "jobcard",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13,
+     "right": 14,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "mage",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "thief",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    }
+   ],
+   "jobdetail": [
+    {
+     "use": "job",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 196,
+     "top": 41.5,
+     "bottom": 11,
+     "left": 136,
+     "right": 138,
+     "hero_h": 143.5
+    }
+   ],
+   "look": [
+    {
+     "use": "look",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 334,
+     "cssH": 208,
+     "top": 10,
+     "bottom": 6.5,
+     "left": 107,
+     "right": 109.5,
+     "hero_h": 191.5
+    }
+   ]
+  },
+  "priest": {
+   "home": [
+    {
+     "use": "self",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 36,
+     "right": 37.5,
+     "hero_h": 129
+    }
+   ],
+   "town": [
+    {
+     "use": "town",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 150,
+     "top": 41,
+     "bottom": 13.5,
+     "left": 152,
+     "right": 153.5,
+     "hero_h": 95.5
+    }
+   ],
+   "me": [
+    {
+     "use": "self",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 36,
+     "right": 37.5,
+     "hero_h": 129
+    }
+   ],
+   "equip": [
+    {
+     "use": "equip",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 132,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 27,
+     "right": 28.5,
+     "hero_h": 129
+    }
+   ],
+   "jobs": [
+    {
+     "use": "jobcard",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "mage",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "thief",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    }
+   ],
+   "jobdetail": [
+    {
+     "use": "job",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 196,
+     "top": 41.5,
+     "bottom": 11,
+     "left": 137.5,
+     "right": 139.5,
+     "hero_h": 143.5
+    }
+   ],
+   "look": [
+    {
+     "use": "look",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 334,
+     "cssH": 208,
+     "top": 10,
+     "bottom": 6.5,
+     "left": 109,
+     "right": 111.5,
+     "hero_h": 191.5
+    }
+   ]
+  },
+  "skyknight": {
+   "home": [
+    {
+     "use": "self",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 34.5,
+     "right": 39,
+     "hero_h": 129
+    }
+   ],
+   "town": [
+    {
+     "use": "town",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 150,
+     "top": 41,
+     "bottom": 13.5,
+     "left": 151,
+     "right": 154.5,
+     "hero_h": 95.5
+    }
+   ],
+   "me": [
+    {
+     "use": "self",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 34.5,
+     "right": 39,
+     "hero_h": 129
+    }
+   ],
+   "equip": [
+    {
+     "use": "equip",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 132,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 25.5,
+     "right": 30,
+     "hero_h": 129
+    }
+   ],
+   "jobs": [
+    {
+     "use": "jobcard",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "mage",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "thief",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    }
+   ],
+   "jobdetail": [
+    {
+     "use": "job",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 196,
+     "top": 41.5,
+     "bottom": 11,
+     "left": 136,
+     "right": 141,
+     "hero_h": 143.5
+    }
+   ],
+   "look": [
+    {
+     "use": "look",
+     "job": "skyknight",
+     "drawn": "layered",
+     "cssW": 334,
+     "cssH": 208,
+     "top": 10,
+     "bottom": 6.5,
+     "left": 107,
+     "right": 113.5,
+     "hero_h": 191.5
+    }
+   ]
+  },
+  "sage": {
+   "home": [
+    {
+     "use": "self",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 37,
+     "right": 39,
+     "hero_h": 129
+    }
+   ],
+   "town": [
+    {
+     "use": "town",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 150,
+     "top": 41,
+     "bottom": 13.5,
+     "left": 153,
+     "right": 154.5,
+     "hero_h": 95.5
+    }
+   ],
+   "me": [
+    {
+     "use": "self",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 150,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 37,
+     "right": 39,
+     "hero_h": 129
+    }
+   ],
+   "equip": [
+    {
+     "use": "equip",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 132,
+     "cssH": 160,
+     "top": 22,
+     "bottom": 9,
+     "left": 28,
+     "right": 30,
+     "hero_h": 129
+    }
+   ],
+   "jobs": [
+    {
+     "use": "jobcard",
+     "job": "warrior",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "mage",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "priest",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    },
+    {
+     "use": "jobcard",
+     "job": "thief",
+     "drawn": "layered",
+     "cssW": 56,
+     "cssH": 64,
+     "top": 11.5,
+     "bottom": 5,
+     "left": 13.5,
+     "right": 14.5,
+     "hero_h": 47.5
+    }
+   ],
+   "jobdetail": [
+    {
+     "use": "job",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 362,
+     "cssH": 196,
+     "top": 41.5,
+     "bottom": 11,
+     "left": 139,
+     "right": 141,
+     "hero_h": 143.5
+    }
+   ],
+   "look": [
+    {
+     "use": "look",
+     "job": "sage",
+     "drawn": "layered",
+     "cssW": 334,
+     "cssH": 208,
+     "top": 10,
+     "bottom": 6.5,
+     "left": 111,
+     "right": 113.5,
+     "hero_h": 191.5
+    }
+   ]
+  }
+ },
+ "bad": []
+}

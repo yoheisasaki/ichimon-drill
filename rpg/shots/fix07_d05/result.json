@@ -2,7 +2,7 @@
  "cases": {
   "rare": {
    "line": "火花の剣 を手に入れた！技のとき 炎属性の追加ダメージ（0.15倍）",
-   "total": "学習・討伐295＋宝箱0＝合計295",
+   "total": "+295",
    "status": "opened",
    "result": {
     "kind": "rare",
@@ -17,7 +17,7 @@
   },
   "rare_dup": {
    "line": "火花の剣 が出た！もう持っていたので ランクIの鉱石 ×3 に交換",
-   "total": "学習・討伐295＋宝箱0＝合計295",
+   "total": "+295",
    "status": "opened",
    "result": {
     "kind": "rare",
@@ -33,7 +33,7 @@
   },
   "mat": {
    "line": "ランクIの鉱石 ×4 を手に入れた！",
-   "total": "学習・討伐295＋宝箱0＝合計295",
+   "total": "+295",
    "status": "opened",
    "result": {
     "kind": "mat",
@@ -49,7 +49,7 @@
   },
   "coin": {
    "line": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！",
-   "total": "学習・討伐295＋宝箱40＝合計335",
+   "total": "+335",
    "status": "opened",
    "result": {
     "kind": "coinmat",

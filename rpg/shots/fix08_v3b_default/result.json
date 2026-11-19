@@ -8,7 +8,7 @@
      "outfit"
     ],
     "job": "warrior",
-    "equip": "w_staff_1"
+    "equip": "w_sword_1"
    },
    "look_screen": {
     "lk": 0,
@@ -66,7 +66,7 @@
      "body_sage_v3b_ready_L.png",
      "body_skyknight_v3b_idle_L.png"
     ],
-    "all_png": 53
+    "all_png": 54
    }
   },
   "chromium_320x568": {
@@ -76,7 +76,7 @@
      "outfit"
     ],
     "job": "warrior",
-    "equip": "w_staff_1"
+    "equip": "w_sword_1"
    },
    "look_screen": {
     "lk": 0,
@@ -144,7 +144,7 @@
      "outfit"
     ],
     "job": "warrior",
-    "equip": "w_staff_1"
+    "equip": "w_sword_1"
    },
    "look_screen": {
     "lk": 0,
@@ -202,7 +202,7 @@
      "body_sage_v3b_ready_L.png",
      "body_skyknight_v3b_idle_L.png"
     ],
-    "all_png": 53
+    "all_png": 54
    }
   },
   "webkit_320x568": {
@@ -212,7 +212,7 @@
      "outfit"
     ],
     "job": "warrior",
-    "equip": "w_staff_1"
+    "equip": "w_sword_1"
    },
    "look_screen": {
     "lk": 0,
@@ -270,7 +270,7 @@
      "body_sage_v3b_ready_L.png",
      "body_skyknight_v3b_idle_L.png"
     ],
-    "all_png": 53
+    "all_png": 54
    }
   }
  }

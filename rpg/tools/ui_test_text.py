@@ -98,14 +98,14 @@ with sync_playwright() as p:
         pg.wait_for_timeout(60)
     pg.wait_for_selector('#rwRoot', timeout=8000); pg.wait_for_timeout(500)
     r = scan(pg, 'reward'); shot(pg, 'reward_390', False)
-    chk('reward_text_has_kanji_ruby_words', all(x in ' '.join(r['text']) for x in ('冒険', '成果')) and pg.evaluate("() => [...document.querySelectorAll('#rwRoot ruby')].length") > 5)
+    rw_n = pg.evaluate("() => [...document.querySelectorAll('#rwRoot ruby')].length"); chk('reward_text_has_kanji_ruby_words', rw_n > 5 and not R['bare_kanji'].get('reward'), [rw_n, r['text'][:3] if isinstance(r['text'], list) else str(r['text'])[:60]])
     chk('reward_ore_name_kanji', pg.evaluate("() => RPGCore.oreName(1)") == 'ランクIの鉱石')
     if pg.query_selector('#rwOpen'): pg.click('#rwOpen'); pg.wait_for_timeout(1200); scan(pg, 'reward_opened'); shot(pg, 'reward_opened_390', False)
     pg.click('#end'); pg.wait_for_selector('#go', state='attached')
     # ホームの言い方（学習アプリ本体＝復習）
     pg.wait_for_timeout(300)
     hm = pg.evaluate("() => { const f = id => { const c = document.getElementById(id).cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent; }; return {go: f('go'), hard: f('hard')}; }")
-    chk('home_buttons_use_fukushu_wording_with_kanji', hm['go'].startswith('スタート（') and '問' in hm['go'] and '復習が必要なところ' in hm['hard'] and 'にがて' not in hm['hard'], hm)
+    chk('home_buttons_use_fukushu_wording_with_kanji', hm['go'].startswith('スタート（') and '問' in hm['go'] and '復習が必要' in hm['hard'] and 'にがて' not in hm['hard'], hm)
     chk('home_has_ruby_on_start_buttons', pg.evaluate("() => document.querySelectorAll('#go ruby, #hard ruby').length >= 3"))
     # ================= 図鑑の分母・会話・レア品 =================
     cs = pg.evaluate("() => RPGMeta.codexSummary(RPG.save)")

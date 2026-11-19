@@ -4,7 +4,7 @@ import sys, os, json, threading, http.server, socketserver, functools, shutil, r
 from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PORT = 18492
-OUT = os.path.join(ROOT, 'rpg', 'shots', 'fix08_strip'); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(ROOT, 'rpg', 'shots', os.environ.get('OUT_NAME', 'fix08_strip')); os.makedirs(OUT, exist_ok=True)
 VID = os.path.join(OUT, '_vid'); shutil.rmtree(VID, ignore_errors=True)
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
@@ -15,7 +15,7 @@ READY = "() => !!window.RPG && RPG.ok && Object.keys(RPGSprites.IMGS).length >= 
 PLAN = ['ok', 'ok', 'ok', 'wrong', 'ok', 'ok', 'skip', 'ok', 'ok', 'ok']
 random.seed(8)
 with sync_playwright() as p:
-    b = p.chromium.launch(headless=True)
+    b = getattr(p, os.environ.get('ENGINE', 'chromium')).launch(headless=True)
     ctx = b.new_context(viewport={'width': 390, 'height': 700}, device_scale_factor=1, is_mobile=True, has_touch=True, record_video_dir=VID, record_video_size={'width': 390, 'height': 700})
     pg = ctx.new_page(); pg.set_default_timeout(30000); errs = []
     pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None); pg.on('pageerror', lambda e: errs.append(str(e)))

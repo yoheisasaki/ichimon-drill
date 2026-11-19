@@ -4,7 +4,7 @@ import sys, json, os, threading, http.server, socketserver, functools
 from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 18551
-OUT = os.path.join(ROOT, 'rpg', 'shots', 'fix08_screens'); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(ROOT, 'rpg', 'shots', os.environ.get('OUT_NAME', 'fix08_screens')); os.makedirs(OUT, exist_ok=True)
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
 class TS(socketserver.ThreadingMixIn, http.server.HTTPServer): daemon_threads = True; allow_reuse_address = True
@@ -14,7 +14,8 @@ SAVE0 = open(os.path.join(ROOT, 'rpg', 'tests', 'saves', 'day14.json'), encoding
 R = {'viewports': {}, 'console': [], 'blocked': 0}
 def blk(r): R['blocked'] += 1; r.abort()
 PATCH = "s.job='warrior'; s.firstDone=true; s.active=null; s.daily.used={}; s.chests=[];"
-VPS = [('390x700', 390, 700), ('390x640', 390, 640), ('375x640', 375, 640), ('430x800', 430, 800), ('320x640', 320, 640), ('390x700_t130', 390, 700)]
+VPS = [('390x700', 390, 700), ('390x640', 390, 640), ('375x640', 375, 640), ('430x800', 430, 800), ('320x568', 320, 568), ('320x640', 320, 640), ('390x700_t130', 390, 700)]
+VPS = [v for v in VPS if v[0] in os.environ['VPS'].split(',')] if os.environ.get('VPS') else VPS
 BUMP = """() => { const rr = document.getElementById('app'); if (rr.dataset.b) return; rr.dataset.b = '1'; const els = [...document.querySelectorAll('#app *')]; const fs = els.map(e => parseFloat(getComputedStyle(e).fontSize)); els.forEach((e, i) => { e.style.fontSize = (fs[i] * 1.3) + 'px'; }); }"""
 METRICS = """() => {
   const r = e => { if (!e) return null; const b = e.getBoundingClientRect(); return [Math.round(b.width), Math.round(b.height)]; };
@@ -77,7 +78,7 @@ def run_vp(b, vp, w, h):
     else: out['review'] = {'is_review_question': False}
     R['viewports'][vp] = out; P.context.close(); B.context.close()
 with sync_playwright() as p:
-    b = p.chromium.launch(headless=True)
+    b = getattr(p, os.environ.get('ENGINE', 'chromium')).launch(headless=True)
     for vp, w, h in VPS: run_vp(b, vp, w, h)
     b.close()
 bad = []

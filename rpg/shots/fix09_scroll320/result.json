@@ -1,0 +1,118 @@
+{
+ "rows": [
+  {
+   "engine": "chromium",
+   "screen": "home",
+   "sel": "#hard",
+   "result": {
+    "top": 428,
+    "bottom": 472,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "chromium",
+   "screen": "home",
+   "sel": ".rs-range summary",
+   "result": {
+    "top": 380,
+    "bottom": 428,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "chromium",
+   "screen": "me",
+   "sel": "[data-sheet=mestat]",
+   "result": {
+    "top": 438,
+    "bottom": 486,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "chromium",
+   "screen": "me",
+   "sel": "[data-go=equip]",
+   "result": {
+    "top": 310,
+    "bottom": 366,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "webkit",
+   "screen": "home",
+   "sel": "#hard",
+   "result": {
+    "top": 429,
+    "bottom": 473,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "webkit",
+   "screen": "home",
+   "sel": ".rs-range summary",
+   "result": {
+    "top": 381,
+    "bottom": 429,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "webkit",
+   "screen": "me",
+   "sel": "[data-sheet=mestat]",
+   "result": {
+    "top": 438,
+    "bottom": 486,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  },
+  {
+   "engine": "webkit",
+   "screen": "me",
+   "sel": "[data-go=equip]",
+   "result": {
+    "top": 302,
+    "bottom": 358,
+    "vh": 568,
+    "inView": true,
+    "hit": true,
+    "navTop": 518,
+    "pageScroll": false
+   }
+  }
+ ],
+ "console": [],
+ "bad": []
+}

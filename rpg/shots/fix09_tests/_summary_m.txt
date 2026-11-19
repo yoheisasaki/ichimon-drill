@@ -1,0 +1,15 @@
+screens chromium 0
+answer chromium 0
+reward chromium 0
+strip chromium 0
+screens webkit 1
+answer webkit 0
+reward webkit 0
+strip webkit 0
+reveal 0
+v3b_default 0
+fit 0
+d05 0
+loop07 0
+record 0
+MDONE

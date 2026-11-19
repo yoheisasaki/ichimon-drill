@@ -1,0 +1,252 @@
+{
+ "checks": {
+  "chromium:fx_ready": {
+   "ok": true,
+   "v": "ready"
+  },
+  "chromium:all_mods": {
+   "ok": true,
+   "v": []
+  },
+  "chromium:frame_avg_lt_10ms": {
+   "ok": true,
+   "v": 4.51
+  },
+  "chromium:reward_ok": true,
+  "chromium:fallback_state": true,
+  "webkit:fx_ready": {
+   "ok": true,
+   "v": "ready"
+  },
+  "webkit:all_mods": {
+   "ok": true,
+   "v": []
+  },
+  "webkit:frame_avg_lt_10ms": {
+   "ok": true,
+   "v": 5.14
+  },
+  "webkit:reward_ok": true,
+  "webkit:fallback_state": true
+ },
+ "console": [],
+ "blocked": 0,
+ "perf": {
+  "chromium": {
+   "slash": {
+    "avg": 2.19,
+    "max": 17.4,
+    "n": 23
+   },
+   "double": {
+    "avg": 2.33,
+    "max": 6.5,
+    "n": 24
+   },
+   "flurry": {
+    "avg": 1.47,
+    "max": 2.7,
+    "n": 29
+   },
+   "cleave": {
+    "avg": 3.15,
+    "max": 11.8,
+    "n": 36
+   },
+   "thrust": {
+    "avg": 0.78,
+    "max": 1.7,
+    "n": 23
+   },
+   "fire": {
+    "avg": 1.89,
+    "max": 8,
+    "n": 36
+   },
+   "ice": {
+    "avg": 1.76,
+    "max": 7.4,
+    "n": 36
+   },
+   "nova": {
+    "avg": 4.51,
+    "max": 9.2,
+    "n": 36
+   },
+   "zap": {
+    "avg": 1.26,
+    "max": 3.7,
+    "n": 27
+   },
+   "clap": {
+    "avg": 3.68,
+    "max": 7.5,
+    "n": 36
+   },
+   "heal": {
+    "avg": 0.86,
+    "max": 2.1,
+    "n": 36
+   },
+   "shield": {
+    "avg": 2.81,
+    "max": 7.3,
+    "n": 36
+   },
+   "block": {
+    "avg": 1.92,
+    "max": 8.2,
+    "n": 33
+   },
+   "smite": {
+    "avg": 2.91,
+    "max": 12,
+    "n": 36
+   },
+   "pillar": {
+    "avg": 3.68,
+    "max": 13.1,
+    "n": 36
+   },
+   "crit": {
+    "avg": 1.38,
+    "max": 4.2,
+    "n": 27
+   },
+   "smoke": {
+    "avg": 1.32,
+    "max": 3.2,
+    "n": 36
+   },
+   "star": {
+    "avg": 2.15,
+    "max": 3.3,
+    "n": 36
+   },
+   "burst": {
+    "avg": 2.31,
+    "max": 3.9,
+    "n": 36
+   },
+   "splash": {
+    "avg": 2.73,
+    "max": 5.4,
+    "n": 36
+   }
+  },
+  "chromium:raf": {
+   "median": 16.7,
+   "p95": 16.8,
+   "max": 16.8
+  },
+  "webkit": {
+   "slash": {
+    "avg": 3.57,
+    "max": 20,
+    "n": 23
+   },
+   "double": {
+    "avg": 2.75,
+    "max": 9,
+    "n": 24
+   },
+   "flurry": {
+    "avg": 1.62,
+    "max": 4,
+    "n": 29
+   },
+   "cleave": {
+    "avg": 3.69,
+    "max": 13,
+    "n": 36
+   },
+   "thrust": {
+    "avg": 0.7,
+    "max": 2,
+    "n": 23
+   },
+   "fire": {
+    "avg": 3.92,
+    "max": 12,
+    "n": 36
+   },
+   "ice": {
+    "avg": 2,
+    "max": 8,
+    "n": 36
+   },
+   "nova": {
+    "avg": 4.53,
+    "max": 8,
+    "n": 36
+   },
+   "zap": {
+    "avg": 1.41,
+    "max": 6,
+    "n": 27
+   },
+   "clap": {
+    "avg": 4.83,
+    "max": 10,
+    "n": 36
+   },
+   "heal": {
+    "avg": 1.19,
+    "max": 3,
+    "n": 36
+   },
+   "shield": {
+    "avg": 3.97,
+    "max": 10,
+    "n": 36
+   },
+   "block": {
+    "avg": 2.3,
+    "max": 8,
+    "n": 33
+   },
+   "smite": {
+    "avg": 3.19,
+    "max": 9,
+    "n": 36
+   },
+   "pillar": {
+    "avg": 5.14,
+    "max": 10,
+    "n": 36
+   },
+   "crit": {
+    "avg": 1.59,
+    "max": 5,
+    "n": 27
+   },
+   "smoke": {
+    "avg": 1.75,
+    "max": 5,
+    "n": 36
+   },
+   "star": {
+    "avg": 2.08,
+    "max": 3,
+    "n": 36
+   },
+   "burst": {
+    "avg": 2.89,
+    "max": 5,
+    "n": 36
+   },
+   "splash": {
+    "avg": 3.83,
+    "max": 6,
+    "n": 36
+   }
+  },
+  "webkit:raf": {
+   "median": 4,
+   "p95": 11,
+   "max": 23
+  }
+ },
+ "console_errors": []
+}
+FAIL: [] console_errors: 0

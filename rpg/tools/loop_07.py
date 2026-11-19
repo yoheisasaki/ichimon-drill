@@ -63,8 +63,8 @@ def play(pg, plan):
 
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
-    ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True,
-                        record_video_dir=VID, record_video_size={'width': 390, 'height': 844})
+    ctx = b.new_context(viewport={'width': 390, 'height': 700}, device_scale_factor=2, is_mobile=True, has_touch=True,
+                        record_video_dir=VID, record_video_size={'width': 390, 'height': 700})
     pg = ctx.new_page(); pg.set_default_timeout(30000)
     pg.on('console', lambda m: R['console'].append(f'{m.type}:{m.text}') if m.type in ('error', 'warning') and 'willReadFrequently' not in m.text else None)
     pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}'))
@@ -78,9 +78,9 @@ with sync_playwright() as p:
         shot(pg, '01_home_new')
         # 主人公を選ぶ（じぶん→名前・見た目）
         pg.click('.rs-tab[data-tab=me]'); pg.wait_for_selector('[data-go=look]'); pg.click('[data-go=look]'); pg.wait_for_selector('#lookOk')
-        pg.fill('#rsName', 'テスト'); pg.click('[data-lk=face][data-v="2"]'); pg.click('[data-lk=hair][data-v="3"]'); pg.click('[data-lk=skin][data-v="1"]'); pg.click('[data-lk=hairColor][data-v="2"]')
+        pg.fill('#rsName', 'テスト'); chk('E1 外見選択は撤去済み（顔・髪型・肌・髪色の選択肢が無い。名前と衣装だけ）', pg.evaluate("() => document.querySelectorAll('[data-lk]').length === 0"))
         shot(pg, '02_look_chosen'); pg.click('#lookOk'); settle(pg)
-        look = save(pg)['look']; chk('E1 hero chosen & saved', look['face'] == 2 and look['hair'] == 3 and look['skin'] == 1 and look['hairColor'] == 2 and save(pg)['name'] == 'テスト', look)
+        look = save(pg)['look']; chk('E1 name saved, look has outfit only (save v2)', save(pg)['name'] == 'テスト' and list(look.keys()) == ['outfit'] and save(pg)['v'] == 2, [look, save(pg)['v']])
         pg.click('#rsBack') if pg.query_selector('#rsBack') else None
         pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('#go'); settle(pg)
         h_home0 = hero(pg); shot(pg, '03_home_hero')
@@ -179,7 +179,7 @@ with sync_playwright() as p:
         # ---- 6. ホーム→再読込→次の冒険 ----
         pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('#go'); settle(pg, 500)
         hh = hero(pg); shot(pg, '22_home_magicknight')
-        chk('E6 home hero = magicknight + same look + same weapon', hh['opt']['job'] == 'magicknight' and hh['opt'].get('look') in (None, save(pg)['look']) and hh['opt'].get('weaponId') == w_before, hh['opt'])
+        chk('E6 home hero = magicknight + same look + same weapon', hh['opt']['job'] == 'magicknight' and hh['opt'].get('weaponId') == w_before, hh['opt'])
         pg.reload(); pg.wait_for_selector('#go'); pg.wait_for_function("() => !!window.RPG && RPG.ok && Object.keys(RPGSprites.IMGS).length >= 766", timeout=90000); settle(pg, 700)
         hh2 = hero(pg); shot(pg, '23_home_after_reload')
         chk('E6 after reload: identical hero picture', hh2['hash'] == hh['hash'], [hh['hash'], hh2['hash']])
@@ -193,12 +193,12 @@ with sync_playwright() as p:
         pg.click('#go'); pg.wait_for_selector('.choice, #ans'); settle(pg, 900); shot(pg, '24_quiz_strip', full=False)
         sc = pg.evaluate("() => window.__calls"); R['strip_calls'] = sc[:4]
         sh = [c for c in sc if c['use'] == 'strip']
-        chk('E6 next adventure strip: same look/job/weapon', len(sh) >= 1 and all(c['job'] == 'magicknight' and c['look'] in looks0 and c['weaponId'] == w_before for c in sh), [sh[:2], list(looks0)])
+        chk('E6 next adventure strip: same look/job/weapon', len(sh) >= 1 and all(c['job'] == 'magicknight' and c['weaponId'] == w_before for c in sh), [sh[:2], list(looks0)])
         pg.evaluate("() => window.__calls.length = 0")
         kinds2 = play(pg, ['ok'] * 10); shot(pg, '25_result_next'); R['kinds2'] = kinds2; chk('E2 typed-answer questions played with real typing', kinds2['input'] >= 5, kinds2)
         rc = pg.evaluate("() => window.__calls"); R['result_calls'] = [c for c in rc if c['use'] != 'strip'][:4]
         rh = [c for c in rc if c['use'] != 'strip']
-        chk('E6 next result: same look/job/weapon', len(rh) >= 1 and all(c['job'] == 'magicknight' and c['look'] in looks0 and c['weaponId'] == w_before for c in rh), [rh[:2], list(looks0)])
+        chk('E6 next result: same look/job/weapon', len(rh) >= 1 and all(c['job'] == 'magicknight' and c['weaponId'] == w_before for c in rh), [rh[:2], list(looks0)])
         pg.click('#rwOpen') if pg.query_selector('#rwOpen') else None; settle(pg, 600); shot(pg, '26_result_next_opened')
         pg.click('#end'); pg.wait_for_selector('#go'); settle(pg, 400)
         s = save(pg); chk('E6 save sane at end (coins>=0, job kept, chests all opened)', s['coins'] >= 0 and s['job'] == 'magicknight' and all(c['status'] == 'opened' for c in s['chests']), [s['coins'], len(s['chests'])])
