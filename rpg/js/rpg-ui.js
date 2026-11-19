@@ -66,9 +66,8 @@
     if (r.dup || r.ignored) return;
     if (!rv) S.lastOrigin = r.origin;
     RPG.persist();
-    const hero = r.events.filter(e => e.t !== 'enemy'), enemy = r.events.filter(e => e.t === 'enemy');
-    RPG.deferred = RPG.deferred.concat(enemy);
-    if (hero.length) RPG.play(hero);
+    const st = RPG.save.active && RPG.save.active.battle.status;
+    RPG.play(r.events, { correct: !!ok, review: !!rv, killed: !!ok && st === 'won' && r.events.some(e => e.t === 'hero') });
   };
   RPG.queueReview = function (q, S) {
     if (!S || !S.rpg || !RPG.ok) return true;
@@ -86,94 +85,192 @@
   RPG.progressNote = function () { const a = RPG.ok && RPG.save.active; return a && a.basic.n > 0 && a.basic.n < A.UNIT ? { n: a.basic.n, unit: A.UNIT } : null; };
 
   // ---------- 下端の冒険帯 ----------
-  const SCALE = 2;   // 論理1ドット = CSS 2px
-  RPG.stripHtml = function (S) { return S && S.rpg && RPG.ok ? '<div class="rpg-strip" aria-hidden="true"><canvas></canvas></div>' : ''; };
-  let cv = null, ctx = null, W = 0, H = 0, raf = 0, anim = null;
-  function sceneInfo() {
-    const a = RPG.save.active; if (!a) return null;
-    const b = a.battle, ed = D.ENEMIES[a.enemyId];
-    const h = a.hero || {}, wid = (h.equip && h.equip.weapon) || RPG.save.equip.weapon;
-    return { job: b.hero.job, look: M.lookOf(RPG.save), costume: M.costumeOf(RPG.save, b.hero.job), weaponId: M.artWeapon(b.hero.job, wid), region: a.route.bg || D.REGIONS[a.route.region].id, enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0) };
-  }
-  const REWARD_FXS = 2;   // 報酬画面：エフェクト1ドット＝canvas 2px（主人公画像のドットと同程度）。整数倍・補間なし
-  const STRIP_FXS = 1, STRIP_DS = 2;   // 帯：2×2ドットを1つにまとめ、1ドット＝canvas 1px（帯の主人公のドットと同じ）。整数倍・補間なし   // 帯：エフェクト1ドット＝帯の0.3ドット（小さく控えめ）。報酬画面は REWARD_FXS
+  // 見るだけの小さな舞台。状態（戦闘・経験値・報酬）は回答処理（RPG.onAnswer→A.recordAnswer）が一度だけ確定する。ここは確定済みの結果を絵にするだけで、
+  // 演出の途中や終了で何も加算しない。演出を省いても（キューを捨てても）、最後は確定状態（syncView）へ戻る。計画は rpg-strip.js（純関数）
+  const SCALE = 2;   // 論理1ドット = CSS 2px（帯の高さは CSS 44px = 22ドット）
+  const STRIP_FXS = 1, STRIP_DS = 2;   // 帯：2×2ドットを1つにまとめ、1ドット＝canvas 1px。整数倍・補間なし
+  const REWARD_FXS = 2;   // 報酬画面：エフェクト1ドット＝canvas 2px
+  const ST = root.RPGStrip, TT = ST.T;
   const fxLive = [];
+  const LAB_MAX = 72, REACH = 11, PAIR_GAP = 15;   // 地域名の最大幅(CSS px)／踏み込み量(ドット)／主人公と敵の中心の半距離(ドット。中心距離＝30ドット＝60CSS px)
   // 画像が枠（CSS px）に収まらないとき、縮小率を返す（収まるなら1）。192pxボスの帯・報酬画面用
   function fitScale(im, maxW, maxH) { if (!im) return 1; return Math.min(1, maxW ? maxW / im.width : 1, maxH ? maxH / im.height : 1); }
-  let breath = 0, breathT = 0, animating = false;
+  RPG.deferred = [];   // 旧仕様の名残（敵の反撃は回答と同時に再生する。常に空）
+  RPG.stripLog = [];   // 計測用：{k, ms, plan}（演出の実時間）
+  RPG.stripHtml = function (S) { return S && S.rpg && RPG.ok ? '<div class="rpg-strip" aria-hidden="true"></div>' : ''; };
+  // 帯の canvas は学習中ずっと同じものを使い回す（次問でも作り直さない。mount で新しい枠へ付け替えるだけ）
+  let cv = null, ctx = null, W = 0, H = 0, raf = 0, animating = false, breath = 0, breathT = 0, textT = 0, bgCache = null, queue = [], running = null, layout = null;
+  const view = { ready: false, eHp: 0, eMax: 1, gone: false, retreat: false, bgOff: 0, text: null, textEnd: 0 };   // いま見えている状態（確定状態に追いつく）
+  const nowMs = () => (root.performance ? root.performance.now() : Date.now());
+  function sceneInfo() {
+    const a = RPG.save && RPG.save.active; if (!a) return null;
+    const b = a.battle, ed = D.ENEMIES[a.enemyId];
+    const h = a.hero || {}, wid = (h.equip && h.equip.weapon) || RPG.save.equip.weapon, rid = a.route.bg || D.REGIONS[a.route.region].id, rg = D.REGIONS.find(r => r.id === rid);
+    return { job: b.hero.job, look: M.lookOf(RPG.save), costume: M.costumeOf(RPG.save, b.hero.job), weaponId: M.artWeapon(b.hero.job, wid), region: rid, regionName: rg ? rg.name : '', enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0), ehp: b.enemy.hp, emax: b.enemy.maxHp };
+  }
+  // 確定状態に合わせる（敵のHP・倒した／撤退）。演出が終わったとき、捨てたとき、帯を出したときに呼ぶ
+  function syncView() { const si = sceneInfo(); if (!si) return; view.eHp = si.ehp; view.eMax = Math.max(1, si.emax); view.gone = si.status === 'won'; view.retreat = si.status === 'retreat'; view.ready = true; }
+  function bgTiles(si) {   // 背景は1回だけ描いて使い回す。通常と左右反転を並べて、移動しても継ぎ目が出ない
+    const has = !!SP.IMGS['bg_' + si.region + '_strip'], key = si.region + '|' + W + '|' + H + '|' + has;
+    if (bgCache && bgCache.key === key) return bgCache;
+    const A = root.document.createElement('canvas'); A.width = W * SCALE; A.height = H * SCALE; const g = A.getContext('2d');
+    g.fillStyle = (SP.REGION_COLOR[si.region] || SP.REGION_COLOR.meadow).sky[0]; g.fillRect(0, 0, A.width, A.height);
+    g.setTransform(SCALE, 0, 0, SCALE, 0, 0); SP.drawBackground(g, W, H, si.region, 'strip'); g.setTransform(1, 0, 0, 1, 0, 0);
+    g.fillStyle = 'rgba(226,232,248,.36)'; g.fillRect(0, 0, A.width, A.height);   // 背景のコントラストを落とし、主人公と敵を読みやすくする
+    const B = root.document.createElement('canvas'); B.width = A.width; B.height = A.height; const gb = B.getContext('2d'); gb.translate(B.width, 0); gb.scale(-1, 1); gb.drawImage(A, 0, 0);
+    return (bgCache = { key, a: A, b: B });
+  }
+  function css(fn) { ctx.save(); ctx.scale(1 / SCALE, 1 / SCALE); fn(); ctx.restore(); }
+  function rrect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  const FONT = '700 12px "Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif';
   function drawStrip(o) {
     if (!ctx) return; o = o || {};
     const si = sceneInfo(); if (!si) return;
-    ctx.clearRect(0, 0, W, H); SP.drawBackground(ctx, W, H, si.region, 'strip');
-    ctx.fillStyle = 'rgba(226,232,248,.36)'; ctx.fillRect(0, 0, W, H);   // 背景のコントラストを落とし、主人公と敵を読みやすくする
-    // 主人公と敵は近づけて並べ、進行方向は右。足元の高さは同じ。攻撃のときだけ短く距離を詰める
-    const gy = H - 2, hx = Math.round(W * 0.2) + Math.min(RPG.scene.walk, 8) * 3 + (o.heroDx || 0), ec = Math.round(W * 0.66) + (o.enemyDx || 0), bo = breath ? 0.5 : 0;
-    const heroTint = si.status === 'retreat' ? '#8a90a8' : (o.heroFlash ? '#ff9aa0' : null);
+    if (!view.ready) syncView();
+    const wc = W * SCALE, t = bgTiles(si), per = wc * 2, off = ((view.bgOff % per) + per) % per;
+    ctx.clearRect(0, 0, W, H);
+    css(() => { for (let i = 0; i < 3; i++) { const x = -off + i * wc, k = (Math.floor(off / wc) + i) % 2; ctx.drawImage(k ? t.b : t.a, Math.round(x), 0); } });
+    // 主人公と敵は帯の中央で向かい合う（中心距離60CSS px）。足元の高さは同じ。攻撃のときだけ踏み込む
+    const cx = W / 2 + 6, gy = H - 2, hx = cx - PAIR_GAP + (o.hdx || 0), ec = cx + PAIR_GAP + (o.edx || 0), bo = breath && !animating ? 0.5 : 0;
     const shadow = (x, w) => { ctx.fillStyle = 'rgba(20,28,60,.32)'; ctx.beginPath(); ctx.ellipse(x, gy + 0.5, w, 1.6, 0, 0, 7); ctx.fill(); };
     shadow(hx, 9);
-    SP.drawHeroLayered(ctx, { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: o.heroFlash ? 'hit' : (o.heroPose || 'idle'), x: hx, groundY: gy - bo, tint: heroTint, guard: o.guard || si.guard, outline: '#141a3c' });
-    if (si.status !== 'won') { shadow(ec, 11); SP.drawEnemy(ctx, si.enemyId, si.boss, ec - 7, gy - (breath ? 0 : 0.5), { img: 'strip', tint: o.enemyFlash ? '#fff' : null, outline: '#141a3c', scale: fitScale(SP.IMGS['enemy_' + si.enemyId + '_strip'], 0, 40) }); }
-    if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cx = o.still.hero ? hx : ec; ctx.drawImage(im, cx - w / 2, gy - h - 2, w, h); ctx.restore(); } }
+    const ho = { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || 'idle', o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
+    if (SP.drawHeroLayered(ctx, ho) === 'wait' && ho.pose !== 'idle') SP.drawHeroLayered(ctx, Object.assign({}, ho, { pose: 'idle' }));   // 読込中のポーズがあっても主人公を消さない（待機の絵で代用）
+    layout = { bar: null, enemyH: 0 };
+    if (!view.gone || o.ealpha > 0) {
+      const im = SP.IMGS['enemy_' + si.enemyId + '_strip'], fs = fitScale(im, 0, 32), eh = im ? Math.round(im.height * fs) : 24;
+      ctx.save(); if (o.ealpha != null) ctx.globalAlpha = Math.max(0, o.ealpha);
+      shadow(ec, 11); SP.drawEnemy(ctx, si.enemyId, si.boss, ec - 7, gy - (breath && !animating ? 0 : 0.5), { img: 'strip', tint: o.eflash ? '#fff' : null, outline: '#141a3c', scale: fs });
+      ctx.restore();
+      // 敵の頭上の体力バー：幅30×高さ3（CSS px）。残りは長さで分かる（色だけに頼らない）
+      const frac = Math.max(0, Math.min(1, view.eHp / view.eMax)), fill = view.eHp <= 0 ? 0 : view.eHp >= view.eMax ? 30 : Math.min(29, Math.max(1, Math.round(30 * frac))), bx = Math.round(ec * SCALE - 15), by = Math.max(3, gy * SCALE - eh - 7);
+      css(() => { if (o.ealpha != null) ctx.globalAlpha = Math.max(0, o.ealpha); ctx.fillStyle = '#141a3c'; ctx.fillRect(bx - 1, by - 1, 32, 5); ctx.fillStyle = '#eceaf6'; ctx.fillRect(bx, by, 30, 3); ctx.fillStyle = frac > .5 ? '#2fb85a' : frac > .25 ? '#f0b429' : '#e5484d'; ctx.fillRect(bx, by, fill, 3); });
+      layout = { bar: { x: bx, y: by, w: 30, h: 3, fill, outer: [32, 5] }, enemyH: eh };
+    }
+    if (o.proj) { const x = hx + 9 + (ec - 6 - hx - 9) * o.proj.p; SP.px(ctx, x, gy - 10, o.proj.col, 2); SP.px(ctx, x - 2, gy - 10, 'rgba(255,255,255,.7)', 1); }
+    if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cc = o.still.hero ? hx : ec; ctx.drawImage(im, cc - w / 2, gy - h - 2, w, h); ctx.restore(); } }
     fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx : f.at === 'melee' ? ec - 17 : ec, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1, STRIP_DS); });
-    if (o.slash) { SP.px(ctx, hx + 9, gy - 12, '#fff', 2); SP.px(ctx, hx + 11, gy - 10, '#ffe27a', 2); SP.px(ctx, hx + 13, gy - 8, '#fff', 2); }
+    if (o.slash) { const c = o.slash === true ? ['#fff', '#ffe27a'] : o.slash; SP.px(ctx, hx + 9, gy - 12, c[0], 2); SP.px(ctx, hx + 11, gy - 10, c[1], 2); SP.px(ctx, hx + 13, gy - 8, c[0], 2); }
     if (o.heal) { SP.px(ctx, hx - 2, gy - 18, '#5be08a', 1); SP.px(ctx, hx - 3, gy - 17, '#5be08a', 3); SP.px(ctx, hx - 2, gy - 16, '#5be08a', 1); }
+    // 左端の短い表示：ふだんは地域名。技名・「できた！」・立て直し中は短時間これに置き換える（高さは増やさない）
+    const live = view.text && nowMs() < view.textEnd, txt = live ? view.text : (view.retreat ? '立て直し中' : si.regionName);
+    css(() => {
+      ctx.font = FONT; ctx.textBaseline = 'middle'; let s = txt || '';
+      if (ctx.measureText(s).width > LAB_MAX) { while (s.length > 1 && ctx.measureText(s + '…').width > LAB_MAX) s = s.slice(0, -1); s += '…'; }
+      const w = Math.ceil(ctx.measureText(s).width) + 10;
+      ctx.fillStyle = live ? 'rgba(20,26,60,.82)' : 'rgba(20,26,60,.58)'; rrect(4, 4, w, 18, 6); ctx.fill();
+      ctx.fillStyle = live ? '#ffe27a' : '#fff'; ctx.fillText(s, 9, 13.5);
+      layout.label = { text: s, w, live };
+    });
+    layout.hx = hx * SCALE; layout.ex = ec * SCALE; layout.W = W * SCALE; layout.H = H * SCALE;
+  }
+  RPG.stripSync = function () { syncView(); drawStrip(); };   // 確定状態へ合わせて描き直す（検査用。帯を出し直したときと同じ）
+  RPG.stripInfo = function () {   // 計測用：直前に描いたときの実寸（CSS px）
+    if (!layout) return null; return Object.assign({ dist: Math.round(layout.ex - layout.hx), animating, pending: queue.length, running: !!running, view: Object.assign({}, view) }, layout);
+  };
+  let warmKey = '';
+  function warmPoses() {   // 使うポーズの部品を先に読み込んでおく（初めて攻撃したとき主人公が一瞬消えないように）
+    const si = sceneInfo(); if (!si) return; const k = [si.job, si.costume, si.weaponId, JSON.stringify(si.look)].join('|'); if (k === warmKey) return; warmKey = k;
+    try { const c = root.document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); SP.POSES.S.forEach(pose => SP.drawHeroLayered(g, { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose, x: 32, groundY: 60 })); } catch (e) {}
   }
   RPG.mount = function () {
-    cv = root.document.querySelector('.rpg-strip canvas'); ctx = null; if (!cv) return;
-    const box = cv.parentNode; const cssW = Math.max(100, cv.clientWidth || box.clientWidth);
-    W = Math.ceil(cssW / SCALE); H = Math.round((cv.clientHeight || 44) / SCALE) || 22;
-    cv.width = W * SCALE; cv.height = H * SCALE; ctx = cv.getContext('2d'); ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
+    const box = root.document.querySelector('.rpg-strip'); if (!box) return;
+    if (!cv) { cv = root.document.createElement('canvas'); ctx = null; }
+    box.appendChild(cv);
+    const bs = root.getComputedStyle(box), inner = box.clientWidth - (parseFloat(bs.paddingLeft) || 0) - (parseFloat(bs.paddingRight) || 0), w = Math.ceil(Math.max(100, inner) / SCALE), h = 22;
+    if (!ctx || w !== W || h !== H) { W = w; H = h; cv.width = W * SCALE; cv.height = H * SCALE; ctx = cv.getContext('2d'); ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0); bgCache = null; }
+    if (!view.ready) syncView();
+    warmPoses();
     drawStrip();
     clearInterval(breathT); if (!reduceMotion()) breathT = setInterval(() => { if (!ctx || animating || !cv) return; breath ^= 1; drawStrip(); }, 900);   // 待機中は小さく呼吸するだけ（戦闘や報酬は進まない）
-    const inp = root.document.getElementById('ans');   // 入力問題：キーボード表示中は帯を隠す
-    if (inp) { inp.addEventListener('focus', () => { box.hidden = true; }); inp.addEventListener('blur', () => { box.hidden = false; }); }
-    if (RPG.deferred.length) { const d = RPG.deferred; RPG.deferred = []; setTimeout(() => RPG.play(d), 120); }
+    const inp = root.document.getElementById('ans');   // 入力問題：キーボード表示中は帯を隠し、閉じたら最新状態で出す
+    if (inp) { inp.addEventListener('focus', () => { box.hidden = true; }); inp.addEventListener('blur', () => { box.hidden = false; if (!running) syncView(); drawStrip(); }); }
   };
-  RPG.unmount = function () { cancelAnimationFrame(raf); clearInterval(breathT); animating = false; rewardRedraw = null; cv = ctx = null; anim = null; fxLive.length = 0; };
+  RPG.unmount = function () { cancelAnimationFrame(raf); clearInterval(breathT); clearTimeout(textT); animating = false; rewardRedraw = null; cv = ctx = null; queue = []; running = null; fxLive.length = 0; view.ready = false; view.bgOff = 0; view.text = null; bgCache = null; layout = null; };
   // 出来事を短く再生。演出は計算結果に影響しない（省略しても同じ）
   const snd = n => { try { if (RPG.sound) RPG.sound.play(n); } catch (e) {} };
-  RPG.play = function (events) {
+  // 区間の時刻 t(ms) での見た目。reduce-motion(rm)では踏み込み・背景移動・弾道を省き、構え（ポーズ）の差と体力バーだけにする
+  function frameOf(sg, t, st, rm) {
+    const dx = v => (rm ? 0 : v), p = Math.min(1, t / sg.d);
+    if (sg.k === 'attack' || sg.k === 'skill') {
+      const [a, b, c, d] = sg.ph, e1 = a, e2 = a + b, e3 = a + b + c, r = {};
+      if (t < e1) { r.hdx = dx(-1 * t / a); r.pose = 'windup'; }
+      else if (t < e2) { const q = (t - e1) / b; r.hdx = sg.ranged ? 0 : dx(-1 + (REACH + 1) * q); r.pose = 'attack'; if (sg.ranged && !rm) r.proj = { p: q, col: sg.col || '#fff6c0' }; }
+      else if (t < e3) { r.hdx = sg.ranged ? 0 : dx(REACH); r.pose = 'attack'; r.edx = dx(1.5); r.eflash = sg.dmg > 0 && t < e2 + c * 0.6; r.slash = !sg.key ? (sg.k === 'skill' ? ['#9ad8ff', '#fff'] : true) : null; if (sg.key) r.stillKey = true; }
+      else { const q = Math.min(1, (t - e3) / d); r.hdx = dx(sg.ranged ? 0 : REACH * (1 - q)); r.edx = dx(1.5 * (1 - q)); r.pose = 'windup'; }
+      return r;
+    }
+    if (sg.k === 'support') return { pose: t < 140 ? 'windup' : 'attack', heal: !sg.key && sg.heal > 0 && t > 140, stillKey: t > 140 };
+    if (sg.k === 'heal') return { heal: true, pose: 'idle' };
+    if (sg.k === 'guard') return { pose: 'guard', guard: true, hdx: dx(-1 * Math.min(1, t / 60)) };
+    if (sg.k === 'enemy') {
+      const r = { guard: sg.reduced > 0 };
+      if (t < 100) r.edx = dx(-6 * t / 100);
+      else if (t < 160) { r.edx = dx(-6); if (sg.dmg > 0) { r.pose = 'hurt'; r.hdx = dx(-1.5); } }
+      else { const q = (t - 160) / (sg.d - 160); r.edx = dx(-6 * (1 - q)); if (sg.dmg > 0 && q < .5) { r.pose = 'hurt'; r.hdx = dx(-1.5 * (1 - q * 2)); } }
+      return r;
+    }
+    if (sg.k === 'walk') { st.bg = dx(10 * p); return { pose: 'walk', step: Math.floor(t / 100) }; }
+    if (sg.k === 'defeat') {
+      if (t < sg.fade) return { ealpha: 1 - t / sg.fade, edx: dx(2 * t / sg.fade), pose: 'idle' };
+      const q = (t - sg.fade) / (sg.d - sg.fade); st.bg = dx(30 * q); return { ealpha: 0, pose: 'walk', step: Math.floor((t - sg.fade) / 130), gone: true };
+    }
+    return {};
+  }
+  function segStart(sg, now, st, rm) {
+    st.bg0 = view.bgOff; st.hit = false;
+    if (sg.text) { view.text = sg.text; view.textEnd = now + TT.TEXT_MS; }
+    if ((sg.k === 'skill' || sg.k === 'support') && sg.key && FXL && !rm) {
+      const job = RPG.save && RPG.save.active ? RPG.save.active.battle.hero.job : null;
+      const inst = FXL.spawn(sg.key, { jobColor: job ? SP.JOB_COLOR[job] : null, cap: 0.9, delay: Math.max(0.02, (sg.hitAt - 70) / 1000), light: 1 });   // 帯では hit stop・画面ゆれは出さない
+      if (inst) { st.fxOk = true; fxLive.push(inst); }
+    }
+    if ((sg.k === 'skill' || sg.k === 'support') && sg.key && FXL) st.kind = FXL.stillOf(sg.key);
+  }
+  RPG.play = function (events, opt) {
+    opt = opt || {};
     events.forEach(e => { if (e.t === 'hero') snd(e.act === 'normal' ? 'attack' : 'skill'); else if (e.t === 'enemy' && e.dmg > 0) snd('hit'); });
-    if (!ctx || !events.length) { if (events.some(e => e.t === 'explore')) RPG.scene.walk++; return; }
-    const steps = [];
-    events.forEach(e => {
-      if (e.t === 'hero') {
-        const key = e.act !== 'normal' && FXL ? FXL.keyFor(e.act) : null, job = RPG.save && RPG.save.active ? RPG.save.active.battle.hero.job : null;
-        const st = { d: 360, key, f: p => {
-          const r = { heroDx: p < .3 ? p / .3 * 8 : p < .6 ? 8 : (1 - (p - .6) / .4) * 8, enemyFlash: p > .3 && p < .6 && e.dmg > 0, heroPose: p > .2 && p < .7 ? 'attack' : null };
-          if (!key) { r.slash = p > .25 && p < .55; r.heal = e.heal > 0 && p > .5; }
-          else if (!st.played && p > .2 && p < .6) { const kind = FXL.stillOf(key), hero = (FXL.AT[key] === 'hero'); if (kind && SP.IMGS['fx_' + kind + '_strip']) r.still = { kind, hero }; else { r.slash = !hero; r.heal = hero && e.heal > 0; } }
-          return r;
-        } };
-        st.spawn = () => {   // 帯では hit stop・画面ゆれは出さない（弱めるのではなく切る）
-          const inst = FXL.spawn(key, { jobColor: job ? SP.JOB_COLOR[job] : null, cap: 0.9, delay: 0.08, light: 1 });
-          if (inst) { st.played = true; fxLive.push(inst); }
-        };
-        steps.push(st);
-      }
-      else if (e.t === 'heal') steps.push({ d: 280, f: p => ({ heal: true }) });
-      else if (e.t === 'enemy' && e.dmg > 0) steps.push({ d: 360, f: p => ({ enemyDx: p < .3 ? -p / .3 * 8 : p < .6 ? -8 : -(1 - (p - .6) / .4) * 8, heroFlash: p > .3 && p < .6, guard: e.reduced > 0 && p > .2 && p < .7 }) });
-      else if (e.t === 'explore') {   // 回答の合間に冒険帯で歩く：前の位置から6px進みながら歩行ポーズ（8歩目以降はその場歩き）
-        const adv = RPG.scene.walk < 8 ? 6 : 0; RPG.scene.walk++;
-        steps.push({ d: 420, f: p => ({ heroDx: -adv * (1 - p), heroPose: 'walk' }) });
-      }
-    });
-    if (reduceMotion() || !steps.length) { drawStrip(); return; }
-    animating = true;
-    const t0 = performance.now(); let i = 0, start = t0, last = t0; cancelAnimationFrame(raf);
-    const tick = now => {
-      if (!ctx) return;
-      const dt = Math.max(0, (now - last) / 1000); last = now;
-      fxLive.forEach(f => f.update(dt)); for (let j = fxLive.length - 1; j >= 0; j--) if (fxLive[j].started() && fxLive[j].done()) fxLive.splice(j, 1);
-      const st = steps[i];
-      if (!st) { drawStrip(); if (fxLive.length) raf = requestAnimationFrame(tick); else animating = false; return; }
-      if (!st.s) { st.s = 1; if (st.spawn) st.spawn(); }
-      const p = Math.min(1, (now - start) / st.d); drawStrip(st.f(p));
-      if (p >= 1) { i++; start = now; }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
+    if (!ctx) return;
+    const si = sceneInfo(); if (!si) return;
+    const fx = FXL ? (id => FXL.keyFor(id)) : null, at = FXL ? (k => FXL.AT[k]) : null, nameOf = id => (D.SKILLS[id] ? D.SKILLS[id].name : null);
+    const segs = opt.correct === false ? (si.status === 'fight' ? ST.planWrong(events) : []) : ST.plan(events, { review: !!opt.review, killed: !!opt.killed, ranged: ST.rangedOf(si.job, si.weaponId), fx, at, name: nameOf });
+    segs.forEach(s => { if (s.k === 'skill' || s.k === 'support') s.col = SP.JOB_COLOR[si.job] || '#ffd24a'; });
+    if (!segs.length) return;
+    const r = ST.enqueue(queue, segs, !!running); queue = r.queue;
+    RPG.stripLog.push({ k: 'enqueue', n: segs.map(s => s.k).join('+'), planMs: ST.total(segs), dropped: r.dropped, pending: queue.length }); if (RPG.stripLog.length > 200) RPG.stripLog.shift();
+    if (!animating) { animating = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
   };
+  function tick(now) {
+    if (!ctx) return;
+    const rm = reduceMotion();
+    fxLive.forEach(f => f.update(0.016)); for (let j = fxLive.length - 1; j >= 0; j--) if (fxLive[j].started() && fxLive[j].done()) fxLive.splice(j, 1);
+    if (!running) {
+      if (!queue.length) {
+        syncView(); view.bgOff = Math.round(view.bgOff); drawStrip();
+        if (fxLive.length) { raf = requestAnimationFrame(tick); return; }
+        animating = false; const rest = view.textEnd - nowMs();
+        if (view.text && rest > 0) { clearTimeout(textT); textT = setTimeout(() => { if (ctx && !animating) drawStrip(); }, rest + 20); }
+        return;
+      }
+      running = { segs: queue.shift(), i: 0, start: now, st: {}, begun: false, t0: now };
+    }
+    const sg = running.segs[running.i], st = running.st;
+    if (!running.begun) { running.begun = true; segStart(sg, nowMs(), st, rm); }
+    const t = Math.max(0, now - running.start), f = frameOf(sg, Math.min(t, sg.d), st, rm);
+    // 命中の瞬間に敵の体力バーが減る（見た目だけ。確定値は回答処理で済んでいる）
+    if (!st.hit && (sg.k === 'attack' || sg.k === 'skill' || sg.k === 'support') && t >= sg.hitAt) { st.hit = true; if (sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg); }
+    if (sg.k === 'defeat' && f.gone) { view.gone = true; view.eHp = 0; }
+    if (st.bg != null) view.bgOff = st.bg0 + st.bg;
+    let still = null; if (f.stillKey && sg.key && !st.fxOk && st.kind && SP.IMGS['fx_' + st.kind + '_strip']) still = { kind: st.kind, hero: FXL.AT[sg.key] === 'hero' };
+    drawStrip({ hdx: f.hdx, edx: f.edx, pose: f.pose, step: f.step, guard: f.guard, eflash: f.eflash, ealpha: f.ealpha, proj: f.proj, slash: f.slash, heal: f.heal, still });
+    if (t >= sg.d) {
+      if (!st.hit && sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg);
+      RPG.stripLog.push({ k: sg.k, ms: Math.round(t), plan: sg.d }); if (RPG.stripLog.length > 200) RPG.stripLog.shift();
+      running.i++; running.start += sg.d; running.begun = false; running.st = {};
+      if (running.i >= running.segs.length) { RPG.stripLog.push({ k: 'group', ms: Math.round(now - running.t0) }); running = null; }
+    }
+    raf = requestAnimationFrame(tick);
+  }
 
   // ---------- 結果（報酬）画面 ----------
   function itemName(id) { const it = D.ITEMS[id]; return it ? it.name : id; }

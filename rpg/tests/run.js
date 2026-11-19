@@ -222,6 +222,26 @@ t('転職：最初の冒険のあと基本職、基本2つLv10で上級、最上
   s.jobXp.warrior = C.cum(C.NEED.base, 10); s.jobXp.mage = C.cum(C.NEED.base, 10); eq(C.canChangeJob(s, 'magicknight'), null); ok(C.canChangeJob(s, 'skyknight'));
 });
 
+// ===== 8b. 冒険帯の演出（08指示書 3〜4章）。演出は見た目だけ：状態を変えない・溜めない・二重加算しない =====
+const ST = require('../js/rpg-strip.js'), SPR = require('../js/rpg-sprites.js'), M = require('../js/rpg-meta.js');
+const mkAdv = () => { const s = M.ensure(C.newSave(0)); s.firstDone = true; A.begin(s, 1000); return s; };
+const nm = id => (D.SKILLS[id] ? D.SKILLS[id].name : null);
+t('演出：通常攻撃の合計450〜550ms（予備→踏み込み→命中→戻り）、命中で体力が変わる', () => { const g = ST.plan([{ t: 'hero', act: 'normal', dmg: 5, heal: 0 }], {}); eq(g.length, 1); ok(ST.total(g) >= 450 && ST.total(g) <= 550, String(ST.total(g))); eq(g[0].ph.length, 4); ok(g[0].hitAt > g[0].ph[0] && g[0].hitAt < g[0].d); eq(g[0].dmg, 5); });
+t('演出：技は最大650ms・実際に発動した技名を出す／弾道は魔法・弓職だけ', () => { const g = ST.plan([{ t: 'hero', act: 'w_strike', dmg: 9, heal: 0 }], { fx: () => 'slash', at: () => 'melee', name: nm, ranged: false }); ok(ST.total(g) <= 650 && ST.total(g) > ST.total(ST.plan([{ t: 'hero', act: 'normal', dmg: 1 }]))); eq(g[0].text, '強打'); eq(g[0].k, 'skill'); ok(!g[0].ranged); ok(ST.plan([{ t: 'hero', act: 'normal', dmg: 1 }], { ranged: true })[0].ranged); ok(ST.rangedOf('mage', 'w_staff_1') && ST.rangedOf('ranger', 'w_bow_1') && !ST.rangedOf('warrior', 'w_sword_1')); });
+t('演出：回復・守りの技は踏み込まずその場で（support）。技名は出す', () => { const g = ST.plan([{ t: 'hero', act: 'p_heal', dmg: 0, heal: 8 }], { fx: () => 'heal', at: () => 'hero', name: nm }); eq(g[0].k, 'support'); eq(g[0].text, nm('p_heal')); ok(ST.total(g) <= 650); });
+t('演出：不正解・わからないは守り150〜250ms。敵の反撃は実際にあるときだけ小さく後ろに足す', () => { const g0 = ST.planWrong([]); eq(g0.map(x => x.k), ['guard']); ok(g0[0].d >= 150 && g0[0].d <= 250); const g1 = ST.planWrong([{ t: 'enemy', k: 'atk', dmg: 7, reduced: 0.5 }]); eq(g1.map(x => x.k), ['guard', 'enemy']); eq(g1[1].dmg, 7); ok(!g0[0].text && !g1[0].text, '正解確認を邪魔する文字を出さない'); });
+t('演出：撃破は最大800ms（敵が消える→数歩→背景が移る）。復習で正解は「できた！」1回', () => { const g = ST.plan([{ t: 'hero', act: 'normal', dmg: 5 }], { killed: true }); eq(g.map(x => x.k), ['attack', 'defeat']); ok(g[1].d <= 800); const r = ST.plan([{ t: 'hero', act: 'normal', dmg: 5 }], { review: true }); eq(r[0].text, 'できた！'); eq(r.filter(x => x.text).length, 1); });
+t('演出：ポーズ名→部品の対応表は、いまある小型絵(S)のポーズだけを指す（新部品が来たら表を差し替えるだけ）', () => { const have = SPR.POSES.S; Object.keys(ST.HERO_POSE_MAP).forEach(k => [].concat(ST.HERO_POSE_MAP[k]).forEach(v => ok(have.includes(v), k + '→' + v))); eq(ST.poseOf('walk', 0) !== ST.poseOf('walk', 1), true, '歩行は2コマ交互'); });
+t('演出：連続回答で待ちは MAX_PENDING 件まで（溜めない）。待ちがあると短縮版になる', () => { let q = [], dropped = 0, running = false; for (let i = 0; i < 12; i++) { const r = ST.enqueue(q, ST.plan([{ t: 'hero', act: 'normal', dmg: 1 }, { t: 'heal', heal: 1 }], {}), running); q = r.queue; dropped += r.dropped; running = true; ok(q.length <= ST.T.MAX_PENDING, '待ち ' + q.length); } eq(dropped, 12 - ST.T.MAX_PENDING); ok(q[0][0].fast && q[0].every(x => x.k !== 'heal') && q[0][0].d < 480); eq(ST.enqueue([], ST.plan([{ t: 'hero', act: 'normal', dmg: 1 }], {}), false).queue[0][0].fast, undefined); });
+t('演出：計画・待ち行列に通しても、イベントも保存データも変わらない（演出は状態を持たない）', () => {
+  const s = mkAdv(); const evs = []; const rs = [true, true, false, true, true].map((ok_, i) => A.recordAnswer(s, { rid: 'r' + i, kind: 'basic', correct: ok_, qid: 'q' + i }, 2000 + i)); rs.forEach(r => evs.push(...r.events));
+  const snap = JSON.stringify(s), esnap = JSON.stringify(evs);
+  rs.forEach(r => { ST.plan(r.events, { fx: () => 'slash', at: () => 'melee', name: nm, killed: true }); ST.planWrong(r.events); ST.enqueue([], ST.plan(r.events, {}), true); });
+  eq(JSON.stringify(s), snap); eq(JSON.stringify(evs), esnap);
+});
+t('再読込・復帰で同じ回答を再処理しても、HP・報酬・回数が増えない（rid で無視）', () => { const s = mkAdv(); A.recordAnswer(s, { rid: 'x1', kind: 'basic', correct: true, qid: 'q' }, 2000); const snap = JSON.stringify(s), r = A.recordAnswer(s, { rid: 'x1', kind: 'basic', correct: true, qid: 'q' }, 3000); ok(r.dup); eq(r.events.length, 0); eq(JSON.stringify(s), snap); });
+t('演出の長さは報酬確定に関係しない：精算は演出を呼ばず、回答数だけで決まる', () => { const s = mkAdv(); for (let i = 0; i < 10; i++) A.recordAnswer(s, { rid: 'y' + i, kind: 'basic', correct: i % 2 === 0, qid: 'q' + i }, 2000 + i); ok(A.canSettle(s)); const c0 = s.coins; const res = A.settle(s, 9000); ok(res && s.coins === c0 + res.coin); const again = A.settle(s, 9500); eq(s.coins, c0 + res.coin); });
+
 // ===== 10. 長期シミュレーション（第1章・固定seed） =====
 const simRows = {};
 [0.3, 0.6, 0.8, 1.0].forEach(acc => { simRows[acc] = [1, 2, 3, 4, 5].map(seed => SIM.playJourney({ acc, days: 150, seed, jobPath: ['warrior', 'mage', 'magicknight'], stopAtCh1: true }).stat); });

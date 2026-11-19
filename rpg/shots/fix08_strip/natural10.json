@@ -1,0 +1,125 @@
+{
+ "plan": [
+  "ok",
+  "ok",
+  "ok",
+  "wrong",
+  "ok",
+  "ok",
+  "skip",
+  "ok",
+  "ok",
+  "ok"
+ ],
+ "console_errors": [],
+ "ms_by_kind": {
+  "attack": {
+   "n": 3,
+   "min": 483,
+   "max": 483,
+   "mean": 483
+  },
+  "group": {
+   "n": 9,
+   "min": 400,
+   "max": 1333,
+   "mean": 572
+  },
+  "enemy": {
+   "n": 2,
+   "min": 267,
+   "max": 270,
+   "mean": 268
+  },
+  "guard": {
+   "n": 1,
+   "min": 217,
+   "max": 217,
+   "mean": 217
+  },
+  "skill": {
+   "n": 1,
+   "min": 550,
+   "max": 550,
+   "mean": 550
+  },
+  "defeat": {
+   "n": 1,
+   "min": 783,
+   "max": 783,
+   "mean": 783
+  },
+  "walk": {
+   "n": 4,
+   "min": 400,
+   "max": 417,
+   "mean": 408
+  }
+ },
+ "dropped": 0,
+ "enqueues": [
+  {
+   "k": "enqueue",
+   "n": "attack",
+   "planMs": 480,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "attack",
+   "planMs": 480,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "attack+enemy",
+   "planMs": 740,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "guard+enemy",
+   "planMs": 460,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "skill+defeat",
+   "planMs": 1330,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "walk",
+   "planMs": 400,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "walk",
+   "planMs": 400,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "walk",
+   "planMs": 400,
+   "dropped": 0,
+   "pending": 1
+  },
+  {
+   "k": "enqueue",
+   "n": "walk",
+   "planMs": 400,
+   "dropped": 0,
+   "pending": 1
+  }
+ ]
+}

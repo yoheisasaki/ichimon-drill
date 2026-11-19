@@ -1,6 +1,6 @@
 /* RPG：下端の冒険帯・結果画面・案内。既存の問題カード・地図・選択肢の寸法は変えない */
-#app.inq{display:flex;flex-direction:column}
-.rpg-strip{margin-top:auto;padding-top:12px;pointer-events:none;user-select:none;-webkit-user-select:none}
+#app.inq{display:flex;flex-direction:column;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+.rpg-strip{position:fixed;left:0;right:0;bottom:0;z-index:5;margin:0 auto;max-width:480px;box-sizing:border-box;padding:6px 14px calc(6px + env(safe-area-inset-bottom));background:#f1effc;pointer-events:none;user-select:none;-webkit-user-select:none}
 .rpg-strip[hidden]{display:none}
 .rpg-strip canvas{display:block;width:100%;height:44px;image-rendering:pixelated;image-rendering:crisp-edges;border-radius:10px;box-shadow:0 2px 0 #ddd8f0}
 .rpg-notice{background:#fff6e0;border:2px solid #f0c060;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:15px;line-height:1.7;font-weight:700;color:#6a4a00}
