@@ -10278,6 +10278,128 @@
    ],
    "heads": "v2",
    "weaponLayer": "back"
+  },
+  "warrior_v3_idle_L": {
+   "w": 55,
+   "h": 96,
+   "foot": [
+    30.0,
+    95
+   ],
+   "neck": [
+    29.9,
+    50.1
+   ],
+   "grip": [
+    47.5,
+    70.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3_idle_L.png",
+   "handPos": [
+    43,
+    65
+   ],
+   "heads": "v3",
+   "weaponLayer": "front"
+  },
+  "warrior_v3_attack_L": {
+   "w": 64,
+   "h": 96,
+   "foot": [
+    36.3,
+    95
+   ],
+   "neck": [
+    35.8,
+    50.1
+   ],
+   "grip": [
+    56.5,
+    63.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3_attack_L.png",
+   "handPos": [
+    51,
+    58
+   ],
+   "heads": "v3",
+   "weaponLayer": "front"
+  },
+  "warrior_v3_win_L": {
+   "w": 63,
+   "h": 96,
+   "foot": [
+    36.5,
+    95
+   ],
+   "neck": [
+    38.2,
+    50.1
+   ],
+   "grip": [
+    9.0,
+    32.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_v3_win_L.png",
+   "handPos": [
+    2,
+    25
+   ],
+   "heads": "v3",
+   "weaponLayer": "front"
+  },
+  "warrior_v3_idle_S": {
+   "w": 19,
+   "h": 28,
+   "foot": [
+    11.1,
+    27
+   ],
+   "neck": [
+    11.1,
+    14.0
+   ],
+   "grip": [
+    15.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v3",
+   "weaponLayer": "back"
+  },
+  "warrior_v3_attack_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "neck": [
+    11.7,
+    14.0
+   ],
+   "grip": [
+    19.5,
+    15.5
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_v3_attack_S.png",
+   "handPos": [
+    17,
+    13
+   ],
+   "heads": "v3",
+   "weaponLayer": "back"
   }
  },
  "head": {
@@ -11143,6 +11265,38 @@
    "neck": [
     22.3,
     41.0
+   ]
+  },
+  "head_v3_f0_h0_L": {
+   "w": 50,
+   "h": 50,
+   "neck": [
+    26.9,
+    50.0
+   ]
+  },
+  "head_v3_f0_h0_L_attack": {
+   "w": 50,
+   "h": 50,
+   "neck": [
+    26.9,
+    50.0
+   ]
+  },
+  "head_v3_f0_h0_L_win": {
+   "w": 50,
+   "h": 50,
+   "neck": [
+    26.9,
+    50.0
+   ]
+  },
+  "head_v3_h0_S": {
+   "w": 14,
+   "h": 14,
+   "neck": [
+    7.5,
+    14.0
    ]
   }
  },
@@ -15013,6 +15167,60 @@
     "#f0c39a",
     "#d9a77a",
     "#b97d56"
+   ],
+   "body_warrior_v3_idle_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_v3_attack_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_v3_win_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_v3_idle_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_v3_attack_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v3_f0_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v3_f0_h0_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v3_f0_h0_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v3_h0_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
    ]
   },
   "hair": {
@@ -15659,6 +15867,30 @@
     "#37200f"
    ],
    "head_v2_f3_h5_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v3_f0_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v3_f0_h0_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v3_f0_h0_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v3_h0_S.png": [
     "#b8804a",
     "#7a4a2a",
     "#56321e",
