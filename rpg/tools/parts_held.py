@@ -5,7 +5,7 @@ from PIL import Image
 sys.path.insert(0, os.path.dirname(__file__))
 from parts_common import PARTS, save_parts_json
 ICONS = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
-IDS = ['w_start', 'w_sword_1', 'w_sword_2']
+IDS = ['w_start', 'w_sword_1', 'w_sword_2', 'w_staff_1', 'w_dagger_1', 'w_bow_1']
 N = 42; K = N / 32
 def mut(d):
     for i in IDS:

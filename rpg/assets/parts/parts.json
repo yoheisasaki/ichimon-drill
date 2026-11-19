@@ -227,2322 +227,2445 @@
    "weaponLayer": "back"
   },
   "magicknight_idle_L": {
-   "w": 53,
+   "w": 78,
    "h": 96,
    "foot": [
-    28.9,
+    43.4,
     95
    ],
    "neck": [
-    28.2,
-    32.0
+    43.0,
+    43.2
    ],
    "grip": [
-    47.5,
-    61.5
+    69.0,
+    64.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_magicknight_idle_L.png",
    "handPos": [
-    43,
-    56
+    62,
+    57
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "magicknight_attack_L": {
-   "w": 80,
-   "h": 93,
+   "w": 96,
+   "h": 96,
    "foot": [
-    31.6,
-    92
+    43.4,
+    95
    ],
    "neck": [
-    48.1,
-    32.0
+    51.7,
+    43.2
    ],
    "grip": [
-    73.5,
-    33.0
+    86.0,
+    40.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_magicknight_attack_L.png",
    "handPos": [
-    69,
-    28
+    78,
+    33
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "magicknight_ready_L": {
-   "w": 67,
-   "h": 92,
+   "w": 80,
+   "h": 96,
    "foot": [
-    26.8,
-    91
+    41.5,
+    95
    ],
    "neck": [
-    40.2,
-    32.0
+    41.7,
+    43.2
    ],
    "grip": [
-    61.0,
-    50.5
+    68.0,
+    55.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_magicknight_ready_L.png",
    "handPos": [
-    56,
-    46
+    60,
+    47
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "magicknight_hit_L": {
-   "w": 65,
+   "w": 96,
    "h": 93,
    "foot": [
-    40.7,
+    59.3,
     92
    ],
    "neck": [
-    26.9,
-    32.0
+    28.9,
+    43.2
    ],
    "grip": [
-    56.0,
-    43.0
+    76.5,
+    42.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_magicknight_hit_L.png",
    "handPos": [
-    51,
-    38
+    69,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "magicknight_win_L": {
-   "w": 52,
-   "h": 96,
+   "w": 78,
+   "h": 98,
    "foot": [
-    28.0,
-    95
+    42.9,
+    97
    ],
    "neck": [
-    27.1,
-    32.0
+    38.2,
+    43.2
    ],
    "grip": [
-    46.5,
-    60.0
+    68.5,
+    39.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_magicknight_win_L.png",
    "handPos": [
-    42,
-    55
+    61,
+    32
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "magicknight_idle_S": {
-   "w": 16,
-   "h": 26,
+   "w": 23,
+   "h": 28,
    "foot": [
-    8.5,
-    25
+    12.5,
+    27
    ],
    "neck": [
-    9.1,
-    10.0
+    12.7,
+    12.1
    ],
    "grip": [
-    14.5,
-    17.5
+    20.0,
+    18.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_magicknight_idle_S.png",
    "handPos": [
-    13,
+    17,
     16
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "magicknight_attack_S": {
-   "w": 23,
-   "h": 25,
+   "w": 25,
+   "h": 28,
    "foot": [
-    8.8,
-    24
+    10.2,
+    27
    ],
    "neck": [
-    13.2,
-    10.0
+    13.6,
+    12.1
    ],
    "grip": [
-    21.0,
-    11.0
+    22.0,
+    13.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_magicknight_attack_S.png",
    "handPos": [
     19,
-    9
+    10
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "magicknight_hit_S": {
-   "w": 20,
-   "h": 26,
+   "w": 26,
+   "h": 28,
    "foot": [
-    9.6,
-    25
+    10.7,
+    27
    ],
    "neck": [
-    7.8,
-    10.0
+    10.4,
+    12.1
    ],
    "grip": [
-    15.0,
-    12.0
+    21.0,
+    13.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_magicknight_hit_S.png",
    "handPos": [
-    13,
-    10
+    19,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "magicknight_walk_S": {
-   "w": 17,
-   "h": 26,
+   "w": 22,
+   "h": 28,
    "foot": [
-    8.0,
-    25
+    11.4,
+    27
    ],
    "neck": [
-    9.0,
-    10.0
+    11.8,
+    12.1
    ],
    "grip": [
-    13.6,
-    15.6
+    19.5,
+    15.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_magicknight_walk_S.png",
+   "handPos": [
+    17,
+    13
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "priest_idle_L": {
-   "w": 56,
+   "w": 68,
    "h": 96,
    "foot": [
-    28.3,
+    34.8,
     95
    ],
    "neck": [
-    29.8,
-    32.0
+    35.5,
+    43.0
    ],
    "grip": [
-    49.5,
-    64.0
+    60.0,
+    67.5
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_priest_idle_L.png",
    "handPos": [
-    45,
-    60
+    54,
+    62
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "priest_attack_L": {
-   "w": 80,
-   "h": 94,
+   "w": 84,
+   "h": 96,
    "foot": [
-    32.7,
-    93
+    36.9,
+    95
    ],
    "neck": [
-    48.6,
-    32.0
+    44.0,
+    43.0
    ],
    "grip": [
-    74.0,
-    35.0
+    75.0,
+    40.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_priest_attack_L.png",
    "handPos": [
-    69,
-    30
+    68,
+    33
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "priest_ready_L": {
-   "w": 67,
-   "h": 92,
+   "w": 68,
+   "h": 96,
    "foot": [
-    33.7,
-    91
+    34.9,
+    95
    ],
    "neck": [
-    40.5,
-    32.0
+    36.0,
+    43.0
    ],
    "grip": [
-    59.0,
-    49.5
+    60.0,
+    53.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_priest_ready_L.png",
    "handPos": [
     54,
-    44
+    46
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "priest_hit_L": {
-   "w": 59,
-   "h": 94,
+   "w": 76,
+   "h": 97,
    "foot": [
-    32.8,
-    93
+    43.2,
+    96
    ],
    "neck": [
-    18.6,
-    32.0
+    23.3,
+    43.0
    ],
    "grip": [
-    48.5,
-    43.0
+    62.0,
+    44.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_priest_hit_L.png",
    "handPos": [
-    44,
+    55,
     38
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "priest_win_L": {
-   "w": 53,
-   "h": 97,
-   "foot": [
-    27.1,
-    96
-   ],
-   "neck": [
-    26.5,
-    32.0
-   ],
-   "grip": [
-    47.5,
-    63.0
-   ],
-   "gripAngle": -45,
-   "weaponScale": 1.0,
-   "hand": "hand_priest_win_L.png",
-   "handPos": [
-    43,
-    59
-   ],
-   "weaponLayer": "front"
-  },
-  "ranger_idle_L": {
-   "w": 48,
+   "w": 70,
    "h": 96,
    "foot": [
-    26.3,
+    35.5,
     95
    ],
    "neck": [
-    26.2,
-    32.1
+    35.9,
+    43.0
    ],
    "grip": [
-    43.5,
-    64.5
+    61.0,
+    38.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_priest_win_L.png",
+   "handPos": [
+    54,
+    32
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "ranger_idle_L": {
+   "w": 81,
+   "h": 96,
+   "foot": [
+    46.9,
+    95
+   ],
+   "neck": [
+    46.0,
+    43.1
+   ],
+   "grip": [
+    73.0,
+    65.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ranger_idle_L.png",
    "handPos": [
-    40,
-    61
+    67,
+    60
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ranger_attack_L": {
-   "w": 81,
-   "h": 94,
+   "w": 97,
+   "h": 95,
    "foot": [
-    32.1,
-    93
+    43.1,
+    94
    ],
    "neck": [
-    48.4,
-    32.1
+    52.6,
+    43.1
    ],
    "grip": [
-    75.5,
-    35.5
+    87.0,
+    39.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_ranger_attack_L.png",
    "handPos": [
-    71,
-    31
+    79,
+    32
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ranger_ready_L": {
-   "w": 67,
-   "h": 92,
+   "w": 83,
+   "h": 95,
    "foot": [
-    34.7,
-    91
+    44.8,
+    94
    ],
    "neck": [
-    39.9,
-    32.1
+    46.0,
+    43.1
    ],
    "grip": [
-    57.5,
-    52.0
+    71.5,
+    53.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ranger_ready_L.png",
    "handPos": [
-    53,
-    47
+    64,
+    46
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ranger_hit_L": {
-   "w": 65,
-   "h": 94,
+   "w": 101,
+   "h": 93,
    "foot": [
-    35.2,
-    93
+    64.4,
+    92
    ],
    "neck": [
-    25.1,
-    32.1
+    33.9,
+    43.1
    ],
    "grip": [
-    54.5,
-    44.0
+    81.5,
+    43.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_ranger_hit_L.png",
    "handPos": [
-    50,
-    39
+    74,
+    37
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ranger_win_L": {
-   "w": 52,
-   "h": 97,
+   "w": 85,
+   "h": 98,
    "foot": [
-    29.5,
-    96
+    48.9,
+    97
    ],
    "neck": [
-    26.0,
-    32.1
+    44.9,
+    43.1
    ],
    "grip": [
-    45.5,
-    62.5
+    75.0,
+    36.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ranger_win_L.png",
    "handPos": [
-    42,
-    59
+    67,
+    29
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "shadow_idle_L": {
-   "w": 47,
+   "w": 72,
    "h": 96,
    "foot": [
-    23.8,
+    38.8,
     95
    ],
    "neck": [
-    23.5,
-    32.0
+    37.9,
+    43.0
    ],
    "grip": [
-    41.5,
-    65.0
+    64.0,
+    64.5
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_shadow_idle_L.png",
    "handPos": [
-    37,
-    61
+    58,
+    59
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "shadow_attack_L": {
-   "w": 81,
-   "h": 94,
+   "w": 92,
+   "h": 96,
    "foot": [
-    33.9,
-    93
+    41.7,
+    95
    ],
    "neck": [
-    49.7,
-    32.0
+    50.6,
+    43.0
    ],
    "grip": [
-    74.5,
-    38.0
+    82.0,
+    41.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_shadow_attack_L.png",
    "handPos": [
-    69,
-    33
+    74,
+    34
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "shadow_ready_L": {
-   "w": 66,
-   "h": 92,
+   "w": 76,
+   "h": 96,
    "foot": [
-    33.8,
-    91
+    38.6,
+    95
    ],
    "neck": [
-    39.5,
-    32.0
+    38.9,
+    43.0
    ],
    "grip": [
-    57.0,
-    52.0
+    63.5,
+    56.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_shadow_ready_L.png",
    "handPos": [
-    53,
-    47
+    56,
+    48
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "shadow_hit_L": {
-   "w": 58,
-   "h": 94,
+   "w": 90,
+   "h": 90,
    "foot": [
-    31.9,
-    93
+    51.9,
+    89
    ],
    "neck": [
-    17.0,
-    32.0
+    27.2,
+    43.0
    ],
    "grip": [
-    46.0,
+    71.5,
     44.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_shadow_hit_L.png",
    "handPos": [
-    41,
-    40
+    64,
+    38
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "shadow_win_L": {
-   "w": 48,
-   "h": 97,
+   "w": 71,
+   "h": 95,
    "foot": [
-    25.6,
-    96
+    36.6,
+    94
    ],
    "neck": [
-    22.1,
-    32.0
+    34.0,
+    43.0
    ],
    "grip": [
-    42.5,
-    62.5
+    62.5,
+    37.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_shadow_win_L.png",
    "handPos": [
-    38,
-    59
+    56,
+    31
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "sage_idle_L": {
-   "w": 51,
+   "w": 84,
    "h": 96,
    "foot": [
-    27.3,
+    47.1,
     95
    ],
    "neck": [
-    27.6,
-    32.1
+    46.4,
+    43.2
    ],
    "grip": [
-    45.5,
-    64.0
+    72.0,
+    65.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_sage_idle_L.png",
    "handPos": [
-    41,
-    60
+    66,
+    59
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "sage_attack_L": {
-   "w": 80,
-   "h": 94,
+   "w": 105,
+   "h": 95,
    "foot": [
-    32.7,
-    93
+    51.5,
+    94
    ],
    "neck": [
-    47.6,
-    32.1
+    59.7,
+    43.2
    ],
    "grip": [
-    73.5,
-    36.0
+    95.0,
+    38.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_sage_attack_L.png",
    "handPos": [
-    68,
-    32
+    87,
+    31
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "sage_ready_L": {
-   "w": 62,
-   "h": 92,
+   "w": 88,
+   "h": 96,
    "foot": [
-    31.4,
-    91
+    49.9,
+    95
    ],
    "neck": [
-    36.6,
-    32.1
+    49.0,
+    43.2
    ],
    "grip": [
-    57.0,
-    51.5
+    76.5,
+    56.5
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_sage_ready_L.png",
    "handPos": [
-    53,
-    47
+    70,
+    50
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "sage_hit_L": {
-   "w": 60,
+   "w": 101,
    "h": 94,
    "foot": [
-    28.4,
+    64.2,
     93
    ],
    "neck": [
-    17.2,
-    32.1
+    33.0,
+    43.2
    ],
    "grip": [
-    51.0,
-    89.0
+    80.0,
+    43.0
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_sage_hit_L.png",
    "handPos": [
-    47,
-    87
+    72,
+    37
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "sage_win_L": {
-   "w": 51,
-   "h": 97,
+   "w": 89,
+   "h": 99,
    "foot": [
-    28.4,
-    96
+    52.5,
+    98
    ],
    "neck": [
-    25.8,
-    32.1
+    47.6,
+    43.2
    ],
    "grip": [
-    46.0,
-    63.5
+    78.5,
+    41.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_sage_win_L.png",
    "handPos": [
-    42,
-    59
+    70,
+    34
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ninja_idle_L": {
-   "w": 44,
+   "w": 93,
    "h": 96,
    "foot": [
-    22.2,
+    58.2,
     95
    ],
    "neck": [
-    23.4,
-    32.0
+    57.0,
+    43.2
    ],
    "grip": [
-    39.0,
-    61.0
+    84.5,
+    64.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ninja_idle_L.png",
    "handPos": [
-    35,
+    78,
     57
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ninja_attack_L": {
-   "w": 79,
-   "h": 94,
+   "w": 110,
+   "h": 96,
    "foot": [
-    25.4,
-    93
+    53.3,
+    95
    ],
    "neck": [
-    49.4,
-    32.0
+    63.7,
+    43.2
    ],
    "grip": [
-    73.0,
-    35.0
+    100.5,
+    43.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_ninja_attack_L.png",
    "handPos": [
-    68,
-    30
+    93,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ninja_ready_L": {
-   "w": 67,
-   "h": 93,
+   "w": 95,
+   "h": 96,
    "foot": [
-    6.5,
-    92
+    56.1,
+    95
    ],
    "neck": [
-    41.4,
-    32.0
+    57.0,
+    43.2
    ],
    "grip": [
-    60.0,
-    47.0
+    84.0,
+    54.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ninja_ready_L.png",
    "handPos": [
-    56,
-    42
+    76,
+    46
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ninja_hit_L": {
-   "w": 57,
-   "h": 93,
+   "w": 109,
+   "h": 95,
    "foot": [
-    33.5,
-    92
+    69.9,
+    94
    ],
    "neck": [
-    17.0,
-    32.0
+    37.8,
+    43.2
    ],
    "grip": [
-    43.0,
-    42.5
+    88.0,
+    43.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_ninja_hit_L.png",
    "handPos": [
-    38,
-    38
+    81,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "ninja_win_L": {
-   "w": 48,
-   "h": 97,
+   "w": 93,
+   "h": 101,
    "foot": [
-    23.9,
-    96
+    57.5,
+    100
    ],
    "neck": [
-    22.4,
-    32.0
+    52.4,
+    43.2
    ],
    "grip": [
-    42.5,
-    61.0
+    82.0,
+    42.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_ninja_win_L.png",
    "handPos": [
-    38,
-    57
+    74,
+    35
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "skyknight_idle_L": {
-   "w": 77,
+   "w": 95,
    "h": 96,
    "foot": [
-    46.9,
+    56.2,
     95
    ],
    "neck": [
-    46.4,
-    32.1
+    55.0,
+    43.0
    ],
    "grip": [
-    65.5,
-    62.5
+    79.5,
+    64.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_skyknight_idle_L.png",
    "handPos": [
-    61,
+    73,
     58
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "skyknight_attack_L": {
-   "w": 92,
-   "h": 92,
+   "w": 106,
+   "h": 94,
    "foot": [
-    35.5,
-    91
+    52.0,
+    93
    ],
    "neck": [
-    58.6,
-    32.1
+    61.1,
+    43.0
    ],
    "grip": [
-    86.0,
-    34.5
+    95.5,
+    40.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_skyknight_attack_L.png",
    "handPos": [
-    81,
-    30
+    87,
+    33
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "skyknight_ready_L": {
-   "w": 87,
-   "h": 92,
+   "w": 96,
+   "h": 96,
    "foot": [
-    41.7,
-    91
+    55.2,
+    95
    ],
    "neck": [
-    55.1,
-    32.1
+    54.5,
+    43.0
    ],
    "grip": [
-    75.5,
-    52.5
+    79.5,
+    57.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_skyknight_ready_L.png",
    "handPos": [
-    70,
-    47
+    72,
+    49
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "skyknight_hit_L": {
-   "w": 78,
-   "h": 95,
+   "w": 104,
+   "h": 93,
    "foot": [
-    46.9,
-    94
+    67.5,
+    92
    ],
    "neck": [
-    36.1,
-    32.1
+    35.9,
+    43.0
    ],
    "grip": [
-    67.0,
-    44.0
+    81.5,
+    43.0
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_skyknight_hit_L.png",
    "handPos": [
-    62,
-    39
+    74,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "skyknight_win_L": {
-   "w": 82,
-   "h": 99,
+   "w": 92,
+   "h": 97,
    "foot": [
-    52.2,
-    98
+    57.7,
+    96
    ],
    "neck": [
-    48.4,
-    32.1
+    52.0,
+    43.0
    ],
    "grip": [
-    71.0,
-    63.0
+    82.0,
+    37.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_skyknight_win_L.png",
    "handPos": [
-    67,
-    59
+    74,
+    30
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "mage_idle_L": {
-   "w": 53,
+   "w": 73,
    "h": 96,
    "foot": [
-    28.5,
+    36.6,
     95
    ],
    "neck": [
-    29.0,
-    32.0
+    37.7,
+    43.0
    ],
    "grip": [
-    46.5,
-    64.0
+    63.0,
+    68.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_mage_idle_L.png",
    "handPos": [
-    42,
-    60
+    57,
+    63
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "mage_attack_L": {
-   "w": 79,
-   "h": 94,
+   "w": 102,
+   "h": 96,
    "foot": [
-    31.6,
-    93
+    49.9,
+    95
    ],
    "neck": [
-    48.1,
-    32.0
+    59.1,
+    43.0
    ],
    "grip": [
-    73.5,
-    37.0
+    92.5,
+    40.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_mage_attack_L.png",
    "handPos": [
-    69,
-    32
+    85,
+    34
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "mage_ready_L": {
-   "w": 65,
-   "h": 93,
+   "w": 79,
+   "h": 96,
    "foot": [
-    31.8,
-    92
+    40.5,
+    95
    ],
    "neck": [
-    40.2,
-    32.0
+    42.0,
+    43.0
    ],
    "grip": [
-    59.0,
-    50.5
+    64.5,
+    53.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_mage_ready_L.png",
    "handPos": [
-    54,
-    46
+    57,
+    47
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "mage_hit_L": {
-   "w": 61,
-   "h": 94,
+   "w": 94,
+   "h": 95,
    "foot": [
-    28.2,
-    93
+    55.8,
+    94
    ],
    "neck": [
-    18.6,
-    32.0
+    28.6,
+    43.0
    ],
    "grip": [
-    47.0,
+    74.5,
     43.0
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_mage_hit_L.png",
    "handPos": [
-    42,
-    38
+    67,
+    37
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "mage_win_L": {
-   "w": 57,
-   "h": 97,
+   "w": 75,
+   "h": 98,
    "foot": [
-    31.2,
-    96
+    38.1,
+    97
    ],
    "neck": [
-    30.2,
-    32.0
+    36.1,
+    43.0
    ],
    "grip": [
-    49.0,
-    63.5
+    62.5,
+    38.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_mage_win_L.png",
    "handPos": [
-    45,
-    60
+    60,
+    35
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_idle_L": {
-   "w": 53,
+   "w": 81,
    "h": 96,
    "foot": [
-    27.2,
+    47.1,
     95
    ],
    "neck": [
-    27.9,
-    32.0
+    47.0,
+    43.2
    ],
    "grip": [
-    48.0,
-    66.0
+    74.5,
+    66.5
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_paladin_idle_L.png",
    "handPos": [
-    44,
+    70,
     62
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_attack_L": {
-   "w": 83,
-   "h": 94,
+   "w": 97,
+   "h": 95,
    "foot": [
-    34.6,
-    93
+    44.0,
+    94
    ],
    "neck": [
-    51.2,
-    32.0
+    52.8,
+    43.2
    ],
    "grip": [
-    76.0,
-    34.0
+    90.0,
+    44.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_paladin_attack_L.png",
    "handPos": [
-    70,
-    29
+    87,
+    42
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_ready_L": {
-   "w": 69,
-   "h": 92,
+   "w": 87,
+   "h": 96,
    "foot": [
-    35.3,
-    91
+    48.9,
+    95
    ],
    "neck": [
-    41.7,
-    32.0
+    49.0,
+    43.2
    ],
    "grip": [
-    62.5,
-    51.0
+    76.5,
+    54.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_paladin_ready_L.png",
    "handPos": [
-    58,
-    46
+    70,
+    48
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_hit_L": {
-   "w": 63,
+   "w": 96,
    "h": 94,
    "foot": [
-    32.9,
+    59.2,
     93
    ],
    "neck": [
-    21.3,
-    32.0
+    30.3,
+    43.2
    ],
    "grip": [
-    51.0,
-    42.5
+    79.0,
+    43.0
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_paladin_hit_L.png",
    "handPos": [
-    46,
-    38
+    75,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_win_L": {
-   "w": 57,
-   "h": 97,
+   "w": 87,
+   "h": 98,
    "foot": [
-    29.0,
-    96
+    51.5,
+    97
    ],
    "neck": [
-    27.4,
-    32.0
+    47.8,
+    43.2
    ],
    "grip": [
-    51.5,
-    62.5
+    74.0,
+    35.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_paladin_win_L.png",
    "handPos": [
-    47,
-    58
+    71,
+    33
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "thief_idle_L": {
-   "w": 47,
+   "w": 84,
    "h": 96,
    "foot": [
-    24.8,
+    50.0,
     95
    ],
    "neck": [
-    24.7,
-    32.0
+    50.4,
+    43.0
    ],
    "grip": [
-    41.5,
-    63.5
+    76.5,
+    68.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_thief_idle_L.png",
    "handPos": [
-    37,
-    59
+    71,
+    62
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "thief_attack_L": {
-   "w": 84,
-   "h": 93,
+   "w": 102,
+   "h": 94,
    "foot": [
-    25.8,
-    92
+    46.5,
+    93
    ],
    "neck": [
-    52.8,
-    32.0
+    57.2,
+    43.0
    ],
    "grip": [
-    78.0,
-    38.0
+    92.5,
+    40.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_thief_attack_L.png",
    "handPos": [
-    73,
+    85,
     33
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "thief_ready_L": {
-   "w": 67,
-   "h": 92,
+   "w": 89,
+   "h": 95,
    "foot": [
-    26.9,
-    91
+    52.0,
+    94
    ],
    "neck": [
-    43.6,
-    32.0
+    51.5,
+    43.0
    ],
    "grip": [
-    61.5,
-    52.0
+    75.5,
+    57.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_thief_ready_L.png",
    "handPos": [
-    57,
-    47
+    69,
+    50
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "thief_hit_L": {
-   "w": 60,
-   "h": 94,
+   "w": 100,
+   "h": 97,
    "foot": [
-    18.5,
-    93
+    63.2,
+    96
    ],
    "neck": [
-    19.7,
-    32.0
+    35.6,
+    43.0
    ],
    "grip": [
-    48.0,
-    44.0
+    78.5,
+    46.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_thief_hit_L.png",
    "handPos": [
-    43,
-    39
+    72,
+    40
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "thief_win_L": {
-   "w": 50,
-   "h": 99,
+   "w": 86,
+   "h": 101,
    "foot": [
-    27.1,
-    98
+    50.8,
+    100
    ],
    "neck": [
-    23.6,
-    32.0
+    47.8,
+    43.0
    ],
    "grip": [
-    45.0,
-    62.5
+    76.5,
+    35.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_thief_win_L.png",
    "handPos": [
-    40,
-    58
+    69,
+    29
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "starseer_idle_L": {
-   "w": 46,
+   "w": 89,
    "h": 96,
    "foot": [
-    22.0,
+    55.2,
     95
    ],
    "neck": [
-    25.7,
-    32.1
+    54.2,
+    43.2
    ],
    "grip": [
-    41.0,
-    62.0
+    80.5,
+    65.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_starseer_idle_L.png",
    "handPos": [
-    37,
-    57
+    74,
+    58
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "starseer_attack_L": {
-   "w": 80,
-   "h": 93,
+   "w": 104,
+   "h": 95,
    "foot": [
-    26.6,
-    92
+    52.1,
+    94
    ],
    "neck": [
-    48.5,
-    32.1
+    60.3,
+    43.2
    ],
    "grip": [
-    75.0,
-    32.0
+    94.0,
+    39.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_starseer_attack_L.png",
    "handPos": [
-    71,
-    28
+    86,
+    32
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "starseer_ready_L": {
-   "w": 64,
-   "h": 93,
+   "w": 90,
+   "h": 96,
    "foot": [
-    30.7,
-    92
+    52.3,
+    95
    ],
    "neck": [
-    40.2,
-    32.1
+    52.4,
+    43.2
    ],
    "grip": [
-    60.0,
-    49.5
+    78.0,
+    54.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_starseer_ready_L.png",
    "handPos": [
-    56,
-    45
+    70,
+    47
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "starseer_hit_L": {
-   "w": 58,
-   "h": 94,
+   "w": 100,
+   "h": 95,
    "foot": [
-    24.3,
-    93
+    64.8,
+    94
    ],
    "neck": [
-    18.2,
-    32.1
+    34.0,
+    43.2
    ],
    "grip": [
-    45.5,
-    42.5
+    81.0,
+    43.5
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_starseer_hit_L.png",
    "handPos": [
-    41,
-    38
+    73,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "starseer_win_L": {
-   "w": 46,
-   "h": 98,
+   "w": 90,
+   "h": 99,
    "foot": [
-    21.1,
-    97
+    54.6,
+    98
    ],
    "neck": [
-    24.7,
-    32.1
+    49.8,
+    43.2
    ],
    "grip": [
-    42.0,
-    63.5
+    80.0,
+    42.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_starseer_win_L.png",
    "handPos": [
-    38,
-    59
+    72,
+    35
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "paladin_idle_S": {
-   "w": 14,
-   "h": 26,
+   "w": 25,
+   "h": 28,
    "foot": [
-    6.5,
-    25
+    14.5,
+    27
    ],
    "neck": [
-    7.4,
-    10.0
+    14.3,
+    12.1
    ],
    "grip": [
-    12.0,
-    18.0
+    22.0,
+    19.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_paladin_idle_S.png",
    "handPos": [
-    10,
+    19,
     16
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "paladin_attack_S": {
-   "w": 22,
-   "h": 25,
+   "w": 26,
+   "h": 28,
    "foot": [
-    8.0,
-    24
+    13.3,
+    27
    ],
    "neck": [
-    13.0,
-    10.0
+    14.4,
+    12.1
    ],
    "grip": [
-    20.0,
-    10.0
+    23.5,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_paladin_attack_S.png",
    "handPos": [
-    18,
-    8
+    21,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "paladin_hit_S": {
-   "w": 17,
-   "h": 26,
+   "w": 26,
+   "h": 28,
    "foot": [
-    9.5,
-    25
+    14.0,
+    27
    ],
    "neck": [
-    6.0,
-    10.0
+    11.0,
+    12.1
    ],
    "grip": [
-    14.0,
-    12.0
+    21.0,
+    14.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_paladin_hit_S.png",
    "handPos": [
-    12,
-    10
+    18,
+    12
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "paladin_walk_S": {
-   "w": 16,
-   "h": 26,
+   "w": 23,
+   "h": 28,
    "foot": [
-    6.0,
-    25
+    13.5,
+    27
    ],
    "neck": [
-    8.2,
-    10.0
+    13.8,
+    12.1
    ],
    "grip": [
-    13.2,
-    18.0
+    20.5,
+    17.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_paladin_walk_S.png",
+   "handPos": [
+    18,
+    15
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "priest_idle_S": {
-   "w": 14,
-   "h": 26,
+   "w": 20,
+   "h": 28,
    "foot": [
-    6.5,
-    25
+    10.6,
+    27
    ],
    "neck": [
-    7.1,
-    10.0
+    11.3,
+    12.0
    ],
    "grip": [
-    12.1,
-    18.0
+    16.3,
+    20.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "priest_attack_S": {
-   "w": 21,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    8.4,
-    25
+    10.6,
+    27
    ],
    "neck": [
-    12.1,
-    10.0
+    13.1,
+    12.0
    ],
    "grip": [
-    19.0,
-    11.0
+    21.0,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_priest_attack_S.png",
    "handPos": [
-    17,
-    9
+    18,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "priest_hit_S": {
-   "w": 17,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    9.0,
-    25
+    14.5,
+    27
    ],
    "neck": [
-    6.0,
-    10.0
-   ],
-   "grip": [
-    13.0,
+    9.5,
     12.0
    ],
-   "gripAngle": -45,
+   "grip": [
+    19.0,
+    13.5
+   ],
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_priest_hit_S.png",
    "handPos": [
-    11,
-    10
+    16,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "priest_walk_S": {
-   "w": 16,
-   "h": 26,
-   "foot": [
-    7.8,
-    25
-   ],
-   "neck": [
-    8.4,
-    10.0
-   ],
-   "grip": [
-    13.4,
-    18.0
-   ],
-   "gripAngle": 45,
-   "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
-   "weaponLayer": "back"
-  },
-  "thief_idle_S": {
-   "w": 14,
-   "h": 26,
-   "foot": [
-    6.5,
-    25
-   ],
-   "neck": [
-    7.9,
-    10.0
-   ],
-   "grip": [
-    12.0,
-    18.0
-   ],
-   "gripAngle": 45,
-   "weaponScale": 0.5,
-   "hand": "hand_thief_idle_S.png",
-   "handPos": [
-    10,
-    16
-   ],
-   "weaponLayer": "back"
-  },
-  "thief_attack_S": {
    "w": 21,
-   "h": 26,
+   "h": 28,
    "foot": [
-    8.5,
-    25
+    9.8,
+    27
    ],
    "neck": [
     12.7,
-    10.0
+    12.0
    ],
    "grip": [
     17.7,
-    18.0
+    20.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_idle_S": {
+   "w": 25,
+   "h": 28,
+   "foot": [
+    15.1,
+    27
+   ],
+   "neck": [
+    14.7,
+    12.0
+   ],
+   "grip": [
+    20.0,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_attack_S": {
+   "w": 26,
+   "h": 28,
+   "foot": [
+    11.5,
+    27
+   ],
+   "neck": [
+    14.6,
+    12.0
+   ],
+   "grip": [
+    20.8,
+    16.8
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "thief_hit_S": {
-   "w": 18,
-   "h": 27,
+   "w": 27,
+   "h": 28,
    "foot": [
-    9.5,
-    26
+    15.7,
+    27
    ],
    "neck": [
-    7.1,
-    10.0
+    11.8,
+    12.0
    ],
    "grip": [
-    15.0,
-    13.0
+    21.6,
+    16.8
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
-   "hand": "hand_thief_hit_S.png",
-   "handPos": [
-    13,
-    11
-   ],
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "thief_walk_S": {
-   "w": 15,
-   "h": 27,
+   "w": 24,
+   "h": 28,
    "foot": [
-    6.8,
-    26
+    12.8,
+    27
    ],
    "neck": [
-    7.9,
-    10.0
+    14.4,
+    12.0
    ],
    "grip": [
-    12.9,
-    18.0
+    19.2,
+    16.8
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ranger_idle_S": {
-   "w": 15,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    8.1,
-    25
+    14.1,
+    27
    ],
    "neck": [
-    8.3,
-    10.0
+    13.6,
+    12.0
    ],
    "grip": [
-    13.0,
-    18.0
+    21.0,
+    17.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_ranger_idle_S.png",
    "handPos": [
-    11,
-    16
+    18,
+    15
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ranger_attack_S": {
-   "w": 20,
-   "h": 25,
+   "w": 26,
+   "h": 28,
    "foot": [
-    7.7,
-    24
+    11.6,
+    27
    ],
    "neck": [
-    9.8,
-    10.0
+    13.6,
+    12.0
    ],
    "grip": [
-    18.0,
-    11.5
+    23.0,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_ranger_attack_S.png",
    "handPos": [
-    16,
-    10
+    20,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ranger_hit_S": {
-   "w": 18,
-   "h": 27,
+   "w": 28,
+   "h": 28,
    "foot": [
-    11.1,
-    26
+    14.5,
+    27
    ],
    "neck": [
-    7.2,
-    10.0
+    12.2,
+    12.0
    ],
    "grip": [
-    16.0,
+    23.0,
     13.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_ranger_hit_S.png",
    "handPos": [
-    14,
-    11
+    20,
+    10
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ranger_walk_S": {
-   "w": 16,
-   "h": 27,
+   "w": 24,
+   "h": 28,
    "foot": [
-    7.0,
-    26
+    13.1,
+    27
    ],
    "neck": [
-    8.0,
-    10.0
+    13.3,
+    12.0
    ],
    "grip": [
-    13.0,
-    18.0
+    20.0,
+    14.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_ranger_walk_S.png",
+   "handPos": [
+    17,
+    12
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "shadow_idle_S": {
-   "w": 13,
-   "h": 26,
+   "w": 20,
+   "h": 28,
    "foot": [
-    6.0,
-    25
+    10.1,
+    27
    ],
    "neck": [
-    6.4,
-    10.0
+    9.9,
+    12.0
    ],
    "grip": [
-    11.0,
-    18.0
+    17.0,
+    19.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_shadow_idle_S.png",
    "handPos": [
-    9,
+    14,
     16
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "shadow_attack_S": {
-   "w": 20,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    7.3,
-    25
+    10.1,
+    27
    ],
    "neck": [
-    11.5,
-    10.0
+    13.2,
+    12.0
    ],
    "grip": [
-    16.5,
-    18.0
+    21.5,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_shadow_attack_S.png",
+   "handPos": [
+    19,
+    11
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "shadow_hit_S": {
-   "w": 17,
-   "h": 27,
+   "w": 23,
+   "h": 28,
    "foot": [
-    9.5,
-    26
+    10.8,
+    27
    ],
    "neck": [
-    6.0,
-    10.0
+    8.8,
+    12.0
    ],
    "grip": [
-    14.0,
-    13.0
+    19.0,
+    14.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_shadow_hit_S.png",
    "handPos": [
-    12,
+    16,
     11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "shadow_walk_S": {
-   "w": 13,
-   "h": 27,
+   "w": 20,
+   "h": 28,
    "foot": [
-    7.1,
-    26
+    7.8,
+    27
    ],
    "neck": [
-    6.9,
-    10.0
+    10.4,
+    12.0
    ],
    "grip": [
-    10.4,
-    16.2
+    17.0,
+    16.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_shadow_walk_S.png",
+   "handPos": [
+    14,
+    13
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "sage_idle_S": {
-   "w": 14,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    6.5,
-    25
+    13.5,
+    27
    ],
    "neck": [
-    7.8,
-    10.0
+    14.3,
+    12.0
    ],
    "grip": [
-    12.5,
-    18.0
+    21.0,
+    19.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_sage_idle_S.png",
    "handPos": [
-    11,
+    18,
     16
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "sage_attack_S": {
-   "w": 21,
-   "h": 26,
+   "w": 27,
+   "h": 28,
    "foot": [
-    7.4,
-    25
+    12.2,
+    27
    ],
    "neck": [
-    11.6,
-    10.0
-   ],
-   "grip": [
-    19.0,
+    15.4,
     12.0
    ],
-   "gripAngle": 45,
+   "grip": [
+    24.0,
+    14.0
+   ],
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_sage_attack_S.png",
    "handPos": [
-    17,
-    10
+    21,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "sage_hit_S": {
-   "w": 17,
-   "h": 26,
+   "w": 26,
+   "h": 29,
    "foot": [
-    8.9,
-    25
+    15.5,
+    28
    ],
    "neck": [
-    6.0,
-    10.0
+    11.3,
+    12.0
    ],
    "grip": [
-    14.0,
-    12.5
+    21.5,
+    14.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_sage_hit_S.png",
    "handPos": [
-    12,
-    11
+    19,
+    12
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "sage_walk_S": {
-   "w": 15,
-   "h": 26,
+   "w": 25,
+   "h": 28,
    "foot": [
-    6.4,
-    25
+    13.7,
+    27
    ],
    "neck": [
-    6.7,
-    10.0
+    14.8,
+    12.0
    ],
    "grip": [
-    11.7,
-    18.0
+    22.5,
+    16.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_sage_walk_S.png",
+   "handPos": [
+    20,
+    13
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ninja_idle_S": {
-   "w": 13,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    6.0,
-    25
+    14.0,
+    27
    ],
    "neck": [
-    6.7,
-    10.0
+    14.4,
+    12.0
    ],
    "grip": [
-    11.7,
-    18.0
+    21.5,
+    18.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_ninja_idle_S.png",
+   "handPos": [
+    19,
+    16
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ninja_attack_S": {
-   "w": 20,
-   "h": 25,
+   "w": 26,
+   "h": 27,
    "foot": [
-    7.7,
-    24
+    12.6,
+    26
    ],
    "neck": [
-    12.1,
-    10.0
+    15.9,
+    12.0
    ],
    "grip": [
-    17.1,
-    18.0
+    23.5,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_ninja_attack_S.png",
+   "handPos": [
+    21,
+    11
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ninja_hit_S": {
-   "w": 17,
-   "h": 26,
+   "w": 27,
+   "h": 28,
    "foot": [
-    9.3,
-    25
+    15.0,
+    27
    ],
    "neck": [
-    6.0,
-    10.0
+    10.6,
+    12.0
    ],
    "grip": [
-    13.0,
-    11.0
+    21.0,
+    13.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_ninja_hit_S.png",
    "handPos": [
-    11,
-    9
+    18,
+    10
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "ninja_walk_S": {
-   "w": 13,
-   "h": 26,
+   "w": 23,
+   "h": 28,
    "foot": [
-    7.5,
-    25
+    11.2,
+    27
    ],
    "neck": [
-    6.7,
-    10.0
+    14.2,
+    12.0
    ],
    "grip": [
-    10.4,
-    15.6
+    18.4,
+    16.8
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "skyknight_idle_S": {
-   "w": 19,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    11.5,
-    25
+    14.2,
+    27
    ],
    "neck": [
-    11.4,
-    10.0
+    14.6,
+    12.0
    ],
    "grip": [
-    15.2,
-    15.6
+    19.2,
+    16.8
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "skyknight_attack_S": {
-   "w": 22,
-   "h": 25,
+   "w": 28,
+   "h": 28,
    "foot": [
-    10.2,
-    24
+    12.5,
+    27
    ],
    "neck": [
-    13.4,
-    10.0
+    16.4,
+    12.0
    ],
    "grip": [
-    20.5,
-    11.0
+    25.5,
+    13.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_skyknight_attack_S.png",
    "handPos": [
-    19,
-    9
+    23,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "skyknight_hit_S": {
-   "w": 20,
-   "h": 26,
+   "w": 28,
+   "h": 28,
    "foot": [
-    12.5,
-    25
+    14.4,
+    27
    ],
    "neck": [
-    8.6,
-    10.0
+    11.8,
+    12.0
    ],
    "grip": [
-    16.0,
-    15.6
+    22.5,
+    13.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_skyknight_hit_S.png",
+   "handPos": [
+    20,
+    10
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "skyknight_walk_S": {
-   "w": 18,
-   "h": 25,
+   "w": 25,
+   "h": 28,
    "foot": [
-    11.2,
-    24
+    13.5,
+    27
    ],
    "neck": [
-    11.1,
-    10.0
+    14.7,
+    12.0
    ],
    "grip": [
-    14.4,
-    15.0
+    22.5,
+    15.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_skyknight_walk_S.png",
+   "handPos": [
+    20,
+    13
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "starseer_idle_S": {
-   "w": 13,
-   "h": 26,
+   "w": 23,
+   "h": 28,
    "foot": [
-    6.6,
-    25
+    14.0,
+    27
    ],
    "neck": [
-    6.6,
-    10.0
-   ],
-   "grip": [
-    11.5,
-    18.0
-   ],
-   "gripAngle": 45,
-   "weaponScale": 0.5,
-   "hand": "hand_starseer_idle_S.png",
-   "handPos": [
-    10,
-    16
-   ],
-   "weaponLayer": "back"
-  },
-  "starseer_attack_S": {
-   "w": 18,
-   "h": 26,
-   "foot": [
-    6.0,
-    25
-   ],
-   "neck": [
-    9.4,
-    10.0
-   ],
-   "grip": [
-    16.0,
-    11.0
-   ],
-   "gripAngle": 45,
-   "weaponScale": 0.5,
-   "hand": "hand_starseer_attack_S.png",
-   "handPos": [
-    14,
-    9
-   ],
-   "weaponLayer": "back"
-  },
-  "starseer_hit_S": {
-   "w": 17,
-   "h": 25,
-   "foot": [
-    9.4,
-    24
-   ],
-   "neck": [
-    6.0,
-    10.0
-   ],
-   "grip": [
-    13.5,
+    14.7,
     12.0
    ],
-   "gripAngle": -45,
-   "weaponScale": 0.5,
-   "hand": "hand_starseer_hit_S.png",
-   "handPos": [
-    12,
-    10
-   ],
-   "weaponLayer": "back"
-  },
-  "starseer_walk_S": {
-   "w": 14,
-   "h": 26,
-   "foot": [
-    6.0,
-    25
-   ],
-   "neck": [
-    7.5,
-    10.0
-   ],
    "grip": [
-    12.5,
-    18.0
+    18.4,
+    16.8
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_attack_S": {
+   "w": 26,
+   "h": 28,
+   "foot": [
+    12.2,
+    27
+   ],
+   "neck": [
+    15.0,
+    12.0
+   ],
+   "grip": [
+    23.5,
+    14.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_attack_S.png",
+   "handPos": [
+    21,
+    11
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_hit_S": {
+   "w": 28,
+   "h": 28,
+   "foot": [
+    17.0,
+    27
+   ],
+   "neck": [
+    12.3,
+    12.0
+   ],
+   "grip": [
+    22.0,
+    13.0
+   ],
+   "gripAngle": 135,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_hit_S.png",
+   "handPos": [
+    19,
+    10
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_walk_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    13.1,
+    27
+   ],
+   "neck": [
+    14.8,
+    12.0
+   ],
+   "grip": [
+    18.4,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "mage_idle_S": {
-   "w": 13,
-   "h": 26,
+   "w": 20,
+   "h": 28,
    "foot": [
-    5.7,
-    25
+    10.0,
+    27
    ],
    "neck": [
-    7.1,
-    10.0
+    10.5,
+    12.1
    ],
    "grip": [
-    11.0,
-    18.0
+    17.0,
+    18.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_mage_idle_S.png",
    "handPos": [
-    9,
+    14,
     16
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "mage_attack_S": {
-   "w": 19,
-   "h": 26,
+   "w": 25,
+   "h": 28,
    "foot": [
-    7.5,
-    25
+    10.2,
+    27
    ],
    "neck": [
-    10.5,
-    10.0
+    12.3,
+    12.1
    ],
    "grip": [
-    15.2,
-    15.6
+    22.0,
+    14.5
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_mage_attack_S.png",
+   "handPos": [
+    19,
+    12
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "mage_hit_S": {
-   "w": 15,
-   "h": 25,
+   "w": 21,
+   "h": 28,
    "foot": [
-    6.9,
-    24
+    10.0,
+    27
    ],
    "neck": [
-    6.0,
-    10.0
+    7.1,
+    12.1
    ],
    "grip": [
-    13.0,
-    13.0
+    17.0,
+    14.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_mage_hit_S.png",
    "handPos": [
-    11,
-    11
+    14,
+    12
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "mage_walk_S": {
-   "w": 14,
-   "h": 25,
+   "w": 20,
+   "h": 28,
    "foot": [
-    5.9,
-    24
+    11.6,
+    27
    ],
    "neck": [
-    7.4,
-    10.0
+    11.4,
+    12.1
    ],
    "grip": [
-    11.2,
-    15.0
+    16.4,
+    20.1
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": null,
    "handPos": null,
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "warrior_master_idle_L": {
@@ -6413,6 +6536,1324 @@
    ],
    "heads": "v2",
    "weaponLayer": "back"
+  },
+  "mage_guard_L": {
+   "w": 82,
+   "h": 95,
+   "foot": [
+    44.3,
+    94
+   ],
+   "neck": [
+    41.8,
+    43.0
+   ],
+   "grip": [
+    61.0,
+    49.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_mage_guard_L.png",
+   "handPos": [
+    55,
+    43
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "mage_walk2_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.8,
+    27
+   ],
+   "neck": [
+    10.5,
+    12.1
+   ],
+   "grip": [
+    17.0,
+    16.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_walk2_S.png",
+   "handPos": [
+    14,
+    14
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "mage_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    9.6,
+    27
+   ],
+   "neck": [
+    11.2,
+    12.1
+   ],
+   "grip": [
+    3.0,
+    10.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_windup_S.png",
+   "handPos": [
+    0,
+    7
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "mage_guard_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    9.5,
+    27
+   ],
+   "neck": [
+    11.4,
+    12.1
+   ],
+   "grip": [
+    16.0,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "mage_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    9.5,
+    27
+   ],
+   "neck": [
+    10.2,
+    12.1
+   ],
+   "grip": [
+    17.5,
+    8.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_mage_win_S.png",
+   "handPos": [
+    15,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "priest_guard_L": {
+   "w": 73,
+   "h": 96,
+   "foot": [
+    37.3,
+    95
+   ],
+   "neck": [
+    38.7,
+    43.0
+   ],
+   "grip": [
+    65.0,
+    42.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_priest_guard_L.png",
+   "handPos": [
+    58,
+    36
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "priest_walk2_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    9.3,
+    27
+   ],
+   "neck": [
+    12.1,
+    12.0
+   ],
+   "grip": [
+    18.5,
+    15.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_walk2_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "priest_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "neck": [
+    11.6,
+    12.0
+   ],
+   "grip": [
+    4.0,
+    10.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_windup_S.png",
+   "handPos": [
+    1,
+    7
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "priest_guard_S": {
+   "w": 19,
+   "h": 28,
+   "foot": [
+    9.6,
+    27
+   ],
+   "neck": [
+    10.8,
+    12.0
+   ],
+   "grip": [
+    15.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "priest_win_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.5,
+    27
+   ],
+   "neck": [
+    10.7,
+    12.0
+   ],
+   "grip": [
+    17.5,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_priest_win_S.png",
+   "handPos": [
+    15,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_guard_L": {
+   "w": 88,
+   "h": 96,
+   "foot": [
+    53.4,
+    95
+   ],
+   "neck": [
+    48.8,
+    43.0
+   ],
+   "grip": [
+    65.0,
+    61.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_thief_guard_L.png",
+   "handPos": [
+    59,
+    57
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "thief_walk2_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    11.4,
+    27
+   ],
+   "neck": [
+    14.6,
+    12.0
+   ],
+   "grip": [
+    19.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_windup_S": {
+   "w": 25,
+   "h": 28,
+   "foot": [
+    14.1,
+    27
+   ],
+   "neck": [
+    15.1,
+    12.0
+   ],
+   "grip": [
+    20.0,
+    16.8
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_guard_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    12.4,
+    27
+   ],
+   "neck": [
+    13.9,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "thief_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    12.9,
+    27
+   ],
+   "neck": [
+    12.8,
+    12.0
+   ],
+   "grip": [
+    19.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "magicknight_guard_L": {
+   "w": 80,
+   "h": 94,
+   "foot": [
+    42.1,
+    93
+   ],
+   "neck": [
+    37.0,
+    43.2
+   ],
+   "grip": [
+    52.0,
+    53.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_magicknight_guard_L.png",
+   "handPos": [
+    45,
+    46
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "magicknight_walk2_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.4,
+    27
+   ],
+   "neck": [
+    11.6,
+    12.1
+   ],
+   "grip": [
+    16.0,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "magicknight_windup_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    11.0,
+    27
+   ],
+   "neck": [
+    11.7,
+    12.1
+   ],
+   "grip": [
+    4.0,
+    9.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_windup_S.png",
+   "handPos": [
+    1,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "magicknight_guard_S": {
+   "w": 19,
+   "h": 28,
+   "foot": [
+    9.5,
+    27
+   ],
+   "neck": [
+    11.3,
+    12.1
+   ],
+   "grip": [
+    15.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "magicknight_win_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    10.9,
+    27
+   ],
+   "neck": [
+    11.0,
+    12.1
+   ],
+   "grip": [
+    19.0,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_magicknight_win_S.png",
+   "handPos": [
+    16,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "paladin_guard_L": {
+   "w": 87,
+   "h": 94,
+   "foot": [
+    48.6,
+    93
+   ],
+   "neck": [
+    44.8,
+    43.2
+   ],
+   "grip": [
+    56.5,
+    49.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_paladin_guard_L.png",
+   "handPos": [
+    49,
+    42
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "paladin_walk2_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    12.8,
+    27
+   ],
+   "neck": [
+    13.2,
+    12.1
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "paladin_windup_S": {
+   "w": 26,
+   "h": 28,
+   "foot": [
+    13.4,
+    27
+   ],
+   "neck": [
+    15.2,
+    12.1
+   ],
+   "grip": [
+    23.0,
+    10.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_windup_S.png",
+   "handPos": [
+    20,
+    8
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "paladin_guard_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    12.0,
+    27
+   ],
+   "neck": [
+    12.7,
+    12.1
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "paladin_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    14.1,
+    27
+   ],
+   "neck": [
+    12.9,
+    12.1
+   ],
+   "grip": [
+    21.0,
+    9.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_paladin_win_S.png",
+   "handPos": [
+    18,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "shadow_guard_L": {
+   "w": 73,
+   "h": 92,
+   "foot": [
+    37.9,
+    91
+   ],
+   "neck": [
+    34.6,
+    43.0
+   ],
+   "grip": [
+    45.5,
+    48.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_shadow_guard_L.png",
+   "handPos": [
+    39,
+    41
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "shadow_walk2_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.1,
+    27
+   ],
+   "neck": [
+    11.4,
+    12.0
+   ],
+   "grip": [
+    18.5,
+    15.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_walk2_S.png",
+   "handPos": [
+    16,
+    13
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "shadow_windup_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    10.4,
+    27
+   ],
+   "neck": [
+    11.1,
+    12.0
+   ],
+   "grip": [
+    3.0,
+    10.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_windup_S.png",
+   "handPos": [
+    0,
+    7
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "shadow_guard_S": {
+   "w": 20,
+   "h": 28,
+   "foot": [
+    9.7,
+    27
+   ],
+   "neck": [
+    10.6,
+    12.0
+   ],
+   "grip": [
+    16.0,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "shadow_win_S": {
+   "w": 21,
+   "h": 28,
+   "foot": [
+    10.6,
+    27
+   ],
+   "neck": [
+    9.5,
+    12.0
+   ],
+   "grip": [
+    18.0,
+    8.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_shadow_win_S.png",
+   "handPos": [
+    15,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "sage_guard_L": {
+   "w": 92,
+   "h": 95,
+   "foot": [
+    53.9,
+    94
+   ],
+   "neck": [
+    49.2,
+    43.2
+   ],
+   "grip": [
+    81.0,
+    41.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_sage_guard_L.png",
+   "handPos": [
+    73,
+    36
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "sage_walk2_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    12.5,
+    27
+   ],
+   "neck": [
+    14.2,
+    12.0
+   ],
+   "grip": [
+    21.5,
+    16.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_walk2_S.png",
+   "handPos": [
+    19,
+    14
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "sage_windup_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    14.1,
+    27
+   ],
+   "neck": [
+    14.2,
+    12.0
+   ],
+   "grip": [
+    6.0,
+    9.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_windup_S.png",
+   "handPos": [
+    3,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "sage_guard_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    12.7,
+    27
+   ],
+   "neck": [
+    14.1,
+    12.0
+   ],
+   "grip": [
+    18.4,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "sage_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    13.5,
+    27
+   ],
+   "neck": [
+    12.9,
+    12.0
+   ],
+   "grip": [
+    21.0,
+    8.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_sage_win_S.png",
+   "handPos": [
+    18,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ninja_guard_L": {
+   "w": 94,
+   "h": 96,
+   "foot": [
+    56.8,
+    95
+   ],
+   "neck": [
+    51.4,
+    43.2
+   ],
+   "grip": [
+    68.5,
+    55.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_ninja_guard_L.png",
+   "handPos": [
+    60,
+    47
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "ninja_walk2_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    13.9,
+    27
+   ],
+   "neck": [
+    13.8,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ninja_windup_S": {
+   "w": 25,
+   "h": 28,
+   "foot": [
+    15.0,
+    27
+   ],
+   "neck": [
+    15.2,
+    12.0
+   ],
+   "grip": [
+    7.0,
+    9.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_windup_S.png",
+   "handPos": [
+    4,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ninja_guard_S": {
+   "w": 22,
+   "h": 27,
+   "foot": [
+    13.0,
+    26
+   ],
+   "neck": [
+    13.8,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.2
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ninja_win_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    13.0,
+    27
+   ],
+   "neck": [
+    12.4,
+    12.0
+   ],
+   "grip": [
+    20.5,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_ninja_win_S.png",
+   "handPos": [
+    18,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ranger_guard_L": {
+   "w": 86,
+   "h": 95,
+   "foot": [
+    47.3,
+    94
+   ],
+   "neck": [
+    42.3,
+    43.1
+   ],
+   "grip": [
+    58.5,
+    52.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_ranger_guard_L.png",
+   "handPos": [
+    51,
+    46
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "ranger_walk2_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    10.9,
+    27
+   ],
+   "neck": [
+    13.1,
+    12.0
+   ],
+   "grip": [
+    19.2,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ranger_windup_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    12.6,
+    27
+   ],
+   "neck": [
+    13.0,
+    12.0
+   ],
+   "grip": [
+    4.0,
+    8.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_windup_S.png",
+   "handPos": [
+    1,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ranger_guard_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    12.6,
+    27
+   ],
+   "neck": [
+    13.3,
+    12.0
+   ],
+   "grip": [
+    18.4,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "ranger_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    12.5,
+    27
+   ],
+   "neck": [
+    13.0,
+    12.0
+   ],
+   "grip": [
+    21.5,
+    7.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_ranger_win_S.png",
+   "handPos": [
+    19,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "skyknight_guard_L": {
+   "w": 94,
+   "h": 94,
+   "foot": [
+    57.3,
+    93
+   ],
+   "neck": [
+    51.1,
+    43.0
+   ],
+   "grip": [
+    80.0,
+    42.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_skyknight_guard_L.png",
+   "handPos": [
+    72,
+    36
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "skyknight_walk2_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    11.6,
+    27
+   ],
+   "neck": [
+    14.4,
+    12.0
+   ],
+   "grip": [
+    21.5,
+    16.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_walk2_S.png",
+   "handPos": [
+    19,
+    13
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "skyknight_windup_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    13.4,
+    27
+   ],
+   "neck": [
+    14.1,
+    12.0
+   ],
+   "grip": [
+    6.0,
+    9.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_windup_S.png",
+   "handPos": [
+    3,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "skyknight_guard_S": {
+   "w": 22,
+   "h": 27,
+   "foot": [
+    11.5,
+    26
+   ],
+   "neck": [
+    14.2,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.2
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "skyknight_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    14.5,
+    27
+   ],
+   "neck": [
+    13.0,
+    12.0
+   ],
+   "grip": [
+    21.0,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_skyknight_win_S.png",
+   "handPos": [
+    18,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_guard_L": {
+   "w": 93,
+   "h": 95,
+   "foot": [
+    56.2,
+    94
+   ],
+   "neck": [
+    49.0,
+    43.2
+   ],
+   "grip": [
+    65.5,
+    59.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_starseer_guard_L.png",
+   "handPos": [
+    58,
+    52
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "starseer_walk2_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    14.2,
+    27
+   ],
+   "neck": [
+    14.5,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_windup_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    12.0,
+    27
+   ],
+   "neck": [
+    14.3,
+    12.0
+   ],
+   "grip": [
+    21.5,
+    9.5
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_windup_S.png",
+   "handPos": [
+    19,
+    7
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_guard_S": {
+   "w": 22,
+   "h": 28,
+   "foot": [
+    11.9,
+    27
+   ],
+   "neck": [
+    13.9,
+    12.0
+   ],
+   "grip": [
+    17.6,
+    16.8
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "starseer_win_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    12.5,
+    27
+   ],
+   "neck": [
+    12.5,
+    12.0
+   ],
+   "grip": [
+    20.0,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_starseer_win_S.png",
+   "handPos": [
+    17,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
   }
  },
  "head": {
@@ -6880,7 +8321,12 @@
     8,
     22
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_staff_1_L.png",
+   "heldGrip": [
+    11,
+    29
+   ]
   },
   "w_dagger_1.png": {
    "itemId": "w_dagger_1",
@@ -6889,7 +8335,12 @@
     8,
     24
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_dagger_1_L.png",
+   "heldGrip": [
+    11,
+    32
+   ]
   },
   "w_bow_1.png": {
    "itemId": "w_bow_1",
@@ -6898,7 +8349,12 @@
     16,
     16
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_bow_1_L.png",
+   "heldGrip": [
+    21,
+    21
+   ]
   },
   "w_start.png": {
    "itemId": "w_start",
@@ -8900,6 +10356,336 @@
     "#b97d56"
    ],
    "body_warrior_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_mage_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_mage_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_mage_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_mage_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_mage_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_priest_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_priest_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_priest_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_priest_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_priest_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_thief_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_thief_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_thief_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_thief_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_thief_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_magicknight_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_paladin_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_paladin_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_paladin_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_paladin_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_paladin_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_shadow_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_shadow_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_shadow_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_shadow_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_shadow_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_sage_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_sage_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_sage_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_sage_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_sage_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ninja_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ninja_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ninja_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ninja_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ninja_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ranger_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ranger_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ranger_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ranger_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_ranger_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_skyknight_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_skyknight_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_skyknight_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_skyknight_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_skyknight_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_starseer_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_starseer_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_starseer_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_starseer_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_starseer_win_S.png": [
     "#f8dcc0",
     "#f0c39a",
     "#d9a77a",
