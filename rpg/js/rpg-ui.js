@@ -300,6 +300,15 @@
     const btn = open ? '' : `<button class="rw-open" id="rwOpen">${rb('{宝箱|たからばこ}を{開|あ}ける')}</button>`, line = `<div class="rw-dropline" id="rwChestLine" ${open ? '' : 'hidden'}>${open ? chestContentHtml(c) : ''}</div><div class="rw-chestmsg" id="rwChestMsg" role="status"></div>`;
     return compact ? `<div class="rw-drop rw-compact" id="rwDrop" data-chest="${esc(c.id)}">${cv}<div class="rw-dtx">${lab}${btn}${line}</div></div>` : `<div class="rw-drop" id="rwDrop" data-chest="${esc(c.id)}">${lab}${cv}${btn}${line}</div>`;
   }
+  // 開封後、アイテム名の行が下の操作帯に隠れないよう中スクロールを動かす（すでに見えていれば動かさない）
+  function revealChestLine(card, ln) {
+    const body = card.closest && card.closest('.rw-body'); if (!body || !ln) return;
+    const go = () => {
+      const br = body.getBoundingClientRect(), lr = ln.getBoundingClientRect(), pad = 8;
+      const over = lr.bottom + pad - br.bottom; if (over > 0) body.scrollTo({ top: body.scrollTop + Math.min(over, Math.max(0, lr.top - br.top - pad)), behavior: reduceMotion() ? 'auto' : 'smooth' });
+    };
+    go(); requestAnimationFrame(go);
+  }
   // card 内の開封ボタンを動かす。保存（付与と opened を同時）が成功してから演出する。onDone(chest) は結果表示後
   function bindChestCard(card, onDone) {
     if (!card) return;
@@ -311,7 +320,7 @@
       if (!RPG.ok) { msg.textContent = 'いま保存できないので開けられません。'; ob.disabled = false; return; }
       const r = C.openChestPersist(RPG.save, RPG.store, id, NOW());
       if (!r.ok) { RPG.err = r.err === 'stale' ? 'stale' : RPG.err; msg.textContent = '保存できなかったので開けていません。もう一度試してね。'; ob.disabled = false; return; }
-      const fin = () => { drawChestCv(cc, true, 1); ln.innerHTML = chestContentHtml(r.chest); ln.hidden = false; ob.remove(); snd('chest'); onDone && onDone(r.chest); };
+      const fin = () => { drawChestCv(cc, true, 1); ln.innerHTML = chestContentHtml(r.chest); ln.hidden = false; ob.remove(); snd('chest'); onDone && onDone(r.chest); revealChestLine(card, ln); };
       if (reduceMotion() || !cc) { fin(); return; }
       const t0 = performance.now(); const tick = now => { const p = (now - t0) / 700; if (p >= 1) { fin(); return; } drawChestCv(cc, p > 0.45, p); requestAnimationFrame(tick); }; requestAnimationFrame(tick);
     };
