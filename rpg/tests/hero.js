@@ -67,4 +67,22 @@ t('転職：いまの武器が使えなければ適合武器へ（swapped に前
 t('転職：無料支給品に替える（適合武器を持っていないとき）', () => {
   const s = fresh(); s.equip.weapon = 'w_start'; const r = M.changeJob(s, 'mage'); ok(r.ok); eq(r.gifts, ['w_staff_1']); eq(s.equip.weapon, 'w_staff_1'); eq(r.swapped, { from: 'w_start', to: 'w_staff_1' });
 });
+t('新比率：全12職の通常・マスター（と追加衣装6職）×L6ポーズ×S8ポーズの部品がそろい、旧ポーズ代用（POSE_FALLBACK）に落ちない。身体は全て heads v2・全高96前後・頭部高40で 2.3〜2.5頭身', () => {
+  const PJ = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'parts', 'parts.json'), 'utf8')), PD = path.join(__dirname, '..', 'assets', 'parts');
+  const L = ['idle', 'ready', 'attack', 'guard', 'win', 'hit'], S = ['idle', 'walk', 'walk2', 'windup', 'attack', 'guard', 'win', 'hit'], ALT = ['magicknight', 'paladin', 'shadow', 'sage', 'ninja', 'ranger'];
+  const miss = [], bad = [];
+  D.JOB_IDS.forEach(j => [null, 'master'].concat(ALT.includes(j) ? ['alt1'] : []).forEach(c => [['L', L], ['S', S]].forEach(([z, ps]) => ps.forEach(p => {
+    const k = j + (c ? '_' + c : '') + '_' + p + '_' + z, b = PJ.body[k];
+    if (!b) { miss.push(k); return; }
+    if (b.heads !== 'v2') bad.push(k + ' heads');
+    if (!fs.existsSync(path.join(PD, 'body_' + k + '.png'))) miss.push(k + '.png');
+    if (b.hand && !fs.existsSync(path.join(PD, b.hand))) miss.push(b.hand);
+    const full = z === 'L' ? [85, 104] : [26, 30]; if (b.h < full[0] || b.h > full[1]) bad.push(k + ' 高さ' + b.h);
+  }))));
+  eq(miss, [], '部品なし'); eq(bad, [], '不正');
+  const hd = PJ.head['head_v2_f0_h0_L']; ok(hd && hd.h >= 38 && hd.h <= 44 && hd.w / 96 >= 0.35 && hd.w / 96 <= 0.42, '頭の大きさ');
+  for (let f = 0; f < M.FACE_N; f++) for (let h = 0; h < M.HAIR_N; h++) ['', '_attack', '_win'].forEach(e => ok(PJ.head['head_v2_f' + f + '_h' + h + '_L' + e], '頭なし f' + f + ' h' + h + e));
+  for (let h = 0; h < M.HAIR_N; h++) ok(PJ.head['head_v2_h' + h + '_S'], 'S頭なし h' + h);
+  D.JOB_IDS.forEach(j => ok(PJ.weapon[PJ.jobWeapon[j]] && PJ.weapon[PJ.jobWeapon[j]].held, j + ' の基本武器の手持ち絵'));
+});
 console.log(JSON.stringify({ pass, fail, failures }, null, 1)); process.exit(fail ? 1 : 0);
