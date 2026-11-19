@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_sandstormbird/enemy_e_sandstormbird.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  443,
+  432
+ ],
+ "out": "rpg/assets/chars/enemy_e_sandstormbird.png",
+ "out_size": [
+  98,
+  96
+ ],
+ "magenta_removed_px": 135853,
+ "fringe_removed_px": 1925,
+ "magenta_left_px": 16,
+ "opaque_px": 6109,
+ "colors": 5751
+}

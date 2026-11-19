@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_mage_attack/hero_mage_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  489,
+  378
+ ],
+ "out": "rpg/assets/chars/hero_mage_attack.png",
+ "out_size": [
+  115,
+  89
+ ],
+ "magenta_removed_px": 1485071,
+ "fringe_removed_px": 2285,
+ "magenta_left_px": 23,
+ "opaque_px": 4725,
+ "colors": 4482
+}

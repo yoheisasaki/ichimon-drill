@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_strip_attack/hero_ranger_strip_attack.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  434,
+  402
+ ],
+ "out": "rpg/assets/chars/hero_ranger_strip_attack.png",
+ "out_size": [
+  29,
+  27
+ ],
+ "magenta_removed_px": 1468515,
+ "fringe_removed_px": 1178,
+ "magenta_left_px": 0,
+ "opaque_px": 458,
+ "colors": 450
+}

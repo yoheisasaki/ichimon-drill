@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_strip_master/hero_warrior_strip_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  586,
+  454
+ ],
+ "out": "rpg/assets/chars/hero_warrior_strip_master.png",
+ "out_size": [
+  36,
+  28
+ ],
+ "magenta_removed_px": 1435275,
+ "fringe_removed_px": 1800,
+ "magenta_left_px": 0,
+ "opaque_px": 510,
+ "colors": 508
+}

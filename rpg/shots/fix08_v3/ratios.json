@@ -1,0 +1,84 @@
+{
+ "errors": [],
+ "v2": {
+  "全高(px)": 96,
+  "頭部高_髪の上〜あご(px)": 43,
+  "全高÷頭部高": 2.23,
+  "頭幅(px)": 44,
+  "胴幅_青い上着の最大(px)": 24,
+  "胴幅/頭幅": 0.55,
+  "マント込み最大幅(px)": 88,
+  "マント除く最大幅(px)": 88,
+  "拳(px)": [
+   12,
+   12
+  ],
+  "拳幅/頭幅": 0.27,
+  "S全高(px)": 28,
+  "首の上下5pxの帯の自己検査": {
+   "outline_colors_above": 9,
+   "outline_colors_below": 5,
+   "outline_same_color": false,
+   "outline_thick_above": 4.0,
+   "outline_thick_below": 3.0,
+   "skin_values_above": 6,
+   "skin_values_below": 5,
+   "skin_values_shared": 5,
+   "skin_values_all_shared": true
+  }
+ },
+ "v3": {
+  "全高(px)": 96,
+  "頭部高_髪の上〜あご(px)": 47,
+  "全高÷頭部高": 2.04,
+  "頭幅(px)": 50,
+  "胴幅_青い上着の最大(px)": 28,
+  "胴幅/頭幅": 0.56,
+  "マント込み最大幅(px)": 55,
+  "マント除く最大幅(px)": 55,
+  "拳(px)": [
+   9,
+   11
+  ],
+  "拳幅/頭幅": 0.18,
+  "S全高(px)": 28,
+  "首の上下5pxの帯の自己検査": {
+   "outline_colors_above": 8,
+   "outline_colors_below": 7,
+   "outline_same_color": false,
+   "outline_thick_above": 5.0,
+   "outline_thick_below": 3.5,
+   "skin_values_above": 2,
+   "skin_values_below": 5,
+   "skin_values_shared": 2,
+   "skin_values_all_shared": true
+  }
+ },
+ "v3b": {
+  "全高(px)": 96,
+  "頭部高_髪の上〜あご(px)": 49,
+  "全高÷頭部高": 1.96,
+  "頭幅(px)": 57,
+  "胴幅_青い上着の最大(px)": 37,
+  "胴幅/頭幅": 0.65,
+  "マント込み最大幅(px)": 57,
+  "マント除く最大幅(px)": 56,
+  "拳(px)": [
+   11,
+   9
+  ],
+  "拳幅/頭幅": 0.19,
+  "S全高(px)": 28,
+  "首の上下5pxの帯の自己検査": {
+   "outline_colors_above": 1,
+   "outline_colors_below": 1,
+   "outline_same_color": true,
+   "outline_thick_above": 4.5,
+   "outline_thick_below": 2.0,
+   "skin_values_above": 2,
+   "skin_values_below": 2,
+   "skin_values_shared": 2,
+   "skin_values_all_shared": true
+  }
+ }
+}

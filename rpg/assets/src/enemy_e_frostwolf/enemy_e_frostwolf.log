@@ -1,0 +1,15 @@
+seconds=168
+rc=0
+[enemy_e_frostwolf.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_frostwolf/enemy_e_frostwolf.png) — 1312 × 1199 ピクセル
+
+=Join-Path (Get-Location) '"'enemy_e_frostwolf.png'; "'$i=[System.Drawing.Bitmap]::new($p); $ok=$true; for($x=0;$x -lt $i.Width;$x++){foreach($y in @(0,($i.Height-1))){if($i.GetPixel($x,$y).ToArgb() -ne -65281){$ok=$false}}}; for($y=0;$y -lt $i.Height;$y++){foreach($x in @(0,($i.Width-1))){if($i.GetPixel($x,$y).ToArgb() -ne -65281){$ok=$false}}}; Write-Output ("{0}x{1} perimeter_exact_magenta={2}" -f $i.Width,$i.Height,$ok); $i.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_frostwolf
+ succeeded in 497ms:
+1312x1199 perimeter_exact_magenta=True
+
+codex
+[enemy_e_frostwolf.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_frostwolf/enemy_e_frostwolf.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+26,406
+

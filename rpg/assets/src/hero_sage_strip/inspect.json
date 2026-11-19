@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_strip/hero_sage_strip.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  738,
+  1042
+ ],
+ "out": "rpg/assets/chars/hero_sage_strip.png",
+ "out_size": [
+  20,
+  28
+ ],
+ "magenta_removed_px": 1093439,
+ "fringe_removed_px": 2959,
+ "magenta_left_px": 0,
+ "opaque_px": 349,
+ "colors": 284
+}

@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_sandsea_strip/bg_sandsea_strip.png",
+ "src_size": [
+  2048,
+  228
+ ],
+ "out": "rpg/assets/bg/bg_sandsea_strip.png",
+ "out_size": [
+  390,
+  44
+ ],
+ "magenta_px": 0,
+ "colors": 11123
+}

@@ -1,0 +1,1315 @@
+{
+ "checks": {
+  "B01 帯の高さ44px・左右余白12〜14px": {
+   "ok": true,
+   "v": {
+    "t": 650,
+    "b": 694,
+    "l": 14,
+    "r": 376,
+    "w": 362,
+    "h": 44
+   }
+  },
+  "B01 主人公と敵の中心距離55〜75px": {
+   "ok": true,
+   "v": 60
+  },
+  "B01 敵の体力バー 幅30×高さ3、満タン=30": {
+   "ok": true,
+   "v": {
+    "x": 208,
+    "y": 9,
+    "w": 30,
+    "h": 3,
+    "fill": 30,
+    "outer": [
+     32,
+     5
+    ]
+   }
+  },
+  "U13 最下段の選択肢・わからない・得点が帯に隠れない（最後までスクロールした状態）": {
+   "ok": true,
+   "v": {
+    "lastChoice": {
+     "t": 424,
+     "b": 492,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 68
+    },
+    "skip": {
+     "t": 506,
+     "b": 554,
+     "l": 129,
+     "r": 261,
+     "w": 132,
+     "h": 48
+    },
+    "score": {
+     "t": 606,
+     "b": 628,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 22
+    },
+    "strip_top": 644
+   }
+  },
+  "B02 命中の瞬間に敵の体力バーが減る（命中前は満タン）": {
+   "ok": true,
+   "v": [
+    {
+     "x": 208,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 30,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    52,
+    {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 23,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    37,
+    100,
+    77,
+    [
+     {
+      "k": "enqueue",
+      "n": "attack",
+      "planMs": 480,
+      "dropped": 0,
+      "pending": 1
+     }
+    ]
+   ]
+  },
+  "B03 技の発動中は左端に技名が出る（地域名と置き換え）": {
+   "ok": true,
+   "v": {
+    "text": "勇猛の一撃",
+    "w": 70,
+    "live": true
+   }
+  },
+  "B04 不正解：守りの構え中は技名・文字の置き換えなし・バー不変": {
+   "ok": true,
+   "v": {
+    "text": "草原",
+    "w": 34,
+    "live": false
+   }
+  },
+  "B04 守りの実時間150〜250ms": {
+   "ok": true,
+   "v": [
+    {
+     "k": "guard",
+     "ms": 208,
+     "plan": 200
+    }
+   ]
+  },
+  "B05 撃破：HPバー0→敵が消える→主人公が歩き背景が移る": {
+   "ok": true,
+   "v": [
+    {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 0,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    {
+     "ready": true,
+     "eHp": 0,
+     "eMax": 5000,
+     "gone": true,
+     "retreat": false,
+     "bgOff": 6.206896551724138,
+     "text": "勇猛の一撃",
+     "textEnd": 1793287423623706
+    }
+   ]
+  },
+  "B06 次問に移っても帯の canvas は同じ（作り直さない）": {
+   "ok": true,
+   "v": [
+    0.8054716238948534,
+    0.8054716238948534
+   ]
+  },
+  "B05 撃破の演出は最大800ms": {
+   "ok": true,
+   "v": [
+    {
+     "k": "defeat",
+     "ms": 784,
+     "plan": 780
+    }
+   ]
+  },
+  "B06 連続12回（回答間隔0ms）でも待ちは2件以内": {
+   "ok": true,
+   "v": 2
+  },
+  "B06 追いついたあと：演出なし・待ち0・表示は確定状態": {
+   "ok": true,
+   "v": {
+    "ready": true,
+    "eHp": 54,
+    "eMax": 54,
+    "gone": false,
+    "retreat": false,
+    "bgOff": 0,
+    "text": null,
+    "textEnd": 0
+   }
+  },
+  "B06/B08 演出（表示専用の再生）だけでは保存データが一切変わらない": true,
+  "B07 30秒放置：保存データ・演出ログに変化なし": true,
+  "B08 演出中の再読込：経験値・コイン・回数・敵HP・台帳が回答直後の値のまま（再加算なし）": {
+   "ok": true,
+   "v": [
+    {
+     "coins": 0,
+     "advXp": 0,
+     "jobXp": {
+      "warrior": 0,
+      "mage": 0,
+      "priest": 0,
+      "thief": 0,
+      "magicknight": 0,
+      "paladin": 0,
+      "shadow": 0,
+      "sage": 0,
+      "ninja": 0,
+      "ranger": 0,
+      "skyknight": 0,
+      "starseer": 0
+     },
+     "basic": {
+      "n": 1,
+      "c": 1
+     },
+     "hp": 42,
+     "led": {
+      "settled": {}
+     }
+    },
+    {
+     "coins": 0,
+     "advXp": 0,
+     "jobXp": {
+      "warrior": 0,
+      "mage": 0,
+      "priest": 0,
+      "thief": 0,
+      "magicknight": 0,
+      "paladin": 0,
+      "shadow": 0,
+      "sage": 0,
+      "ninja": 0,
+      "ranger": 0,
+      "skyknight": 0,
+      "starseer": 0
+     },
+     "basic": {
+      "n": 1,
+      "c": 1
+     },
+     "hp": 42,
+     "led": {
+      "settled": {}
+     }
+    }
+   ]
+  },
+  "B08 再読込のあと、演出は再生されない": true,
+  "B10 動きを減らしても戦闘の計算結果は同じ（敵HP・主人公HP・回答数・正解数）": {
+   "ok": true,
+   "v": [
+    {
+     "hp": 1952,
+     "hero": 50,
+     "n": 5,
+     "c": 4,
+     "bg": 0
+    },
+    {
+     "hp": 1952,
+     "hero": 50,
+     "n": 5,
+     "c": 4,
+     "bg": 0
+    }
+   ]
+  },
+  "B10 動きを減らすと踏み込みなし（主人公と敵の距離が一定）・通常は距離が変わる": {
+   "ok": true,
+   "v": [
+    [
+     60
+    ],
+    [
+     37,
+     40,
+     43,
+     44,
+     45,
+     49,
+     51,
+     56,
+     57,
+     60,
+     61,
+     62,
+     63
+    ]
+   ]
+  },
+  "B10 動きを減らしても敵の体力バーは更新される": {
+   "ok": true,
+   "v": [
+    29,
+    30
+   ]
+  },
+  "B10 動きを減らすと背景は移動しない": {
+   "ok": true,
+   "v": 0
+  },
+  "U12 地図問題：地図・選択肢の寸法（帯のために縮めない）": {
+   "ok": true,
+   "v": {
+    "t": 171,
+    "b": 383,
+    "l": 14,
+    "r": 376,
+    "w": 362,
+    "h": 213
+   }
+  },
+  "U13 地図問題：最下段の選択肢・わからないが帯に隠れない（最後までスクロール）": {
+   "ok": true,
+   "v": {
+    "vw": 390,
+    "vh": 700,
+    "canvas": {
+     "t": 650,
+     "b": 694,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 44
+    },
+    "box": {
+     "t": 644,
+     "b": 700,
+     "l": 0,
+     "r": 390,
+     "w": 390,
+     "h": 56
+    },
+    "lastChoice": {
+     "t": 424,
+     "b": 492,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 68
+    },
+    "skip": {
+     "t": 506,
+     "b": 554,
+     "l": 129,
+     "r": 261,
+     "w": 132,
+     "h": 48
+    },
+    "submit": null,
+    "map": {
+     "t": -40,
+     "b": 172,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 213
+    },
+    "score": {
+     "t": 606,
+     "b": 628,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 22
+    },
+    "docH": 911,
+    "sy": 211
+   }
+  },
+  "B11 入力欄にフォーカス中は帯を隠し、入力欄・こたえるボタンが見える": {
+   "ok": true,
+   "v": [
+    true,
+    {
+     "t": 409,
+     "b": 473,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 64
+    }
+   ]
+  },
+  "B11 閉じる（blur）と帯が最新状態で戻る": {
+   "ok": true,
+   "v": {
+    "x": 208,
+    "y": 9,
+    "w": 30,
+    "h": 3,
+    "fill": 30,
+    "outer": [
+     32,
+     5
+    ]
+   }
+  },
+  "B03 復習で正解：「できた！」を1回出す": {
+   "ok": true,
+   "v": {
+    "text": "できた！",
+    "w": 58,
+    "live": true
+   }
+  },
+  "B09 最終回答（victory）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "victory",
+     "text": "10問もんおつかれさま！\nはっぱスライムを倒たおした！\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+295\n戦士せんし Lv1 → Lv2\nLv3まで　あと 30 EXP",
+     "last": "victory"
+    }
+   }
+  },
+  "B09 撃破：最終演出の途中で敵が消えている／勝ちの構え": {
+   "ok": true,
+   "v": {
+    "ready": true,
+    "eHp": 0,
+    "eMax": 5000,
+    "gone": true,
+    "retreat": false,
+    "bgOff": 0,
+    "text": null,
+    "textEnd": 0
+   }
+  },
+  "B09 最終回答（continue）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "continue",
+     "text": "10問もんおつかれさま！\n今日きょうはここまで。続つづきから挑いどめます\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+280\n戦士せんし Lv1 → Lv2\nLv3まで　",
+     "last": "continue"
+    }
+   }
+  },
+  "B09 最終回答（retreat）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "retreat",
+     "text": "10問もんおつかれさま！\n街まちに戻もどりました。取とり組くんだ分ぶんの報酬ほうしゅうを受うけ取とろう\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+280\n戦士せんし L",
+     "last": "retreat"
+    }
+   }
+  },
+  "B09 撤退：主人公が引く（距離が開く）・色が落ちる": {
+   "ok": true,
+   "v": [
+    71,
+    false
+   ]
+  },
+  "コンソールエラーなし": {
+   "ok": true,
+   "v": []
+  }
+ },
+ "measure": {
+  "idle": {
+   "geom": {
+    "vw": 390,
+    "vh": 700,
+    "canvas": {
+     "t": 650,
+     "b": 694,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 44
+    },
+    "box": {
+     "t": 644,
+     "b": 700,
+     "l": 0,
+     "r": 390,
+     "w": 390,
+     "h": 56
+    },
+    "lastChoice": {
+     "t": 478,
+     "b": 546,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 68
+    },
+    "skip": {
+     "t": 560,
+     "b": 608,
+     "l": 129,
+     "r": 261,
+     "w": 132,
+     "h": 48
+    },
+    "submit": null,
+    "map": null,
+    "score": {
+     "t": 660,
+     "b": 682,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 22
+    },
+    "docH": 754,
+    "sy": 0
+   },
+   "strip": {
+    "dist": 60,
+    "animating": false,
+    "pending": 0,
+    "running": false,
+    "view": {
+     "ready": true,
+     "eHp": 54,
+     "eMax": 54,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 208,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 30,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 163,
+    "ex": 223,
+    "W": 362,
+    "H": 44
+   }
+  },
+  "dash_moment": {
+   "dist": 52,
+   "animating": true,
+   "pending": 0,
+   "running": true,
+   "view": {
+    "ready": true,
+    "eHp": 100,
+    "eMax": 100,
+    "gone": false,
+    "retreat": false,
+    "bgOff": 0,
+    "text": null,
+    "textEnd": 0
+   },
+   "bar": {
+    "x": 208,
+    "y": 9,
+    "w": 30,
+    "h": 3,
+    "fill": 30,
+    "outer": [
+     32,
+     5
+    ]
+   },
+   "enemyH": 24,
+   "label": {
+    "text": "草原",
+    "w": 34,
+    "live": null
+   },
+   "hx": 170.6727272727273,
+   "ex": 223,
+   "W": 362,
+   "H": 44
+  },
+  "hit_moment": {
+   "dist": 37,
+   "animating": true,
+   "pending": 0,
+   "running": true,
+   "view": {
+    "ready": true,
+    "eHp": 77,
+    "eMax": 100,
+    "gone": false,
+    "retreat": false,
+    "bgOff": 0,
+    "text": null,
+    "textEnd": 0
+   },
+   "bar": {
+    "x": 211,
+    "y": 9,
+    "w": 30,
+    "h": 3,
+    "fill": 23,
+    "outer": [
+     32,
+     5
+    ]
+   },
+   "enemyH": 24,
+   "label": {
+    "text": "草原",
+    "w": 34,
+    "live": null
+   },
+   "hx": 189,
+   "ex": 226,
+   "W": 362,
+   "H": 44
+  },
+  "skill_moment": {
+   "dist": 37,
+   "animating": true,
+   "pending": 0,
+   "running": true,
+   "view": {
+    "ready": true,
+    "eHp": 4883,
+    "eMax": 5000,
+    "gone": false,
+    "retreat": false,
+    "bgOff": 0,
+    "text": "勇猛の一撃",
+    "textEnd": 1793287423623706
+   },
+   "bar": {
+    "x": 211,
+    "y": 9,
+    "w": 30,
+    "h": 3,
+    "fill": 29,
+    "outer": [
+     32,
+     5
+    ]
+   },
+   "enemyH": 24,
+   "label": {
+    "text": "勇猛の一撃",
+    "w": 70,
+    "live": true
+   },
+   "hx": 189,
+   "ex": 226,
+   "W": 362,
+   "H": 44
+  },
+  "skill_label": "勇猛の一撃",
+  "wrong_confirm_text": "",
+  "stripLog_A": [
+   {
+    "k": "enqueue",
+    "n": "attack",
+    "planMs": 480,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "group",
+    "ms": 480
+   },
+   {
+    "k": "enqueue",
+    "n": "attack",
+    "planMs": 480,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "group",
+    "ms": 480
+   },
+   {
+    "k": "enqueue",
+    "n": "attack+enemy",
+    "planMs": 740,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "enemy",
+    "ms": 272,
+    "plan": 260
+   },
+   {
+    "k": "group",
+    "ms": 752
+   },
+   {
+    "k": "enqueue",
+    "n": "skill",
+    "planMs": 550,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "skill",
+    "ms": 560,
+    "plan": 550
+   },
+   {
+    "k": "group",
+    "ms": 560
+   },
+   {
+    "k": "enqueue",
+    "n": "guard+enemy",
+    "planMs": 460,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "guard",
+    "ms": 208,
+    "plan": 200
+   },
+   {
+    "k": "enemy",
+    "ms": 264,
+    "plan": 260
+   },
+   {
+    "k": "group",
+    "ms": 464
+   }
+  ],
+  "stripLog_A2": [
+   {
+    "k": "enqueue",
+    "n": "attack",
+    "planMs": 480,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "group",
+    "ms": 480
+   },
+   {
+    "k": "enqueue",
+    "n": "attack",
+    "planMs": 480,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "group",
+    "ms": 480
+   },
+   {
+    "k": "enqueue",
+    "n": "attack+enemy",
+    "planMs": 740,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "enemy",
+    "ms": 272,
+    "plan": 260
+   },
+   {
+    "k": "group",
+    "ms": 752
+   },
+   {
+    "k": "enqueue",
+    "n": "skill",
+    "planMs": 550,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "skill",
+    "ms": 560,
+    "plan": 550
+   },
+   {
+    "k": "group",
+    "ms": 560
+   },
+   {
+    "k": "enqueue",
+    "n": "guard+enemy",
+    "planMs": 460,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "guard",
+    "ms": 208,
+    "plan": 200
+   },
+   {
+    "k": "enemy",
+    "ms": 264,
+    "plan": 260
+   },
+   {
+    "k": "group",
+    "ms": 464
+   },
+   {
+    "k": "enqueue",
+    "n": "attack+defeat",
+    "planMs": 1260,
+    "dropped": 0,
+    "pending": 1
+   },
+   {
+    "k": "attack",
+    "ms": 480,
+    "plan": 480
+   },
+   {
+    "k": "defeat",
+    "ms": 784,
+    "plan": 780
+   },
+   {
+    "k": "group",
+    "ms": 1264
+   }
+  ],
+  "map": {
+   "top": {
+    "vw": 390,
+    "vh": 700,
+    "canvas": {
+     "t": 650,
+     "b": 694,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 44
+    },
+    "box": {
+     "t": 644,
+     "b": 700,
+     "l": 0,
+     "r": 390,
+     "w": 390,
+     "h": 56
+    },
+    "lastChoice": {
+     "t": 635,
+     "b": 703,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 68
+    },
+    "skip": {
+     "t": 717,
+     "b": 765,
+     "l": 129,
+     "r": 261,
+     "w": 132,
+     "h": 48
+    },
+    "submit": null,
+    "map": {
+     "t": 171,
+     "b": 383,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 213
+    },
+    "score": {
+     "t": 817,
+     "b": 839,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 22
+    },
+    "docH": 911,
+    "sy": 0
+   },
+   "bottom": {
+    "vw": 390,
+    "vh": 700,
+    "canvas": {
+     "t": 650,
+     "b": 694,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 44
+    },
+    "box": {
+     "t": 644,
+     "b": 700,
+     "l": 0,
+     "r": 390,
+     "w": 390,
+     "h": 56
+    },
+    "lastChoice": {
+     "t": 424,
+     "b": 492,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 68
+    },
+    "skip": {
+     "t": 506,
+     "b": 554,
+     "l": 129,
+     "r": 261,
+     "w": 132,
+     "h": 48
+    },
+    "submit": null,
+    "map": {
+     "t": -40,
+     "b": 172,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 213
+    },
+    "score": {
+     "t": 606,
+     "b": 628,
+     "l": 14,
+     "r": 376,
+     "w": 362,
+     "h": 22
+    },
+    "docH": 911,
+    "sy": 211
+   }
+  },
+  "final_victory": {
+   "a": {
+    "dist": 40,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 0,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 0,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 185.50746268656718,
+    "ex": 225.59701492537314,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 63,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 0,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 0,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 163,
+    "ex": 225.63829787234042,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "victory",
+    "text": "10問もんおつかれさま！\nはっぱスライムを倒たおした！\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+295\n戦士せんし Lv1 → Lv2\nLv3まで　あと 30 EXP",
+    "last": "victory"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack+defeat",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 352,
+     "plan": 339
+    },
+    {
+     "k": "defeat",
+     "ms": 141,
+     "plan": 141
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
+  },
+  "final_continue": {
+   "a": {
+    "dist": 37,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 189,
+    "ex": 226,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 54,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 209,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 169.56842105263158,
+    "ex": 223.7578947368421,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "continue",
+    "text": "10問もんおつかれさま！\n今日きょうはここまで。続つづきから挑いどめます\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+280\n戦士せんし Lv1 → Lv2\nLv3まで　",
+    "last": "continue"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 480,
+     "plan": 480
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
+  },
+  "final_retreat": {
+   "a": {
+    "dist": 60,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 208,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 163.30232558139534,
+    "ex": 223.03488372093022,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 71,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4875,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 208,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 152.29655172413794,
+    "ex": 223,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "retreat",
+    "text": "10問もんおつかれさま！\n街まちに戻もどりました。取とり組くんだ分ぶんの報酬ほうしゅうを受うけ取とろう\n基本きほん\n10 / 10\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン合計ごうけい\n+280\n戦士せんし L",
+    "last": "retreat"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack+enemy+retreat",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 224,
+     "plan": 217
+    },
+    {
+     "k": "enemy",
+     "ms": 119,
+     "plan": 118
+    },
+    {
+     "k": "retreat",
+     "ms": 145,
+     "plan": 145
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
+  }
+ },
+ "console": [],
+ "console_errors": []
+}

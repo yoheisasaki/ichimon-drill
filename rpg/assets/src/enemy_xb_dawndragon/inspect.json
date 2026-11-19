@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_dawndragon/enemy_xb_dawndragon.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  481,
+  430
+ ],
+ "out": "rpg/assets/chars/enemy_xb_dawndragon.png",
+ "out_size": [
+  215,
+  192
+ ],
+ "magenta_removed_px": 104672,
+ "fringe_removed_px": 2240,
+ "magenta_left_px": 184,
+ "opaque_px": 31001,
+ "colors": 26501
+}

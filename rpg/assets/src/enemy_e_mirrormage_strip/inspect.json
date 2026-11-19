@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_mirrormage/enemy_e_mirrormage.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  1052,
+  1157
+ ],
+ "out": "rpg/assets/chars/enemy_e_mirrormage_strip.png",
+ "out_size": [
+  22,
+  24
+ ],
+ "magenta_removed_px": 954770,
+ "fringe_removed_px": 16828,
+ "magenta_left_px": 29,
+ "opaque_px": 258,
+ "colors": 195
+}

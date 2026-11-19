@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_thief_master_win/hero_thief_master_win.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  561,
+  714
+ ],
+ "out": "rpg/assets/chars/hero_thief_master_win.png",
+ "out_size": [
+  75,
+  96
+ ],
+ "magenta_removed_px": 1355001,
+ "fringe_removed_px": 1842,
+ "magenta_left_px": 3,
+ "opaque_px": 3882,
+ "colors": 3471
+}

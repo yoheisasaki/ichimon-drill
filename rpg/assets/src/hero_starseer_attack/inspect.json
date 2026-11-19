@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_starseer_attack/hero_starseer_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  462,
+  339
+ ],
+ "out": "rpg/assets/chars/hero_starseer_attack.png",
+ "out_size": [
+  114,
+  84
+ ],
+ "magenta_removed_px": 1498217,
+ "fringe_removed_px": 998,
+ "magenta_left_px": 5,
+ "opaque_px": 4525,
+ "colors": 4264
+}

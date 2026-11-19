@@ -1,0 +1,16 @@
+seconds=121
+rc=0
+[chest_boss_open.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_boss_open/chest_boss_open.png) — 1430 × 1100 px
+
+bcc60f39\\exec-8de7a82e-8457-4a65-8313-05e3c8301405.png'; "'$dst = Join-Path (Get-Location) '"'chest_boss_open.png'; Copy-Item -LiteralPath "'$src -Destination $dst -Force; Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile($dst); try { Write-Output "$(Resolve-Path -LiteralPath $dst)`n$($img.Width) x $($img.Height)" } finally { $img.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_boss_open
+ succeeded in 507ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_boss_open\chest_boss_open.png
+1430 x 1100
+
+codex
+[chest_boss_open.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_boss_open/chest_boss_open.png) — 1430 × 1100 px
+hook: Stop
+hook: Stop Completed
+tokens used
+23,324
+

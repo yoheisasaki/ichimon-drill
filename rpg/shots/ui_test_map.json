@@ -1,0 +1,378 @@
+{
+ "checks": {
+  "chromium:world_buttons_18": {
+   "ok": true,
+   "v": 18
+  },
+  "chromium:day01_meadow": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 0,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:day01_fit": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 0,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:day01_detail_progress": {
+   "ok": true,
+   "v": "風車の小道\nいま ここ　2 / 3\n消えた灯台のひとつ目。草原の古樹が、灯りをかくしている。"
+  },
+  "chromium:tap_boss_node_detail": true,
+  "chromium:back_to_adv": true,
+  "chromium:now_button_opens_current": true,
+  "chromium:locked_region": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 0,
+    "cur": 0,
+    "lock": 7,
+    "hero": false,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:ch1end_rootwood": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 5,
+    "done": 0,
+    "cur": 1,
+    "lock": 4,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 5,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:ch1end_meadow_cleared": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 4,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:rematch_hero_at_boss": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 3,
+    "cur": 1,
+    "lock": 0,
+    "hero": true,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:maingoal_crown": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 7,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:post_pearl_progress": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 5,
+    "done": 1,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 5,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:post_island_cleared": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 7,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "chromium:quest_map_buttons_7": {
+   "ok": true,
+   "v": 7
+  },
+  "chromium:quest_button_opens_map": true,
+  "chromium:all_25_maps_ok": {
+   "ok": true,
+   "v": {
+    "n": 25,
+    "bad": {}
+   }
+  },
+  "chromium:home_after_map": true,
+  "webkit:world_buttons_18": {
+   "ok": true,
+   "v": 18
+  },
+  "webkit:day01_meadow": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 0,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:day01_fit": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 0,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:day01_detail_progress": {
+   "ok": true,
+   "v": "風車の小道\nいま ここ　2 / 3\n消えた灯台のひとつ目。草原の古樹が、灯りをかくしている。"
+  },
+  "webkit:tap_boss_node_detail": true,
+  "webkit:back_to_adv": true,
+  "webkit:now_button_opens_current": true,
+  "webkit:locked_region": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 0,
+    "cur": 0,
+    "lock": 7,
+    "hero": false,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:ch1end_rootwood": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 5,
+    "done": 0,
+    "cur": 1,
+    "lock": 4,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 5,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:ch1end_meadow_cleared": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 4,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:rematch_hero_at_boss": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 4,
+    "done": 3,
+    "cur": 1,
+    "lock": 0,
+    "hero": true,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 4,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:maingoal_crown": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 7,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:post_pearl_progress": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 5,
+    "done": 1,
+    "cur": 1,
+    "lock": 3,
+    "hero": true,
+    "chestOpen": false,
+    "chest": true,
+    "imgOk": true,
+    "rows": 5,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:post_island_cleared": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": [],
+    "out": 0,
+    "nodes": 7,
+    "done": 7,
+    "cur": 0,
+    "lock": 0,
+    "hero": false,
+    "chestOpen": true,
+    "chest": true,
+    "imgOk": true,
+    "rows": 7,
+    "screen": "regionmap"
+   }
+  },
+  "webkit:quest_map_buttons_7": {
+   "ok": true,
+   "v": 7
+  },
+  "webkit:quest_button_opens_map": true,
+  "webkit:all_25_maps_ok": {
+   "ok": true,
+   "v": {
+    "n": 25,
+    "bad": {}
+   }
+  },
+  "webkit:home_after_map": true
+ },
+ "console": [],
+ "blocked": 0
+}

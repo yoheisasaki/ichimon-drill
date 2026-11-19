@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_strip_attack/hero_ninja_strip_attack.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  502,
+  404
+ ],
+ "out": "rpg/assets/chars/hero_ninja_strip_attack.png",
+ "out_size": [
+  29,
+  23
+ ],
+ "magenta_removed_px": 1477296,
+ "fringe_removed_px": 1920,
+ "magenta_left_px": 65,
+ "opaque_px": 305,
+ "colors": 283
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_icecrystalgiant/enemy_e_icecrystalgiant.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  435,
+  396
+ ],
+ "out": "rpg/assets/chars/enemy_e_icecrystalgiant.png",
+ "out_size": [
+  105,
+  96
+ ],
+ "magenta_removed_px": 135921,
+ "fringe_removed_px": 1321,
+ "magenta_left_px": 0,
+ "opaque_px": 7298,
+ "colors": 6212
+}

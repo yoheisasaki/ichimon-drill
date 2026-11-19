@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_xb_orchard/enemy_xb_orchard.png",
+ "src_size": [
+  523,
+  447
+ ],
+ "trim_size": [
+  502,
+  427
+ ],
+ "out": "rpg/assets/chars/enemy_xb_orchard.png",
+ "out_size": [
+  226,
+  192
+ ],
+ "magenta_removed_px": 84722,
+ "fringe_removed_px": 9978,
+ "magenta_left_px": 916,
+ "opaque_px": 28180,
+ "colors": 22252
+}

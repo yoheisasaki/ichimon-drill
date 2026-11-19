@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_magicknight_master_win/hero_magicknight_master_win.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  574,
+  697
+ ],
+ "out": "rpg/assets/chars/hero_magicknight_master_win.png",
+ "out_size": [
+  82,
+  100
+ ],
+ "magenta_removed_px": 1380295,
+ "fringe_removed_px": 1605,
+ "magenta_left_px": 0,
+ "opaque_px": 3908,
+ "colors": 3700
+}

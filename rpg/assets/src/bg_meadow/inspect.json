@@ -1,0 +1,14 @@
+{
+ "src": "rpg/assets/src/bg_meadow/bg_meadow.png",
+ "src_size": [
+  1774,
+  887
+ ],
+ "out": "rpg/assets/bg/bg_meadow.png",
+ "out_size": [
+  480,
+  240
+ ],
+ "magenta_px": 0,
+ "colors": 31890
+}

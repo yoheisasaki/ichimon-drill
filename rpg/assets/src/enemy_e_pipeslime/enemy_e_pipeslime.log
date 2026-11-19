@@ -1,0 +1,17 @@
+seconds=145
+rc=0
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_pipeslime\enemy_e_pipeslime.png  
+1536 × 1024 ピクセル
+
+ -lt $bmp.Width; $x++) { $c=$bmp.GetPixel($x,$y); if ($c.R -gt 180 -and $c.G -lt 80 -and $c.B -gt 170) { $bmp.SetPixel($x,$y,$magenta) } } }; $bmp.Save($destination,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output ('"'{0} {1}x{2} #{3:X2}{4:X2}{5:X2}' -f "'$destination,$bmp.Width,$bmp.Height,$bmp.GetPixel(0,0).R,$bmp.GetPixel(0,0).G,$bmp.GetPixel(0,0).B); $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_pipeslime
+ succeeded in 6493ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_pipeslime\enemy_e_pipeslime.png 1536x1024 #FF00FF
+
+codex
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_pipeslime\enemy_e_pipeslime.png  
+1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+22,981
+

@@ -1,0 +1,10 @@
+STEP start 10
+STEP coins after adventure 319
+STEP test save loaded (warrior/mage Lv>=10)
+{
+ "pass": 33,
+ "fail": [],
+ "console": [],
+ "blocked": 0,
+ "exception": null
+}

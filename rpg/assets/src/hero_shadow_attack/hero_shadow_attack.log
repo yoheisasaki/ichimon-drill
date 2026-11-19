@@ -1,0 +1,15 @@
+seconds=172
+rc=0
+[hero_shadow_attack.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow_attack/hero_shadow_attack.png) — 1278 × 1230 ピクセル
+
+]=255;$bytes[$i+1]=0;$bytes[$i+2]=255;$bytes[$i+3]=255;$changed++}}; [Runtime.InteropServices.Marshal]::Copy($bytes,0,$data.Scan0,$bytes.Length);$bm.UnlockBits($data);$bm.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png);Write-Output "$dst | $($bm.Width)x$($bm.Height) | background pixels set: $changed";$bm.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_shadow_attack
+ succeeded in 10515ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_shadow_attack\hero_shadow_attack.png | 1278x1230 | background pixels set: 1265532
+
+codex
+[hero_shadow_attack.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow_attack/hero_shadow_attack.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+28,030
+

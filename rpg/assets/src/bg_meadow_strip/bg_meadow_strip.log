@@ -1,0 +1,15 @@
+seconds=938
+rc=0
+[bg_meadow_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_meadow_strip/bg_meadow_strip.png) — 2172 × 242 px
+
+ee78c462.png'; "'$target=Join-Path (Get-Location) '"'bg_meadow_strip.png'; "'$bitmap=[System.Drawing.Bitmap]::new($source); $rect=[System.Drawing.Rectangle]::new(0,268,2172,242); $crop=$bitmap.Clone($rect,$bitmap.PixelFormat); $crop.Save($target,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$target $($crop.Width)x$($crop.Height)"; $crop.Dispose(); $bitmap.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_meadow_strip
+ succeeded in 722ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_meadow_strip\bg_meadow_strip.png 2172x242
+
+codex
+[bg_meadow_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_meadow_strip/bg_meadow_strip.png) — 2172 × 242 px
+hook: Stop
+hook: Stop Completed
+tokens used
+26,265
+

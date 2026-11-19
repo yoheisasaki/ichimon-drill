@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_slime/enemy_slime.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  720,
+  704
+ ],
+ "out": "rpg/assets/chars/enemy_e_leafslime_strip.png",
+ "out_size": [
+  25,
+  24
+ ],
+ "magenta_removed_px": 1230524,
+ "fringe_removed_px": 1379,
+ "magenta_left_px": 1,
+ "opaque_px": 412,
+ "colors": 249
+}

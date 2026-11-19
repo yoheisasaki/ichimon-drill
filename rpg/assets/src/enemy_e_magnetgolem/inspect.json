@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_magnetgolem/enemy_e_magnetgolem.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  866,
+  940
+ ],
+ "out": "rpg/assets/chars/enemy_e_magnetgolem.png",
+ "out_size": [
+  52,
+  56
+ ],
+ "magenta_removed_px": 1015407,
+ "fringe_removed_px": 2880,
+ "magenta_left_px": 1,
+ "opaque_px": 1996,
+ "colors": 1142
+}

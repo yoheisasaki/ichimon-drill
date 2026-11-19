@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_mistspirit/enemy_e_mistspirit.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  978,
+  756
+ ],
+ "out": "rpg/assets/chars/enemy_e_mistspirit_strip.png",
+ "out_size": [
+  31,
+  24
+ ],
+ "magenta_removed_px": 1150380,
+ "fringe_removed_px": 0,
+ "magenta_left_px": 0,
+ "opaque_px": 429,
+ "colors": 5
+}

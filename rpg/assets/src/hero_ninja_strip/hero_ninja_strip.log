@@ -1,0 +1,20 @@
+seconds=175
+rc=0
+[hero_ninja_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ninja_strip/hero_ninja_strip.png) — 1199 × 1312 ピクセル
+
+rs\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\hero_ninja_strip\\hero_ninja_strip.png'; "'$im=[System.Drawing.Bitmap]::FromFile($p); Write-Output "$($im.Width)x$($im.Height)"; foreach($xy in @(@(0,0),@(100,100),@(1198,1310),@(600,50),@(600,1200))) { $c=$im.GetPixel($xy[0],$xy[1]); Write-Output "$($xy[0]),$($xy[1]): $($c.R),$($c.G),$($c.B)" }; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ninja_strip
+ succeeded in 387ms:
+1199x1312
+0,0: 255,0,255
+100,100: 255,0,255
+1198,1310: 255,0,255
+600,50: 255,0,255
+600,1200: 255,0,255
+
+codex
+[hero_ninja_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ninja_strip/hero_ninja_strip.png) — 1199 × 1312 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+28,503
+

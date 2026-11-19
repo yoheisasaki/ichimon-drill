@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_ready/hero_shadow_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  313,
+  327
+ ],
+ "out": "rpg/assets/chars/hero_shadow_ready.png",
+ "out_size": [
+  76,
+  79
+ ],
+ "magenta_removed_px": 1515388,
+ "fringe_removed_px": 793,
+ "magenta_left_px": 0,
+ "opaque_px": 3341,
+ "colors": 3115
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_waterdragonfish/enemy_e_waterdragonfish.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  406,
+  408
+ ],
+ "out": "rpg/assets/chars/enemy_e_waterdragonfish.png",
+ "out_size": [
+  96,
+  96
+ ],
+ "magenta_removed_px": 160879,
+ "fringe_removed_px": 2143,
+ "magenta_left_px": 0,
+ "opaque_px": 5536,
+ "colors": 4889
+}

@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_skycastle/bg_skycastle.png",
+ "src_size": [
+  480,
+  240
+ ],
+ "out": "rpg/assets/bg/bg_skycastle.png",
+ "out_size": [
+  480,
+  240
+ ],
+ "magenta_px": 0,
+ "colors": 62102
+}

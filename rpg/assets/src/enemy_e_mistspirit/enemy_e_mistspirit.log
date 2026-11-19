@@ -1,0 +1,30 @@
+seconds=196
+rc=0
+[enemy_e_mistspirit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mistspirit/enemy_e_mistspirit.png) — 1254 × 1254 px
+
+ette.Length;i++) {
+            int dr=r-palette[i].R,dg=g-palette[i].G,db=b-palette[i].B;
+            int d=dr*dr+dg*dg+db*db;
+            if(d<dBest){dBest=d;best=i;}
+          }
+          chosen=palette[best];
+        }
+        for(int yy=y;yy<y2;yy++) for(int xx=x;xx<x2;xx++) output.SetPixel(xx,yy,chosen);
+      }
+      output.Save(dst,ImageFormat.Png);
+      Console.WriteLine(output.Width+\"x\"+output.Height);
+    }
+  }
+}
+'@
+[SpriteFinalize]::Run("'$src,$dst)' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_mistspirit
+ succeeded in 1839ms:
+1254x1254
+
+codex
+[enemy_e_mistspirit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mistspirit/enemy_e_mistspirit.png) — 1254 × 1254 px
+hook: Stop
+hook: Stop Completed
+tokens used
+66,813
+

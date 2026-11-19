@@ -1,0 +1,13 @@
+seconds=183
+rc=0
+[bg_skycastle_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_skycastle_strip/bg_skycastle_strip.png) — 2160 × 240 px
+
+ource=[System.Drawing.Bitmap]::new($src); $out=[System.Drawing.Bitmap]::new(2160,240); $g=[System.Drawing.Graphics]::FromImage($out); $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::Half; $g.DrawImage($source,0,0,2160,240); $g.Dispose(); $source.Dispose(); $out.Save((Join-Path (Get-Location) '"'bg_skycastle_strip.png'),[System.Drawing.Imaging.ImageFormat]::Png); "'$out.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_skycastle_strip
+ succeeded in 589ms:
+codex
+[bg_skycastle_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_skycastle_strip/bg_skycastle_strip.png) — 2160 × 240 px
+hook: Stop
+hook: Stop Completed
+tokens used
+27,042
+

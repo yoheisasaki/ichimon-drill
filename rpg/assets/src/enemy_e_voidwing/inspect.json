@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_voidwing/enemy_e_voidwing.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  457,
+  384
+ ],
+ "out": "rpg/assets/chars/enemy_e_voidwing.png",
+ "out_size": [
+  114,
+  96
+ ],
+ "magenta_removed_px": 182624,
+ "fringe_removed_px": 11007,
+ "magenta_left_px": 197,
+ "opaque_px": 4277,
+ "colors": 3774
+}

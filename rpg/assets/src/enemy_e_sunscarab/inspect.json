@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_sunscarab/enemy_e_sunscarab.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  413,
+  319
+ ],
+ "out": "rpg/assets/chars/enemy_e_sunscarab.png",
+ "out_size": [
+  124,
+  96
+ ],
+ "magenta_removed_px": 174469,
+ "fringe_removed_px": 1243,
+ "magenta_left_px": 3,
+ "opaque_px": 7814,
+ "colors": 7072
+}

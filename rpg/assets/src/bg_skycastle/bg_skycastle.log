@@ -1,0 +1,15 @@
+seconds=146
+rc=0
+[bg_skycastle.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_skycastle/bg_skycastle.png) — 480 × 240 ピクセル
+
+ationMode]::NearestNeighbor; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::Half; $g.DrawImage($inputImage,0,0,480,240); $g.Dispose(); $outputImage.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $outputImage.Dispose(); $inputImage.Dispose(); $check=[System.Drawing.Image]::FromFile($dst); Write-Output ('"'{0}|{1}x{2}' -f "'$dst,$check.Width,$check.Height); $check.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_skycastle
+ succeeded in 667ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_skycastle\bg_skycastle.png|480x240
+
+codex
+[bg_skycastle.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_skycastle/bg_skycastle.png) — 480 × 240 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+22,196
+

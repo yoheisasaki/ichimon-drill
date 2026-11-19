@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_starplate/enemy_e_starplate.png",
+ "src_size": [
+  482,
+  543
+ ],
+ "trim_size": [
+  327,
+  374
+ ],
+ "out": "rpg/assets/chars/enemy_e_starplate.png",
+ "out_size": [
+  84,
+  96
+ ],
+ "magenta_removed_px": 180862,
+ "fringe_removed_px": 1022,
+ "magenta_left_px": 0,
+ "opaque_px": 5268,
+ "colors": 4566
+}

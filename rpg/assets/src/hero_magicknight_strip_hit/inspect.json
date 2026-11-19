@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_magicknight_strip_hit/hero_magicknight_strip_hit.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  451,
+  439
+ ],
+ "out": "rpg/assets/chars/hero_magicknight_strip_hit.png",
+ "out_size": [
+  28,
+  27
+ ],
+ "magenta_removed_px": 1474344,
+ "fringe_removed_px": 1216,
+ "magenta_left_px": 0,
+ "opaque_px": 366,
+ "colors": 355
+}

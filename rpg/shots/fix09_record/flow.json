@@ -1,0 +1,132 @@
+{
+ "steps": [
+  "home (job warrior, weapon w_start)",
+  "adventure 1: answer / attack / skill / wrong / defeat",
+  "reward closed -> home",
+  "equip changed w_start -> w_sword_2",
+  "adventure 2: new weapon in strip"
+ ],
+ "console": [],
+ "blocked": 0,
+ "checks": {
+  "R03 通常攻撃・技・不正解（守り）・撃破が演出に出た": {
+   "ok": true,
+   "v": [
+    "attack",
+    "attack",
+    "attack+enemy",
+    "guard+enemy",
+    "skill+defeat",
+    "walk",
+    "walk",
+    "walk",
+    "walk",
+    "walk",
+    "walk"
+   ]
+  },
+  "R03 開封後に中身が操作帯に隠れない（自動スクロール後）": {
+   "ok": true,
+   "v": {
+    "lineTop": 579,
+    "lineBottom": 606,
+    "footTop": 626,
+    "vh": 700,
+    "text": "ランクIの鉱石こうせき ×4 を手てに入いれた！"
+   }
+  },
+  "R03 開封後に宝箱の分だけ増える・二重加算なし": {
+   "ok": true,
+   "v": [
+    891,
+    891
+   ]
+  },
+  "R03 装備を鉄の剣に変更して保存": {
+   "ok": true,
+   "v": [
+    "w_start",
+    "w_sword_2"
+   ]
+  },
+  "R03 次の戦闘の帯が新しい武器（w_sword_2）で描かれる": {
+   "ok": true,
+   "v": [
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "idle"
+    },
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "walk"
+    },
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "walk2"
+    }
+   ]
+  }
+ },
+ "a1_strip_events": [
+  "attack",
+  "attack",
+  "attack+enemy",
+  "guard+enemy",
+  "skill+defeat",
+  "walk",
+  "walk",
+  "walk",
+  "walk",
+  "walk",
+  "walk"
+ ],
+ "a1_kinds": [
+  "ok",
+  "ok",
+  "ok",
+  "wrong",
+  "ok",
+  "ok",
+  "skip",
+  "ok",
+  "ok",
+  "ok",
+  "ok",
+  "ok"
+ ],
+ "stats": {
+  "attack": {
+   "n": 6,
+   "mean": 483
+  },
+  "group": {
+   "n": 14,
+   "mean": 550
+  },
+  "enemy": {
+   "n": 3,
+   "mean": 269
+  },
+  "guard": {
+   "n": 1,
+   "mean": 200
+  },
+  "skill": {
+   "n": 1,
+   "mean": 550
+  },
+  "defeat": {
+   "n": 1,
+   "mean": 783
+  },
+  "walk": {
+   "n": 6,
+   "mean": 411
+  }
+ },
+ "pass": 5,
+ "fail": []
+}

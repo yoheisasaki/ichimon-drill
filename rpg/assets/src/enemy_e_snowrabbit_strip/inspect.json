@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_snowrabbit/enemy_e_snowrabbit.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  909,
+  905
+ ],
+ "out": "rpg/assets/chars/enemy_e_snowrabbit_strip.png",
+ "out_size": [
+  24,
+  24
+ ],
+ "magenta_removed_px": 1016225,
+ "fringe_removed_px": 1790,
+ "magenta_left_px": 0,
+ "opaque_px": 388,
+ "colors": 197
+}

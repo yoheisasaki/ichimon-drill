@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/tools/../src/chest_morning_open/chest_morning_open.png",
+ "src_size": [
+  1430,
+  1100
+ ],
+ "trim_size": [
+  813,
+  720
+ ],
+ "out": "rpg/assets/chars/chest_morning_open.png",
+ "out_size": [
+  45,
+  40
+ ],
+ "magenta_removed_px": 1036413,
+ "fringe_removed_px": 1666,
+ "magenta_left_px": 0,
+ "opaque_px": 1670,
+ "colors": 1076
+}

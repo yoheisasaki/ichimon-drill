@@ -1,0 +1,10 @@
+{
+ "pass": 3,
+ "fail": [
+  "B06 320px: no hscroll, end reachable above nav, quiz buttons not covered by strip",
+  "B06 375px: no hscroll, end reachable above nav, quiz buttons not covered by strip",
+  "B06 390px: no hscroll, end reachable above nav, quiz buttons not covered by strip",
+  "B06 430px: no hscroll, end reachable above nav, quiz buttons not covered by strip"
+ ],
+ "console": []
+}

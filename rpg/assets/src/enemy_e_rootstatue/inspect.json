@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_rootstatue/enemy_e_rootstatue.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  447,
+  391
+ ],
+ "out": "rpg/assets/chars/enemy_e_rootstatue.png",
+ "out_size": [
+  110,
+  96
+ ],
+ "magenta_removed_px": 136770,
+ "fringe_removed_px": 837,
+ "magenta_left_px": 0,
+ "opaque_px": 7524,
+ "colors": 6525
+}

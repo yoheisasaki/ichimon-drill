@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_steamsoldier/enemy_e_steamsoldier.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  784,
+  1163
+ ],
+ "out": "rpg/assets/chars/enemy_e_steamsoldier.png",
+ "out_size": [
+  38,
+  56
+ ],
+ "magenta_removed_px": 1024188,
+ "fringe_removed_px": 3804,
+ "magenta_left_px": 0,
+ "opaque_px": 1269,
+ "colors": 1052
+}

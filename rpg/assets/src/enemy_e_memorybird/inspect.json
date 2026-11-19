@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_memorybird/enemy_e_memorybird.png",
+ "src_size": [
+  483,
+  543
+ ],
+ "trim_size": [
+  347,
+  316
+ ],
+ "out": "rpg/assets/chars/enemy_e_memorybird.png",
+ "out_size": [
+  105,
+  96
+ ],
+ "magenta_removed_px": 215431,
+ "fringe_removed_px": 867,
+ "magenta_left_px": 0,
+ "opaque_px": 4241,
+ "colors": 2729
+}

@@ -1,0 +1,17 @@
+seconds=181
+rc=0
+[chest_normal_open.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_normal_open/chest_normal_open.png) — 1430 × 1100 px
+
+x -lt $bmp.Width;$x++){ $c=$bmp.GetPixel($x,$y); if($c.R -gt 170 -and $c.B -gt 170 -and $c.G -lt 100){$bmp.SetPixel($x,$y,$magenta);$n++} } }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "PATH=$dst"; Write-Output "SIZE=$($bmp.Width)x$($bmp.Height)"; Write-Output "BACKGROUND_PIXELS=$n"; $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_open
+ succeeded in 5715ms:
+PATH=C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_open\chest_normal_open.png
+SIZE=1430x1100
+BACKGROUND_PIXELS=871535
+
+codex
+[chest_normal_open.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_normal_open/chest_normal_open.png) — 1430 × 1100 px
+hook: Stop
+hook: Stop Completed
+tokens used
+44,146
+

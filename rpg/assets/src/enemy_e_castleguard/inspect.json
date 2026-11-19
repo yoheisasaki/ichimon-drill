@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_castleguard/enemy_e_castleguard.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  931,
+  1252
+ ],
+ "out": "rpg/assets/chars/enemy_e_castleguard.png",
+ "out_size": [
+  42,
+  56
+ ],
+ "magenta_removed_px": 842720,
+ "fringe_removed_px": 5188,
+ "magenta_left_px": 0,
+ "opaque_px": 1476,
+ "colors": 962
+}

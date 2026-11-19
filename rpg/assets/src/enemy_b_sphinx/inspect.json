@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_sphinx/enemy_b_sphinx.png",
+ "src_size": [
+  501,
+  431
+ ],
+ "trim_size": [
+  481,
+  410
+ ],
+ "out": "rpg/assets/chars/enemy_b_sphinx.png",
+ "out_size": [
+  225,
+  192
+ ],
+ "magenta_removed_px": 64300,
+ "fringe_removed_px": 1267,
+ "magenta_left_px": 48,
+ "opaque_px": 32956,
+ "colors": 25982
+}

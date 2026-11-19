@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_lanternfish/enemy_e_lanternfish.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  433,
+  354
+ ],
+ "out": "rpg/assets/chars/enemy_e_lanternfish.png",
+ "out_size": [
+  117,
+  96
+ ],
+ "magenta_removed_px": 176578,
+ "fringe_removed_px": 7026,
+ "magenta_left_px": 299,
+ "opaque_px": 5734,
+ "colors": 5105
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_win/hero_ranger_win.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  362,
+  441
+ ],
+ "out": "rpg/assets/chars/hero_ranger_win.png",
+ "out_size": [
+  86,
+  105
+ ],
+ "magenta_removed_px": 1484217,
+ "fringe_removed_px": 1232,
+ "magenta_left_px": 0,
+ "opaque_px": 4937,
+ "colors": 4704
+}

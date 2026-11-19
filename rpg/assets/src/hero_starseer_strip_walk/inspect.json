@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_starseer_strip_walk/hero_starseer_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  380,
+  472
+ ],
+ "out": "rpg/assets/chars/hero_starseer_strip_walk.png",
+ "out_size": [
+  22,
+  27
+ ],
+ "magenta_removed_px": 1461428,
+ "fringe_removed_px": 1234,
+ "magenta_left_px": 1,
+ "opaque_px": 355,
+ "colors": 327
+}

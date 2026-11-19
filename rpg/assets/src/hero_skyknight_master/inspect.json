@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_skyknight_master/hero_skyknight_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  621,
+  683
+ ],
+ "out": "rpg/assets/chars/hero_skyknight_master.png",
+ "out_size": [
+  87,
+  96
+ ],
+ "magenta_removed_px": 1309015,
+ "fringe_removed_px": 2645,
+ "magenta_left_px": 2,
+ "opaque_px": 5139,
+ "colors": 4765
+}

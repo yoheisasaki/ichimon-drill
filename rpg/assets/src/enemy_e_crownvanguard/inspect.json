@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_crownvanguard/enemy_e_crownvanguard.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  374,
+  394
+ ],
+ "out": "rpg/assets/chars/enemy_e_crownvanguard.png",
+ "out_size": [
+  91,
+  96
+ ],
+ "magenta_removed_px": 183835,
+ "fringe_removed_px": 1246,
+ "magenta_left_px": 71,
+ "opaque_px": 4568,
+ "colors": 4290
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_attack/hero_ninja_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  426,
+  354
+ ],
+ "out": "rpg/assets/chars/hero_ninja_attack.png",
+ "out_size": [
+  103,
+  86
+ ],
+ "magenta_removed_px": 1503593,
+ "fringe_removed_px": 2328,
+ "magenta_left_px": 657,
+ "opaque_px": 3935,
+ "colors": 3666
+}

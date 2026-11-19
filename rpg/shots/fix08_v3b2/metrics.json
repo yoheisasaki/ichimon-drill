@@ -1,0 +1,141 @@
+{
+ "修正前": {
+  "待機の剣と脚": {
+   "hip_row": 101,
+   "sword_px_total": 388,
+   "sword_px_in_leg_rows": 80,
+   "leg_px_covered_by_sword": 20
+  },
+  "L_idle": {
+   "colors": 15,
+   "eyes": null,
+   "髪の房": {
+    "count": 7,
+    "px": 31
+   }
+  },
+  "L_attack": {
+   "colors": 15,
+   "eyes": null,
+   "髪の房": {
+    "count": 6,
+    "px": 30
+   }
+  },
+  "L_win": {
+   "colors": 14,
+   "eyes": null,
+   "髪の房": {
+    "count": 4,
+    "px": 24
+   }
+  },
+  "S_idle": {
+   "colors": 11,
+   "eyes": [
+    {
+     "px": 56,
+     "w": 17,
+     "h": 12
+    }
+   ],
+   "髪の房": null
+  },
+  "S_attack": {
+   "colors": 12,
+   "eyes": [
+    {
+     "px": 80,
+     "w": 17,
+     "h": 16
+    }
+   ],
+   "髪の房": null
+  },
+  "S_win": {
+   "colors": 10,
+   "eyes": [],
+   "髪の房": null
+  },
+  "攻撃と待機の頭の相違画素": {
+   "diff": 651,
+   "of": 2736,
+   "dx": 10
+  }
+ },
+ "修正後": {
+  "待機の剣と脚": {
+   "hip_row": 101,
+   "sword_px_total": 147,
+   "sword_px_in_leg_rows": 19,
+   "leg_px_covered_by_sword": 10
+  },
+  "L_idle": {
+   "colors": 15,
+   "eyes": null,
+   "髪の房": {
+    "count": 0,
+    "px": 0
+   }
+  },
+  "L_attack": {
+   "colors": 15,
+   "eyes": null,
+   "髪の房": {
+    "count": 0,
+    "px": 0
+   }
+  },
+  "L_win": {
+   "colors": 14,
+   "eyes": null,
+   "髪の房": {
+    "count": 0,
+    "px": 0
+   }
+  },
+  "S_idle": {
+   "colors": 12,
+   "eyes": [
+    {
+     "px": 5,
+     "w": 2,
+     "h": 3
+    },
+    {
+     "px": 5,
+     "w": 2,
+     "h": 3
+    }
+   ],
+   "髪の房": null
+  },
+  "S_attack": {
+   "colors": 12,
+   "eyes": [
+    {
+     "px": 5,
+     "w": 2,
+     "h": 3
+    },
+    {
+     "px": 5,
+     "w": 2,
+     "h": 3
+    }
+   ],
+   "髪の房": null
+  },
+  "S_win": {
+   "colors": 11,
+   "eyes": [],
+   "髪の房": null
+  },
+  "攻撃と待機の頭の相違画素": {
+   "diff": 27,
+   "of": 2736,
+   "dx": 10
+  }
+ },
+ "errors": []
+}

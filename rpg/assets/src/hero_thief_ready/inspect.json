@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_thief_ready/hero_thief_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  380,
+  361
+ ],
+ "out": "rpg/assets/chars/hero_thief_ready.png",
+ "out_size": [
+  91,
+  86
+ ],
+ "magenta_removed_px": 1502072,
+ "fringe_removed_px": 951,
+ "magenta_left_px": 4,
+ "opaque_px": 4008,
+ "colors": 3644
+}

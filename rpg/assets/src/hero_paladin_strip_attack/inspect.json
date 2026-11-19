@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_paladin_strip_attack/hero_paladin_strip_attack.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  548,
+  469
+ ],
+ "out": "rpg/assets/chars/hero_paladin_strip_attack.png",
+ "out_size": [
+  28,
+  24
+ ],
+ "magenta_removed_px": 1428099,
+ "fringe_removed_px": 2431,
+ "magenta_left_px": 0,
+ "opaque_px": 371,
+ "colors": 365
+}

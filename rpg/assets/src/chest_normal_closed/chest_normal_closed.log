@@ -1,0 +1,16 @@
+seconds=107
+rc=0
+[chest_normal_closed.png](<C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_closed\chest_normal_closed.png>) — 1429 × 1100 px
+
+dowsApps\\pwsh.exe" -Command '$p = Resolve-Path -LiteralPath '"'.\\chest_normal_closed.png'; "'$b = [System.IO.File]::ReadAllBytes($p.Path); $w = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($b, 16)); $h = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($b, 20)); Write-Output $p.Path; Write-Output "$w x $h"' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_closed
+ succeeded in 466ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_closed\chest_normal_closed.png
+1429 x 1100
+
+codex
+[chest_normal_closed.png](<C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_normal_closed\chest_normal_closed.png>) — 1429 × 1100 px
+hook: Stop
+hook: Stop Completed
+tokens used
+44,782
+

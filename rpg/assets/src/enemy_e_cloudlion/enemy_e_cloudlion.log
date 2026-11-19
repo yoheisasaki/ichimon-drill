@@ -1,0 +1,21 @@
+seconds=138
+rc=0
+[enemy_e_cloudlion.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_cloudlion/enemy_e_cloudlion.png) — 1536 × 1024 ピクセル
+
+
+exec
+"C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $p=Join-Path (Get-Location) '"'enemy_e_cloudlion.png'; "'$b=[System.Drawing.Bitmap]::new($p); $corners=@(@(0,0),@(1535,0),@(0,1023),@(1535,1023)); foreach($xy in $corners){$c=$b.GetPixel([int]$xy[0],[int]$xy[1]); Write-Output "$($c.R),$($c.G),$($c.B)"}; Write-Output "$($b.Width)x$($b.Height)"; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_cloudlion
+ succeeded in 536ms:
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+1536x1024
+
+codex
+[enemy_e_cloudlion.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_cloudlion/enemy_e_cloudlion.png) — 1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+25,655
+

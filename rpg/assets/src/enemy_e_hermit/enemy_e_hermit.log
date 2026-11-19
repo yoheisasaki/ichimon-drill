@@ -1,0 +1,22 @@
+seconds=154
+rc=0
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_hermit\enemy_e_hermit.png  
+1536 × 1024 ピクセル
+
+p=Join-Path (Get-Location) '"'enemy_e_hermit.png'; Add-Type -AssemblyName System.Drawing; "'$b=[System.Drawing.Bitmap]::new($p); Write-Output (Resolve-Path -LiteralPath $p).Path; Write-Output "$($b.Width)x$($b.Height)"; foreach($xy in @(@(0,0),@(50,50),@(1535,1023),@(100,900))){$c=$b.GetPixel($xy[0],$xy[1]); Write-Output "$($c.R),$($c.G),$($c.B)"}; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_hermit
+ succeeded in 467ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_hermit\enemy_e_hermit.png
+1536x1024
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+
+codex
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_hermit\enemy_e_hermit.png  
+1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+23,809
+

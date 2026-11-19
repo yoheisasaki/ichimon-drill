@@ -1,0 +1,20 @@
+seconds=110
+rc=0
+[hero_ranger_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ranger_strip/hero_ranger_strip.png) — 2172 × 724 ピクセル
+
+ave("'$src,$dst); $b=[System.Drawing.Bitmap]::new($dst); Write-Output "$dst $($b.Width)x$($b.Height)"; foreach($q in @(@(0,0),@(100,100),@(1000,0),@(100,650),@(2000,600))){$c=$b.GetPixel($q[0],$q[1]); Write-Output "$($q[0]),$($q[1]): $($c.R),$($c.G),$($c.B)"}; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ranger_strip
+ succeeded in 1711ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_ranger_strip\hero_ranger_strip.png 2172x724
+0,0: 255,0,255
+100,100: 255,0,255
+1000,0: 255,0,255
+100,650: 255,0,255
+2000,600: 255,0,255
+
+codex
+[hero_ranger_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_ranger_strip/hero_ranger_strip.png) — 2172 × 724 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+21,948
+

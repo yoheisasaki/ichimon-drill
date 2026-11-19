@@ -1,0 +1,15 @@
+seconds=78
+rc=0
+[enemy_e_cactus.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_cactus/enemy_e_cactus.png) — 1312 × 1199 px
+
+\\exec-9277af70-7c9d-4cd4-a35e-24fb72a110ce.png' -Destination 'C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\enemy_e_cactus\\enemy_e_cactus.png'; Add-Type -AssemblyName System.Drawing; "'$img = [System.Drawing.Image]::FromFile('"'C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\enemy_e_cactus\\enemy_e_cactus.png'); try { Write-Output ("'$img.Width.ToString() + '"'x' + "'$img.Height.ToString()) } finally { $img.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_cactus
+ succeeded in 561ms:
+1312x1199
+
+codex
+[enemy_e_cactus.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_cactus/enemy_e_cactus.png) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+18,717
+

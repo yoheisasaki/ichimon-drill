@@ -1,0 +1,15 @@
+seconds=178
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_floatdevice\enemy_e_floatdevice.png](C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_floatdevice\enemy_e_floatdevice.png) — 1287 × 1222 px
+
+'.\\enemy_e_floatdevice.png').Path; [ExactMagentaBackground]::Fix("'$p); Move-Item -LiteralPath ($p+'"'.new') -Destination "'$p -Force; $im=[System.Drawing.Bitmap]::new($p); Write-Output ("{0}x{1} {2} {3}" -f $im.Width,$im.Height,$im.GetPixel(0,0).ToArgb().ToString('"'X8'),"'$im.GetPixel($im.Width-1,$im.Height-1).ToArgb().ToString('"'X8')); "'$im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_floatdevice
+ succeeded in 1638ms:
+1287x1222 FFFF00FF FFFF00FF
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_floatdevice\enemy_e_floatdevice.png](C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_floatdevice\enemy_e_floatdevice.png) — 1287 × 1222 px
+hook: Stop
+hook: Stop Completed
+tokens used
+22,093
+

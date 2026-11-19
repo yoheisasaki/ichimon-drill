@@ -1,0 +1,19 @@
+seconds=182
+rc=0
+[enemy_e_lampspirit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_lampspirit/enemy_e_lampspirit.png) — 1312 × 1199 px
+
+rosoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $p=Join-Path (Get-Location) '"'enemy_e_lampspirit.png'; "'$im=[System.Drawing.Bitmap]::new($p); Write-Output ('"'{0}x{1}' -f "'$im.Width,$im.Height); foreach($xy in @(@(0,0),@(($im.Width-1),0),@(0,($im.Height-1)),@(($im.Width-1),($im.Height-1)))) { $c=$im.GetPixel($xy[0],$xy[1]); Write-Output ('"'#{0:X2}{1:X2}{2:X2}' -f "'$c.R,$c.G,$c.B) }; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_lampspirit
+ succeeded in 519ms:
+1312x1199
+#FF00FF
+#FF00FF
+#FF00FF
+#FF00FF
+
+codex
+[enemy_e_lampspirit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_lampspirit/enemy_e_lampspirit.png) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+26,140
+

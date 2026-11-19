@@ -1,0 +1,26 @@
+seconds=183
+rc=0
+[enemy_e_gearspider.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_gearspider/enemy_e_gearspider.png) — 1536 × 1024 ピクセル
+
+FromArgb(255,0,255))
+    }
+  }
+}
+$tmp=Join-Path (Get-Location) '"'enemy_e_gearspider.tmp.png'
+"'$bmp.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png)
+$bmp.Dispose()
+Move-Item -LiteralPath $tmp -Destination '"'.\\enemy_e_gearspider.png' -Force
+"'$check=[System.Drawing.Bitmap]::FromFile((Resolve-Path '"'.\\enemy_e_gearspider.png'))
+"'$p=$check.GetPixel(0,0)
+'"'{0}x{1} #{2:X2}{3:X2}{4:X2}' -f "'$check.Width,$check.Height,$p.R,$p.G,$p.B
+$check.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_gearspider
+ succeeded in 8495ms:
+1536x1024 #FF00FF
+
+codex
+[enemy_e_gearspider.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_gearspider/enemy_e_gearspider.png) — 1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+21,646
+

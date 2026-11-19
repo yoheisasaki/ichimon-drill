@@ -1,0 +1,19 @@
+seconds=183
+rc=0
+[hero_magicknight.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_magicknight/hero_magicknight.png) — 1278 × 1230 ピクセル
+
+ 80){$b.SetPixel($x,$y,$mag)} }}; $b.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $b.Dispose(); $v=[System.Drawing.Bitmap]::new($dst); Write-Output $dst; Write-Output "$($v.Width)x$($v.Height)"; foreach($xy in @(@(0,0),@(100,100),@(1277,1229))){$c=$v.GetPixel($xy[0],$xy[1]); Write-Output "$($c.R),$($c.G),$($c.B)"}; $v.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight
+ succeeded in 7716ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight\hero_magicknight.png
+1278x1230
+255,0,255
+255,0,255
+255,0,255
+
+codex
+[hero_magicknight.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_magicknight/hero_magicknight.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+28,895
+

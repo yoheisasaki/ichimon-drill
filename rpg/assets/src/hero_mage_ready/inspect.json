@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_mage_ready/hero_mage_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  389,
+  379
+ ],
+ "out": "rpg/assets/chars/hero_mage_ready.png",
+ "out_size": [
+  91,
+  89
+ ],
+ "magenta_removed_px": 1492615,
+ "fringe_removed_px": 2773,
+ "magenta_left_px": 26,
+ "opaque_px": 4238,
+ "colors": 4042
+}

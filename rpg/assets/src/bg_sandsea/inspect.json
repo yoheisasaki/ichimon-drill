@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_sandsea/bg_sandsea.png",
+ "src_size": [
+  1774,
+  887
+ ],
+ "out": "rpg/assets/bg/bg_sandsea.png",
+ "out_size": [
+  480,
+  240
+ ],
+ "magenta_px": 0,
+ "colors": 44125
+}

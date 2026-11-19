@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\tools\fix06_reward.py", line 49, in <module>
+    chk('D03 sealed: line empty, total=base', i['line'] == '' and i['open'] and i['total'].replace(' ', '') == '合計' + i['base'], i)
+                                                                                                               ~~~~~~~^~~~~~~~~~~
+TypeError: can only concatenate str (not "NoneType") to str

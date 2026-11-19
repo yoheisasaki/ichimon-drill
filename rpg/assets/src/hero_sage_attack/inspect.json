@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_attack/hero_sage_attack.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  470,
+  340
+ ],
+ "out": "rpg/assets/chars/hero_sage_attack.png",
+ "out_size": [
+  120,
+  87
+ ],
+ "magenta_removed_px": 1490092,
+ "fringe_removed_px": 1551,
+ "magenta_left_px": 2,
+ "opaque_px": 5316,
+ "colors": 5019
+}

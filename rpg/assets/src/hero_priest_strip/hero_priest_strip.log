@@ -1,0 +1,15 @@
+seconds=71
+rc=0
+[hero_priest_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_priest_strip/hero_priest_strip.png) — 1278 × 1230 ピクセル
+
+ser\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command "Copy-Item -LiteralPath 'C:\\Users\\user\\.codex\\generated_images\\01a1ece8-c3bc-76c2-9421-a9cc49934ab7\\exec-985f9f4a-ac69-40f5-8085-ca43537af5fa.png' -Destination '.\\hero_priest_strip.png'; Add-Type -AssemblyName System.Drawing; "'$img=[System.Drawing.Image]::FromFile((Resolve-Path '"'.\\hero_priest_strip.png')); try { Write-Output ('{0}x{1}' -f "'$img.Width,$img.Height) } finally { $img.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_priest_strip
+ succeeded in 434ms:
+1278x1230
+
+codex
+[hero_priest_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_priest_strip/hero_priest_strip.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+18,113
+

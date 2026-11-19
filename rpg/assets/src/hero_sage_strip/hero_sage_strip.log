@@ -1,0 +1,15 @@
+seconds=141
+rc=0
+[hero_sage_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_sage_strip/hero_sage_strip.png) — 1312 × 1199 ピクセル
+
+0 -and $red -gt ($green*1.5) -and $blue -gt ($green*1.5)){$bytes[$i]=255;$bytes[$i+1]=0;$bytes[$i+2]=255;$bytes[$i+3]=255;$n++}}; [Runtime.InteropServices.Marshal]::Copy($bytes,0,$data.Scan0,$bytes.Length); $b.UnlockBits($data); $b.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$dst $($b.Width)x$($b.Height) replaced=$n"; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_sage_strip
+ succeeded in 10582ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_sage_strip\hero_sage_strip.png 1312x1199 replaced=1093439
+
+codex
+[hero_sage_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_sage_strip/hero_sage_strip.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+26,641
+

@@ -1,0 +1,16 @@
+seconds=114
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight\hero_skyknight.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_skyknight/hero_skyknight.png) — 1278 × 1230 px
+
+stem.Drawing.Imaging.ImageFormat]::Png) } finally { $bmp.Dispose() }; Move-Item -LiteralPath $tmp -Destination $p -Force; Write-Output ('"'{0} pixels normalized' -f "'$n); $check=[System.Drawing.Bitmap]::FromFile($p); try { Write-Output ('"'{0}x{1} {2}' -f "'$check.Width,$check.Height,$check.GetPixel(0,0).ToArgb().ToString('"'X8')) } finally { "'$check.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight
+ succeeded in 8327ms:
+1226188 pixels normalized
+1278x1230 FFFF00FF
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_skyknight\hero_skyknight.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_skyknight/hero_skyknight.png) — 1278 × 1230 px
+hook: Stop
+hook: Stop Completed
+tokens used
+21,593
+

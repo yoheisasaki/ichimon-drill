@@ -1,0 +1,16 @@
+seconds=99
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icicle\enemy_e_icicle.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_icicle/enemy_e_icicle.png) — 1536 × 1024 ピクセル
+
+cicle.png' -Force; Add-Type -AssemblyName System.Drawing; "'$img = [System.Drawing.Image]::FromFile((Resolve-Path '"'.\\enemy_e_icicle.png').Path); try { Write-Output ((Resolve-Path '.\\enemy_e_icicle.png').Path); Write-Output ('{0} x {1}' -f "'$img.Width,$img.Height) } finally { $img.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icicle
+ succeeded in 476ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icicle\enemy_e_icicle.png
+1536 x 1024
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_icicle\enemy_e_icicle.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_icicle/enemy_e_icicle.png) — 1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+17,183
+

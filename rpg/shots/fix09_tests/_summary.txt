@@ -1,0 +1,19 @@
+node run 0
+node meta 0
+node reward 0
+node stage3 0
+node hero 0
+py ui_test 0
+py ui_test2 0
+py ui_test3 1
+py ui_test4 0
+py ui_test_map 1
+py ui_test_fx 0
+py ui_test_text 0
+py ui_test_hero 1
+fix06_reward 1
+fix07_screens 0
+regress 1
+ruby 0
+contrast 0
+DONE

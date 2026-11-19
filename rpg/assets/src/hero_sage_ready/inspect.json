@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_ready/hero_sage_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  387,
+  332
+ ],
+ "out": "rpg/assets/chars/hero_sage_ready.png",
+ "out_size": [
+  99,
+  85
+ ],
+ "magenta_removed_px": 1498084,
+ "fringe_removed_px": 1184,
+ "magenta_left_px": 1,
+ "opaque_px": 4839,
+ "colors": 4587
+}

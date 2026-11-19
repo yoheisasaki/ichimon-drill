@@ -1,0 +1,15 @@
+seconds=140
+rc=0
+[chest_boss_closed.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_boss_closed/chest_boss_closed.png>) — 1430 × 1100 ピクセル
+
+g=[System.Drawing.Color]::FromArgb(255,0,255); for($y=0;$y -lt $bmp.Height;$y++){for($x=0;$x -lt $bmp.Width;$x++){$c=$bmp.GetPixel($x,$y); if($c.R -ge 180 -and $c.G -le 90 -and $c.B -ge 170){$bmp.SetPixel($x,$y,$mag)}}}; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output ('"'{0} {1}x{2}' -f "'$dst,$bmp.Width,$bmp.Height); $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_boss_closed
+ succeeded in 5469ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_boss_closed\chest_boss_closed.png 1430x1100
+
+codex
+[chest_boss_closed.png](</C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_boss_closed/chest_boss_closed.png>) — 1430 × 1100 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+22,240
+

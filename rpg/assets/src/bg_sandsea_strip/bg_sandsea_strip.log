@@ -1,0 +1,24 @@
+seconds=153
+rc=0
+[bg_sandsea_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_sandsea_strip/bg_sandsea_strip.png) — 2048 × 228 px
+
+stem.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
+$g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::Half
+$g.DrawImage($im,0,0,2048,228)
+$g.Dispose()
+$out.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png)
+$out.Dispose()
+$im.Dispose()
+$check=[System.Drawing.Image]::FromFile($dst)
+Write-Output "$dst $($check.Width)x$($check.Height)"
+$check.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_sandsea_strip
+ succeeded in 793ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_sandsea_strip\bg_sandsea_strip.png 2048x228
+
+codex
+[bg_sandsea_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_sandsea_strip/bg_sandsea_strip.png) — 2048 × 228 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,693
+

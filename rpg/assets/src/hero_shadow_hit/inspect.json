@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_hit/hero_shadow_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  358,
+  375
+ ],
+ "out": "rpg/assets/chars/hero_shadow_hit.png",
+ "out_size": [
+  87,
+  91
+ ],
+ "magenta_removed_px": 1507977,
+ "fringe_removed_px": 1147,
+ "magenta_left_px": 0,
+ "opaque_px": 3763,
+ "colors": 3523
+}

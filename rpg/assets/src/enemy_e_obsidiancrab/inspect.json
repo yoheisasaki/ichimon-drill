@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_obsidiancrab/enemy_e_obsidiancrab.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  452,
+  317
+ ],
+ "out": "rpg/assets/chars/enemy_e_obsidiancrab.png",
+ "out_size": [
+  137,
+  96
+ ],
+ "magenta_removed_px": 174768,
+ "fringe_removed_px": 1050,
+ "magenta_left_px": 0,
+ "opaque_px": 7925,
+ "colors": 7105
+}

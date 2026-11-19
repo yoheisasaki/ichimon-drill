@@ -1,0 +1,15 @@
+seconds=196
+rc=0
+[hero_warrior_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_strip/hero_warrior_strip.png) — 1774 × 887 ピクセル
+
+-Path (Get-Location) '"'hero_warrior_strip.png'; "'$im=[System.Drawing.Bitmap]::new($p); $points=@(@(0,0),@(($im.Width-1),0),@(0,($im.Height-1)),@(($im.Width-1),($im.Height-1))); $colors=foreach($pt in $points){$c=$im.GetPixel($pt[0],$pt[1]); '"'{0:X2}{1:X2}{2:X2}' -f "'$c.R,$c.G,$c.B}; Write-Output "exists=$([IO.File]::Exists($p)) size=$($im.Width)x$($im.Height) corners=$($colors -join '"',')\"; "'$im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_warrior_strip
+ succeeded in 527ms:
+exists=True size=1774x887 corners=FF00FF,FF00FF,FF00FF,FF00FF
+
+codex
+[hero_warrior_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_strip/hero_warrior_strip.png) — 1774 × 887 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+18,950
+

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_magicknight_strip_attack/hero_magicknight_strip_attack.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  547,
+  393
+ ],
+ "out": "rpg/assets/chars/hero_magicknight_strip_attack.png",
+ "out_size": [
+  33,
+  24
+ ],
+ "magenta_removed_px": 1467868,
+ "fringe_removed_px": 1195,
+ "magenta_left_px": 0,
+ "opaque_px": 385,
+ "colors": 373
+}

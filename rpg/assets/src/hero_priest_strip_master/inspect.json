@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_priest_strip_master/hero_priest_strip_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  434,
+  553
+ ],
+ "out": "rpg/assets/chars/hero_priest_strip_master.png",
+ "out_size": [
+  22,
+  28
+ ],
+ "magenta_removed_px": 1399136,
+ "fringe_removed_px": 2345,
+ "magenta_left_px": 0,
+ "opaque_px": 443,
+ "colors": 433
+}

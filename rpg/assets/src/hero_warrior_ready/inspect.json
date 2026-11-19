@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_ready/hero_warrior_ready.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  435,
+  360
+ ],
+ "out": "rpg/assets/chars/hero_warrior_ready.png",
+ "out_size": [
+  103,
+  85
+ ],
+ "magenta_removed_px": 1497855,
+ "fringe_removed_px": 1224,
+ "magenta_left_px": 0,
+ "opaque_px": 4120,
+ "colors": 3819
+}

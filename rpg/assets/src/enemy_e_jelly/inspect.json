@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_jelly/enemy_e_jelly.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  782,
+  811
+ ],
+ "out": "rpg/assets/chars/enemy_e_jelly.png",
+ "out_size": [
+  54,
+  56
+ ],
+ "magenta_removed_px": 1143060,
+ "fringe_removed_px": 1443,
+ "magenta_left_px": 0,
+ "opaque_px": 2046,
+ "colors": 1442
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_sage_strip_walk/hero_sage_strip_walk.png",
+ "src_size": [
+  1240,
+  1269
+ ],
+ "trim_size": [
+  388,
+  520
+ ],
+ "out": "rpg/assets/chars/hero_sage_strip_walk.png",
+ "out_size": [
+  22,
+  29
+ ],
+ "magenta_removed_px": 1447504,
+ "fringe_removed_px": 2171,
+ "magenta_left_px": 0,
+ "opaque_px": 397,
+ "colors": 370
+}

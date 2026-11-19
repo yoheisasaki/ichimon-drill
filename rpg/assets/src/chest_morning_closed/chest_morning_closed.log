@@ -1,0 +1,15 @@
+seconds=136
+rc=0
+[chest_morning_closed.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_morning_closed/chest_morning_closed.png) — 1430 × 1100 ピクセル
+
+xel($x,$y); if($c.R -gt 170 -and $c.B -gt 170 -and $c.G -lt 125 -and ($c.R-$c.G) -gt 100 -and ($c.B-$c.G) -gt 100){$bmp.SetPixel($x,$y,$mag)} }}; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$dst $($bmp.Width)x$($bmp.Height) corner=$($bmp.GetPixel(0,0).ToArgb().ToString('"'X8'))\"; "'$bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_morning_closed
+ succeeded in 6532ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_morning_closed\chest_morning_closed.png 1430x1100 corner=FFFF00FF
+
+codex
+[chest_morning_closed.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_morning_closed/chest_morning_closed.png) — 1430 × 1100 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+25,686
+

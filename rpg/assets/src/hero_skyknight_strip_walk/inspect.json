@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_skyknight_strip_walk/hero_skyknight_strip_walk.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  323,
+  491
+ ],
+ "out": "rpg/assets/chars/hero_skyknight_strip_walk.png",
+ "out_size": [
+  18,
+  28
+ ],
+ "magenta_removed_px": 1477555,
+ "fringe_removed_px": 1635,
+ "magenta_left_px": 0,
+ "opaque_px": 292,
+ "colors": 291
+}

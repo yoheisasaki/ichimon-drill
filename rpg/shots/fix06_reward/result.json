@@ -1,0 +1,257 @@
+{
+ "checks": {
+  "D01 victory caption": {
+   "ok": true,
+   "v": "はっぱスライムを倒した！"
+  },
+  "D01 no chest in scene canvas / one card only": {
+   "ok": true,
+   "v": {
+    "outcome": "victory",
+    "cap": "はっぱスライムを倒した！",
+    "drops": 1,
+    "chestCanvases": 2,
+    "total": "合計 +295",
+    "base": "+295",
+    "line": "",
+    "lineHidden": true,
+    "open": true,
+    "btnSame": true,
+    "hscroll": false,
+    "html": true,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D03 sealed: line empty, total=base": {
+   "ok": true,
+   "v": {
+    "outcome": "victory",
+    "cap": "はっぱスライムを倒した！",
+    "drops": 1,
+    "chestCanvases": 2,
+    "total": "合計 +295",
+    "base": "+295",
+    "line": "",
+    "lineHidden": true,
+    "open": true,
+    "btnSame": true,
+    "hscroll": false,
+    "html": true,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D10 buttons same style": true,
+  "D03 coins saved = base only": {
+   "ok": true,
+   "v": [
+    295,
+    "+295"
+   ]
+  },
+  "D04 formula matches": {
+   "ok": true,
+   "v": [
+    "学習・討伐295＋宝箱40＝合計335",
+    335
+   ]
+  },
+  "D04 opened line shown & saved": {
+   "ok": true,
+   "v": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！"
+  },
+  "home no chestbox when none sealed": true,
+  "D06 home shows sealed chest entry": true,
+  "D06 after reload still sealed": true,
+  "D06 later open grants once": true,
+  "D06 no entry after reload": true,
+  "D01 continue caption": {
+   "ok": true,
+   "v": "今日はここまで。続きから挑めます"
+  },
+  "D01 continue one card, sealed": {
+   "ok": true,
+   "v": {
+    "outcome": "continue",
+    "cap": "今日はここまで。続きから挑めます",
+    "drops": 1,
+    "chestCanvases": 2,
+    "total": "合計 +280",
+    "base": "+280",
+    "line": "",
+    "lineHidden": true,
+    "open": true,
+    "btnSame": true,
+    "hscroll": false,
+    "html": true,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D01 retreat caption": {
+   "ok": true,
+   "v": "街に戻りました。取り組んだ分の報酬を受け取ろう"
+  },
+  "D01 retreat one card": {
+   "ok": true,
+   "v": {
+    "outcome": "retreat",
+    "cap": "街に戻りました。取り組んだ分の報酬を受け取ろう",
+    "drops": 1,
+    "chestCanvases": 2,
+    "total": "合計 +280",
+    "base": "+280",
+    "line": "",
+    "lineHidden": true,
+    "open": true,
+    "btnSame": true,
+    "hscroll": false,
+    "html": true,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D02 third has no chest card/area": {
+   "ok": true,
+   "v": {
+    "outcome": "victory",
+    "cap": "はっぱスライムを倒した！",
+    "drops": 0,
+    "chestCanvases": 1,
+    "total": "合計 +235",
+    "base": "+235",
+    "line": null,
+    "lineHidden": null,
+    "open": false,
+    "btnSame": true,
+    "hscroll": false,
+    "html": false,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D10 third buttons same": true,
+  "D10 more starts next 10 only on tap": true,
+  "D10 end without opening ok (chest stays sealed)": true,
+  "D02 second adventure has closed chest": {
+   "ok": true,
+   "v": {
+    "outcome": "continue",
+    "cap": "今日はここまで。続きから挑めます",
+    "drops": 1,
+    "chestCanvases": 2,
+    "total": "合計 +120",
+    "base": "+120",
+    "line": "",
+    "lineHidden": true,
+    "open": true,
+    "btnSame": true,
+    "hscroll": false,
+    "html": true,
+    "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+    "endVisible": true
+   }
+  },
+  "D06 two sealed chests kept": true,
+  "D07 rapid click: opened once, others still sealed": {
+   "ok": true,
+   "v": [
+    "sealed",
+    "opened"
+   ]
+  },
+  "320px: no hscroll, buttons reachable": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "bottom": 562,
+    "vh": 640
+   }
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "victory_unopened": {
+  "outcome": "victory",
+  "cap": "はっぱスライムを倒した！",
+  "drops": 1,
+  "chestCanvases": 2,
+  "total": "合計 +295",
+  "base": "+295",
+  "line": "",
+  "lineHidden": true,
+  "open": true,
+  "btnSame": true,
+  "hscroll": false,
+  "html": true,
+  "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+  "endVisible": true
+ },
+ "victory_opened": {
+  "outcome": "victory",
+  "cap": "はっぱスライムを倒した！",
+  "drops": 1,
+  "chestCanvases": 2,
+  "total": "学習・討伐295＋宝箱40＝合計335",
+  "base": "+295",
+  "line": "コイン +40 と ランクIの鉱石 ×2 を手に入れた！",
+  "lineHidden": false,
+  "open": false,
+  "btnSame": true,
+  "hscroll": false,
+  "html": true,
+  "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+  "endVisible": true
+ },
+ "continue": {
+  "outcome": "continue",
+  "cap": "今日はここまで。続きから挑めます",
+  "drops": 1,
+  "chestCanvases": 2,
+  "total": "合計 +280",
+  "base": "+280",
+  "line": "",
+  "lineHidden": true,
+  "open": true,
+  "btnSame": true,
+  "hscroll": false,
+  "html": true,
+  "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+  "endVisible": true
+ },
+ "retreat": {
+  "outcome": "retreat",
+  "cap": "街に戻りました。取り組んだ分の報酬を受け取ろう",
+  "drops": 1,
+  "chestCanvases": 2,
+  "total": "合計 +280",
+  "base": "+280",
+  "line": "",
+  "lineHidden": true,
+  "open": true,
+  "btnSame": true,
+  "hscroll": false,
+  "html": true,
+  "order": "rw-title,rw-place,rw-scene,rw-panel,rw-drop,rw-btns,rw-link",
+  "endVisible": true
+ },
+ "third": {
+  "outcome": "victory",
+  "cap": "はっぱスライムを倒した！",
+  "drops": 0,
+  "chestCanvases": 1,
+  "total": "合計 +235",
+  "base": "+235",
+  "line": null,
+  "lineHidden": null,
+  "open": false,
+  "btnSame": true,
+  "hscroll": false,
+  "html": false,
+  "order": "rw-title,rw-place,rw-scene,rw-panel,rw-btns,rw-link",
+  "endVisible": true
+ },
+ "pass": 24,
+ "fail": []
+}

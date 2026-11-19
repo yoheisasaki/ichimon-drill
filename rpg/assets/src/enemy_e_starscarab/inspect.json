@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_starscarab/enemy_e_starscarab.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  420,
+  281
+ ],
+ "out": "rpg/assets/chars/enemy_e_starscarab.png",
+ "out_size": [
+  143,
+  96
+ ],
+ "magenta_removed_px": 184362,
+ "fringe_removed_px": 926,
+ "magenta_left_px": 0,
+ "opaque_px": 8933,
+ "colors": 7749
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_starjelly/enemy_e_starjelly.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  855,
+  846
+ ],
+ "out": "rpg/assets/chars/enemy_e_starjelly.png",
+ "out_size": [
+  57,
+  56
+ ],
+ "magenta_removed_px": 1086060,
+ "fringe_removed_px": 2895,
+ "magenta_left_px": 0,
+ "opaque_px": 2133,
+ "colors": 1222
+}

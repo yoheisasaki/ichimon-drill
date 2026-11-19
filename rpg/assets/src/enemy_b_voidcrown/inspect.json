@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_voidcrown/enemy_b_voidcrown.png",
+ "src_size": [
+  518,
+  483
+ ],
+ "trim_size": [
+  498,
+  461
+ ],
+ "out": "rpg/assets/chars/enemy_b_voidcrown.png",
+ "out_size": [
+  207,
+  192
+ ],
+ "magenta_removed_px": 128951,
+ "fringe_removed_px": 6657,
+ "magenta_left_px": 302,
+ "opaque_px": 19869,
+ "colors": 16001
+}

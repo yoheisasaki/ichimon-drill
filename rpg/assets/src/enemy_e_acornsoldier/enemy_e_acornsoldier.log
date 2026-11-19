@@ -1,0 +1,20 @@
+seconds=139
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_acornsoldier\enemy_e_acornsoldier.png](<C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_acornsoldier/enemy_e_acornsoldier.png>) — 1312 × 1199 ピクセル
+
+@($($im.Width-1),0),@(0,$($im.Height-1)),@($($im.Width-1),$($im.Height-1)),@([int]($im.Width/2),0)) | ForEach-Object { $c=$im.GetPixel($_[0],$_[1]); Write-Output "$($c.R),$($c.G),$($c.B)" }; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_acornsoldier
+ succeeded in 1535ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_acornsoldier\enemy_e_acornsoldier.png 1312x1199
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_acornsoldier\enemy_e_acornsoldier.png](<C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_acornsoldier/enemy_e_acornsoldier.png>) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+24,530
+

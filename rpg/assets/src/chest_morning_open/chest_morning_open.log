@@ -1,0 +1,24 @@
+seconds=138
+rc=0
+[chest_morning_open.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_morning_open/chest_morning_open.png) — 1430 × 1100 ピクセル
+
+.png'
+"'$target = Join-Path (Get-Location) '"'chest_morning_open.png'
+"'$count = [CleanBackground]::Run($source, $target)
+$b = [System.Drawing.Bitmap]::new($target)
+Write-Output "Saved: $target"
+Write-Output "Size: $($b.Width)x$($b.Height)"
+Write-Output "Background pixels normalized: $count"
+$b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_morning_open
+ succeeded in 1373ms:
+Saved: C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\chest_morning_open\chest_morning_open.png
+Size: 1430x1100
+Background pixels normalized: 1036377
+
+codex
+[chest_morning_open.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/chest_morning_open/chest_morning_open.png) — 1430 × 1100 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+27,703
+

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_crownguardian/enemy_e_crownguardian.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  428,
+  411
+ ],
+ "out": "rpg/assets/chars/enemy_e_crownguardian.png",
+ "out_size": [
+  100,
+  96
+ ],
+ "magenta_removed_px": 136412,
+ "fringe_removed_px": 1038,
+ "magenta_left_px": 17,
+ "opaque_px": 6808,
+ "colors": 6286
+}

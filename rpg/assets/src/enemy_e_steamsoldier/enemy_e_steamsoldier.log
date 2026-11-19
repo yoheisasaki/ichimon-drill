@@ -1,0 +1,24 @@
+seconds=182
+rc=0
+[enemy_e_steamsoldier.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_steamsoldier/enemy_e_steamsoldier.png) — 1254 × 1254 px
+
+)
+            bitmap.SetPixel(x, y, magenta);
+        }
+      bitmap.Save(dst, ImageFormat.Png);
+    }
+  }
+}
+'@; [MagentaBackdrop]::Save("'$src, $dst); $bmp = [System.Drawing.Bitmap]::new($dst); Write-Output $dst; Write-Output "$($bmp.Width)x$($bmp.Height)"; $c=$bmp.GetPixel(0,0); Write-Output "$($c.R),$($c.G),$($c.B)"; $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_steamsoldier
+ succeeded in 1512ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_steamsoldier\enemy_e_steamsoldier.png
+1254x1254
+255,0,255
+
+codex
+[enemy_e_steamsoldier.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_steamsoldier/enemy_e_steamsoldier.png) — 1254 × 1254 px
+hook: Stop
+hook: Stop Completed
+tokens used
+26,089
+

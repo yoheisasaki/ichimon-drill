@@ -75,6 +75,7 @@ function mapLabel(q) {
 
 // ---------- 画面：最初 ----------
 function home() {
+  app.className = ''; if (window.RPG) RPG.unmount();
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
   if (filter !== '全部' && filter !== 'ちず' && filter !== 'かく' && !subs.includes(filter)) filter = '全部';
@@ -83,27 +84,61 @@ function home() {
     gs = groupsOf(filter);
     units[filter] = (units[filter] || []).filter(g => gs.includes(g));
   }
+  const rpgOn = !!(window.RPG && RPG.ok);   // ぼうけんが動いているとき：主人公と開始ボタンを先に、教科カードは「学習範囲の変更」の中へ
   const card = (label, list, cls, key) => {
     const c = counts(list);
-    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
+    return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${rpgOn ? `${ruby('{復習|ふくしゅう}')} ${c.hard}${ruby('{個|こ}')} ／ ${ruby('{覚|おぼ}')}えた ${c.ok}${ruby('{個|こ}')}<br>${ruby('{全部|ぜんぶ}')} ${c.all}${ruby('{個|こ}')}` : `${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ`}</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id)), tp = pickPool();
-  app.innerHTML = `
+  const rangeOpen = !!window.__rangeOpen;
+  const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
+    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
+  const goLabel = `スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）`;
+  const hardLabel = `${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）`;
+  const nowTxt = rpgOn && RPG.homeNow ? RPG.homeNow() : '';
+  const note = rpgOn && RPG.progressNote ? RPG.progressNote() : null;
+  const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span></button>${nowTxt ? `<div class="rs-contline">${ruby('{続|つづ}き')}：${nowTxt}${note ? `　<span>${ruby('{冒険|ぼうけん}')}の${ruby('{途中|とちゅう}')} ${note.n} / ${note.unit}</span>` : ''}</div>` : ''}` : `<button class="big go" id="go">${goLabel}</button>`;
+  const hardHtml = rpgOn ? `<button class="big hard rs-hardrow" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}')}：${hard.length}${ruby('{項目|こうもく}')}<span class="rs-chg">${ruby('{復習|ふくしゅう}する')}</span></button>` : `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
+  const testHtml = tp.length ? (rpgOn ? `<button class="big test" id="testp">${ruby('{今回|こんかい}のテスト{対策|たいさく}')}（${tp.length}${ruby('{個|こ}')}）</button>` : `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>`) : '';
+  const startHtml = goHtml + testHtml + hardHtml;
+  const unitN = (units[filter] || []).length;
+  const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
+  const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
+  app.innerHTML = rpgOn ? `
+    <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    ${RPG.homeTop()}
+    ${RPG.homeBonus()}
+    ${goHtml}${testHtml}
+    <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
+      <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
+      ${hardHtml}</div>
+    <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
+    </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
     ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
-    <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
-    ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
-    <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
-    ${tp.length ? `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>` : ''}
-    <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}こ）</button>
-    <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
-  app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
+    ${window.RPG ? RPG.homeTop() : ''}
+    ${subjectsHtml}
+    ${startHtml}
+    ${window.RPG ? RPG.homeHtml() : ''}
+    <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
+    ${window.RPG ? RPG.navHtml('home') : ''}`;
+  if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
+  app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
-    const g = b.dataset.g, cur = units[filter] || [];
+    window.__rangeOpen = true; const g = b.dataset.g, cur = units[filter] || [];
     units[filter] = !g ? [] : cur.includes(g) ? cur.filter(x => x !== g) : cur.concat(g);
     saveSel(); home();
   });
+  const rd = app.querySelector('.rs-range');
+  if (rd) {   // 範囲の変更は詳細シート：「範囲を変える」「範囲：…変更」で開き、「とじる」・背景・Escで閉じる
+    const setO = v => { rd.open = v; window.__rangeOpen = v; };
+    rd.ontoggle = () => { window.__rangeOpen = rd.open; };
+    const rb0 = document.getElementById('rsRangeBtn'); if (rb0) rb0.onclick = () => setO(true);
+    const rx = document.getElementById('rsRangeX'); if (rx) rx.onclick = e => { e.preventDefault(); setO(false); };
+    const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
+  }
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
   const tb = document.getElementById('testp');
@@ -111,10 +146,24 @@ function home() {
 }
 
 // ---------- 回 ----------
-function start(list, from) {
-  if (!list.length) return home();
-  S = { from: from || '',  sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), skips: 0, seen: new Set(), locked: false, timer: null };
+function start(list, from, opts) {
+  // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
+  let pre = { list, reviews: [], reask: 0, rpg: false };
+  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
+  list = pre.list;
+  if (!list.length && !pre.reviews.length) return home();
+  S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), locked: false, timer: null };
   question();
+}
+// 間違えた問題を3問あとにもう一度（1回の延長は最大5問）。ぼうけん中は冒険単位で数える
+function reask(q) {
+  if (S.reask >= REASK_MAX) return;
+  if (S.rpg && !RPG.queueReview(q, S)) return;
+  S.reask++;
+  const at = Math.min(S.idx + REASK_GAP, S.queue.length);
+  let w = q;
+  if (S.rpg) { w = Object.create(q); w._rv = { origin: q._rv ? q._rv.origin : S.lastOrigin }; }
+  S.queue.splice(at, 0, w);
 }
 function question() {
   const q = S.queue[S.idx];
@@ -135,7 +184,10 @@ function question() {
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
-    <div class="score">せいかい ${S.correct}こ</div>`;
+    <div class="score">せいかい ${S.correct}こ</div>
+    ${window.RPG ? RPG.stripHtml(S) : ''}`;
+  app.className = S.rpg ? 'inq' : '';
+  if (window.RPG) RPG.mount();
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
@@ -175,7 +227,7 @@ function answerInput(text) {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     inp.classList.add('ng');
-    if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
+    reask(q);
     nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>' + expHtml(q);
     S.timer = setTimeout(waitTap, 1100);
   }
@@ -198,7 +250,7 @@ function answer(i) {
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
-    if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
+    reask(q);
     document.getElementById('next').innerHTML = expHtml(q);
     S.timer = setTimeout(waitTap, 1100);
   }
@@ -213,16 +265,29 @@ function advance() {
 // ---------- 画面：おわり ----------
 function result() {
   flush();
+  app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
-  app.innerHTML = `
+  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>${S.rpg ? ruby('{間違|まちが}えた{問題|もんだい}') : 'まちがえた もんだい'}</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b>${q.exp ? `<span class="wexp">${ruby(q.exp)}</span>` : ''}</div>`).join('')}</div>` : '';
+  const rg = window.RPG ? RPG.afterSession(S) : null;
+  const rh = rg && rg.settled ? RPG.rewardHtml(rg.res, S, wrongHtml + '<button class="rw-btn alt" id="again">' + ruby('{間違|まちが}えたのだけもう1回') + '</button>', S.wrong.length > 0) : null;
+  if (rh) {
+    app.innerHTML = rh;
+    RPG.bindReward(rg.res);
+    window.scrollTo(0, 0);
+  } else {
+    app.innerHTML = `
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
+    ${rg && !rg.settled ? `<div class="rpg-note">${ruby('{今回|こんかい}')} ${S.total}${ruby('{問|もん}')} ／ ${ruby('{冒険|ぼうけん}')} ${rg.n} / ${rg.unit}（${ruby('{続|つづ}きは{次|つぎ}のスタートで')}）</div>` : ''}
     ${S.skips ? `<div class="skipcount">わかんない ${S.skips}こ</div>` : ''}
-    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b>${q.exp ? `<span class="wexp">${ruby(q.exp)}</span>` : ''}</div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
-    <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
+    ${S.wrong.length ? wrongHtml : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
+    <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>${S.rpg ? ruby('{間違|まちが}えたのだけもう1回') : 'まちがえたのだけ もう1回'}</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
-  document.getElementById('again').onclick = () => start(shuffle(S.wrong), S.from);
+  }
+  window.__again = () => start(shuffle(S.wrong), S.from, { manual: true });
+  const again = document.getElementById('again');
+  if (again) again.onclick = () => start(shuffle(S.wrong), S.from, { manual: true });
   document.getElementById('more').onclick = () => {
     const p = S.from === 'pick' ? pickPool() : pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
     start(pick(fresh.length >= 3 ? fresh : p, ROUND), S.from);
@@ -244,6 +309,7 @@ function record(q, ok, picked, skipped) {
   if (skipped) row.skip = 1;
   queue.rows.push(row);
   save(LS_Q, queue);
+  if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
 }
 let sending = false;
 function post(rows, mode) {

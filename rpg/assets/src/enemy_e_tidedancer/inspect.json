@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_tidedancer/enemy_e_tidedancer.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  409,
+  380
+ ],
+ "out": "rpg/assets/chars/enemy_e_tidedancer.png",
+ "out_size": [
+  103,
+  96
+ ],
+ "magenta_removed_px": 167623,
+ "fringe_removed_px": 1937,
+ "magenta_left_px": 0,
+ "opaque_px": 5927,
+ "colors": 5428
+}

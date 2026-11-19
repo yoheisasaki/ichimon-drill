@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_starseer/hero_starseer.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  724,
+  868
+ ],
+ "out": "rpg/assets/chars/hero_starseer.png",
+ "out_size": [
+  80,
+  96
+ ],
+ "magenta_removed_px": 1213651,
+ "fringe_removed_px": 2509,
+ "magenta_left_px": 0,
+ "opaque_px": 4322,
+ "colors": 3509
+}

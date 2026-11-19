@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_gearcity_strip/bg_gearcity_strip.png",
+ "src_size": [
+  2160,
+  240
+ ],
+ "out": "rpg/assets/bg/bg_gearcity_strip.png",
+ "out_size": [
+  390,
+  44
+ ],
+ "magenta_px": 0,
+ "colors": 12758
+}

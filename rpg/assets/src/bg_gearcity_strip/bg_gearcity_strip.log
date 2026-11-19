@@ -1,0 +1,15 @@
+seconds=165
+rc=0
+[bg_gearcity_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_gearcity_strip/bg_gearcity_strip.png) — 2160 × 240 px
+
+g.Drawing2D.InterpolationMode]::NearestNeighbor; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::Half; $g.DrawImage($src,0,0,2160,240); $g.Dispose(); $src.Dispose(); $dst.Save((Join-Path (Get-Location) '"'bg_gearcity_strip.png'),[System.Drawing.Imaging.ImageFormat]::Png); "'$dst.Dispose(); $verify=[System.Drawing.Bitmap]::FromFile((Join-Path (Get-Location) '"'bg_gearcity_strip.png')); Write-Output \""'$($verify.Width)x$($verify.Height)"; $verify.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\bg_gearcity_strip
+ succeeded in 581ms:
+2160x240
+
+codex
+[bg_gearcity_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/bg_gearcity_strip/bg_gearcity_strip.png) — 2160 × 240 px
+hook: Stop
+hook: Stop Completed
+tokens used
+29,331
+

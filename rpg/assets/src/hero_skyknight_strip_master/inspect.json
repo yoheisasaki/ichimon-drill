@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_skyknight_strip_master/hero_skyknight_strip_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  355,
+  503
+ ],
+ "out": "rpg/assets/chars/hero_skyknight_strip_master.png",
+ "out_size": [
+  20,
+  28
+ ],
+ "magenta_removed_px": 1462332,
+ "fringe_removed_px": 1570,
+ "magenta_left_px": 0,
+ "opaque_px": 342,
+ "colors": 341
+}

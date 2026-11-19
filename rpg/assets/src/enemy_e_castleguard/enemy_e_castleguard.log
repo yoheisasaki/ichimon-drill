@@ -1,0 +1,15 @@
+seconds=143
+rc=0
+[enemy_e_castleguard.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_castleguard/enemy_e_castleguard.png) — 1199 × 1312 ピクセル
+
+s[$i+3]=255;$changed++}}; [Runtime.InteropServices.Marshal]::Copy($bytes,0,$data.Scan0,$count); $img.UnlockBits($data); $img.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output "$dst $($img.Width)x$($img.Height) changed=$changed corner=$($img.GetPixel(0,0).ToArgb().ToString('"'X8'))\"; "'$img.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_castleguard
+ succeeded in 11238ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_castleguard\enemy_e_castleguard.png 1199x1312 changed=841611 corner=FFFF00FF
+
+codex
+[enemy_e_castleguard.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_castleguard/enemy_e_castleguard.png) — 1199 × 1312 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+48,187
+

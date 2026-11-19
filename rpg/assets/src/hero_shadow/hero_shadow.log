@@ -1,0 +1,23 @@
+seconds=193
+rc=0
+[hero_shadow.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow/hero_shadow.png) — 1278 × 1230 px
+
+r\\.Codex\\generated_images\\01a1ecf5-b8e0-7192-9d25-197a479c6f25\\exec-eba80797-f8d7-4acb-89bd-b779c945e62b.png'
+"'$outputImage = '"'C:\\Users\\user\\projects\\ichimon-drill\\.worktrees\\rpg\\rpg\\assets\\src\\hero_shadow\\hero_shadow.png'
+[PixelFinish]::Save("'$inputImage, $outputImage)
+$finished = [System.Drawing.Bitmap]::new($outputImage)
+Write-Output "$($finished.Width)x$($finished.Height)"
+$c = $finished.GetPixel(0,0)
+Write-Output "$($c.R),$($c.G),$($c.B)"
+$finished.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_shadow
+ succeeded in 733ms:
+1278x1230
+255,0,255
+
+codex
+[hero_shadow.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_shadow/hero_shadow.png) — 1278 × 1230 px
+hook: Stop
+hook: Stop Completed
+tokens used
+27,233
+

@@ -1,0 +1,22 @@
+seconds=196
+rc=0
+[hero_thief.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_thief/hero_thief.png) — 1278 × 1230 ピクセル
+
+ro_thief.png 1278x1230 normalized=1268527
+
+exec
+"C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $b=[System.Drawing.Bitmap]::new((Join-Path (Get-Location) '"'hero_thief.png')); "'$pts=@(@(0,0),@(100,100),@(($b.Width-1),($b.Height-1)),@(100,600)); foreach($p in $pts){$c=$b.GetPixel($p[0],$p[1]); Write-Output "$($c.R),$($c.G),$($c.B)"}; Write-Output "$($b.Width)x$($b.Height)"; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_thief
+ succeeded in 451ms:
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+1278x1230
+
+codex
+[hero_thief.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_thief/hero_thief.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+44,025
+

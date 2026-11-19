@@ -1,0 +1,15 @@
+seconds=173
+rc=0
+[enemy_e_jelly.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_jelly/enemy_e_jelly.png) — 1312 × 1199 ピクセル
+
+ $bmp.Height;$y++){ for($x=0;$x -lt $bmp.Width;$x++){ $c=$bmp.GetPixel($x,$y); if($c.R -gt 180 -and $c.B -gt 160 -and $c.G -lt 120){ $bmp.SetPixel($x,$y,$mag); $changed++ } } }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); [PSCustomObject]@{Width=$bmp.Width;Height=$bmp.Height;ChangedPixels=$changed;Corner=$bmp.GetPixel(0,0).ToArgb().ToString('"'X8')} | ConvertTo-Json -Compress } finally {"'$bmp.Dispose()}' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_jelly
+ succeeded in 7136ms:
+{"Width":1312,"Height":1199,"ChangedPixels":1142216,"Corner":"FFFF00FF"}
+
+codex
+[enemy_e_jelly.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_jelly/enemy_e_jelly.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+26,865
+

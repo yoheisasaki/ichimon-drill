@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_leafdragon/enemy_e_leafdragon.png",
+ "src_size": [
+  482,
+  543
+ ],
+ "trim_size": [
+  397,
+  331
+ ],
+ "out": "rpg/assets/chars/enemy_e_leafdragon.png",
+ "out_size": [
+  115,
+  96
+ ],
+ "magenta_removed_px": 174636,
+ "fringe_removed_px": 1466,
+ "magenta_left_px": 0,
+ "opaque_px": 7234,
+ "colors": 5738
+}

@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_cloudlion/enemy_e_cloudlion.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1011,
+  845
+ ],
+ "out": "rpg/assets/chars/enemy_e_cloudlion.png",
+ "out_size": [
+  67,
+  56
+ ],
+ "magenta_removed_px": 998022,
+ "fringe_removed_px": 1610,
+ "magenta_left_px": 0,
+ "opaque_px": 2513,
+ "colors": 1101
+}

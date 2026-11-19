@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_priest_hit/hero_priest_hit.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  310,
+  369
+ ],
+ "out": "rpg/assets/chars/hero_priest_hit.png",
+ "out_size": [
+  77,
+  92
+ ],
+ "magenta_removed_px": 1503283,
+ "fringe_removed_px": 1044,
+ "magenta_left_px": 1,
+ "opaque_px": 4261,
+ "colors": 4062
+}

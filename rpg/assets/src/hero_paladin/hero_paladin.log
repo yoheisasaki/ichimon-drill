@@ -1,0 +1,15 @@
+seconds=183
+rc=0
+[hero_paladin.png](<C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_paladin/hero_paladin.png>) — 1278 × 1230 ピクセル
+
+b(255,0,255); $count=0; for($y=0;$y -lt $b.Height;$y++){for($x=0;$x -lt $b.Width;$x++){ $c=$b.GetPixel($x,$y); if($c.R -ge 150 -and $c.B -ge 150 -and $c.G -le 100){$b.SetPixel($x,$y,$magenta);$count++}}}; $b.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); Write-Output ('"'{0}|{1}x{2}|background pixels={3}' -f "'$dst,$b.Width,$b.Height,$count); $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_paladin
+ succeeded in 7728ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_paladin\hero_paladin.png|1278x1230|background pixels=1171900
+
+codex
+[hero_paladin.png](<C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_paladin/hero_paladin.png>) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+32,592
+

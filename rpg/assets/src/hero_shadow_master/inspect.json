@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_shadow_master/hero_shadow_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  546,
+  708
+ ],
+ "out": "rpg/assets/chars/hero_shadow_master.png",
+ "out_size": [
+  74,
+  96
+ ],
+ "magenta_removed_px": 1341755,
+ "fringe_removed_px": 4712,
+ "magenta_left_px": 46,
+ "opaque_px": 4165,
+ "colors": 3784
+}

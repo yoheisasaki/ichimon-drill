@@ -1,0 +1,15 @@
+seconds=151
+rc=0
+[enemy_e_snowrabbit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_snowrabbit/enemy_e_snowrabbit.png) — 1312 × 1199 px
+
+ystem.Drawing.Bitmap]::new('"'enemy_e_snowrabbit.png'); "'$bad=0; for($x=0;$x -lt $b.Width;$x++){foreach($y in @(0,($b.Height-1))){$c=$b.GetPixel($x,$y); if($c.R -ne 255 -or $c.G -ne 0 -or $c.B -ne 255){$bad++}}}; for($y=0;$y -lt $b.Height;$y++){foreach($x in @(0,($b.Width-1))){$c=$b.GetPixel($x,$y); if($c.R -ne 255 -or $c.G -ne 0 -or $c.B -ne 255){$bad++}}}; Write-Output "size=$($b.Width)x$($b.Height) border_nonmagenta=$bad"; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_snowrabbit
+ succeeded in 424ms:
+size=1312x1199 border_nonmagenta=0
+
+codex
+[enemy_e_snowrabbit.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_snowrabbit/enemy_e_snowrabbit.png) — 1312 × 1199 px
+hook: Stop
+hook: Stop Completed
+tokens used
+22,565
+

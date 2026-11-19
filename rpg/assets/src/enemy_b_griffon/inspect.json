@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_griffon/enemy_b_griffon.png",
+ "src_size": [
+  477,
+  438
+ ],
+ "trim_size": [
+  456,
+  418
+ ],
+ "out": "rpg/assets/chars/enemy_b_griffon.png",
+ "out_size": [
+  209,
+  192
+ ],
+ "magenta_removed_px": 60313,
+ "fringe_removed_px": 1864,
+ "magenta_left_px": 0,
+ "opaque_px": 30844,
+ "colors": 20254
+}

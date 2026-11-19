@@ -1,0 +1,22 @@
+seconds=135
+rc=0
+[enemy_e_mushroom.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mushroom/enemy_e_mushroom.png) — 1312 × 1199 ピクセル
+
+eeded in 2237ms:
+Join-String : 用語 'Join-String' は、コマンドレット、関数、スクリプト ファイル、または操作可能なプログラムの名前として認識されません。名前が正しく記述されていることを確認し、パスが含まれている場合はそのパスが
+正しいことを確認してから、再試行してください。
+発生場所 行:2 文字:379
++ ... Object {'{0:X2}{1:X2}{2:X2}' -f $_.R,$_.G,$_.B} | Join-String -Separa ...
++                                                       ~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Join-String:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_mushroom\enemy_e_mushroom.png 1312x1199 
+
+codex
+[enemy_e_mushroom.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_mushroom/enemy_e_mushroom.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+20,938
+

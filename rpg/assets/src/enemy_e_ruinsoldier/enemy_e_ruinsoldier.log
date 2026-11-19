@@ -1,0 +1,15 @@
+seconds=164
+rc=0
+[enemy_e_ruinsoldier.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_ruinsoldier/enemy_e_ruinsoldier.png) — 1312 × 1199 ピクセル
+
+b.GetPixel($x,$b.Height-1).ToArgb() -ne [System.Drawing.Color]::Magenta.ToArgb()){$edge++}};for($y=0;$y -lt $b.Height;$y++){if($b.GetPixel(0,$y).ToArgb() -ne [System.Drawing.Color]::Magenta.ToArgb()){$edge++};if($b.GetPixel($b.Width-1,$y).ToArgb() -ne [System.Drawing.Color]::Magenta.ToArgb()){$edge++}}; $c=$b.GetPixel(0,0); '"'{0}x{1} #{2:X2}{3:X2}{4:X2} edge_nonmagenta={5}' -f "'$b.Width,$b.Height,$c.R,$c.G,$c.B,$edge; $b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_ruinsoldier
+ succeeded in 526ms:
+1312x1199 #FF00FF edge_nonmagenta=0
+
+codex
+[enemy_e_ruinsoldier.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_ruinsoldier/enemy_e_ruinsoldier.png) — 1312 × 1199 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+42,673
+

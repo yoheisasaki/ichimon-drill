@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_t_star0/enemy_t_star0.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  459,
+  417
+ ],
+ "out": "rpg/assets/chars/enemy_t_star0.png",
+ "out_size": [
+  106,
+  96
+ ],
+ "magenta_removed_px": 160103,
+ "fringe_removed_px": 8025,
+ "magenta_left_px": 347,
+ "opaque_px": 4987,
+ "colors": 4392
+}

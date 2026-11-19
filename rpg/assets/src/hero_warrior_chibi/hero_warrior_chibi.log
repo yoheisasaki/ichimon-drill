@@ -1,0 +1,17 @@
+seconds=218
+rc=0
+[hero_warrior_chibi.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_chibi/hero_warrior_chibi.png) — 1278 × 1230 px
+
+Add-Type -AssemblyName System.Drawing; $target = Join-Path (Get-Location) '"'hero_warrior_chibi.png'; "'$img = [System.Drawing.Bitmap]::new($target); try { $c=$img.GetPixel(0,0); Write-Output "path=$target"; Write-Output "size=$($img.Width)x$($img.Height)"; Write-Output "corner=$($c.R),$($c.G),$($c.B)" } finally { $img.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_warrior_chibi
+ succeeded in 618ms:
+path=C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_warrior_chibi\hero_warrior_chibi.png
+size=1278x1230
+corner=255,0,255
+
+codex
+[hero_warrior_chibi.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_warrior_chibi/hero_warrior_chibi.png) — 1278 × 1230 px
+hook: Stop
+hook: Stop Completed
+tokens used
+24,769
+

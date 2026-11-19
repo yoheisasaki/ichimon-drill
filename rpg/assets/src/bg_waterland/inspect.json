@@ -1,0 +1,14 @@
+{
+ "src": "src/bg_waterland/bg_waterland.png",
+ "src_size": [
+  1774,
+  887
+ ],
+ "out": "rpg/assets/bg/bg_waterland.png",
+ "out_size": [
+  480,
+  240
+ ],
+ "magenta_px": 8,
+ "colors": 99769
+}

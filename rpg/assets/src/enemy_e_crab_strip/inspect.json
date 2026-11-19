@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_crab/enemy_e_crab.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1362,
+  919
+ ],
+ "out": "rpg/assets/chars/enemy_e_crab_strip.png",
+ "out_size": [
+  36,
+  24
+ ],
+ "magenta_removed_px": 781005,
+ "fringe_removed_px": 2756,
+ "magenta_left_px": 0,
+ "opaque_px": 548,
+ "colors": 446
+}

@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_gategiant/enemy_e_gategiant.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  442,
+  402
+ ],
+ "out": "rpg/assets/chars/enemy_e_gategiant.png",
+ "out_size": [
+  106,
+  96
+ ],
+ "magenta_removed_px": 126482,
+ "fringe_removed_px": 1274,
+ "magenta_left_px": 0,
+ "opaque_px": 7706,
+ "colors": 7241
+}

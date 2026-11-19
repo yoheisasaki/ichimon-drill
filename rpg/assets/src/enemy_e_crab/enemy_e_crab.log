@@ -1,0 +1,24 @@
+seconds=152
+rc=0
+[enemy_e_crab.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_crab/enemy_e_crab.png) — 1536 × 1024 ピクセル
+
+d in 1399ms:
+1536x1024
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+
+exec
+"C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $im=[System.Drawing.Bitmap]::FromFile((Join-Path (Get-Location) '"'enemy_e_crab.png')); "'$n=0; for($y=0;$y -lt 40;$y++){for($x=0;$x -lt $im.Width;$x++){ $c=$im.GetPixel($x,$y); if($c.R -ne 255 -or $c.G -ne 0 -or $c.B -ne 255){$n++}}}; Write-Output "top40_nonmagenta=$n"; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\enemy_e_crab
+ succeeded in 568ms:
+top40_nonmagenta=0
+
+codex
+[enemy_e_crab.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/enemy_e_crab/enemy_e_crab.png) — 1536 × 1024 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+22,021
+

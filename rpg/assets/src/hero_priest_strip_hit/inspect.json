@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_priest_strip_hit/hero_priest_strip_hit.png",
+ "src_size": [
+  1254,
+  1254
+ ],
+ "trim_size": [
+  428,
+  494
+ ],
+ "out": "rpg/assets/chars/hero_priest_strip_hit.png",
+ "out_size": [
+  23,
+  26
+ ],
+ "magenta_removed_px": 1445313,
+ "fringe_removed_px": 983,
+ "magenta_left_px": 1,
+ "opaque_px": 362,
+ "colors": 350
+}

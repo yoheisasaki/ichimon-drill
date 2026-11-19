@@ -1,0 +1,14 @@
+{
+ "src": "rpg/assets/src/bg_meadow_strip/bg_meadow_strip.png",
+ "src_size": [
+  2172,
+  242
+ ],
+ "out": "rpg/assets/bg/bg_meadow_strip.png",
+ "out_size": [
+  390,
+  44
+ ],
+ "magenta_px": 0,
+ "colors": 13877
+}

@@ -1,0 +1,16 @@
+seconds=103
+rc=0
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight_strip\hero_magicknight_strip.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_magicknight_strip/hero_magicknight_strip.png) — 1278 × 1230 ピクセル
+
+sApps\\pwsh.exe" -Command '$p = (Resolve-Path -LiteralPath '"'hero_magicknight_strip.png').Path; Add-Type -AssemblyName System.Drawing; "'$im = [System.Drawing.Image]::FromFile($p); Write-Output "$p`n$($im.Width)x$($im.Height)"; $im.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight_strip
+ succeeded in 434ms:
+C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight_strip\hero_magicknight_strip.png
+1278x1230
+
+codex
+[C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_magicknight_strip\hero_magicknight_strip.png](/C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_magicknight_strip/hero_magicknight_strip.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+21,689
+

@@ -1,0 +1,407 @@
+{
+ "checks": {
+  "B01_home_hero_and_start_in_first_screen_390": {
+   "ok": true,
+   "v": {
+    "goBottom": 611.078125,
+    "heroTop": 95.1875,
+    "heroBottom": 357.1875,
+    "vh": 844,
+    "sub": "block",
+    "rangeOpen": false
+   }
+  },
+  "B01_home_hero_official_art": {
+   "ok": true,
+   "v": "layered"
+  },
+  "home_function_kept(range:subject/unit/hard/go)": true,
+  "home_range_stays_open_after_pick": true,
+  "backup_not_on_home": true,
+  "backup_in_settings": true,
+  "A09_ch1_boss_images": {
+   "ok": true,
+   "v": [
+    [
+     "b_ancienttree",
+     true
+    ],
+    [
+     "b_crystalturtle",
+     true
+    ],
+    [
+     "b_hourglass",
+     true
+    ],
+    [
+     "b_silverdragon",
+     true
+    ],
+    [
+     "b_blackknight",
+     true
+    ],
+    [
+     "b_machinegod",
+     true
+    ]
+   ]
+  },
+  "A09_codex_enemies_no_missing_image": {
+   "ok": true,
+   "v": []
+  },
+  "A09_codex_uses_enemy_canvases": {
+   "ok": true,
+   "v": 99
+  },
+  "adv_enemy_canvas_official": true,
+  "A02_12jobs_no_missing_art": {
+   "ok": true,
+   "v": []
+  },
+  "devcheck_parts_ready_and_fallbacks_listed(not silent)": {
+   "ok": true,
+   "v": []
+  },
+  "parts_loaded": {
+   "ok": true,
+   "v": "ready"
+  },
+  "A01_all_uses_same_person": {
+   "ok": true,
+   "v": {
+    "self": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "equip": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "job": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "look": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "home": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "strip": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ],
+    "reward": [
+     "[\"warrior\", \"w_sword_1\", null, [1, 2, \"#f6d7b8\", \"#c9572e\"]]"
+    ]
+   }
+  },
+  "A01_uses_seen(home,self,equip,job,look,reward,strip)": {
+   "ok": true,
+   "v": [
+    "equip",
+    "home",
+    "job",
+    "look",
+    "reward",
+    "self",
+    "strip"
+   ]
+  },
+  "A01_reward_layered_with_weapon": true,
+  "A03_try_changes_weapon_pixels": {
+   "ok": true,
+   "v": [
+    "w_sword_1",
+    "w_sword_2"
+   ]
+  },
+  "A03_try_changes_numbers": {
+   "ok": true,
+   "v": [
+    "HP",
+    "157",
+    "157",
+    "±0",
+    "攻撃こうげき",
+    "43",
+    "49",
+    "+6",
+    "防御ぼうぎょ",
+    "16",
+    "16",
+    "±0"
+   ]
+  },
+  "A03_try_label_and_save_untouched": true,
+  "A03_only_weapon_pixels_differ(body/head same)": {
+   "ok": true,
+   "v": {
+    "all": 317,
+    "bodyHeadDiff": 0
+   }
+  },
+  "A04_cancel_restores_picture": true,
+  "A04_try_not_leaked_to_other_screen": true,
+  "A04_confirm_saves": true,
+  "A04_after_reload_home_same_weapon": {
+   "ok": true,
+   "v": "w_sword_2"
+  },
+  "A04_strip_and_reward_same_weapon": {
+   "ok": true,
+   "v": [
+    "w_sword_2"
+   ]
+  },
+  "A05_weapon_icon_matches_job(staff/dagger/bow, one weapon only)": {
+   "ok": true,
+   "v": [
+    [
+     "priest",
+     "layered",
+     "w_staff_1.png"
+    ],
+    [
+     "thief",
+     "layered",
+     "w_dagger_1.png"
+    ],
+    [
+     "ranger",
+     "layered",
+     "w_bow_1.png"
+    ],
+    [
+     "mage",
+     "layered",
+     "w_staff_1.png"
+    ],
+    [
+     "sage",
+     "layered",
+     "w_staff_1.png"
+    ],
+    [
+     "ninja",
+     "layered",
+     "w_dagger_1.png"
+    ]
+   ]
+  },
+  "A06_preview_changes": true,
+  "A06_note_text": true,
+  "A06_look_saved": {
+   "ok": true,
+   "v": {
+    "face": 2,
+    "hair": 4,
+    "skin": 3,
+    "hairColor": 2,
+    "outfit": null
+   }
+  },
+  "A06_all_screens_new_look": {
+   "ok": true,
+   "v": [
+    [
+     "[2, 4, \"#b97d56\", \"#d9b04a\"]"
+    ],
+    [
+     "equip",
+     "home",
+     "job",
+     "self"
+    ]
+   ]
+  },
+  "A06_home_pixels_have_new_colors": true,
+  "A07_all_look_values_load_and_draw(720x2)": {
+   "ok": true,
+   "v": {
+    "n": 1440,
+    "bad": [],
+    "nbad": 0
+   }
+  },
+  "A08_master_chip_enabled_when_lv30": true,
+  "A08_master_changes_picture": {
+   "ok": true,
+   "v": "master"
+  },
+  "A08_master_all_screens": true,
+  "A08_master_chip_disabled_when_locked": true,
+  "A08_cannot_set_when_locked": true,
+  "A08_locked_job_preview_uses_own_look": {
+   "ok": true,
+   "v": [
+    [
+     "[1, 2, \"#f6d7b8\", \"#c9572e\"]"
+    ],
+    [
+     "mage",
+     "magicknight",
+     "ninja",
+     "paladin",
+     "priest",
+     "ranger",
+     "sage",
+     "shadow",
+     "thief",
+     "warrior"
+    ]
+   ]
+  },
+  "A08_preview_does_not_change_save": true,
+  "B02_order_hero_name_blurb_req_button_then_details": {
+   "ok": true,
+   "v": {
+    "hero": 82,
+    "name": 314,
+    "blurb": 357,
+    "req": 467,
+    "btn": 581,
+    "play": 651,
+    "skills": 725,
+    "btnBottom": 639,
+    "vh": 844
+   }
+  },
+  "B02_main_button_in_first_screen_390": {
+   "ok": true,
+   "v": {
+    "hero": 82,
+    "name": 314,
+    "blurb": 357,
+    "req": 467,
+    "btn": 581,
+    "play": 651,
+    "skills": 725,
+    "btnBottom": 639,
+    "vh": 844
+   }
+  },
+  "B02_details_collapsed": true,
+  "B02_fx_has_skip_and_no_chest_npc": true,
+  "B02_fx_same_look_old_new": true,
+  "B02_job_changed_and_weapon_explained": {
+   "ok": true,
+   "v": {
+    "weapon": "w_sword_1",
+    "armor": "a_heavy_1",
+    "acc": "x_charm_1"
+   }
+  },
+  "B02_weapon_swap_is_told": {
+   "ok": true,
+   "v": "賢者けんじゃ になりました。 樫かしの杖つえ に武器ぶきを変かえました（賢者けんじゃは 鉄てつの剣けんを使つかえないため）。"
+  },
+  "B03_same_name_icon_stat_in_shop_equip_codex": {
+   "ok": true,
+   "v": [
+    [
+     "w_sword_1",
+     "青銅せいどうの剣けん",
+     true
+    ],
+    [
+     "rw_sword_1(equip=codex)",
+     "火花ひばなの剣けん",
+     true
+    ]
+   ]
+  },
+  "shop_all_items_have_icon_and_current_job_first": {
+   "ok": true,
+   "v": {
+    "items": 1,
+    "icons": 1,
+    "buy": 0,
+    "tryb": 1,
+    "ng": 0
+   }
+  },
+  "shop_armor_all_icons": {
+   "ok": true,
+   "v": {
+    "items": 3,
+    "icons": 3
+   }
+  },
+  "shop_acc_all_icons": {
+   "ok": true,
+   "v": {
+    "items": 3,
+    "icons": 3
+   }
+  },
+  "shop_sell_all_icons": {
+   "ok": true,
+   "v": {
+    "items": 7,
+    "icons": 7
+   }
+  },
+  "shop_other_job_weapons_via_toggle": true,
+  "B06_320px_no_hscroll_end_reachable_nav_spacer": {
+   "ok": true,
+   "v": []
+  },
+  "B06_375px_no_hscroll_end_reachable_nav_spacer": {
+   "ok": true,
+   "v": []
+  },
+  "B06_390px_no_hscroll_end_reachable_nav_spacer": {
+   "ok": true,
+   "v": []
+  },
+  "B06_430px_no_hscroll_end_reachable_nav_spacer": {
+   "ok": true,
+   "v": []
+  },
+  "B07_zoom130_no_clip_main_button_reachable_with_details_open": {
+   "ok": true,
+   "v": []
+  },
+  "C03_strips_all_regions_captured": {
+   "ok": true,
+   "v": 18
+  },
+  "C04_waiting_no_battle_progress": {
+   "ok": true,
+   "v": [
+    "idle"
+   ]
+  },
+  "C05_wrong_answer_check_no_enemy_motion": {
+   "ok": true,
+   "v": [
+    "idle"
+   ]
+  },
+  "C06_strip_only_canvas_no_buttons_no_numbers_sound_off": {
+   "ok": true,
+   "v": {
+    "kids": [
+     "CANVAS"
+    ],
+    "aria": "true",
+    "h": 44,
+    "sound": false,
+    "text": ""
+   }
+  },
+  "C06_reduce_motion_static_strip": {
+   "ok": true,
+   "v": [
+    "idle"
+   ]
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "dev_real": {
+  "parts": "ready",
+  "whole": 0,
+  "layered": 12
+ }
+}

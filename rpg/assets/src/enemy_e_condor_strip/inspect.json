@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_condor/enemy_e_condor.png",
+ "src_size": [
+  1536,
+  1024
+ ],
+ "trim_size": [
+  1034,
+  763
+ ],
+ "out": "rpg/assets/chars/enemy_e_condor_strip.png",
+ "out_size": [
+  33,
+  24
+ ],
+ "magenta_removed_px": 1080704,
+ "fringe_removed_px": 1754,
+ "magenta_left_px": 0,
+ "opaque_px": 493,
+ "colors": 443
+}

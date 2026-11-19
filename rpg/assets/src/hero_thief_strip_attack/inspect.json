@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_thief_strip_attack/hero_thief_strip_attack.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  504,
+  446
+ ],
+ "out": "rpg/assets/chars/hero_thief_strip_attack.png",
+ "out_size": [
+  28,
+  25
+ ],
+ "magenta_removed_px": 1469430,
+ "fringe_removed_px": 1145,
+ "magenta_left_px": 2,
+ "opaque_px": 324,
+ "colors": 321
+}

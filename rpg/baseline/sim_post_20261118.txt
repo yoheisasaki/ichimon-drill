@@ -1,0 +1,62 @@
+[
+ {
+  "acc": 0.3,
+  "endAdv": 570,
+  "endDay": 285,
+  "trialDay": 157,
+  "trialAdv": 21,
+  "secretAdv": "29/25/25/28/31/22",
+  "islandAdv": 61,
+  "islandDay": 394,
+  "topLv": 30,
+  "advLv": 60,
+  "coins": 80547,
+  "retreat": 0.112,
+  "done": "5/5"
+ },
+ {
+  "acc": 0.6,
+  "endAdv": 356,
+  "endDay": 178,
+  "trialDay": 102,
+  "trialAdv": 10,
+  "secretAdv": "20/19/15/20/19/17",
+  "islandAdv": 38,
+  "islandDay": 252,
+  "topLv": 30,
+  "advLv": 59,
+  "coins": 56131,
+  "retreat": 0.015,
+  "done": "5/5"
+ },
+ {
+  "acc": 0.8,
+  "endAdv": 333,
+  "endDay": 167,
+  "trialDay": 101,
+  "trialAdv": 10,
+  "secretAdv": "18/19/16/19/18/17",
+  "islandAdv": 36,
+  "islandDay": 238,
+  "topLv": 30,
+  "advLv": 58,
+  "coins": 56451,
+  "retreat": 0,
+  "done": "5/5"
+ },
+ {
+  "acc": 1,
+  "endAdv": 332,
+  "endDay": 166,
+  "trialDay": 101,
+  "trialAdv": 10,
+  "secretAdv": "19/19/16/19/17/17",
+  "islandAdv": 38,
+  "islandDay": 239,
+  "topLv": 30,
+  "advLv": 58,
+  "coins": 60455,
+  "retreat": 0,
+  "done": "5/5"
+ }
+]

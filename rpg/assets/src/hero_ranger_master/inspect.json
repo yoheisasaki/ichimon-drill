@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ranger_master/hero_ranger_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  608,
+  664
+ ],
+ "out": "rpg/assets/chars/hero_ranger_master.png",
+ "out_size": [
+  88,
+  96
+ ],
+ "magenta_removed_px": 1318592,
+ "fringe_removed_px": 2513,
+ "magenta_left_px": 2,
+ "opaque_px": 5251,
+ "colors": 5061
+}

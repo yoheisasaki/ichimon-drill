@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_ninja_strip/hero_ninja_strip.png",
+ "src_size": [
+  1199,
+  1312
+ ],
+ "trim_size": [
+  602,
+  912
+ ],
+ "out": "rpg/assets/chars/hero_ninja_strip.png",
+ "out_size": [
+  18,
+  28
+ ],
+ "magenta_removed_px": 1292355,
+ "fringe_removed_px": 6211,
+ "magenta_left_px": 29,
+ "opaque_px": 249,
+ "colors": 205
+}

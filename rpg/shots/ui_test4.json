@@ -1,0 +1,255 @@
+{
+ "checks": {
+  "chromium:story_unread_banner": true,
+  "chromium:quest_buttons": {
+   "ok": true,
+   "v": 10
+  },
+  "chromium:quest_locked_marked": true,
+  "chromium:locked_quest_shows_reason": true,
+  "chromium:locked_quest_not_selected": true,
+  "chromium:story_first_page": true,
+  "chromium:story_1to3_pages": {
+   "ok": true,
+   "v": 2
+  },
+  "chromium:story_marked_seen": true,
+  "chromium:storylist_has_item": true,
+  "chromium:story_skip_returns_to_list": true,
+  "chromium:storylist_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "chromium:forge_unique_18": {
+   "ok": true,
+   "v": 18
+  },
+  "chromium:forge_craft_disabled_without_mats": true,
+  "chromium:forge_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "chromium:sound_default_off": true,
+  "chromium:no_audio_context_when_off": true,
+  "chromium:sound_on_saved": true,
+  "chromium:audio_after_gesture": true,
+  "chromium:sound_off_saved": true,
+  "chromium:settings_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "chromium:chest_closed_first": true,
+  "chromium:chest_sealed_saved": true,
+  "chromium:chest_opened_shows_item": true,
+  "chromium:chest_open_no_reroll": true,
+  "chromium:postgame_shows_cleared": {
+   "ok": true,
+   "v": 8
+  },
+  "chromium:ending_link_after_clear": true,
+  "chromium:rematch_18_open": {
+   "ok": true,
+   "v": 18
+  },
+  "chromium:rematch_selected": true,
+  "chromium:rematch_result": true,
+  "chromium:rematch_keeps_main_progress": true,
+  "chromium:back_to_main": true,
+  "chromium:ending_4_pages": {
+   "ok": true,
+   "v": 4
+  },
+  "chromium:ending_seen_saved": true,
+  "chromium:me_titles_costumes": {
+   "ok": true,
+   "v": 8
+  },
+  "chromium:title_saved": true,
+  "chromium:memorial_canvas": true,
+  "chromium:memorial_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "chromium:codex_extra_groups": {
+   "ok": true,
+   "v": 155
+  },
+  "chromium:codex_items_unique_once": true,
+  "chromium:save_day01_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_day01_learning_ok": true,
+  "chromium:save_day14_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_day14_learning_ok": true,
+  "chromium:save_ch1end_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_ch1end_learning_ok": true,
+  "chromium:save_ch2end_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_ch2end_learning_ok": true,
+  "chromium:save_maingoal_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_maingoal_learning_ok": true,
+  "chromium:save_postgame_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "chromium:save_postgame_learning_ok": true,
+  "chromium:no_audio_context_overall": true,
+  "webkit:story_unread_banner": true,
+  "webkit:quest_buttons": {
+   "ok": true,
+   "v": 10
+  },
+  "webkit:quest_locked_marked": true,
+  "webkit:locked_quest_shows_reason": true,
+  "webkit:locked_quest_not_selected": true,
+  "webkit:story_first_page": true,
+  "webkit:story_1to3_pages": {
+   "ok": true,
+   "v": 2
+  },
+  "webkit:story_marked_seen": true,
+  "webkit:storylist_has_item": true,
+  "webkit:story_skip_returns_to_list": true,
+  "webkit:storylist_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "webkit:forge_unique_18": {
+   "ok": true,
+   "v": 18
+  },
+  "webkit:forge_craft_disabled_without_mats": true,
+  "webkit:forge_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "webkit:sound_default_off": true,
+  "webkit:no_audio_context_when_off": true,
+  "webkit:sound_on_saved": true,
+  "webkit:audio_after_gesture": true,
+  "webkit:sound_off_saved": true,
+  "webkit:settings_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "webkit:chest_closed_first": true,
+  "webkit:chest_sealed_saved": true,
+  "webkit:chest_opened_shows_item": true,
+  "webkit:chest_open_no_reroll": true,
+  "webkit:postgame_shows_cleared": {
+   "ok": true,
+   "v": 8
+  },
+  "webkit:ending_link_after_clear": true,
+  "webkit:rematch_18_open": {
+   "ok": true,
+   "v": 18
+  },
+  "webkit:rematch_selected": true,
+  "webkit:rematch_result": true,
+  "webkit:rematch_keeps_main_progress": true,
+  "webkit:back_to_main": true,
+  "webkit:ending_4_pages": {
+   "ok": true,
+   "v": 4
+  },
+  "webkit:ending_seen_saved": true,
+  "webkit:me_titles_costumes": {
+   "ok": true,
+   "v": 8
+  },
+  "webkit:title_saved": true,
+  "webkit:memorial_canvas": true,
+  "webkit:memorial_ok": {
+   "ok": true,
+   "v": {
+    "hscroll": false,
+    "small": []
+   }
+  },
+  "webkit:codex_extra_groups": {
+   "ok": true,
+   "v": 155
+  },
+  "webkit:codex_items_unique_once": true,
+  "webkit:save_day01_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_day01_learning_ok": true,
+  "webkit:save_day14_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_day14_learning_ok": true,
+  "webkit:save_ch1end_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_ch1end_learning_ok": true,
+  "webkit:save_ch2end_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_ch2end_learning_ok": true,
+  "webkit:save_maingoal_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_maingoal_learning_ok": true,
+  "webkit:save_postgame_all_screens": {
+   "ok": true,
+   "v": {}
+  },
+  "webkit:save_postgame_learning_ok": true,
+  "webkit:no_audio_context_overall": true,
+  "w320:stage3_screens_fit": {
+   "ok": true,
+   "v": {}
+  },
+  "w375:stage3_screens_fit": {
+   "ok": true,
+   "v": {}
+  },
+  "w430:stage3_screens_fit": {
+   "ok": true,
+   "v": {}
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "blocked_send_requests": 0
+}

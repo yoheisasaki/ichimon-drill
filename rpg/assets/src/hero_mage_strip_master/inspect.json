@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_mage_strip_master/hero_mage_strip_master.png",
+ "src_size": [
+  2172,
+  724
+ ],
+ "trim_size": [
+  566,
+  635
+ ],
+ "out": "rpg/assets/chars/hero_mage_strip_master.png",
+ "out_size": [
+  25,
+  28
+ ],
+ "magenta_removed_px": 1365099,
+ "fringe_removed_px": 2009,
+ "magenta_left_px": 9,
+ "opaque_px": 405,
+ "colors": 401
+}

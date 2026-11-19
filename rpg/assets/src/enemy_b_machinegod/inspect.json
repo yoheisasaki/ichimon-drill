@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_b_machinegod/enemy_b_machinegod.png",
+ "src_size": [
+  724,
+  724
+ ],
+ "trim_size": [
+  679,
+  670
+ ],
+ "out": "rpg/assets/chars/enemy_b_machinegod.png",
+ "out_size": [
+  195,
+  192
+ ],
+ "magenta_removed_px": 264862,
+ "fringe_removed_px": 2884,
+ "magenta_left_px": 2,
+ "opaque_px": 21088,
+ "colors": 15659
+}

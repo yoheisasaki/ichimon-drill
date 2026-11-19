@@ -1,0 +1,22 @@
+seconds=132
+rc=0
+[hero_starseer.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_starseer/hero_starseer.png) — 1278 × 1230 ピクセル
+
+in-Path (Get-Location) '"'hero_starseer_fixed.png'),[System.Drawing.Imaging.ImageFormat]::Png); "'$bitmap.Dispose(); Move-Item -LiteralPath (Join-Path (Get-Location) '"'hero_starseer_fixed.png') -Destination "'$imagePath -Force; [pscustomobject]@{ChangedPixels=$changed; Path=$imagePath; Size='"'1278 x 1230'} | Format-List" in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_starseer
+ succeeded in 8732ms:
+
+
+ChangedPixels : 1213640
+Path          : C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_starseer\hero_starseer.png
+Size          : 1278 x 1230
+
+
+
+
+codex
+[hero_starseer.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_starseer/hero_starseer.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+28,368
+

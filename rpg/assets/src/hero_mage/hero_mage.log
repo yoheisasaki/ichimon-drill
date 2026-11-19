@@ -1,0 +1,24 @@
+seconds=145
+rc=0
+[hero_mage.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_mage/hero_mage.png) — 1278 × 1230 ピクセル
+
+mage.png
+Size: 1278x1230
+Background pixels normalized: 1208080
+
+exec
+"C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $bmp=[System.Drawing.Bitmap]::new((Join-Path (Get-Location) '"'hero_mage.png')); Write-Output \""'$($bmp.Width)x$($bmp.Height)"; @(@(0,0),@(100,100),@(1277,0),@(0,1229)) | ForEach-Object { $c=$bmp.GetPixel($_[0],$_[1]); Write-Output "$($c.R),$($c.G),$($c.B)" }; $bmp.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_mage
+ succeeded in 466ms:
+1278x1230
+255,0,255
+255,0,255
+255,0,255
+255,0,255
+
+codex
+[hero_mage.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_mage/hero_mage.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+27,625
+

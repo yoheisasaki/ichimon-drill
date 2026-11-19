@@ -1,0 +1,237 @@
+{
+ "checks": {
+  "chromium:rpg_ok": true,
+  "chromium:strip": {
+   "sh": 44,
+   "sw": 362,
+   "top": 780,
+   "bottom": 824,
+   "lastChoiceBottom": 546,
+   "skipBottom": 608,
+   "choiceH": [
+    68,
+    68,
+    68,
+    68
+   ],
+   "cardH": 130,
+   "doc": 844,
+   "vh": 844,
+   "aria": "true"
+  },
+  "chromium:strip_no_overlap": true,
+  "chromium:strip_height_44": true,
+  "chromium:reviews_seen": {
+   "ok": true,
+   "v": 4
+  },
+  "chromium:reward_text": "冒険ぼうけんの成果せいか | 草原・風車の小道 | はっぱスライムを倒たおした！ | 正解せいかい 6 / 10 | 復習ふくしゅう成功 4件 | ▶ 間違まちがえた問題もんだいを見みる | ★ 経験値けいけんち | +450 | 初回ボーナス ×3 | ● コイン（学習・討伐） | +279 | 学習 104 ＋ 討伐 15 ＋ はじめのお祝い 160 | 今回のコイン | 合計 +279 | 戦士 Lv1 → Lv2 | 次の技わざまで あと 830 | 新あたらしい技わざ：強打きょうだ | 冒険者ぼうけんしゃ | Lv1 → | Lv2 | 朝星あさぼしの宝箱たからばこ | 宝箱たからばこを開あける | おわる | 次つぎの10問もん | 装備そうびを見みる",
+  "chromium:reward_buttons_equal": {
+   "ok": true,
+   "v": [
+    [
+     "おわる",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ],
+    [
+     "次つぎの10問もん",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ]
+   ]
+  },
+  "chromium:reward_no_hscroll": true,
+  "chromium:saved_settled": {
+   "ok": true,
+   "v": {
+    "xp": 450,
+    "coins": 279,
+    "rev": 21
+   }
+  },
+  "chromium:rows_shape_unchanged": {
+   "ok": true,
+   "v": 14
+  },
+  "chromium:reload_no_double": true,
+  "webkit:rpg_ok": true,
+  "webkit:strip": {
+   "sh": 44,
+   "sw": 362,
+   "top": 780,
+   "bottom": 824,
+   "lastChoiceBottom": 554,
+   "skipBottom": 616,
+   "choiceH": [
+    68,
+    69,
+    69,
+    69
+   ],
+   "cardH": 135,
+   "doc": 844,
+   "vh": 844,
+   "aria": "true"
+  },
+  "webkit:strip_no_overlap": true,
+  "webkit:strip_height_44": true,
+  "webkit:reviews_seen": {
+   "ok": true,
+   "v": 4
+  },
+  "webkit:reward_text": "冒険ぼうけんの成果せいか | 草原・風車の小道 | はっぱスライムを倒たおした！ | 正解せいかい 6 / 10 | 復習ふくしゅう成功 4件 | ▶ 間違まちがえた問題もんだいを見みる | ★ 経験値けいけんち | +450 | 初回ボーナス ×3 | ● コイン（学習・討伐） | +279 | 学習 104 ＋ 討伐 15 ＋ はじめのお祝い 160 | 今回のコイン | 合計 +279 | 戦士 Lv1 → Lv2 | 次の技わざまで あと 830 | 新あたらしい技わざ：強打きょうだ | 冒険者ぼうけんしゃ | Lv1 → | Lv2 | 朝星あさぼしの宝箱たからばこ | 宝箱たからばこを開あける | おわる | 次つぎの10問もん | 装備そうびを見みる",
+  "webkit:reward_buttons_equal": {
+   "ok": true,
+   "v": [
+    [
+     "おわる",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ],
+    [
+     "次つぎの10問もん",
+     176,
+     60,
+     "linear-gradient(rgb(31, 154, 149), rgb(19, 110, 115))"
+    ]
+   ]
+  },
+  "webkit:reward_no_hscroll": true,
+  "webkit:saved_settled": {
+   "ok": true,
+   "v": {
+    "xp": 450,
+    "coins": 279,
+    "rev": 21
+   }
+  },
+  "webkit:rows_shape_unchanged": {
+   "ok": true,
+   "v": 14
+  },
+  "webkit:reload_no_double": true,
+  "w320:question_map_choice_same_as_without_rpg": true,
+  "w320:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     724
+    ],
+    "map": [
+     [
+      44,
+      810
+     ],
+     798
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     572
+    ]
+   }
+  },
+  "w320:no_hscroll": true,
+  "w320:strip_44": true,
+  "w375:question_map_choice_same_as_without_rpg": true,
+  "w375:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      843
+     ],
+     831
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     595
+    ]
+   }
+  },
+  "w375:no_hscroll": true,
+  "w375:strip_44": true,
+  "w390:question_map_choice_same_as_without_rpg": true,
+  "w390:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      851
+     ],
+     839
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     601
+    ]
+   }
+  },
+  "w390:no_hscroll": true,
+  "w390:strip_44": true,
+  "w430:question_map_choice_same_as_without_rpg": true,
+  "w430:strip_below_content": {
+   "ok": true,
+   "v": {
+    "long": [
+     [
+      44,
+      780
+     ],
+     681
+    ],
+    "map": [
+     [
+      44,
+      875
+     ],
+     863
+    ],
+    "input": [
+     [
+      44,
+      780
+     ],
+     618
+    ]
+   }
+  },
+  "w430:no_hscroll": true,
+  "w430:strip_44": true
+ },
+ "console": [],
+ "blocked": 0,
+ "blocked_send_requests": 0
+}

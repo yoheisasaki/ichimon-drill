@@ -1,0 +1,15 @@
+seconds=165
+rc=0
+[hero_priest.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_priest/hero_priest.png) — 1278 × 1230 ピクセル
+
+ [System.Runtime.InteropServices.Marshal]::Copy($bytes,0,$data.Scan0,$bytes.Length) } finally { $bmp.UnlockBits($data) }; $bmp.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png) } finally { $bmp.Dispose() }; Move-Item -LiteralPath $tmp -Destination $path -Force; $check=[System.Drawing.Bitmap]::new($path); try { $c=$check.GetPixel(0,0); Write-Output ('"'{0} x {1}, corner #{2:X2}{3:X2}{4:X2}' -f "'$check.Width,$check.Height,$c.R,$c.G,$c.B) } finally { $check.Dispose() }' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_priest
+ succeeded in 11843ms:
+1278 x 1230, corner #FF00FF
+
+codex
+[hero_priest.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_priest/hero_priest.png) — 1278 × 1230 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+27,921
+

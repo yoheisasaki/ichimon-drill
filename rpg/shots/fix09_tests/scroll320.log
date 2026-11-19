@@ -1,0 +1,9 @@
+chromium home #hard {'top': 428, 'bottom': 472, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+chromium home .rs-range summary {'top': 380, 'bottom': 428, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+chromium me [data-sheet=mestat] {'top': 438, 'bottom': 486, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+chromium me [data-go=equip] {'top': 310, 'bottom': 366, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+webkit home #hard {'top': 429, 'bottom': 473, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+webkit home .rs-range summary {'top': 381, 'bottom': 429, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+webkit me [data-sheet=mestat] {'top': 438, 'bottom': 486, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+webkit me [data-go=equip] {'top': 302, 'bottom': 358, 'vh': 568, 'inView': True, 'hit': True, 'navTop': 518, 'pageScroll': False}
+BAD 0 []

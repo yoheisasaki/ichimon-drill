@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/src/enemy_e_emberbat/enemy_e_emberbat.png",
+ "src_size": [
+  512,
+  512
+ ],
+ "trim_size": [
+  453,
+  350
+ ],
+ "out": "rpg/assets/chars/enemy_e_emberbat.png",
+ "out_size": [
+  124,
+  96
+ ],
+ "magenta_removed_px": 180885,
+ "fringe_removed_px": 1533,
+ "magenta_left_px": 12,
+ "opaque_px": 5997,
+ "colors": 5747
+}

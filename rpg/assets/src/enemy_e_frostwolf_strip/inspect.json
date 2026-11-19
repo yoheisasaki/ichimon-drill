@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_frostwolf/enemy_e_frostwolf.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  1108,
+  945
+ ],
+ "out": "rpg/assets/chars/enemy_e_frostwolf_strip.png",
+ "out_size": [
+  28,
+  24
+ ],
+ "magenta_removed_px": 961707,
+ "fringe_removed_px": 3391,
+ "magenta_left_px": 0,
+ "opaque_px": 387,
+ "colors": 305
+}

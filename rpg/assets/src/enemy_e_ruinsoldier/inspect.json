@@ -1,0 +1,21 @@
+{
+ "src": "src/enemy_e_ruinsoldier/enemy_e_ruinsoldier.png",
+ "src_size": [
+  1312,
+  1199
+ ],
+ "trim_size": [
+  709,
+  716
+ ],
+ "out": "rpg/assets/chars/enemy_e_ruinsoldier.png",
+ "out_size": [
+  55,
+  56
+ ],
+ "magenta_removed_px": 1201000,
+ "fringe_removed_px": 1271,
+ "magenta_left_px": 0,
+ "opaque_px": 2231,
+ "colors": 1708
+}

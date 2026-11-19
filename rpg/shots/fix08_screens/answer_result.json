@@ -1,0 +1,2629 @@
+{
+ "viewports": {
+  "390x700": {
+   "long": {
+    "base": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       96
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       96
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 396,
+       "bottom": 492,
+       "h": 96
+      },
+      "skip": {
+       "top": 506,
+       "bottom": 554,
+       "h": 48
+      },
+      "score": {
+       "top": 606,
+       "bottom": 628,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 566,
+       "bottom": 592,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 424,
+       "bottom": 492,
+       "h": 68
+      },
+      "skip": {
+       "top": 506,
+       "bottom": 554,
+       "h": 48
+      },
+      "score": {
+       "top": 606,
+       "bottom": 628,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 566,
+       "bottom": 592,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": false,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 483,
+       "bottom": 527,
+       "h": 44
+      },
+      "score": {
+       "top": 579,
+       "bottom": 601,
+       "h": 22
+      },
+      "submit": {
+       "top": 409,
+       "bottom": 473,
+       "h": 64
+      },
+      "input": {
+       "top": 331,
+       "bottom": 399,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 539,
+       "bottom": 565,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 424,
+       "bottom": 492,
+       "h": 68
+      },
+      "skip": {
+       "top": 506,
+       "bottom": 554,
+       "h": 48
+      },
+      "score": {
+       "top": 606,
+       "bottom": 628,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 566,
+       "bottom": 592,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  },
+  "390x640": {
+   "long": {
+    "base": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       96
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       133
+      ],
+      [
+       362,
+       96
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 336,
+       "bottom": 432,
+       "h": 96
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 450,
+       "bottom": 494,
+       "h": 44
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": {
+       "top": 376,
+       "bottom": 440,
+       "h": 64
+      },
+      "input": {
+       "top": 298,
+       "bottom": 366,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  },
+  "375x640": {
+   "long": {
+    "base": {
+     "qt_font": "25px",
+     "qt": [
+      315,
+      86
+     ],
+     "choices": [
+      [
+       347,
+       133
+      ],
+      [
+       347,
+       133
+      ],
+      [
+       347,
+       96
+      ],
+      [
+       347,
+       133
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      315,
+      86
+     ],
+     "choices": [
+      [
+       347,
+       133
+      ],
+      [
+       347,
+       133
+      ],
+      [
+       347,
+       133
+      ],
+      [
+       347,
+       96
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 336,
+       "bottom": 432,
+       "h": 96
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      347,
+      204
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      347,
+      204
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      347,
+      145
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": [
+      347,
+      68
+     ],
+     "submit": [
+      347,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      347,
+      145
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": [
+      347,
+      68
+     ],
+     "submit": [
+      347,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 450,
+       "bottom": 494,
+       "h": 44
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": {
+       "top": 376,
+       "bottom": 440,
+       "h": 64
+      },
+      "input": {
+       "top": 298,
+       "bottom": 366,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      232,
+      44
+     ],
+     "choices": [
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ],
+      [
+       347,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      347,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  },
+  "430x800": {
+   "long": {
+    "base": {
+     "qt_font": "25px",
+     "qt": [
+      370,
+      86
+     ],
+     "choices": [
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      370,
+      86
+     ],
+     "choices": [
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ],
+      [
+       402,
+       96
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 744,
+     "stripH": 56,
+     "vh": 800,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 496,
+       "bottom": 592,
+       "h": 96
+      },
+      "skip": {
+       "top": 606,
+       "bottom": 654,
+       "h": 48
+      },
+      "score": {
+       "top": 706,
+       "bottom": 728,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 666,
+       "bottom": 692,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      402,
+      236
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      402,
+      236
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 744,
+     "stripH": 56,
+     "vh": 800,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 524,
+       "bottom": 592,
+       "h": 68
+      },
+      "skip": {
+       "top": 606,
+       "bottom": 654,
+       "h": 48
+      },
+      "score": {
+       "top": 706,
+       "bottom": 728,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 666,
+       "bottom": 692,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      402,
+      168
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": [
+      402,
+      68
+     ],
+     "submit": [
+      402,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      402,
+      168
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": [
+      402,
+      68
+     ],
+     "submit": [
+      402,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 744,
+     "stripH": 56,
+     "vh": 800,
+     "scrollable": false,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 500,
+       "bottom": 544,
+       "h": 44
+      },
+      "score": {
+       "top": 596,
+       "bottom": 618,
+       "h": 22
+      },
+      "submit": {
+       "top": 426,
+       "bottom": 490,
+       "h": 64
+      },
+      "input": {
+       "top": 348,
+       "bottom": 416,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 556,
+       "bottom": 582,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      370,
+      86
+     ],
+     "choices": [
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ],
+      [
+       402,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      402,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 744,
+     "stripH": 56,
+     "vh": 800,
+     "scrollable": false,
+     "items": {
+      "lastChoice": {
+       "top": 478,
+       "bottom": 546,
+       "h": 68
+      },
+      "skip": {
+       "top": 560,
+       "bottom": 608,
+       "h": 48
+      },
+      "score": {
+       "top": 660,
+       "bottom": 682,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 620,
+       "bottom": 646,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  },
+  "320x640": {
+   "long": {
+    "base": {
+     "qt_font": "25px",
+     "qt": [
+      260,
+      86
+     ],
+     "choices": [
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      260,
+      86
+     ],
+     "choices": [
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ],
+      [
+       292,
+       133
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 299,
+       "bottom": 432,
+       "h": 133
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      292,
+      172
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      292,
+      172
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      292,
+      122
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": [
+      292,
+      68
+     ],
+     "submit": [
+      292,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      292,
+      122
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": [
+      292,
+      68
+     ],
+     "submit": [
+      292,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 450,
+       "bottom": 494,
+       "h": 44
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": {
+       "top": 376,
+       "bottom": 440,
+       "h": 64
+      },
+      "input": {
+       "top": 298,
+       "bottom": 366,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      260,
+      129
+     ],
+     "choices": [
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ],
+      [
+       292,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      292,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 584,
+     "stripH": 56,
+     "vh": 640,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 364,
+       "bottom": 432,
+       "h": 68
+      },
+      "skip": {
+       "top": 446,
+       "bottom": 494,
+       "h": 48
+      },
+      "score": {
+       "top": 546,
+       "bottom": 568,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 506,
+       "bottom": 532,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  },
+  "390x700_t130": {
+   "long": {
+    "base": {
+     "qt_font": "32.5px",
+     "qt": [
+      330,
+      112
+     ],
+     "choices": [
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ]
+     ],
+     "choice_font": "31.2px",
+     "map": null,
+     "skip": [
+      153,
+      48
+     ],
+     "score": [
+      362,
+      30
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "32.5px",
+     "qt": [
+      330,
+      112
+     ],
+     "choices": [
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ],
+      [
+       362,
+       164
+      ]
+     ],
+     "choice_font": "31.2px",
+     "map": null,
+     "skip": [
+      153,
+      48
+     ],
+     "score": [
+      362,
+      30
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 320,
+       "bottom": 484,
+       "h": 164
+      },
+      "skip": {
+       "top": 498,
+       "bottom": 546,
+       "h": 48
+      },
+      "score": {
+       "top": 598,
+       "bottom": 628,
+       "h": 30
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 558,
+       "bottom": 584,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "map": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      229,
+      39
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": [
+      362,
+      213
+     ],
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 424,
+       "bottom": 492,
+       "h": 68
+      },
+      "skip": {
+       "top": 506,
+       "bottom": 554,
+       "h": 48
+      },
+      "score": {
+       "top": 606,
+       "bottom": 628,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 566,
+       "bottom": 592,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "inputMap": {
+    "base": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "rpg": {
+     "qt_font": "23px",
+     "qt": [
+      241,
+      39
+     ],
+     "choices": [],
+     "choice_font": null,
+     "map": [
+      362,
+      151
+     ],
+     "skip": [
+      111,
+      44
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": [
+      362,
+      68
+     ],
+     "submit": [
+      362,
+      64
+     ],
+     "hscroll": false
+    },
+    "same_as_no_rpg": {
+     "qt_font": true,
+     "qt": true,
+     "choices": true,
+     "choice_font": true,
+     "map": true,
+     "skip": true,
+     "input": true,
+     "submit": true
+    },
+    "size_kept": true,
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": false,
+     "items": {
+      "lastChoice": null,
+      "skip": {
+       "top": 483,
+       "bottom": 527,
+       "h": 44
+      },
+      "score": {
+       "top": 579,
+       "bottom": 601,
+       "h": 22
+      },
+      "submit": {
+       "top": 409,
+       "bottom": 473,
+       "h": 64
+      },
+      "input": {
+       "top": 331,
+       "bottom": 399,
+       "h": 68
+      },
+      "credit": null,
+      "next": {
+       "top": 539,
+       "bottom": 565,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": []
+   },
+   "review": {
+    "rpg": {
+     "qt_font": "25px",
+     "qt": [
+      330,
+      86
+     ],
+     "choices": [
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ],
+      [
+       362,
+       68
+      ]
+     ],
+     "choice_font": "24px",
+     "map": null,
+     "skip": [
+      132,
+      48
+     ],
+     "score": [
+      362,
+      22
+     ],
+     "input": null,
+     "submit": null,
+     "hscroll": false
+    },
+    "clear": {
+     "stripTop": 644,
+     "stripH": 56,
+     "vh": 700,
+     "scrollable": true,
+     "items": {
+      "lastChoice": {
+       "top": 424,
+       "bottom": 492,
+       "h": 68
+      },
+      "skip": {
+       "top": 506,
+       "bottom": 554,
+       "h": 48
+      },
+      "score": {
+       "top": 606,
+       "bottom": 628,
+       "h": 22
+      },
+      "submit": null,
+      "input": null,
+      "credit": null,
+      "next": {
+       "top": 566,
+       "bottom": 592,
+       "h": 26
+      }
+     },
+     "hidden": []
+    },
+    "covered": [],
+    "is_review_question": true
+   }
+  }
+ },
+ "console": [],
+ "blocked": 0,
+ "ids": {
+  "long": "koku-0063",
+  "map": "map-0001",
+  "input": null,
+  "inputMap": "sha-0101"
+ },
+ "problems": []
+}

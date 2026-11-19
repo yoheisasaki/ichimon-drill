@@ -1,0 +1,264 @@
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 59022)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 59039)
+Exception occurred during processing of request from ('127.0.0.1', 59040)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 59044)
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+ConnectionAbortedError: [WinError 10053] 確立された接続がホスト コンピューターのソウトウェアによって中止されました。
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+----------------------------------------
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] 既存の接続はリモート ホストに強制的に切断されました。
+ConnectionResetError: [WinError 10054] 既存の接続はリモート ホストに強制的に切断されました。
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+----------------------------------------
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 確立された接続がホスト コンピューターのソウトウェアによって中止されました。
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 51919)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 51920)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 51921)
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 687, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] 既存の接続はリモート ホストに強制的に切断されました。
+ConnectionAbortedError: [WinError 10053] 確立された接続がホスト コンピューターのソウトウェアによって中止されました。
+----------------------------------------
+----------------------------------------
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 694, in do_GET
+    self.copyfile(f, self.wfile)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\http\server.py", line 896, in copyfile
+    shutil.copyfileobj(source, outputfile)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 確立された接続がホスト コンピューターのソウトウェアによって中止されました。
+----------------------------------------
+{'textBottom': 486, 'textOk': True, 'scrollTop': 145, 'maxScroll': 161, 'lineTop': 434, 'lineBottom': 486, 'footTop': 494, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '320x568', 'case': 'coin', 'rm': False}
+{'textBottom': 436, 'textOk': True, 'scrollTop': 379, 'maxScroll': 395, 'lineTop': 349, 'lineBottom': 486, 'footTop': 494, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '320x568', 'case': 'rare_big', 'rm': False}
+{'textBottom': 558, 'textOk': True, 'scrollTop': 73, 'maxScroll': 89, 'lineTop': 506, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '320x640', 'case': 'coin', 'rm': False}
+{'textBottom': 508, 'textOk': True, 'scrollTop': 307, 'maxScroll': 323, 'lineTop': 421, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '320x640', 'case': 'rare_big', 'rm': False}
+{'textBottom': 558, 'textOk': True, 'scrollTop': 68, 'maxScroll': 84, 'lineTop': 507, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '390x640', 'case': 'coin', 'rm': False}
+{'textBottom': 532, 'textOk': True, 'scrollTop': 250, 'maxScroll': 266, 'lineTop': 445, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '390x640', 'case': 'rare_big', 'rm': False}
+{'textBottom': 618, 'textOk': True, 'scrollTop': 8, 'maxScroll': 24, 'lineTop': 567, 'lineBottom': 618, 'footTop': 626, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '390x700', 'case': 'coin', 'rm': False}
+{'textBottom': 592, 'textOk': True, 'scrollTop': 190, 'maxScroll': 206, 'lineTop': 505, 'lineBottom': 618, 'footTop': 626, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '390x700', 'case': 'rare_big', 'rm': False}
+{'textBottom': 439, 'textOk': True, 'scrollTop': 376, 'maxScroll': 395, 'lineTop': 352, 'lineBottom': 489, 'footTop': 494, 'bodyTop': 254, 'ok': True, 'br': 'chromium', 'vp': '320x568', 'case': 'rare_big', 'rm': True}
+{'textBottom': 486, 'textOk': True, 'scrollTop': 214, 'maxScroll': 231, 'lineTop': 423, 'lineBottom': 486, 'footTop': 494, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '320x568', 'case': 'coin', 'rm': False}
+{'textBottom': 433, 'textOk': True, 'scrollTop': 476, 'maxScroll': 493, 'lineTop': 340, 'lineBottom': 486, 'footTop': 494, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '320x568', 'case': 'rare_big', 'rm': False}
+{'textBottom': 558, 'textOk': True, 'scrollTop': 142, 'maxScroll': 159, 'lineTop': 495, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '320x640', 'case': 'coin', 'rm': False}
+{'textBottom': 505, 'textOk': True, 'scrollTop': 404, 'maxScroll': 421, 'lineTop': 412, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '320x640', 'case': 'rare_big', 'rm': False}
+{'textBottom': 558, 'textOk': True, 'scrollTop': 126, 'maxScroll': 143, 'lineTop': 495, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '390x640', 'case': 'coin', 'rm': False}
+{'textBottom': 505, 'textOk': True, 'scrollTop': 349, 'maxScroll': 366, 'lineTop': 412, 'lineBottom': 558, 'footTop': 566, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '390x640', 'case': 'rare_big', 'rm': False}
+{'textBottom': 618, 'textOk': True, 'scrollTop': 66, 'maxScroll': 83, 'lineTop': 555, 'lineBottom': 618, 'footTop': 626, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '390x700', 'case': 'coin', 'rm': False}
+{'textBottom': 565, 'textOk': True, 'scrollTop': 289, 'maxScroll': 306, 'lineTop': 472, 'lineBottom': 618, 'footTop': 626, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '390x700', 'case': 'rare_big', 'rm': False}
+{'textBottom': 433, 'textOk': True, 'scrollTop': 476, 'maxScroll': 493, 'lineTop': 340, 'lineBottom': 486, 'footTop': 494, 'bodyTop': 277, 'ok': True, 'br': 'webkit', 'vp': '320x568', 'case': 'rare_big', 'rm': True}
+checks 18 bad 0 console []

@@ -1,0 +1,18 @@
+seconds=176
+rc=0
+[hero_thief_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_thief_strip/hero_thief_strip.png) — 1199 × 1312 ピクセル
+
+rojects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_thief_strip\hero_thief_strip.png 1199x1312
+
+exec
+"C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe" -Command 'Add-Type -AssemblyName System.Drawing; $b=[System.Drawing.Bitmap]::new((Join-Path (Get-Location) '"'hero_thief_strip.png')); "'$c=$b.GetPixel(0,0); Write-Output "$($b.Width)x$($b.Height) #$($c.R.ToString('"'X2'))"'$($c.G.ToString('"'X2'))"'$($c.B.ToString('"'X2'))\"; "'$b.Dispose()' in C:\Users\user\projects\ichimon-drill\.worktrees\rpg\rpg\assets\src\hero_thief_strip
+ succeeded in 447ms:
+1199x1312 #FF00FF
+
+codex
+[hero_thief_strip.png](C:/Users/user/projects/ichimon-drill/.worktrees/rpg/rpg/assets/src/hero_thief_strip/hero_thief_strip.png) — 1199 × 1312 ピクセル
+hook: Stop
+hook: Stop Completed
+tokens used
+32,362
+

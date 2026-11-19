@@ -1,0 +1,21 @@
+{
+ "src": "rpg/assets/tools/../src/chest_normal_closed/chest_normal_closed.png",
+ "src_size": [
+  1429,
+  1100
+ ],
+ "trim_size": [
+  995,
+  679
+ ],
+ "out": "rpg/assets/chars/chest_normal_closed.png",
+ "out_size": [
+  48,
+  33
+ ],
+ "magenta_removed_px": 953253,
+ "fringe_removed_px": 1860,
+ "magenta_left_px": 0,
+ "opaque_px": 1448,
+ "colors": 1035
+}

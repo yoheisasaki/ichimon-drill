@@ -1,0 +1,21 @@
+{
+ "src": "src/hero_warrior_attack/hero_warrior_attack.png",
+ "src_size": [
+  1278,
+  1230
+ ],
+ "trim_size": [
+  808,
+  734
+ ],
+ "out": "rpg/assets/chars/hero_warrior_attack.png",
+ "out_size": [
+  89,
+  81
+ ],
+ "magenta_removed_px": 1268976,
+ "fringe_removed_px": 2682,
+ "magenta_left_px": 0,
+ "opaque_px": 3629,
+ "colors": 2927
+}
