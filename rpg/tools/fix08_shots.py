@@ -1,6 +1,6 @@
 # 修正指示書08 戦士の新旧比較画像と比率の実測。python rpg/tools/fix08_shots.py
 # 出力: rpg/shots/fix08_warrior/（compare_L.png / compare_S_strip.png / weapons.png / poses.png / ratios.json）
-# 旧 = git HEAD の部品（rpg/assets/parts）。新 = 作業ツリー。描画は実物の rpg-sprites.js（drawHeroLayered）を headless Chromium で動かす。
+# 旧 = 修正前（コミット 706a192 の親）の部品（rpg/assets/parts）。新 = 作業ツリー。描画は実物の rpg-sprites.js（drawHeroLayered）を headless Chromium で動かす。
 import os, sys, io, json, subprocess, threading, http.server, socketserver, base64, tarfile, tempfile
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'rpg', 'shots', 'fix08_warrior'); os.makedirs(OUT, exist_ok=True)
 OLD = tempfile.mkdtemp(prefix='fix08_old_')
-tar = subprocess.run(['git', '-C', ROOT, 'archive', 'HEAD', 'rpg/assets/parts'], capture_output=True, check=True).stdout
+tar = subprocess.run(['git', '-C', ROOT, 'archive', os.environ.get('OLD_REF', '706a192~1'), 'rpg/assets/parts'], capture_output=True, check=True).stdout
 tarfile.open(fileobj=io.BytesIO(tar)).extractall(OLD)
 OLD_PARTS = os.path.join(OLD, 'rpg', 'assets', 'parts')
 HTML = b'''<!doctype html><meta charset=utf-8><body style="margin:0"><script src="/rpg/js/rpg-sprites.js"></script><script>
@@ -92,7 +92,7 @@ with sync_playwright() as pw:
     def wrow(which, k, pose):
         cells = []
         for (w, nm), w2 in zip(W3, ('w_sword_1', 'w_sword_1', 'w_sword_2') if which == 'old' else [x[0] for x in W3]):
-            h = R(which, {'w': 130, 'h': 112, 'bg': 'color', 'color': '#e8eefc', 'items': [{'kind': 'hero', 'x': 60, 'y': 106, 'o': {'pose': pose, 'use': 'self', 'weaponId': w2}}]})
+            h = R(which, {'w': 150, 'h': 112, 'bg': 'color', 'color': '#e8eefc', 'items': [{'kind': 'hero', 'x': 60, 'y': 106, 'o': {'pose': pose, 'use': 'self', 'weaponId': w2}}]})
             ic = Image.new('RGBA', (32, 32), (232, 238, 252, 255)); ic.alpha_composite(icons[w])
             cells.append(labeled(hstack([up(h, k), up(ic, k)], gap=4, bg=(232, 238, 252, 255)), nm))
         return hstack(cells)
@@ -105,7 +105,7 @@ with sync_playwright() as pw:
     vstack([labeled(wrow('old', 3, 'idle'), '旧（初期武器は青銅の剣の絵に置き換わっていた。左のアイコンは店の絵）'), labeled(wrow('new', 3, 'idle'), '新 L 待機'), labeled(wrow('new', 3, 'attack'), '新 L 攻撃'), labeled(srow('new', 6), '新 S 待機')]).convert('RGB').save(os.path.join(OUT, 'weapons.png'))
     # --- ポーズ一覧（新）
     LP = ['idle', 'ready', 'attack', 'guard', 'win', 'hit']; SPS = ['idle', 'walk', 'walk2', 'windup', 'attack', 'guard', 'win', 'hit']
-    lcells = [labeled(up(R('new', {'w': 110, 'h': 112, 'bg': 'color', 'color': '#e8eefc', 'items': [{'kind': 'hero', 'x': 48, 'y': 106, 'o': {'pose': p, 'use': 'self', 'weaponId': 'w_sword_1'}}]}), 2), 'L ' + p) for p in LP]
+    lcells = [labeled(up(R('new', {'w': 128, 'h': 112, 'bg': 'color', 'color': '#e8eefc', 'items': [{'kind': 'hero', 'x': 50, 'y': 106, 'o': {'pose': p, 'use': 'self', 'weaponId': 'w_sword_1'}}]}), 2), 'L ' + p) for p in LP]
     scells = [labeled(up(R('new', {'w': 44, 'h': 36, 'bg': 'color', 'color': '#a8c8a0', 'items': [{'kind': 'hero', 'x': 18, 'y': 33, 'o': {'pose': p, 'use': 'strip', 'weaponId': 'w_sword_1', 'outline': '#141a3c'}}]}), 5), 'S ' + p) for p in SPS]
     vstack([hstack(lcells), hstack(scells[:4]), hstack(scells[4:])]).convert('RGB').save(os.path.join(OUT, 'poses.png'))
     # --- 実測用（武器なし・透明背景）

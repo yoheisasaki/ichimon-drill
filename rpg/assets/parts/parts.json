@@ -6293,26 +6293,26 @@
    "weaponLayer": "back"
   },
   "warrior_guard_L": {
-   "w": 76,
-   "h": 89,
+   "w": 90,
+   "h": 96,
    "foot": [
-    44.3,
-    88
+    52.7,
+    95
    ],
    "neck": [
-    48.6,
-    43.2
+    49.9,
+    43.1
    ],
    "grip": [
-    56.5,
-    49.0
+    71.0,
+    55.5
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_warrior_guard_L.png",
    "handPos": [
-    49,
-    41
+    67,
+    52
    ],
    "heads": "v2",
    "weaponLayer": "front"
@@ -6857,7 +6857,12 @@
     6,
     22
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_sword_1_L.png",
+   "heldGrip": [
+    8,
+    29
+   ]
   },
   "rw_sword_1.png": {
    "itemId": "rw_sword_1",
@@ -6902,7 +6907,12 @@
     7,
     24
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_start_L.png",
+   "heldGrip": [
+    9,
+    32
+   ]
   },
   "w_sword_2.png": {
    "itemId": "w_sword_2",
@@ -6911,7 +6921,12 @@
     8,
     23
    ],
-   "tipAngle": 45
+   "tipAngle": 45,
+   "held": "held_w_sword_2_L.png",
+   "heldGrip": [
+    11,
+    30
+   ]
   }
  },
  "palette": {
