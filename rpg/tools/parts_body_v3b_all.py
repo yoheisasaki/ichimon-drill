@@ -20,6 +20,7 @@ GRIP = {'sword': (5, 12, 78, 60), 'staff': (5, 12, 78, 60), 'dagger': (5, 12, 78
 
 # S の色（職ごと）。U 胴・V 影/脚・Y 飾り・T ベルト/靴・D えり/スカーフ・C 腕の影。headgear は頭の飾り（行,列,色の文字）
 STYLE = {
+    'warrior': dict(U=(47, 102, 194), V=(30, 72, 150), Y=(232, 161, 44), T=(180, 108, 50), D=(250, 227, 185), L=(30, 72, 150), armor=True),
     'mage': dict(U=(113, 49, 135), V=(71, 30, 101), Y=(248, 191, 69), T=(180, 108, 50), D=(251, 240, 217), L=(71, 30, 101), robe=True),
     'priest': dict(U=(214, 221, 240), V=(132, 146, 190), Y=(232, 161, 44), T=(180, 108, 50), D=(150, 205, 240), L=(196, 205, 232), robe=True, belt=(47, 102, 194)),
     'thief': dict(U=(70, 120, 60), V=(45, 85, 45), Y=(150, 100, 55), T=(110, 70, 40), D=(150, 100, 55), L=(60, 100, 50)),
@@ -178,7 +179,8 @@ def build_s(job, J, ent, save, write_pose, ws):
             new[7] = '..LLLLLLLLLLLL..'; new[8] = '...LLLLLLLLLL...'; new[9] = '...LLLLLLLLLL...'; new[10] = '...LLLLLLLLLL...'
         if (st.get('armor') is None and base_job not in ('paladin', 'magicknight', 'skyknight')):
             new[1] = new[1].replace('Y', 'U')
-        SS.BODY[:] = new
+        import parts_body_v3b_s_feat as FT
+        SS.BODY[:] = FT.apply(base_job, new, st, SS.COL)
         SS.build_s(J, ent, save, write_pose)
     finally:
         SS.COL.clear(); SS.COL.update(old); SS.HEAD[:] = oldh; SS.BODY[:] = oldb

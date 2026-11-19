@@ -11837,6 +11837,45 @@
    "inspect": "自動: マゼンタ残り0〜数px・32px四方・箱平均縮小。目視: ランク差を確認",
    "connected": "接続済み",
    "connectedWhere": "装備・店・図鑑（iconOf）と、戦士の手持ち（parts.json weapon）。はじまりの武器の絵（artWeapon は戦士のみ w_start のまま）"
+  },
+  {
+   "id": "icon_w_start_staff",
+   "use": "装備アイコン はじまりの木の杖（w_start の杖職用の絵。ID・強さは w_start のまま）",
+   "path": "rpg/assets/icons/w_start_staff.png",
+   "src": "rpg/tools/make_start_icons.py でドット描画（素朴な木・飾りなし）",
+   "display": "32px",
+   "anchor": "中央",
+   "status": "正式",
+   "transparent": true,
+   "inspect": "自動: 32px四方・透過。目視: 購入品（w_staff_1）と見分けられるか確認（2026-11-19）",
+   "connected": "接続済み",
+   "connectedWhere": "装備・店・図鑑（iconOf が職で選ぶ）と、手持ち（artWeapon／parts.json weapon の held・heldS）"
+  },
+  {
+   "id": "icon_w_start_dagger",
+   "use": "装備アイコン はじまりの木の短剣（w_start の短剣職用の絵。ID・強さは w_start のまま）",
+   "path": "rpg/assets/icons/w_start_dagger.png",
+   "src": "rpg/tools/make_start_icons.py でドット描画（素朴な木・飾りなし）",
+   "display": "32px",
+   "anchor": "中央",
+   "status": "正式",
+   "transparent": true,
+   "inspect": "自動: 32px四方・透過。目視: 購入品（w_dagger_1）と見分けられるか確認（2026-11-19）",
+   "connected": "接続済み",
+   "connectedWhere": "装備・店・図鑑（iconOf が職で選ぶ）と、手持ち（artWeapon／parts.json weapon の held・heldS）"
+  },
+  {
+   "id": "icon_w_start_bow",
+   "use": "装備アイコン はじまりの木の弓（w_start の弓職用の絵。ID・強さは w_start のまま）",
+   "path": "rpg/assets/icons/w_start_bow.png",
+   "src": "rpg/tools/make_start_icons.py でドット描画（素朴な木・飾りなし）",
+   "display": "32px",
+   "anchor": "中央",
+   "status": "正式",
+   "transparent": true,
+   "inspect": "自動: 32px四方・透過。目視: 購入品（w_bow_1）と見分けられるか確認（2026-11-19）",
+   "connected": "接続済み",
+   "connectedWhere": "装備・店・図鑑（iconOf が職で選ぶ）と、手持ち（artWeapon／parts.json weapon の held・heldS）"
   }
  ],
  "vendor": [

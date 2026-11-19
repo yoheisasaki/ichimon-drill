@@ -72,7 +72,7 @@
     const st = M.statOf(save(), id), it = D.ITEMS[id]; if (!it) return '';
     return st.atk != null ? `攻撃 ${st.atk}` : st.def != null ? `防御 ${st.def}` : '';
   }
-  const iconOf = (id, px) => { const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); px = px || 32; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="${px}" height="${px}" style="width:${px}px;height:${px}px" alt="" aria-hidden="true">` : ''; };
+  const iconOf = (id, px) => { if (id === 'w_start') { const sv = RPG.save; if (sv && sv.job) id = M.startArtOf(sv.job); } const a = RPG.assets && (RPG.assets['icon_' + id] || RPG.assets['icon_' + id.replace(/^(u_.+)_\d$/, '$1')]); px = px || 32; return a && a.path ? `<img class="rs-ic" src="${a.path}" width="${px}" height="${px}" style="width:${px}px;height:${px}px" alt="" aria-hidden="true">` : ''; };
   // ルビは rpg-ruby.js の render（{漢字|よみ} と辞書）。画面ごとにタグを外して漢字だけに戻す経路は作らない
   const kr = RuRb.render;
   // 技の短い説明（最初の画面用。詳しい倍率は折りたたみの中）

@@ -9,11 +9,11 @@ from parts_common import PARTS, save_parts_json
 ICONS = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
 CATS = ['sword', 'staff', 'dagger', 'bow']
 UNIQ = {'u_tenbinnotsurugi': 'sword', 'u_chionnotsue': 'staff', 'u_tokisunanotanken': 'dagger', 'u_kyoheinoyumi': 'bow'}   # 固有武器（ランク違いはアイコン共用）
-IDS = ['w_start'] + [f'{p}{c}_{k}' for p in ('w_', 'rw_') for c in CATS for k in range(1, 7)] + list(UNIQ)
-FIXED = {'w_start': (7, 24), 'w_sword_1': (6, 22), 'w_sword_2': (8, 23), 'w_staff_1': (8, 22), 'w_dagger_1': (8, 24), 'w_bow_1': (16, 16)}
+IDS = ['w_start', 'w_start_staff', 'w_start_dagger', 'w_start_bow'] + [f'{p}{c}_{k}' for p in ('w_', 'rw_') for c in CATS for k in range(1, 7)] + list(UNIQ)
+FIXED = {'w_start': (7, 24), 'w_start_staff': (8, 24), 'w_start_dagger': (8, 24), 'w_start_bow': (16, 16), 'w_sword_1': (6, 22), 'w_sword_2': (8, 23), 'w_staff_1': (8, 22), 'w_dagger_1': (8, 24), 'w_bow_1': (16, 16)}
 OFF = {'sword': 9, 'staff': 10, 'dagger': 8}   # 柄尻(x-y 最小)から軸方向の距離
 SIZE = {'sword': 42, 'staff': 42, 'dagger': 34, 'bow': 42}
-def cat_of(i): return UNIQ[i] if i in UNIQ else 'sword' if i == 'w_start' else next(c for c in CATS if f'_{c}_' in i)
+def cat_of(i): return UNIQ[i] if i in UNIQ else 'sword' if i == 'w_start' else next(c for c in CATS if f'_{c}_' in i or i.endswith(f'_{c}'))
 def grip_of(i, im):
     if i in FIXED: return FIXED[i]
     c = cat_of(i)
@@ -29,6 +29,18 @@ def thicken(arr):
         src = np.zeros_like(arr); src[dy:, dx:] = arr[:arr.shape[0] - dy, :arr.shape[1] - dx]
         m = sh & (out[..., 3] == 0); out[m] = src[m]
     return out
+def small(im):
+    a = np.array(im); out = np.zeros((16, 16, 4), np.uint8)
+    for y in range(16):
+        for x in range(16):
+            blk = a[2 * y:2 * y + 2, 2 * x:2 * x + 2].reshape(-1, 4); op = blk[blk[:, 3] > 0]
+            if len(op) < 2: continue
+            lum = op[:, :3] @ np.array([0.3, 0.59, 0.11]); dark = lum < 75
+            if dark.sum() >= 3 or dark.all(): c = op[dark][np.argmin(lum[dark])][:3]
+            else:
+                lt = op[~dark]; lm = lum[~dark]; c = lt[np.argsort(lm)[len(lm) // 2]][:3]
+            out[y, x] = (*c, 255)
+    return Image.fromarray(out)
 def mut(d):
     for i in IDS:
         im = Image.open(os.path.join(ICONS, i + '.png')).convert('RGBA'); c = cat_of(i); N = SIZE[c]; K = N / 32
@@ -38,5 +50,6 @@ def mut(d):
         f = f'held_{i}_L.png'; big.save(os.path.join(PARTS, f))
         e = d['weapon'].setdefault(i + '.png', {'itemId': i, 'tipAngle': 45})
         e.setdefault('itemId', i); e.setdefault('tipAngle', 45); e['grip'] = list(g)
+        small(im).save(os.path.join(PARTS, f'held_{i}_S.png')); e['heldS'] = f'held_{i}_S.png'; e['heldGripS'] = [g[0] // 2, g[1] // 2]
         e['held'] = f; e['heldGrip'] = [round(g[0] * K + K / 2 - 0.5), round(g[1] * K + K / 2 - 0.5)]
 save_parts_json(mut); print(len(IDS), 'weapons')

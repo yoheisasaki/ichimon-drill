@@ -152,7 +152,9 @@
             const wk = wi ? iconFileOf(h.weaponId) : null, we = wk && J.weapon && (J.weapon[wk] || J.weapon[stripPng(wk)]);
             let held = null;   // L は専用の手持ち絵（店アイコンを拡大した held_<id>_L.png）を優先
             if (we && we.held && h.size === 'L') { const hs = partImg(we.held); if (hs === 'pending') return { mode: 'wait', h }; if (hs !== 'fail') held = hs; }
-            return rec('layered', { body: b, head: hd, bf, hf, hand, wi: held || wi, wk, held: !!held });
+            let heldS = false;   // S（冒険帯）は専用の小型手持ち絵（held_<id>_S.png・16px）を優先（アイコンを0.5倍にすると線が潰れる）
+            if (!held && we && we.heldS && h.size === 'S') { const hs = partImg(we.heldS); if (hs === 'pending') return { mode: 'wait', h }; if (hs !== 'fail') { held = hs; heldS = true; } }
+            return rec('layered', { body: b, head: hd, bf, hf, hand, wi: held || wi, wk, held: !!held, heldS });
           }
         }
       }
@@ -181,7 +183,7 @@
       items.push({ im: hi, x: hx, y: hy, w: hi.width, h: hi.height }); }
     if (plan.wi && b.grip) {
       const we = (J.weapon && (J.weapon[plan.wk] || J.weapon[stripPng(plan.wk)])) || null;
-      items.push({ im: plan.wi, weapon: weaponPlacement(b, plan.held && we.heldGrip ? { grip: we.heldGrip, tipAngle: we.tipAngle } : we, plan.wi.width, plan.wi.height), w: plan.wi.width, h: plan.wi.height });
+      items.push({ im: plan.wi, weapon: weaponPlacement(plan.heldS ? Object.assign({}, b, { weaponScale: 1 }) : b, plan.heldS && we.heldGripS ? { grip: we.heldGripS, tipAngle: we.tipAngle } : plan.held && we.heldGrip ? { grip: we.heldGrip, tipAngle: we.tipAngle } : we, plan.wi.width, plan.wi.height), w: plan.wi.width, h: plan.wi.height });
     }
     if (plan.hand) { const him = PARTS.imgs[plan.hand].im, at = (b.handPos || b.handAt || (b.grip ? [b.grip[0] - him.width / 2, b.grip[1] - him.height / 2] : [0, 0])).map(Math.round); items.push({ im: tint(him, plan.hand), x: at[0], y: at[1], w: him.width, h: him.height }); }
     let x0 = 0, y0 = 0, x1 = bi.width, y1 = bi.height;
