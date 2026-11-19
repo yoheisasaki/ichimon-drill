@@ -1,10 +1,7 @@
 'use strict';
-// 送信先（学習ボードの Apps Script Webアプリ）
-const SEND_URL = 'https://script.google.com/macros/s/AKfycbwR6PPGrKn5HL1yJ8-xc_sjV-kaEDY2dv0jD_e7XyRSjQUd2E_2_Pq-rGE6tWxHRj3QFg/exec';
-const PARAMS = new URLSearchParams(location.search);
+// 送信先（SEND_URL）・PARAMS・SEND_OVERRIDE・ママの設定の読み込みは common.js
 const MAMA = PARAMS.get('mama') === '1' || /mama\.html$/.test(location.pathname); // ママモード：送信せず、保存キーも別名
 const NOSEND = PARAMS.get('nosend') === '1' || MAMA;
-const SEND_OVERRIDE = PARAMS.get('send'); // テスト用：送信先を差し替え
 const ROUND = 10, MASTER = 3, REASK_GAP = 3, REASK_MAX = 5, BATCH = 200;
 const SUBJECTS = ['国語', '算数', '理科', '社会'];
 const LS_SFX = MAMA ? '.mama' : '';
@@ -23,7 +20,7 @@ let queue = load(LS_Q, { seq: 0, rows: [] });
 
 // ---------- ふりがな ----------
 // ---------- データ ----------
-let DATA = null, current = null, filter = '全部';
+let DATA = null, current = null, filter = '全部', CONF = emptyConf(), OFF = new Set();
 let units = {}; // 教科 -> 選んだまとまり（空＝ぜんぶまぜる）
 (function () { const v = load(LS_SEL, null); if (v && typeof v === 'object') { if (typeof v.filter === 'string') filter = v.filter; if (v.units && typeof v.units === 'object') units = v.units; } })();
 function saveSel() { save(LS_SEL, { filter, units }); }
@@ -35,7 +32,8 @@ function groupsOf(subject) {
 let S = null; // 回の状態
 const app = document.getElementById('app');
 
-function qs() { return DATA.questions.filter(q => q.test === current.id); }
+function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id)); } // off（今回は出さない）は対象から外す
+function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 function isMaster(id) { return st(id).s >= MASTER; }
 function isHard(id) { const x = st(id); return x.w > 0 && x.s < MASTER; }
@@ -77,7 +75,7 @@ function home() {
     const c = counts(list);
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ</small></button>`;
   };
-  const p = pool(), hard = p.filter(q => isHard(q.id));
+  const p = pool(), hard = p.filter(q => isHard(q.id)), tp = pickPool();
   app.innerHTML = `
     <h1>一問一答</h1>
     ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a></div>' : ''}
@@ -85,6 +83,7 @@ function home() {
     <div class="subjects">${card('ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card('ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card('かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">ぜんぶまぜる<small>${all.filter(q => q.subject === filter).length}こ</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}こ</small></button>`; }).join('')}</div>` : ''}
     <button class="big go" id="go">スタート（${Math.min(ROUND, p.length)}もん）</button>
+    ${tp.length ? `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>` : ''}
     <button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}こ）</button>
     <div class="credit">地図：国土数値情報（行政区域データ）を加工して作成</div>`;
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { filter = b.dataset.f; saveSel(); home(); });
@@ -95,12 +94,14 @@ function home() {
   });
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
+  const tb = document.getElementById('testp');
+  if (tb) tb.onclick = () => start(pick(tp, ROUND), 'pick');
 }
 
 // ---------- 回 ----------
-function start(list) {
+function start(list, from) {
   if (!list.length) return home();
-  S = { sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), skips: 0, seen: new Set(), locked: false, timer: null };
+  S = { from: from || '',  sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: list.slice(), idx: 0, total: list.length, reask: 0, correct: 0, wrong: [], wrongIds: new Set(), skips: 0, seen: new Set(), locked: false, timer: null };
   question();
 }
 function question() {
@@ -214,10 +215,10 @@ function result() {
     <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
-  document.getElementById('again').onclick = () => start(shuffle(S.wrong));
+  document.getElementById('again').onclick = () => start(shuffle(S.wrong), S.from);
   document.getElementById('more').onclick = () => {
-    const p = pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
-    start(pick(fresh.length >= 3 ? fresh : p, ROUND));
+    const p = S.from === 'pick' ? pickPool() : pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
+    start(pick(fresh.length >= 3 ? fresh : p, ROUND), S.from);
   };
   document.getElementById('end').onclick = () => home();
 }
@@ -270,7 +271,9 @@ window.addEventListener('online', flush);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
 
 // ---------- 起動 ----------
-fetch('data/questions.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
-  DATA = d; current = d.tests.find(t => t.current) || d.tests[0];
+// questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
+Promise.all([fetch('data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+  CONF = conf; OFF = new Set(conf.off);
+  DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
 }).catch(() => { app.innerHTML = '<div class="empty">もんだいを よみこめませんでした。<br>ネットを つないで もう一度ひらいてね。</div>'; });

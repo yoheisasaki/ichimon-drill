@@ -37,6 +37,7 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .big{display:block;width:100%;min-height:64px;border:0;border-radius:22px;font-size:24px;font-weight:800;margin-bottom:12px;color:#fff}
 .big.go{background:#3cc07a;box-shadow:0 5px 0 #28955c}
 .big.hard{background:#f5a53a;box-shadow:0 5px 0 #c97f1c}
+.big.test{background:#7b6cf0;box-shadow:0 5px 0 #5a4cc4}
 .big.plain{background:#fff;color:#2b2a3a;border:3px solid #e1ddf2;box-shadow:0 4px 0 #ddd8f0}
 .big:disabled{opacity:.45}
 .big:active{transform:translateY(2px)}
@@ -105,3 +106,24 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .tg.m{background:#e3f6ea;color:#1f9a5a}
 .tapshow{color:#8a88a0;font-size:12px;border:1px dashed #cfcbe3;border-radius:6px;padding:2px 6px;display:inline-block}
 .listpage rt{font-size:.5em}
+/* ママ用一覧：テスト対策・今回は出さない・編集 */
+.ctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.ctl .pk{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;min-height:34px;padding:0 4px}
+.ctl .pk input{width:20px;height:20px}
+.ctl .fb{padding:3px 10px;min-height:32px}
+.it.off{opacity:.45}
+.it.off .fb.offb{border-color:#e5584f;color:#b3362d}
+.stat{font-size:12px;font-weight:800;color:#6d6b85;margin-left:6px}
+.stat.err{color:#b3362d}
+.stat button{border:0;background:none;color:#1e7fc0;font-weight:800;text-decoration:underline;font-size:12px}
+.ef{margin-top:6px;border-top:1px dashed #cfcbe3;padding-top:6px;display:flex;flex-direction:column;gap:6px}
+.ef label{font-size:12px;font-weight:700;color:#6d6b85}
+.ef textarea,.ef input[type=text]{width:100%;border:2px solid #e1ddf2;border-radius:8px;padding:6px 8px;font:inherit;font-size:15px;box-sizing:border-box}
+.ef textarea{min-height:64px}
+.eo{display:flex;gap:6px;align-items:center}
+.eo input{flex:1;min-width:0}
+.eo .tap{flex:none;width:40px;min-height:40px;border-radius:50%;border:2px solid #cfcbe3;background:#fff;font-size:18px;font-weight:900;color:#9a98ae}
+.eo .tap.sel{border-color:#1f9a5a;background:#e3f6ea;color:#1f9a5a}
+.ef .hint{font-size:12px;color:#6d6b85;margin:0}
+.ef .emsg{font-size:12px;color:#b3362d;font-weight:700}
+.ef .row{display:flex;gap:8px}
