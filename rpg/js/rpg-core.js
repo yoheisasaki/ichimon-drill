@@ -5,7 +5,7 @@
   if (typeof module === 'object' && module.exports) module.exports = m; else root.RPGCore = m;
 })(typeof self !== 'undefined' ? self : this, function (D) {
   const LS_RPG = 'ichimon.rpg.v1', LS_BACKUP = 'ichimon.rpg.backup.v1';
-  const SAVE_VERSION = 1, WELCOME_COIN = 160, ADV_UNIT = 10, REVIEW_MAX = 5;
+  const SAVE_VERSION = 2, WELCOME_COIN = 160, ADV_UNIT = 10, REVIEW_MAX = 5;
 
   // ---------- 経験値・レベル ----------
   const NEED = {
@@ -180,7 +180,7 @@
   function newSave(ms) {
     const jobXp = {}; D.JOB_IDS.forEach(j => { jobXp[j] = 0; });
     return {
-      v: SAVE_VERSION, rev: 0, created: ms || 0, name: '', look: { face: 0, hair: 0, skin: 0, hairColor: 0 },
+      v: SAVE_VERSION, rev: 0, created: ms || 0, name: '', look: { outfit: null },
       advXp: 0, job: D.FIRST_JOB, jobXp, coins: 0, welcomeDone: false, firstDone: false,
       inv: { items: { w_start: 1 }, mats: {}, enhance: {}, fresh: {} }, equip: { weapon: 'w_start', armor: null, acc: null },
       loadout: { skills: null, tactic: 'auto' }, wish: 'sword',
@@ -189,10 +189,17 @@
       codex: { enemies: {}, items: {} }, goal: null, seen: {}, active: null, lastResult: null, ledger: { settled: {} }, trials: {}, stats: { adventures: 0 }, settings: { sound: false, vibrate: false }
     };
   }
+  // v1 → v2：外見選択の廃止（顔・髪型・肌・髪色を捨てる。衣装 outfit・職・装備・進行はそのまま）
+  function migrateSave(o) {
+    if (!o || typeof o !== 'object' || Array.isArray(o)) return o;
+    if (o.v === 1) o.v = SAVE_VERSION;
+    if (o.v === SAVE_VERSION && o.look && typeof o.look === 'object') { const ou = o.look.outfit; o.look = { outfit: ou || null }; }
+    return o;
+  }
   function validateSave(o) {
     const err = [], isObj = x => x && typeof x === 'object' && !Array.isArray(x);
     if (!isObj(o)) return ['保存データが壊れている'];
-    if (o.v !== SAVE_VERSION) err.push('バージョンが違う');
+    if (o.v !== SAVE_VERSION && o.v !== 1) err.push('バージョンが違う');   // v1 は migrateSave で v2 にしてから使う
     ['advXp', 'coins', 'rev'].forEach(k => { if (!Number.isFinite(o[k]) || o[k] < 0) err.push(k + 'が不正'); });
     if (!D.JOBS[o.job]) err.push('職業が不正');
     ['inv', 'equip', 'progress', 'daily', 'chest', 'ledger', 'jobXp', 'loadout'].forEach(k => { if (!isObj(o[k])) err.push(k + 'が不正'); });
@@ -213,7 +220,7 @@
       load(ms) {
         const r = readRaw(); if (!r.ok) return { ok: false, err: 'storage', save: newSave(ms), fresh: true };
         if (!r.v) return { ok: true, save: newSave(ms), fresh: true };
-        try { const o = JSON.parse(r.v), e = validateSave(o); if (e.length) return { ok: false, err: 'corrupt', detail: e, save: newSave(ms), fresh: true }; return { ok: true, save: o, fresh: false }; }
+        try { const o = migrateSave(JSON.parse(r.v)), e = validateSave(o); if (e.length) return { ok: false, err: 'corrupt', detail: e, save: newSave(ms), fresh: true }; return { ok: true, save: o, fresh: false }; }
         catch (e) { return { ok: false, err: 'corrupt', detail: ['JSONが読めない'], save: newSave(ms), fresh: true }; }
       },
       // 読み込み時の rev と保存先の rev が違えば、別のタブが先に進んでいる → 上書きしない
@@ -238,7 +245,7 @@
     if (!o || o.kind !== 'ichimon-save' || o.v !== 1) return { ok: false, err: ['このアプリのセーブではない'] };
     if (!o.stats || typeof o.stats !== 'object' || Array.isArray(o.stats)) return { ok: false, err: ['学習記録が不正'] };
     for (const k of Object.keys(o.stats)) { const x = o.stats[k]; if (!x || typeof x !== 'object' || !Number.isFinite(x.w) || !Number.isFinite(x.c) || !Number.isFinite(x.s)) return { ok: false, err: ['学習記録が不正: ' + k] }; }
-    if (o.rpg) { const e = validateSave(o.rpg); if (e.length) return { ok: false, err: e }; }
+    if (o.rpg) { migrateSave(o.rpg); const e = validateSave(o.rpg); if (e.length) return { ok: false, err: e }; }
     return { ok: true, data: o };
   }
   // 現在の状態をバックアップしてから反映。検証に失敗したときは何も変えない。送信キューは触らない
@@ -254,5 +261,5 @@
     return { ok: true, backup };
   }
 
-  return { LS_RPG, LS_BACKUP, SAVE_VERSION, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rewardTotals, rollChest, applyChest, addSealedChest, chestById, sealedChests, openChest, openChestPersist, migrateChests, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
+  return { LS_RPG, LS_BACKUP, SAVE_VERSION, migrateSave, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rewardTotals, rollChest, applyChest, addSealedChest, chestById, sealedChests, openChest, openChestPersist, migrateChests, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
 });

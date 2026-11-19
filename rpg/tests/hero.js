@@ -6,7 +6,7 @@ let pass = 0, fail = 0; const failures = [];
 function t(name, fn) { try { fn(); pass++; } catch (e) { fail++; failures.push(name + ' → ' + e.message); } }
 function eq(a, b, m) { if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error((m || '') + ' 期待 ' + JSON.stringify(b) + ' 実際 ' + JSON.stringify(a)); }
 function ok(c, m) { if (!c) throw new Error(m || 'ok でない'); }
-const ROOT = path.join(__dirname, '..', '..');
+const ROOT = path.join(__dirname, '..', '..'), PD0 = path.join(__dirname, '..', 'assets', 'parts');
 const man = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'ASSET_MANIFEST.json'), 'utf8'));
 const fresh = () => { const s = M.ensure(C.newSave(0)); s.firstDone = true; return s; };
 
@@ -19,10 +19,6 @@ t('色の置換：完全一致の色だけ変わり、他の色と透明は変�
   const d = new Uint8ClampedArray([255, 214, 176, 255, 232, 176, 136, 255, 1, 2, 3, 255, 255, 214, 176, 0]);
   SP.recolorData(d, [['#ffd6b0', '#112233'], ['#e8b088', '#445566']]);
   eq(Array.from(d), [0x11, 0x22, 0x33, 255, 0x44, 0x55, 0x66, 255, 1, 2, 3, 255, 255, 214, 176, 0]);
-});
-t('色の置換：肌の列（SKIN 5色）×部品の色列(4色)で、全員ちがう並びになる', () => {
-  const seen = new Set(M.SKIN.map(c => SP.buildRamp(c, 4).join()));
-  eq(seen.size, M.SKIN.length); const hs = new Set(M.HAIR_COLOR.map(c => SP.buildRamp(c, 4).join())); eq(hs.size, M.HAIR_COLOR.length);
 });
 t('武器の置き場：握りを身体の握り手に合わせ、(gripAngle − tipAngle) だけ回す', () => {
   const p = SP.weaponPlacement({ grip: [30, 40], gripAngle: 90, weaponScale: 1.5 }, { grip: [5, 27], tipAngle: 45 }, 32, 32);
@@ -52,11 +48,11 @@ t('マスター衣装：その職業を Lv30 にすると獲得。未獲得は�
   s.jobXp.warrior = C.cum(C.NEED.base, 29) + 1e6; ok(M.masterOwned(s, 'warrior')); eq(M.setOutfit(s, 'master'), true); eq(M.costumeOf(s, 'warrior'), 'master'); eq(M.costumeOf(s, 'mage'), null);
   eq(M.setOutfit(s, null), true); eq(M.costumeOf(s, 'warrior'), null);
 });
-t('外見の保存：衣装(outfit)を消さない。未獲得のマスター衣装は保存されない', () => {
+t('名前・衣装の保存：衣装(outfit)を消さない。未獲得のマスター衣装は保存されない', () => {
   const s = fresh(); s.jobXp.warrior = 1e7; M.setOutfit(s, 'master');
-  ok(M.setLook(s, 'a', { face: 1, hair: 2, skin: 3, hairColor: 4, outfit: 'master' }).ok); eq(s.look.outfit, 'master');
-  ok(M.setLook(s, 'a', { face: 0, hair: 0, skin: 0, hairColor: 0 }).ok); eq(s.look.outfit, 'master', 'outfit 未指定なら据え置き');
-  const n = fresh(); M.setLook(n, 'a', { face: 0, hair: 0, skin: 0, hairColor: 0, outfit: 'master' }); eq(n.look.outfit, null);
+  ok(M.setProfile(s, 'a', 'master').ok); eq(s.look.outfit, 'master'); eq(s.look, { outfit: 'master' });
+  ok(M.setProfile(s, 'a').ok); eq(s.look.outfit, 'master', 'outfit 未指定なら据え置き');
+  const n = fresh(); M.setProfile(n, 'a', 'master'); eq(n.look.outfit, null);
 });
 t('転職：いまの武器が使えなければ適合武器へ（swapped に前後が入る）。使えるなら据え置き', () => {
   const s = fresh(); C.grantItem(s, 'w_sword_3'); C.grantItem(s, 'w_dagger_2'); s.equip.weapon = 'w_sword_3'; s.jobXp.mage = 0;
@@ -139,7 +135,51 @@ t('追加衣装(alt1)：上級職6職だけ。氷下火山クリアで解放、�
   const s = fresh(); s.job = 'paladin'; ok(!M.altOwned(s, 'paladin')); eq(M.setOutfit(s, 'alt1'), false);
   s.progress.clearedRegions.push('icevolcano'); ok(M.altOwned(s, 'paladin')); ok(!M.altOwned(s, 'warrior'));
   eq(M.setOutfit(s, 'alt1'), true); eq(M.costumeOf(s), 'alt1'); eq(M.costumeOf(s, 'warrior'), null);
-  s.job = 'warrior'; eq(M.setOutfit(s, 'alt1'), false); s.job = 'sage'; eq(M.setLook(s, 'テスト', { face: 1, hair: 2, skin: 0, hairColor: 0, outfit: 'alt1' }).ok, true); eq(s.look.outfit, 'alt1'); eq(M.costumeOf(s), 'alt1');
+  s.job = 'warrior'; eq(M.setOutfit(s, 'alt1'), false); s.job = 'sage'; eq(M.setProfile(s, 'テスト', 'alt1').ok, true); eq(s.look.outfit, 'alt1'); eq(M.costumeOf(s), 'alt1');
   eq(M.ALT_JOBS.slice().sort(), ['magicknight', 'ninja', 'paladin', 'ranger', 'sage', 'shadow']);
 });
-console.log(JSON.stringify({ pass, fail, failures }, null, 1)); process.exit(fail ? 1 : 0);
+
+// ---- v3b が既定（外見選択の廃止） ----
+t('保存の移行 v1→v2：顔・髪型・肌・髪色を捨て、衣装・職・装備・進行・名前は保つ。版番号が上がる', () => {
+  const o = JSON.parse(fs.readFileSync(path.join(__dirname, 'saves', 'day01.json'), 'utf8')); eq(o.v, 1); ok('face' in o.look);
+  o.name = 'たろう'; o.look.outfit = 'master'; const before = JSON.parse(JSON.stringify(o));
+  C.migrateSave(o); eq(o.v, 2); eq(C.SAVE_VERSION, 2); eq(o.look, { outfit: 'master' });
+  ['name', 'job', 'jobXp', 'equip', 'inv', 'progress', 'coins', 'advXp', 'rewards'].forEach(k => eq(o[k], before[k], k));
+  C.migrateSave(o); eq(o.look, { outfit: 'master' }, '2回かけても同じ'); eq(C.validateSave(o), []);
+});
+t('保存の移行：読み込み（makeStore.load）・取り込み（parseImport）でも v1 が壊れず v2 で読める。全保存フィクスチャ', () => {
+  fs.readdirSync(path.join(__dirname, 'saves')).filter(f => f.endsWith('.json')).forEach(f => {
+    const txt = fs.readFileSync(path.join(__dirname, 'saves', f), 'utf8'), mem = {}, io = { get: k => (k in mem ? mem[k] : null), set: (k, v) => { mem[k] = v; } };
+    io.set(C.LS_RPG, txt); const l = C.makeStore(io).load(0); ok(l.ok, f + ' load'); eq(l.save.v, 2, f); eq(Object.keys(M.ensure(l.save).look), ['outfit'], f);
+    const im = C.parseImport(JSON.stringify({ kind: 'ichimon-save', v: 1, stats: {}, rpg: JSON.parse(txt) })); ok(im.ok, f + ' import'); eq(im.data.rpg.v, 2, f);
+  });
+});
+t('保存の移行：旧形式（look に face 等・outfit なし／look 欠け）を ensure が補い、新規保存は look={outfit:null}・v2', () => {
+  const a = M.ensure(JSON.parse(JSON.stringify(C.newSave(0)))); a.look = { face: 3, hair: 5, skin: 4, hairColor: 5 }; a.v = 1; M.ensure(a); eq(a.look, { outfit: null }); eq(a.v, 2);
+  const b = C.newSave(0); delete b.look; eq(M.ensure(b).look, { outfit: null }); eq(C.newSave(0).look, { outfit: null }); eq(C.newSave(0).v, 2);
+});
+t('外見選択の廃止：rpg-meta に look/skin/hair の選択処理が残っていない', () => {
+  ['SKIN', 'HAIR_COLOR', 'FACE_N', 'HAIR_N', 'setLook', 'lookOf'].forEach(k => eq(k in M, false, k));
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'rpg-screens.js'), 'utf8'); ['data-lk', 'M.SKIN', 'M.HAIR_COLOR', 'setLook', 'lookOf'].forEach(k => eq(src.includes(k), false, k));
+});
+(async () => {
+  const loaded = [], __l = loaded;   // 実物の rpg-sprites.js を、画像の読込だけ差し替えて動かし、要求された部品ファイルを数える
+  global.document = { createElement: () => ({ getContext: () => ({}) }) };
+  global.fetch = u => Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.parse(fs.readFileSync(path.join(ROOT, u), 'utf8'))) });
+  global.Image = function () { const im = { width: 4, height: 4, set src(v) { loaded.push(String(v).split('/').pop()); setImmediate(() => im.onload && im.onload()); } }; return im; };
+  global.setTimeout = (f) => 0;
+  SP.loadParts('rpg/assets/parts/'); await new Promise(r => setTimeout.call ? setImmediate(r) : r());
+  const JOBS = D.JOB_IDS, COS = [null, 'master', 'alt1'];
+  const pass1 = () => SP.coverage(JOBS, COS, ['self', 'strip']);
+  pass1(); for (let i = 0; i < 5; i++) { await new Promise(r => setImmediate(r)); pass1(); }
+  const rep = SP.devReport(), PJ = JSON.parse(fs.readFileSync(path.join(PD0, 'parts.json'), 'utf8'));
+  t('v3b が既定：全職×基本/マスター/alt1×全ポーズの身体が <職>[_衣装]_v3b_ の一体絵で選ばれ、v2/v3 の身体・頭・手は読み込まれない', () => {
+    ok(rep.layered.length > 0, 'layered なし');
+    const bodies = loaded.filter(f => /^body_/.test(f)), heads = loaded.filter(f => /^head_/.test(f)), hands = loaded.filter(f => /^hand_/.test(f));
+    ok(bodies.length > 100, 'body 読込 ' + bodies.length); eq(bodies.filter(f => !/_v3b_/.test(f)), [], 'v3b でない身体'); eq(heads, [], '頭は読まない'); eq(hands.filter(f => !/_v3b_/.test(f)), [], 'v3b でない手');
+    eq(rep.whole.length + rep.missing.length, 0, '1枚絵・欠け：' + JSON.stringify(rep.whole.concat(rep.missing).slice(0, 3)));
+    JOBS.forEach(j => ['L', 'S'].forEach(z => ok(rep.layered.includes(j + '|-|idle|' + z) && rep.layered.includes(j + '|master|idle|' + z), j + z)));
+    D.JOB_IDS.filter(j => PJ.body[j + '_alt1_v3b_idle_L']).forEach(j => ok(rep.layered.includes(j + '|alt1|idle|L'), j + ' alt1'));
+  });
+  console.log(JSON.stringify({ pass, fail, failures }, null, 1)); process.exit(fail ? 1 : 0);
+})();

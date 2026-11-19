@@ -1,0 +1,277 @@
+{
+ "console": [],
+ "runs": {
+  "chromium_390x700": {
+   "migrated": {
+    "v": 2,
+    "lookKeys": [
+     "outfit"
+    ],
+    "job": "warrior",
+    "equip": "w_staff_1"
+   },
+   "look_screen": {
+    "lk": 0,
+    "swatches": 0,
+    "text": "‹ もどる 名前なまえ ・ 衣装いしょう 名前なまえ（8文字もじまで） 名前なまえはこの端末たんまつの中なかだけに残のこります。 衣装いしょう 通常つうじょう マスター衣装いしょう マスター衣装いしょうは、戦士せんしを Lv30にすると 解放かいほうされます。 衣装いしょうを変かえても、強つよさや覚おぼえた技わざは変か",
+    "heroKeys": [
+     "use,job,costume,weaponId"
+    ]
+   },
+   "entries": {
+    "home": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "town": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "me": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "adv": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "equip": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "jobs": {
+     "faceHair": false,
+     "lk": 0
+    }
+   },
+   "strip": true,
+   "dev": {
+    "parts": "ready",
+    "layered": 9,
+    "whole": 0,
+    "missing": 0
+   },
+   "parts_loaded": {
+    "body": 19,
+    "body_not_v3b": [],
+    "head": [],
+    "hand_not_v3b": [],
+    "S_bodies": 8,
+    "L_bodies": 11,
+    "sample": [
+     "body_mage_v3b_idle_L.png",
+     "body_priest_v3b_idle_L.png",
+     "body_priest_v3b_ready_L.png",
+     "body_sage_v3b_idle_L.png",
+     "body_sage_v3b_ready_L.png",
+     "body_skyknight_v3b_idle_L.png"
+    ],
+    "all_png": 53
+   }
+  },
+  "chromium_320x568": {
+   "migrated": {
+    "v": 2,
+    "lookKeys": [
+     "outfit"
+    ],
+    "job": "warrior",
+    "equip": "w_staff_1"
+   },
+   "look_screen": {
+    "lk": 0,
+    "swatches": 0,
+    "text": "‹ もどる 名前なまえ ・ 衣装いしょう 名前なまえ（8文字もじまで） 名前なまえはこの端末たんまつの中なかだけに残のこります。 衣装いしょう 通常つうじょう マスター衣装いしょう マスター衣装いしょうは、戦士せんしを Lv30にすると 解放かいほうされます。 衣装いしょうを変かえても、強つよさや覚おぼえた技わざは変か",
+    "heroKeys": [
+     "use,job,costume,weaponId"
+    ]
+   },
+   "entries": {
+    "home": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "town": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "me": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "adv": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "equip": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "jobs": {
+     "faceHair": false,
+     "lk": 0
+    }
+   },
+   "strip": true,
+   "dev": {
+    "parts": "ready",
+    "layered": 9,
+    "whole": 0,
+    "missing": 0
+   },
+   "parts_loaded": {
+    "body": 19,
+    "body_not_v3b": [],
+    "head": [],
+    "hand_not_v3b": [],
+    "S_bodies": 8,
+    "L_bodies": 11,
+    "sample": [
+     "body_mage_v3b_idle_L.png",
+     "body_priest_v3b_idle_L.png",
+     "body_priest_v3b_ready_L.png",
+     "body_sage_v3b_idle_L.png",
+     "body_sage_v3b_ready_L.png",
+     "body_skyknight_v3b_idle_L.png"
+    ],
+    "all_png": 54
+   }
+  },
+  "webkit_390x700": {
+   "migrated": {
+    "v": 2,
+    "lookKeys": [
+     "outfit"
+    ],
+    "job": "warrior",
+    "equip": "w_staff_1"
+   },
+   "look_screen": {
+    "lk": 0,
+    "swatches": 0,
+    "text": "‹ もどる 名前なまえ ・ 衣装いしょう 名前なまえ（8文字もじまで） 名前なまえはこの端末たんまつの中なかだけに残のこります。 衣装いしょう 通常つうじょう マスター衣装いしょう マスター衣装いしょうは、戦士せんしを Lv30にすると 解放かいほうされます。 衣装いしょうを変かえても、強つよさや覚おぼえた技わざは変か",
+    "heroKeys": [
+     "use,job,costume,weaponId"
+    ]
+   },
+   "entries": {
+    "home": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "town": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "me": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "adv": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "equip": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "jobs": {
+     "faceHair": false,
+     "lk": 0
+    }
+   },
+   "strip": true,
+   "dev": {
+    "parts": "ready",
+    "layered": 9,
+    "whole": 0,
+    "missing": 0
+   },
+   "parts_loaded": {
+    "body": 19,
+    "body_not_v3b": [],
+    "head": [],
+    "hand_not_v3b": [],
+    "S_bodies": 8,
+    "L_bodies": 11,
+    "sample": [
+     "body_mage_v3b_idle_L.png",
+     "body_priest_v3b_idle_L.png",
+     "body_priest_v3b_ready_L.png",
+     "body_sage_v3b_idle_L.png",
+     "body_sage_v3b_ready_L.png",
+     "body_skyknight_v3b_idle_L.png"
+    ],
+    "all_png": 53
+   }
+  },
+  "webkit_320x568": {
+   "migrated": {
+    "v": 2,
+    "lookKeys": [
+     "outfit"
+    ],
+    "job": "warrior",
+    "equip": "w_staff_1"
+   },
+   "look_screen": {
+    "lk": 0,
+    "swatches": 0,
+    "text": "‹ もどる 名前なまえ ・ 衣装いしょう 名前なまえ（8文字もじまで） 名前なまえはこの端末たんまつの中なかだけに残のこります。 衣装いしょう 通常つうじょう マスター衣装いしょう マスター衣装いしょうは、戦士せんしを Lv30にすると 解放かいほうされます。 衣装いしょうを変かえても、強つよさや覚おぼえた技わざは変か",
+    "heroKeys": [
+     "use,job,costume,weaponId"
+    ]
+   },
+   "entries": {
+    "home": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "town": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "me": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "adv": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "equip": {
+     "faceHair": false,
+     "lk": 0
+    },
+    "jobs": {
+     "faceHair": false,
+     "lk": 0
+    }
+   },
+   "strip": true,
+   "dev": {
+    "parts": "ready",
+    "layered": 9,
+    "whole": 0,
+    "missing": 0
+   },
+   "parts_loaded": {
+    "body": 19,
+    "body_not_v3b": [],
+    "head": [],
+    "hand_not_v3b": [],
+    "S_bodies": 8,
+    "L_bodies": 11,
+    "sample": [
+     "body_mage_v3b_idle_L.png",
+     "body_priest_v3b_idle_L.png",
+     "body_priest_v3b_ready_L.png",
+     "body_sage_v3b_idle_L.png",
+     "body_sage_v3b_ready_L.png",
+     "body_skyknight_v3b_idle_L.png"
+    ],
+    "all_png": 53
+   }
+  }
+ }
+}

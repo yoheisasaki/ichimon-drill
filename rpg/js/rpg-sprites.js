@@ -103,7 +103,8 @@
     im.onload = () => { e.state = 'ok'; notifyUpdate(); }; im.onerror = () => { e.state = 'fail'; notifyUpdate(); }; im.src = PARTS.base + file;
     return 'pending';
   }
-  const bodyKeys = (job, costume, pose, size) => { const k = `${job}${costume ? '_' + costume : ''}_${pose}_${size}`; return [k, 'body_' + k]; };
+  // 既定は v3b 一体絵（<職>[_衣装]_v3b_<ポーズ>_<L|S>）。v2・v3 の部品（<職>[_衣装]_<ポーズ>_<L|S>）は残してあるが、既定では選ばない
+  const bodyKeys = (job, costume, pose, size) => { const k = `${job}${costume ? '_' + costume : ''}_v3b_${pose}_${size}`; return [k, 'body_' + k]; };
   const iconImgOf = id => IMGS['icon_' + id] || IMGS['icon_' + String(id).replace(/^(u_.+)_\d$/, '$1')] || null;
   const iconFileOf = id => { const im = iconImgOf(id); return im ? String(im.src || '').split('/').pop().split('?')[0] : ''; };
   function wholeKeys(job, costume, pose, size) {
@@ -123,7 +124,7 @@
   const assetsPending = () => !loadStarted || Object.keys(IMGS_WANT).some(id => !IMGS[id] && !IMGS_FAILED[id]);
   function heroNorm(o) {
     const size = o.use === 'strip' ? 'S' : 'L', ok = POSES[size];
-    return { job: o.job, costume: o.costume || null, pose: ok.includes(o.pose) ? o.pose : 'idle', size, use: o.use || 'self', look: o.look || { face: 0, hairStyle: 0, skin: '#f0c39a', hair: '#7a4a2a' }, weaponId: o.weaponId || null };
+    return { job: o.job, costume: o.costume || null, pose: ok.includes(o.pose) ? o.pose : 'idle', size, use: o.use || 'self', look: o.look || null, weaponId: o.weaponId || null };
   }
   // 描き方の決定（描かずに調べる）：mode = layered | whole | wait | missing
   function planHero(o) {
@@ -132,7 +133,7 @@
     if (PARTS.state === 'loading') return { mode: 'wait', h };
     let why = PARTS.state === 'ready' ? '' : '部品なし';
     if (PARTS.state === 'ready') {
-      const J = PARTS.json, fk = h.look.face % 4, hk = h.look.hairStyle % 6;
+      const J = PARTS.json, fk = h.look ? h.look.face % 4 : 0, hk = h.look ? h.look.hairStyle % 6 : 0;   // 外見選択は廃止（v3b は頭と一体）。look を渡した旧経路だけが頭の顔・髪型を使う
       let b = pickKey(J.body, bodyKeys(h.job, h.costume, h.pose, h.size));
       if (!b) for (const fp of (POSE_FALLBACK[h.pose] || [])) { b = pickKey(J.body, bodyKeys(h.job, h.costume, fp, h.size)); if (b) { h.pose = fp; break; } }
       // 新比率の身体（body.heads === 'v2'）は専用の頭を使う（顔は戦士の確認段階では f0 のみ。表情は 攻撃/喜び を頭の差分で出す）
@@ -161,10 +162,11 @@
     return rec('whole', { reason: why + (h.weaponId ? '／武器・顔・髪・色は反映されない' : '／顔・髪・色は反映されない'), wholeKey: k, substituted: k !== ks[0] });
   }
   function composite(plan) {
-    const h = plan.h, ck = [h.job, h.costume, h.pose, h.size, h.look.face, h.look.hairStyle, h.look.skin, h.look.hair, h.weaponId].join('|');
+    const h = plan.h, ck = [h.job, h.costume, h.pose, h.size, h.look ? [h.look.face, h.look.hairStyle, h.look.skin, h.look.hair].join(',') : '-', h.weaponId].join('|');
     if (PARTS.cache[ck]) return PARTS.cache[ck];
     const J = PARTS.json, pal = J.palette || {}, pals = (file, kind) => { const t = pal[kind] || {}; return t[file] || t[stripPng(file)] || null; };
     const tint = (im, file) => {
+      if (!h.look) return im;   // 外見選択の廃止：既定ではパレット差し替えをしない
       const sk = pals(file, 'skin'), hr = pals(file, 'hair'); if (!sk && !hr) return im;
       const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0);
       const d = g.getImageData(0, 0, c.width, c.height), pairs = [];

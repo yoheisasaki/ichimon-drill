@@ -16,7 +16,6 @@
   const TACTICS = [['auto', 'おまかせ', '様子を見て自動で選ぶ'], ['attack', '攻める', '攻撃を主に。回復は HPが低い時だけ'], ['guard', '守る', '予告された大技にそなえ、回復も早め']];
 
   // ---------- 小さな部品 ----------
-  function look() { return M.lookOf(save()); }
   const RuRb = root.RPGRuby, rb = RuRb.render;   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
   const jobRb = j => rb(D.JOBS[j].ruby || D.JOBS[j].name), skRb = id => rb(D.SKILLS[id].ruby || D.SKILLS[id].name);
   const PARAMS = new URLSearchParams(root.location ? root.location.search : '');
@@ -46,8 +45,7 @@
     if (bg) { const sc = Math.max(W / bg.width, H / bg.height), dw = bg.width * sc, dh = bg.height * sc; g.drawImage(bg, (W - dw) / 2, (H - dh) * (a.use === 'home' ? 0.62 : 1), dw, dh); }
     else if (st.bg) { g.fillStyle = '#16244d'; g.fillRect(0, 0, W, H); }
     if (a.use !== 'mini') { g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(W * st.at, H - (st.gy || 8), 30 * st.k, 5 * st.k, 0, 0, 7); g.fill(); }
-    const look0 = a.look || look();
-    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - (st.gy || 8), scale: st.k * dpr, outline: st.strip ? '#0d1630' : null });
+    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, x: Math.round(W * st.at), groundY: H - (st.gy || 8), scale: st.k * dpr, outline: st.strip ? '#0d1630' : null });
     c.dataset.drawn = r;
   }
   function paintHeroes(rootEl) { (rootEl || doc).querySelectorAll('canvas[data-hero]').forEach(c => { try { paintHero(c); } catch (e) { if (root.console) console.error('paintHero', e); } }); }
@@ -179,7 +177,7 @@
     if (name === 'equip') { UI.eq = Object.assign({}, save().equip); UI.slot = 'weapon'; const ti = params && params.tryItem && D.ITEMS[params.tryItem]; if (ti) { UI.slot = ti.slot; UI.eq[ti.slot] = ti.id; } }
     if (name === 'shop') { UI.shopSel = null; }
     if (name === 'loadout') { UI.sel = M.currentSkills(save()).slice(); UI.tactic = save().loadout.tactic || 'auto'; }
-    if (name === 'look') { UI.look = Object.assign({}, save().look); UI.name = save().name || ''; }
+    if (name === 'look') { UI.look = { outfit: save().look.outfit || null }; UI.name = save().name || ''; }
     if (name === 'jobs') UI.tier = (params && params.tier) || UI.tier;
     UI.confirm = null; render(); root.scrollTo && root.scrollTo(0, 0);
   }
@@ -271,7 +269,7 @@
     shop: { name: '装備屋', desc: '武器・防具・アクセサリーを買う・売る・返す。', links: [['shop', '店（買う・売る）'], ['equip', '装備を変える']] },
     forge: { name: '鍛冶屋', desc: '鍛冶師トトが装備を鍛えてくれる。', links: [['forge', '強化']] },
     temple: { name: '神殿', desc: 'しるしの力を整える。冒険の前に技を選ぶ。', links: [['loadout', '技・作戦']] },
-    room: { name: '自室', desc: '自分の部屋。', links: [['look', '名前・見た目'], ['codex', '図鑑'], ['data', 'ゲームのデータ']] },
+    room: { name: '自室', desc: '自分の部屋。', links: [['look', '名前・衣装'], ['codex', '図鑑'], ['data', 'ゲームのデータ']] },
     ship: { name: '空船', desc: '見習い船長ルカの船。冒険の地図を開く。', links: [['adv', '冒険の地図']] }
   };
   const mainCleared = s => !!(s.ending && s.ending.seen) || s.progress.step >= D.ROUTE.length;
@@ -281,7 +279,7 @@
   const NPC_OF = { guild: 'mira', forge: 'toto', ship: 'luca' };
   const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)), a2 = k && imgOf('npc_' + k + '_alt'); return im ? `<img class="rs-npc" alt="" src="${im.src}"${a2 ? ` data-alt="${a2.src}" data-base="${imgOf('npc_' + k).src}"` : ''}>` : ''; };
   const NPC_WHO = { 'ミラ': 'mira', 'トト': 'toto', 'ルカ': 'luca', '黒鎧の騎士': 'knight' };
-  const TILES = [['shop', '店', 'shop', '買う・売る'], ['jobs', '転職', 'guild', 'ギルド'], ['forge', '鍛冶屋', 'forge', '強くする'], ['codex', '図鑑', 'room', '敵・装備'], ['equip', '装備', 'shop', '着がえる'], ['loadout', '技・作戦', 'temple', '神殿'], ['ach', '実績', 'guild', 'ギルド'], ['look', '名前・見た目', 'room', '自室']];
+  const TILES = [['shop', '店', 'shop', '買う・売る'], ['jobs', '転職', 'guild', 'ギルド'], ['forge', '鍛冶屋', 'forge', '強くする'], ['codex', '図鑑', 'room', '敵・装備'], ['equip', '装備', 'shop', '着がえる'], ['loadout', '技・作戦', 'temple', '神殿'], ['ach', '実績', 'guild', 'ギルド'], ['look', '名前・衣装', 'room', '自室']];
   VIEWS.town = function () {
     const tiles = TILES.map(([to, nm, cls, cap]) => `<button class="rs-tile s-${cls}" data-go="${to}" data-p='{"back":"town"}'><span class="rs-bld" aria-hidden="true"></span><span class="rs-tile-t"><b>${kr(nm)}</b><small>${kr(cap)}</small></span></button>`).join('');
     return frame('風待ちの町', `<div class="rs-stage rs-stage-town">${heroCv('town')}</div><div class="rs-tiles" role="group" aria-label="まちの入口">${tiles}</div>`, { back: false });
@@ -301,7 +299,7 @@
     const s = save(), jl = C.jobLevels(s), hl = C.heroLevel(s.advXp), jd = D.JOBS[s.job], cs = M.codexSummary(s);
     return frame('自分', `
       <div class="rs-panel rs-me">${`<div class="rs-stage rs-stage-me">${heroCv('self')}</div>`}<div class="rs-meinfo"><div class="rs-hc-name">${esc(s.name || '冒険者')}</div>${s.title ? `<div class="rs-hc-sub">「${esc(s.title)}」</div>` : ''}<div class="rs-hc-job">${esc(jd.name)} Lv${jl[s.job]}</div>${RPG.homeNext()}<div class="rs-hc-sub">${kr('冒険者')} Lv${hl.lv}　${coinHtml()}</div></div></div>
-      <div class="rs-entry3"><button class="rs-big alt" data-go="equip" data-p='{"back":"me"}'><span>${kr('装備')}</span></button><button class="rs-big alt" data-go="jobs" data-p='{"back":"me"}'><span>${kr('転職')}</span></button><button class="rs-big alt" data-go="look"><span>${kr('見た目')}</span></button></div>
+      <div class="rs-entry3"><button class="rs-big alt" data-go="equip" data-p='{"back":"me"}'><span>${kr('装備')}</span></button><button class="rs-big alt" data-go="jobs" data-p='{"back":"me"}'><span>${kr('転職')}</span></button><button class="rs-big alt" data-go="look"><span>${kr('衣装')}</span></button></div>
       <div class="rs-entry3 sec"><button class="rs-btn" data-go="codex"><span>${kr('図鑑')}</span><small>敵 ${cs.enemies.seen}/${cs.enemies.total}</small></button><button class="rs-btn" data-go="ach"><span>${kr('実績')}</span></button><button class="rs-btn" data-go="settings"><span>${kr('設定')}</span></button></div>
       <div class="rs-more">${sheetBtn('mestat', 'くわしい強さ・装備')}${rewardsPanel(s) ? sheetBtn('metitle', '称号・衣装') : ''}</div>`, { back: false });
   };
@@ -535,27 +533,23 @@
     doc.getElementById('lkOk').onclick = () => { const r = M.setLoadout(s, UI.sel, UI.tactic); UI.msg = r.ok ? '決定しました。次の冒険から使われます。' : r.err; if (r.ok) commit(); rerender(); };
   };
 
-  // ---------- 外見 ----------
-  const lookPrev = () => ({ skin: M.SKIN[UI.look.skin], hair: M.HAIR_COLOR[UI.look.hairColor], face: UI.look.face, hairStyle: UI.look.hair });
+  // ---------- 名前・衣装（外見の選択は廃止。衣装＝基本/マスター/追加） ----------
   const lookCostume = () => (UI.look.outfit === 'master' && M.masterOwned(save(), save().job) ? 'master' : UI.look.outfit === 'alt1' && M.altOwned(save(), save().job) ? 'alt1' : null);
   VIEWS.look = function () {
-    const L = UI.look, s = save(), sw = (key, arr) => arr.map((c, i) => `<button class="rs-sw${L[key] === i ? ' on' : ''}" style="background:${c}" data-lk="${key}" data-v="${i}" aria-label="${i + 1}ばん" aria-pressed="${L[key] === i}"></button>`).join('');
-    const num = (key, n) => Array.from({ length: n }, (_, i) => `<button class="rs-chip${L[key] === i ? ' on' : ''}" data-lk="${key}" data-v="${i}" aria-pressed="${L[key] === i}">${i + 1}</button>`).join('');
+    const L = UI.look, s = save();
     const mo = M.masterOwned(s, s.job), hasAlt = M.ALT_JOBS.includes(s.job), ao = M.altOwned(s, s.job), outfits = `<button class="rs-chip${!L.outfit || (L.outfit !== 'master' && L.outfit !== 'alt1') ? ' on' : ''}" data-outfit="" aria-pressed="${!L.outfit || (L.outfit !== 'master' && L.outfit !== 'alt1')}">${kr('通常')}</button><button class="rs-chip${L.outfit === 'master' && mo ? ' on' : ''}" data-outfit="master" aria-pressed="${L.outfit === 'master' && mo}" ${mo ? '' : 'aria-disabled="true" disabled'}>マスター${kr('衣装')}</button>${hasAlt ? `<button class="rs-chip${L.outfit === 'alt1' && ao ? ' on' : ''}" data-outfit="alt1" aria-pressed="${L.outfit === 'alt1' && ao}" ${ao ? '' : 'aria-disabled="true" disabled'}>${kr('追加')}${kr('衣装')}</button>` : ''}`;
-    return frame(rb('{名前|なまえ}・{見|み}た{目|め}'), `
-      <div class="rs-panel c"><div class="rs-stage">${heroCv('look', { look: lookPrev(), costume: lookCostume() })}</div></div>
+    return frame(rb('{名前|なまえ}・{衣装|いしょう}'), `
+      <div class="rs-panel c"><div class="rs-stage">${heroCv('look', { costume: lookCostume() })}</div></div>
       <div class="rs-panel"><label class="rs-h2" for="rsName">${rb('{名前|なまえ}（8{文字|もじ}まで）')}</label><input id="rsName" class="rs-input" maxlength="8" value="${esc(UI.name)}" autocomplete="off" placeholder="冒険者"><p class="rs-p">${rb('{名前|なまえ}はこの{端末|たんまつ}の{中|なか}だけに{残|のこ}ります。')}</p></div>
-      <div class="rs-panel"><div class="rs-h2">${kr('顔')}</div><div class="rs-chips">${num('face', M.FACE_N)}</div><div class="rs-h2">${kr('髪型')}</div><div class="rs-chips">${num('hair', M.HAIR_N)}</div>
-        <div class="rs-h2">${kr('肌')}の${kr('色')}</div><div class="rs-chips">${sw('skin', M.SKIN)}</div><div class="rs-h2">${kr('髪')}の${kr('色')}</div><div class="rs-chips">${sw('hairColor', M.HAIR_COLOR)}</div>
+      <div class="rs-panel">
         <div class="rs-h2">${kr('衣装')}</div><div class="rs-chips">${outfits}</div>${mo ? '' : `<p class="rs-p">マスター${kr('衣装')}は、${jobRb(s.job)}を Lv30にすると ${kr('解放')}されます。</p>`}${hasAlt && !ao ? `<p class="rs-p">${kr('追加')}${kr('衣装')}は、${kr('氷下火山')}を クリアすると ${kr('解放')}されます。</p>` : ''}
-        <p class="rs-p" id="lookNote">${rb('{見|み}た{目|め}を{変|か}えても、{強|つよ}さや{覚|おぼ}えた{技|わざ}は{変|か}わりません。')}</p></div>
+        <p class="rs-p" id="lookNote">${rb('{衣装|いしょう}を{変|か}えても、{強|つよ}さや{覚|おぼ}えた{技|わざ}は{変|か}わりません。')}</p></div>
       <button class="rs-big" id="lookOk">${rb('{決定|けってい}')}</button>`);
   };
   AFTER.look = function () {
     const nm = doc.getElementById('rsName'); nm.oninput = () => { UI.name = nm.value; };
-    app().querySelectorAll('[data-lk]').forEach(b => b.onclick = () => { UI.look[b.dataset.lk] = +b.dataset.v; rerender(); });
     app().querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => { if (b.disabled) return; UI.look.outfit = b.dataset.outfit || null; rerender(); });
-    doc.getElementById('lookOk').onclick = () => { const r = M.setLook(save(), UI.name, UI.look); UI.msg = r.ok ? '決定しました。' : r.err; if (r.ok) commit(); rerender(); };
+    doc.getElementById('lookOk').onclick = () => { const r = M.setProfile(save(), UI.name, UI.look.outfit); UI.msg = r.ok ? '決定しました。' : r.err; if (r.ok) commit(); rerender(); };
   };
 
   // ---------- 図鑑 ----------
@@ -674,14 +668,14 @@
       app().querySelectorAll('canvas[data-m]').forEach(c => {
         const im = memoImg(c.dataset.m), w = im.width, h = im.height; c.width = w; c.height = h; c.style.width = '100%'; c.style.maxWidth = (w * 1.2) + 'px'; c.style.height = 'auto';
         const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(im, 0, 0);
-        SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), look: look(), pose: 'win', use: 'reward', x: Math.round(w * 0.34), groundY: h - 14, scale: 1 });
+        SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), pose: 'win', use: 'reward', x: Math.round(w * 0.34), groundY: h - 14, scale: 1 });
       });
       return;
     }
     const c = doc.getElementById('rsMemo'), w = 100, h = 66, k = Math.max(2, Math.floor(Math.min(360, c.parentNode.clientWidth - 24) / w));
     c.width = w; c.height = h; c.style.width = (w * k) + 'px'; c.style.height = (h * k) + 'px'; const g = c.getContext('2d');
     SP.drawBackground(g, w, h, 'dawnisle'); g.fillStyle = '#ffe27a'; g.beginPath(); g.arc(70, 24, 9, 0, 7); g.fill();
-    SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), look: look(), pose: 'win', use: 'reward', x: 36, groundY: 62, scale: 1 }); g.save(); g.scale(2, 2); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2, img: 'full' }); g.restore();
+    SP.drawHeroLayered(g, { job: s.job, costume: M.costumeOf(s), weaponId: M.artWeapon(s.job, s.equip.weapon), pose: 'win', use: 'reward', x: 36, groundY: 62, scale: 1 }); g.save(); g.scale(2, 2); SP.drawEnemy(g, 'xb_dawndragon', true, 28, 30, { lift: 2, img: 'full' }); g.restore();
   };
 
   // ---------- せってい（音・振動。どちらも初期オフ） ----------

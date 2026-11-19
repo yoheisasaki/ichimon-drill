@@ -60,9 +60,8 @@ t('技設定：3枠＋継承1枠、継承枠はLv5から、検証に通らない
   ok(!M.setLoadout(s, ['w_strike'], 'xx').ok); eq(s.loadout.tactic, 'auto');
 });
 t('技設定：冒険の開始時に固定され、途中で変えられない', () => { const s = fresh2(); s.jobXp.warrior = C.cum(C.NEED.base, 8); M.setLoadout(s, ['w_strike', 'w_shield', 'w_rock'], 'attack'); const a = A.begin(s, 1); eq(a.hero.skills, ['w_strike', 'w_shield', 'w_rock']); eq(a.hero.tactic, 'attack'); ok(!M.setLoadout(s, ['w_strike'], 'auto').ok); });
-t('外見：名前は8字まで・記号除去、範囲外は拒否、職業や装備に影響しない', () => {
-  const s = fresh2(); ok(M.setLook(s, '<b>あいうえおかきくけこ</b>', { face: 2, hair: 5, skin: 4, hairColor: 5 }).ok); eq(s.name.length, 8); ok(!s.name.includes('<')); eq(s.look.hair, 5);
-  ok(!M.setLook(s, 'x', { face: 4, hair: 0, skin: 0, hairColor: 0 }).ok); ok(!M.setLook(s, 'x', { face: 0, hair: 0, skin: 9, hairColor: 0 }).ok); eq(s.job, 'warrior');
+t('名前・衣装：名前は8字まで・記号除去、職業や装備に影響しない。look は outfit だけ', () => {
+  const s = fresh2(); ok(M.setProfile(s, '<b>あいうえおかきくけこ</b>').ok); eq(s.name.length, 8); ok(!s.name.includes('<')); eq(s.look, { outfit: null }); eq(s.job, 'warrior');
 });
 t('図鑑：冒険の開始で出会い、討伐で撃破数が増える／宝箱・購入で装備が載る', () => {
   const s = fresh2(); A.begin(s, 1); ok(s.codex.enemies.e_leafslime.seen); eq(M.codexSummary(s).enemies.seen, 1);

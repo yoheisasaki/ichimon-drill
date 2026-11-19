@@ -107,7 +107,7 @@
     const a = RPG.save && RPG.save.active; if (!a) return null;
     const b = a.battle, ed = D.ENEMIES[a.enemyId];
     const h = a.hero || {}, wid = (h.equip && h.equip.weapon) || RPG.save.equip.weapon, rid = a.route.bg || D.REGIONS[a.route.region].id, rg = D.REGIONS.find(r => r.id === rid);
-    return { job: b.hero.job, look: M.lookOf(RPG.save), costume: M.costumeOf(RPG.save, b.hero.job), weaponId: M.artWeapon(b.hero.job, wid), region: rid, regionName: rg ? rg.name : '', enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0), ehp: b.enemy.hp, emax: b.enemy.maxHp };
+    return { job: b.hero.job, costume: M.costumeOf(RPG.save, b.hero.job), weaponId: M.artWeapon(b.hero.job, wid), region: rid, regionName: rg ? rg.name : '', enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0), ehp: b.enemy.hp, emax: b.enemy.maxHp };
   }
   // 確定状態に合わせる（敵のHP・倒した／撤退）。演出が終わったとき、捨てたとき、帯を出したときに呼ぶ
   function syncView() { const si = sceneInfo(); if (!si) return; view.eHp = si.ehp; view.eMax = Math.max(1, si.emax); view.gone = si.status === 'won'; view.retreat = si.status === 'retreat'; view.ready = true; }
@@ -135,7 +135,7 @@
     const cx = W / 2 + 6, gy = H - 2, hx = cx - PAIR_GAP + (o.hdx || 0), ec = cx + PAIR_GAP + (o.edx || 0), bo = breath && !animating ? 0.5 : 0;
     const shadow = (x, w) => { ctx.fillStyle = 'rgba(20,28,60,.32)'; ctx.beginPath(); ctx.ellipse(x, gy + 0.5, w, 1.6, 0, 0, 7); ctx.fill(); };
     shadow(hx, 9);
-    const ho = { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || (view.gone ? 'win' : 'idle'), o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
+    const ho = { job: si.job, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || (view.gone ? 'win' : 'idle'), o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
     if (SP.drawHeroLayered(ctx, ho) === 'wait' && ho.pose !== 'idle') SP.drawHeroLayered(ctx, Object.assign({}, ho, { pose: 'idle' }));   // 読込中のポーズがあっても主人公を消さない（待機の絵で代用）
     layout = { bar: null, enemyH: 0 };
     if (!view.gone || o.ealpha > 0) {
@@ -175,8 +175,8 @@
   };
   let warmKey = '';
   function warmPoses() {   // 使うポーズの部品を先に読み込んでおく（初めて攻撃したとき主人公が一瞬消えないように）
-    const si = sceneInfo(); if (!si) return; const k = [si.job, si.costume, si.weaponId, JSON.stringify(si.look)].join('|'); if (k === warmKey) return; warmKey = k;
-    try { const c = root.document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); SP.POSES.S.forEach(pose => SP.drawHeroLayered(g, { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose, x: 32, groundY: 60 })); } catch (e) {}
+    const si = sceneInfo(); if (!si) return; const k = [si.job, si.costume, si.weaponId, ''].join('|'); if (k === warmKey) return; warmKey = k;
+    try { const c = root.document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); SP.POSES.S.forEach(pose => SP.drawHeroLayered(g, { job: si.job, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose, x: 32, groundY: 60 })); } catch (e) {}
   }
   RPG.mount = function () {
     const box = root.document.querySelector('.rpg-strip'); if (!box) return;
@@ -425,7 +425,7 @@
       SP.drawBackground(g, lw, lh, rg, 'reward');
       g.save(); g.scale(2, 2);
       const sv = RPG.save, job = res.job.id;
-      SP.drawHeroLayered(g, { job, look: M.lookOf(sv), costume: M.costumeOf(sv, job), weaponId: M.artWeapon(job, sv.equip.weapon), use: 'reward', pose: res.outcome === 'victory' ? 'win' : 'ready', x: cont ? cx - 13 : cx, groundY: gy2 });
+      SP.drawHeroLayered(g, { job, costume: M.costumeOf(sv, job), weaponId: M.artWeapon(job, sv.equip.weapon), use: 'reward', pose: res.outcome === 'victory' ? 'win' : 'ready', x: cont ? cx - 13 : cx, groundY: gy2 });
       if (cont) {
         const eim = SP.IMGS['enemy_' + res.enemy.id], k6 = 6; let ex2 = cx + 8, sc = 1;
         if (eim && eim.width > 0) { const room = c.width - 8 - 143; sc = fitScale(eim, room, 0); const half = eim.width * sc / 2; ex2 = Math.min(ex2, (c.width - 8 - half) / k6 - 7); }

@@ -6,9 +6,7 @@
   if (isN) module.exports = m; else root.RPGMeta = m;
 })(typeof self !== 'undefined' ? self : this, function (D, C, B, W) {
   const SELL_RATE = 0.25, ENH_COST_RATE = [0.20, 0.35, 0.50], ENH_ORE = [2, 4, 6];
-  const SKIN = ['#f0c39a', '#f6d7b8', '#d9a77a', '#b97d56', '#8a5a3c'];
-  const HAIR_COLOR = ['#7a4a2a', '#2a2a33', '#d9b04a', '#c9572e', '#6a8fd0', '#e8e8f0'];
-  const FACE_N = 4, HAIR_N = 6, NAME_MAX = 8;
+  const NAME_MAX = 8;
 
   // 古い保存データに足りない欄を補う（v1 のまま追加。既存の値は変えない）
   function ensure(s) {
@@ -17,10 +15,10 @@
     s.codex = s.codex || { enemies: {}, items: {} }; s.codex.enemies = s.codex.enemies || {}; s.codex.items = s.codex.items || {};
     Object.keys(s.inv.items).forEach(id => { s.codex.items[id] = 1; });
     s.goal = s.goal || null; s.trials = s.trials || {}; s.seen = s.seen || {};
-    s.look = s.look || { face: 0, hair: 0, skin: 0, hairColor: 0 };
+    C.migrateSave(s); s.look = { outfit: (s.look && s.look.outfit) || null };
     s.settings = s.settings || { sound: false, vibrate: false };
     s.quests = s.quests || {}; s.progress.quest = s.progress.quest || null;
-    s.rewards = s.rewards || { titles: [], costumes: [], relics: [], lamp: false }; s.rewards.titles = s.rewards.titles || []; s.rewards.costumes = s.rewards.costumes || []; s.rewards.relics = s.rewards.relics || []; s.title = s.title || null; s.look.outfit = s.look.outfit || null;
+    s.rewards = s.rewards || { titles: [], costumes: [], relics: [], lamp: false }; s.rewards.titles = s.rewards.titles || []; s.rewards.costumes = s.rewards.costumes || []; s.rewards.relics = s.rewards.relics || []; s.title = s.title || null;
     s.ending = s.ending || { seen: false }; s.chestView = s.chestView || {};
     C.migrateChests(s);
     return s;
@@ -192,14 +190,11 @@
   }
 
   // ---------- 外見 ----------
-  function setLook(save, name, look) {
-    const nm = String(name == null ? '' : name).replace(/[\u0000-\u001f<>&"']/g, '').trim().slice(0, NAME_MAX);
-    const ok = Number.isInteger(look.face) && look.face >= 0 && look.face < FACE_N && Number.isInteger(look.hair) && look.hair >= 0 && look.hair < HAIR_N && Number.isInteger(look.skin) && look.skin >= 0 && look.skin < SKIN.length && Number.isInteger(look.hairColor) && look.hairColor >= 0 && look.hairColor < HAIR_COLOR.length;
-    if (!ok) return { ok: false, err: '外見が不正' };
-    const o = look.outfit === 'master' ? (masterOwned(save, save.job) ? 'master' : null) : look.outfit === 'alt1' ? (altOwned(save, save.job) ? 'alt1' : null) : (look.outfit === undefined ? save.look.outfit : (look.outfit && (save.rewards.costumes || []).includes(look.outfit) ? look.outfit : null));
-    save.name = nm; save.look = { face: look.face, hair: look.hair, skin: look.skin, hairColor: look.hairColor, outfit: o || null }; return { ok: true };
+  function setProfile(save, name, outfitIn) {   // 名前と衣装（外見の選択は廃止）
+    const nm = String(name == null ? '' : name).replace(/[ -<>&"']/g, '').trim().slice(0, NAME_MAX);
+    const o = outfitIn === 'master' ? (masterOwned(save, save.job) ? 'master' : null) : outfitIn === 'alt1' ? (altOwned(save, save.job) ? 'alt1' : null) : (outfitIn === undefined ? save.look.outfit : (outfitIn && (save.rewards.costumes || []).includes(outfitIn) ? outfitIn : null));
+    save.name = nm; save.look = { outfit: o || null }; return { ok: true };
   }
-  const lookOf = save => ({ skin: SKIN[save.look.skin], hair: HAIR_COLOR[save.look.hairColor], face: save.look.face, hairStyle: save.look.hair });
   function setWish(save, w) { if (!D.WISH_LIST.includes(w)) return false; save.wish = w; return true; }
 
   // ---------- 図鑑 ----------
@@ -354,5 +349,5 @@
     return W.QUEST_ORDER.map(id => { const q = W.QUESTS[id], qs = save.quests[id] || {}; return { id, kind: q.kind, name: q.name, short: q.short || null, locked: questLocked(save, id), cleared: !!qs.cleared && q.kind !== 'rematch', count: qs.count || 0, step: qs.step || 0, total: q.segs.length, boss: q.boss || null, current: save.progress.quest === id }; });
   }
 
-  return { baseEnemyIds, variantIdsOf, codexItemIds, effectShort, masterOwned, altOwned, ALT_JOBS, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, SKIN, HAIR_COLOR, FACE_N, HAIR_N, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setLook, lookOf, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
+  return { baseEnemyIds, variantIdsOf, codexItemIds, effectShort, masterOwned, altOwned, ALT_JOBS, costumeOf, artWeapon, mainCleared, ch2Cleared, questState, questLocked, selectQuest, applyQuestClear, costumeColor, allCostumes, setOutfit, setTitle, ownedUnique, uniqueInfo, craftUnique, reforgeUnique, questList, codexHas, NAME_MAX, SELL_RATE, ENH_COST_RATE, ENH_ORE, CAT_NAME, SLOT_NAME, ensure, enhLv, statOf, fxText, effectText, canEquip, setEquip, recommendEquip, statsWith, sellPrice, isEquipped, buyChecked, canSell, sell, canRefund, refund, onBegin, enhanceInfo, enhance, advInherit, jobProgress, changeJob, setGoal, setLoadout, currentSkills, skillText, setProfile, setWish, seeEnemy, killEnemy, codexSummary, achievements, mapInfo };
 });
