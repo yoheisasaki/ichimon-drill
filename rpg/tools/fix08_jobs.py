@@ -54,7 +54,11 @@ with sync_playwright() as pw:
         o = {'job': job, 'pose': pose, 'use': 'strip', 'weaponId': WEAPON[job], 'outline': '#141a3c', 'costume': costume}
         return R({'w': w, 'h': h, 'bg': 'color', 'color': '#a8c8a0', 'items': [{'kind': 'hero', 'x': 18, 'y': 33, 'o': o}]})
     def plan(job, pose, size, costume=None):
-        return pg.evaluate('o => { const p = RPGSprites.planHero(o); return { mode: p.mode, pose: p.h.pose } }', {'job': job, 'pose': pose, 'use': 'strip' if size == 'S' else 'self', 'costume': costume})
+        for _ in range(60):
+            r = pg.evaluate('o => { const p = RPGSprites.planHero(o); return { mode: p.mode, pose: p.h.pose } }', {'job': job, 'pose': pose, 'use': 'strip' if size == 'S' else 'self', 'costume': costume, 'weaponId': WEAPON[job]})
+            if r['mode'] != 'wait': return r
+            pg.wait_for_timeout(100)
+        return r
     pg.wait_for_timeout(500)
     L_cells = [labeled(L(j, 'idle'), j) for j in JOBS]
     L2 = [labeled(up(L(j, 'idle'), 2), j) for j in JOBS]
