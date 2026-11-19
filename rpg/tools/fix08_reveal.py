@@ -6,8 +6,8 @@ exec(src.split('def run_vp')[0].replace("os.path.join(ROOT, 'rpg', 'shots', 'fix
 from playwright.sync_api import sync_playwright
 VP = [(320, 568), (320, 640), (390, 640), (390, 700)]
 CASES = [('coin', {'chest': 'coin', 'wrong': True}), ('rare_big', {'chest': 'rare', 'big': True, 'R': 2, 'C': 7, 'wrong': True, 'boss': True})]
-M = """() => { const l = document.getElementById('rwChestLine').getBoundingClientRect(), f = document.querySelector('.rw-foot').getBoundingClientRect(), b = document.getElementById('rwBody').getBoundingClientRect();
-  return { lineTop: Math.round(l.top), lineBottom: Math.round(l.bottom), footTop: Math.round(f.top), bodyTop: Math.round(b.top), ok: l.bottom <= f.top + 0.5 && l.top >= b.top - 0.5 }; }"""
+M = """() => { const tx = document.querySelector('#rwChestLine b') || document.getElementById('rwChestLine'); const tr = tx.getBoundingClientRect(); const l = document.getElementById('rwChestLine').getBoundingClientRect(), f = document.querySelector('.rw-foot').getBoundingClientRect(), b = document.getElementById('rwBody').getBoundingClientRect();
+  return { textBottom: Math.round(tr.bottom), textOk: tr.bottom <= f.top + 0.5 && tr.top >= b.top - 0.5, scrollTop: Math.round(document.getElementById('rwBody').scrollTop), maxScroll: Math.round(document.getElementById('rwBody').scrollHeight - document.getElementById('rwBody').clientHeight), lineTop: Math.round(l.top), lineBottom: Math.round(l.bottom), footTop: Math.round(f.top), bodyTop: Math.round(b.top), ok: l.bottom <= f.top + 0.5 && l.top >= b.top - 0.5 && tr.bottom <= f.top + 0.5 && tr.top >= b.top - 0.5 }; }"""
 res = []; bad = []
 def one(br, name, w, h, case, o, rm):
     ctx = br.new_context(viewport={'width': w, 'height': h}, device_scale_factor=1, is_mobile=True, has_touch=True, reduced_motion='reduce' if rm else 'no-preference')
@@ -15,7 +15,10 @@ def one(br, name, w, h, case, o, rm):
     pg.evaluate("([t, js]) => { const s = JSON.parse(t); (new Function('s', js))(s); localStorage.setItem('ichimon.rpg.v1', JSON.stringify(s)); }", [SAVE0, PATCH])
     pg.reload(); pg.wait_for_selector('#go', state='attached'); pg.wait_for_function("() => Object.keys(RPGSprites.IMGS).length >= 700 && !!window.RPG && RPG.ok", timeout=90000); pg.wait_for_timeout(500)
     pg.evaluate(SETUP, o); pg.wait_for_timeout(400)
-    pg.click('#rwOpen'); pg.wait_for_function("() => !document.getElementById('rwOpen')", timeout=5000); pg.wait_for_timeout(1000)
+    pg.click('#rwOpen'); pg.wait_for_function("() => !document.getElementById('rwOpen')", timeout=5000); pg.wait_for_timeout(600)
+    for _ in range(40):   # scrollTop が止まるまで待つ
+        a = pg.evaluate("document.getElementById('rwBody').scrollTop"); pg.wait_for_timeout(150)
+        if pg.evaluate("document.getElementById('rwBody').scrollTop") == a: break
     m = pg.evaluate(M); m.update(br=name, vp=f'{w}x{h}', case=case, rm=rm); res.append(m)
     if not m['ok']: bad.append(m)
     pg.screenshot(path=os.path.join(OUT, f'{name}_{w}x{h}_{case}{"_rm" if rm else ""}.png')); ctx.close()
