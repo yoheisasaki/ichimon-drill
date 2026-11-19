@@ -1,0 +1,286 @@
+{
+ "steps": [
+  "home (job warrior, weapon w_start)",
+  "adventure 1: answer / attack / skill / wrong / defeat",
+  "reward closed -> home",
+  "equip changed w_start -> w_sword_2",
+  "adventure 2: new weapon in strip"
+ ],
+ "console": [],
+ "blocked": 0,
+ "checks": {
+  "R03 通常攻撃・技・不正解（守り）・撃破が演出に出た": {
+   "ok": true,
+   "v": [
+    "attack",
+    "attack",
+    "attack+enemy",
+    "guard+enemy",
+    "skill+defeat",
+    "walk",
+    "walk",
+    "walk",
+    "walk",
+    "walk",
+    "walk"
+   ]
+  },
+  "R03 開封後に中身が操作帯に隠れない（自動スクロール後）": {
+   "ok": true,
+   "v": {
+    "lineTop": 507,
+    "lineBottom": 560,
+    "footTop": 626,
+    "vh": 700,
+    "text": "ランクIの鉱石こうせき ×2\n装備そうびを強つよくくする素材そざい"
+   }
+  },
+  "R03 開封後に宝箱の分だけ増える・二重加算なし": {
+   "ok": true,
+   "v": [
+    891,
+    931
+   ]
+  },
+  "R03 装備を鉄の剣に変更して保存": {
+   "ok": true,
+   "v": [
+    "w_start",
+    "w_sword_2"
+   ]
+  },
+  "R03 次の戦闘の帯が新しい武器（w_sword_2）で描かれる": {
+   "ok": true,
+   "v": [
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "idle"
+    },
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "walk"
+    },
+    {
+     "use": "strip",
+     "weaponId": "w_sword_2",
+     "pose": "walk2"
+    }
+   ]
+  }
+ },
+ "a1_strip_events": [
+  "attack",
+  "attack",
+  "attack+enemy",
+  "guard+enemy",
+  "skill+defeat",
+  "walk",
+  "walk",
+  "walk",
+  "walk",
+  "walk",
+  "walk"
+ ],
+ "a1_kinds": [
+  "ok",
+  "ok",
+  "ok",
+  "wrong",
+  "ok",
+  "ok",
+  "skip",
+  "ok",
+  "ok",
+  "ok",
+  "ok",
+  "ok"
+ ],
+ "stats": {
+  "attack": {
+   "n": 6,
+   "mean": 483
+  },
+  "group": {
+   "n": 14,
+   "mean": 551
+  },
+  "enemy": {
+   "n": 3,
+   "mean": 269
+  },
+  "guard": {
+   "n": 1,
+   "mean": 200
+  },
+  "skill": {
+   "n": 1,
+   "mean": 567
+  },
+  "defeat": {
+   "n": 1,
+   "mean": 783
+  },
+  "walk": {
+   "n": 6,
+   "mean": 414
+  }
+ },
+ "timeline": [
+  [
+   6.7,
+   "home (job warrior, weapon w_start)"
+  ],
+  [
+   8.3,
+   "スタート（10問）をタップ"
+  ],
+  [
+   10.2,
+   "adventure 1: answer / attack / skill / wrong / defeat"
+  ],
+  [
+   11.8,
+   "回答操作 正解"
+  ],
+  [
+   12.8,
+   "  演出ログ直近: attack"
+  ],
+  [
+   14.6,
+   "回答操作 正解"
+  ],
+  [
+   15.5,
+   "  演出ログ直近: attack,attack"
+  ],
+  [
+   17.0,
+   "回答操作 正解"
+  ],
+  [
+   18.0,
+   "  演出ログ直近: attack,attack+enemy"
+  ],
+  [
+   19.4,
+   "回答操作 不正解"
+  ],
+  [
+   22.5,
+   "  演出ログ直近: attack+enemy,guard+enemy"
+  ],
+  [
+   23.8,
+   "回答操作 正解"
+  ],
+  [
+   24.7,
+   "  演出ログ直近: guard+enemy,skill+defeat"
+  ],
+  [
+   26.0,
+   "回答操作 正解"
+  ],
+  [
+   27.0,
+   "  演出ログ直近: skill+defeat,walk"
+  ],
+  [
+   28.8,
+   "回答操作 わからない"
+  ],
+  [
+   31.9,
+   "  演出ログ直近: skill+defeat,walk"
+  ],
+  [
+   33.1,
+   "回答操作 正解"
+  ],
+  [
+   34.0,
+   "  演出ログ直近: walk,walk"
+  ],
+  [
+   35.5,
+   "回答操作 正解"
+  ],
+  [
+   36.4,
+   "  演出ログ直近: walk,walk"
+  ],
+  [
+   38.0,
+   "回答操作 正解"
+  ],
+  [
+   39.0,
+   "  演出ログ直近: walk,walk"
+  ],
+  [
+   40.6,
+   "回答操作 正解"
+  ],
+  [
+   41.5,
+   "  演出ログ直近: walk,walk"
+  ],
+  [
+   43.3,
+   "回答操作 正解"
+  ],
+  [
+   44.2,
+   "  演出ログ直近: walk,walk"
+  ],
+  [
+   47.3,
+   "宝箱を開ける をタップ"
+  ],
+  [
+   51.6,
+   "おわる をタップ"
+  ],
+  [
+   53.2,
+   "reward closed -> home"
+  ],
+  [
+   55.8,
+   "鉄の剣を試着"
+  ],
+  [
+   57.7,
+   "装備を確定"
+  ],
+  [
+   59.3,
+   "equip changed w_start -> w_sword_2"
+  ],
+  [
+   61.5,
+   "2回目の冒険を開始"
+  ],
+  [
+   63.4,
+   "adventure 2: new weapon in strip"
+  ],
+  [
+   64.5,
+   "回答操作 正解"
+  ],
+  [
+   66.9,
+   "回答操作 正解"
+  ],
+  [
+   69.5,
+   "回答操作 正解"
+  ]
+ ],
+ "pass": 5,
+ "fail": []
+}
