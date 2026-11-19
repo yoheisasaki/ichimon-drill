@@ -249,7 +249,7 @@
       var it = ctx.item; it.tags = tags; it.text = txtEl.value.trim().slice(0, 200);
       snd.disabled = true; var done = document.getElementById('vsDone'); done.textContent = 'おくっているよ…';
       var fin = false, finish = function (ok) { if (fin) return; fin = true; done.textContent = ok ? 'とどいたよ！ ありがとう' : 'うけとったよ！ あとで おくるね。ありがとう'; setTimeout(closeSheet, 1400); };
-      enqueue(it).then(finish, function () { finish(false); }); setTimeout(function () { finish(false); }, 4000);
+      enqueue(it).then(finish, function () { finish(false); }); setTimeout(function () { finish(false); }, 12000);
     };
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
   }
