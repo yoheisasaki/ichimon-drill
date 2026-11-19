@@ -56,6 +56,18 @@ function loadMaps() {
   if (!mapsP) mapsP = Promise.all([fetch('data/map_chubu_kanto.json').then(r => r.json()), fetch('data/features.json').then(r => r.json())]).catch(e => { mapsP = null; throw e; });
   return mapsP;
 }
+// 答えたあとの解説。exp があればそれ。無い地図問題は「◯◯県の問題です」（map.hl、無ければ unit の「地図：」を除いたもの）
+function expText(q) {
+  if (q.exp) return q.exp;
+  if (!q.map) return '';
+  const n = q.map.hl || (q.unit || '').replace(/^地図：/, '');
+  return n ? (GROUP_RUBY[n] || n) + 'の問題です' : '';
+}
+function expHtml(q) { const t = expText(q); return t ? '<div class="exp">' + ruby(t) + '</div>' : ''; }
+function waitTap() {
+  document.getElementById('next').insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>');
+  app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
+}
 function mapLabel(q) {
   const m = q.map; if (!m) return '';
   return '地図：' + (m.hl && m.mark ? m.hl + 'の' + m.mark : (m.hl || m.mark || ''));
@@ -113,7 +125,7 @@ function question() {
   app.innerHTML = `
     <div class="top">
       <button class="btn-quit" id="quit">✕ やめる</button>
-      <div class="dname">${ruby(q.subject)}<br>${ruby(q.unit || '')}</div>
+      <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : ruby(q.unit || '')}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
@@ -156,19 +168,16 @@ function answerInput(text) {
     if (!S.seen.has(q.id)) S.correct++;
     S.seen.add(q.id);
     inp.classList.add('ok');
-    nx.innerHTML = '<span class="okmsg">○ せいかい！</span>';
+    nx.innerHTML = '<span class="okmsg">○ せいかい！</span>' + expHtml(q);
     document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
-    S.timer = setTimeout(advance, 800);
+    S.timer = setTimeout(expText(q) ? waitTap : advance, expText(q) ? 600 : 800);
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     inp.classList.add('ng');
     if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
-    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>';
-    S.timer = setTimeout(() => {
-      nx.insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>');
-      app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
-    }, 1100);
+    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>' + expHtml(q);
+    S.timer = setTimeout(waitTap, 1100);
   }
 }
 function answer(i) {
@@ -182,18 +191,16 @@ function answer(i) {
     S.seen.add(q.id);
     btns[i].classList.add('ok'); btns[i].querySelector('.dot').textContent = '○';
     document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
-    S.timer = setTimeout(advance, 600);
+    if (expText(q)) { document.getElementById('next').innerHTML = expHtml(q); S.timer = setTimeout(waitTap, 600); }
+    else S.timer = setTimeout(advance, 600);
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
     if (S.reask < REASK_MAX) { S.reask++; const at = Math.min(S.idx + REASK_GAP, S.queue.length); S.queue.splice(at, 0, q); }
-    const nx = document.getElementById('next');
-    S.timer = setTimeout(() => {
-      nx.textContent = 'タップして つぎへ ▶';
-      app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
-    }, 1100);
+    document.getElementById('next').innerHTML = expHtml(q);
+    S.timer = setTimeout(waitTap, 1100);
   }
 }
 function advance() {
@@ -211,7 +218,7 @@ function result() {
     <h1>おわり！</h1>
     <div class="res-score">${right}<small> / ${S.total} せいかい</small></div>
     ${S.skips ? `<div class="skipcount">わかんない ${S.skips}こ</div>` : ''}
-    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b></div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
+    ${S.wrong.length ? `<div class="wrong-list"><h2>まちがえた もんだい</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b>${q.exp ? `<span class="wexp">${ruby(q.exp)}</span>` : ''}</div>`).join('')}</div>` : '<div class="perfect">ぜんぶ せいかい！ すごい！</div>'}
     <button class="big hard" id="again" ${S.wrong.length ? '' : 'disabled'}>まちがえたのだけ もう1回</button>
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
@@ -272,7 +279,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch('data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();

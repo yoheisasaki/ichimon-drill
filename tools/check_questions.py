@@ -32,7 +32,8 @@ for q in d['questions']:
     elif len(ch) not in (2, 3): e(f'choices が{len(ch)}個（2〜3個。3択はママの問題のとき）')
     allc = [plain(c) for c in ch] + [plain(q.get('a', ''))]
     if len(set(allc)) != len(allc): e('選択肢と答えが重なる')
-    for s in [q.get('q', ''), q.get('a', ''), *ch]:
+    if 'exp' in q and (not isinstance(q['exp'], str) or not q['exp'].strip()): e('exp が空/文字列でない')
+    for s in [q.get('q', ''), q.get('a', ''), *ch, q['exp'] if isinstance(q.get('exp'), str) else '']:
         t = re.sub(r'\{[^|{}]+\|[^{}]+\}', '', s)
         if '{' in t or '}' in t or '|' in t: e(f'{{|}}の形が不正: {s}')
     # 公開リポなので子どもの記録（取り込みの日付・まちがい由来）を入れない。詳しい出どころは katei-gakushu/_work/ichimon/出どころ_非公開.json

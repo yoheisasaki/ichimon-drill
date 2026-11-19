@@ -127,3 +127,6 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .ef .hint{font-size:12px;color:#6d6b85;margin:0}
 .ef .emsg{font-size:12px;color:#b3362d;font-weight:700}
 .ef .row{display:flex;gap:8px}
+.exp{margin:8px auto 0;max-width:520px;background:#fff8e1;border-radius:14px;padding:10px 14px;color:#2b2a3a;font-size:17px;line-height:1.8;font-weight:700;text-align:left}
+.wi .wexp{display:block;margin-top:4px;font-size:15px;font-weight:700;color:#2b2a3a;line-height:1.8}
+.iexp{margin-top:4px;font-size:14px;color:#6a5a1a;background:#fff8e1;border-radius:8px;padding:4px 8px;line-height:1.7}

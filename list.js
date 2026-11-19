@@ -26,7 +26,7 @@ function item(q) {
   const tags = (q.type === 'input' ? '<i class="tg">かいてこたえる</i>' : '') + (q.map ? '<i class="tg m">地図' + (q.map.hl ? '：' + esc(q.map.hl) : '') + '</i>' : '') + (ed ? '<i class="tg m">直しあり</i>' : '');
   const acc = q.type === 'input' && q.accept ? `<div class="acc">OK：${q.accept.map(esc).join(' ／ ')}</div>` : '';
   return `<li class="it${off ? ' off' : ''}" data-id="${esc(q.id)}"><div class="iq">${tags}${ruby(q.q)}</div>
-    ${hid ? '<div class="tapshow">タップでこたえ</div>' : `<div class="ia">${ruby(q.a)}</div>${ch ? `<div class="ich">${ch}</div>` : ''}${acc}`}
+    ${hid ? '<div class="tapshow">タップでこたえ</div>' : `<div class="ia">${ruby(q.a)}</div>${ch ? `<div class="ich">${ch}</div>` : ''}${acc}${q.exp ? `<div class="iexp">解説：${ruby(q.exp)}</div>` : ''}`}
     <div class="isrc">${esc(q.src || '')}</div>
     <div class="ctl"><label class="pk"><input type="checkbox" data-act="pick" ${pk ? 'checked' : ''}>テスト対策</label><button class="fb offb" data-act="off" aria-pressed="${off}">${off ? '今回は出さない' : '今回出す'}</button><button class="fb" data-act="edit">編集</button></div>
     ${editing === q.id ? editForm(q) : ''}</li>`;
@@ -214,6 +214,6 @@ root.addEventListener('click', e => {
   }
 });
 
-Promise.all([fetch('data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   DATA = d; RAW = d.questions; CONF = conf; DATA.questions = applyEdits(RAW, CONF); render();
 }).catch(() => { root.innerHTML = '<div class="empty">よみこめませんでした</div>'; });
