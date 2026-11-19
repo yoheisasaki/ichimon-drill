@@ -114,20 +114,24 @@ function home() {
   const goLabel = `スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）`;
   const hardLabel = `${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）`;
   const nowTxt = rpgOn && RPG.homeNow ? RPG.homeNow() : '';
-  const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span>${nowTxt ? `<span class="rs-sb2">${ruby('{続|つづ}き')}：${nowTxt}</span>` : ''}</button>` : `<button class="big go" id="go">${goLabel}</button>`;
-  const hardHtml = `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
+  const note = rpgOn && RPG.progressNote ? RPG.progressNote() : null;
+  const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span></button>${nowTxt ? `<div class="rs-contline">${ruby('{続|つづ}き')}：${nowTxt}${note ? `　<span>${ruby('{冒険|ぼうけん}')}の${ruby('{途中|とちゅう}')} ${note.n} / ${note.unit}</span>` : ''}</div>` : ''}` : `<button class="big go" id="go">${goLabel}</button>`;
+  const hardHtml = rpgOn ? `<button class="big hard rs-hardrow" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}')}：${hard.length}${ruby('{項目|こうもく}')}<span class="rs-chg">${ruby('{復習|ふくしゅう}する')}</span></button>` : `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
   const startHtml = goHtml + hardHtml;
+  const unitN = (units[filter] || []).length;
+  const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
+  const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
-    <div class="rs rs-homewrap" data-rb><div class="sub rs-subtop"><span>${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</span></div>
+    <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     ${RPG.homeBonus()}
     ${goHtml}
-    ${RPG.homeNext ? RPG.homeNext() : ''}
-    ${hardHtml}
-    <details class="rs-range"${rangeOpen ? ' open' : ''}><summary>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}　<small>${filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)}</small></summary>${subjectsHtml}</details>
+    <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
+      <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
+      ${hardHtml}</div>
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
-    </div>
-    ${RPG.navHtml('home')}` : `
+    </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
@@ -143,7 +147,14 @@ function home() {
     units[filter] = !g ? [] : cur.includes(g) ? cur.filter(x => x !== g) : cur.concat(g);
     saveSel(); home();
   });
-  const rd = app.querySelector('.rs-range'); if (rd) rd.ontoggle = () => { window.__rangeOpen = rd.open; };
+  const rd = app.querySelector('.rs-range');
+  if (rd) {   // 範囲の変更は詳細シート：「範囲を変える」「範囲：…変更」で開き、「とじる」・背景・Escで閉じる
+    const setO = v => { rd.open = v; window.__rangeOpen = v; };
+    rd.ontoggle = () => { window.__rangeOpen = rd.open; };
+    const rb0 = document.getElementById('rsRangeBtn'); if (rb0) rb0.onclick = () => setO(true);
+    const rx = document.getElementById('rsRangeX'); if (rx) rx.onclick = e => { e.preventDefault(); setO(false); };
+    const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
+  }
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
 }
