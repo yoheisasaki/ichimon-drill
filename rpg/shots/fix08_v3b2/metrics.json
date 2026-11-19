@@ -66,9 +66,9 @@
  "修正後": {
   "待機の剣と脚": {
    "hip_row": 101,
-   "sword_px_total": 272,
-   "sword_px_in_leg_rows": 35,
-   "leg_px_covered_by_sword": 14
+   "sword_px_total": 147,
+   "sword_px_in_leg_rows": 19,
+   "leg_px_covered_by_sword": 10
   },
   "L_idle": {
    "colors": 15,
@@ -95,7 +95,7 @@
    }
   },
   "S_idle": {
-   "colors": 11,
+   "colors": 12,
    "eyes": [
     {
      "px": 5,
@@ -111,7 +111,7 @@
    "髪の房": null
   },
   "S_attack": {
-   "colors": 11,
+   "colors": 12,
    "eyes": [
     {
      "px": 5,
@@ -127,7 +127,7 @@
    "髪の房": null
   },
   "S_win": {
-   "colors": 10,
+   "colors": 11,
    "eyes": [],
    "髪の房": null
   },

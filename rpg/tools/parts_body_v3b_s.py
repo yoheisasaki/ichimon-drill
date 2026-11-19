@@ -3,15 +3,15 @@
 import numpy as np
 
 COL = {'O': (20, 26, 58), 'H': (136, 73, 50), 'B': (191, 135, 102), 'G': (251, 209, 164), 'W': (250, 249, 246), 'M': (229, 124, 91),
-       'U': (47, 102, 194), 'Y': (232, 161, 44), 'T': (180, 108, 50), 'C': (227, 166, 122), 'D': (250, 227, 185), 'N': (20, 26, 58)}
+       'U': (47, 102, 194), 'V': (30, 72, 150), 'Y': (232, 161, 44), 'T': (180, 108, 50), 'C': (227, 166, 122), 'D': (250, 227, 185), 'N': (20, 26, 58)}
 CW = 22      # 作業幅。頭は x=3〜18
 def pad(s): return '...' + s + '...'
 
-HEAD = ['......HH..HH....',
-        '....HHHHHHHHHH..',
-        '..HHBBHHHHHHHH..',
-        '.HHBBHHHHHHHHHH.',
-        'HHHHHHHHHHHHHHHH',
+HEAD = ['....H...HH...H..',
+        '...HHH.HHHH.HHH.',
+        '..HHBBHHHHHHHHH.',
+        'H.HHBBHHHHHHHHHH',
+        '.HHHHHHHHHHHHHHH',
         'HHHHHHHHHHHHHHHH',
         'HHHHGGHHHHGGHHHH',
         'HGGGNNGGGGNNGGGH',
@@ -36,15 +36,15 @@ def head_variant(kind):
 
 BODY = ['.....DDGGDD.....',
         '..YYUUUUUUUUYY..',
-        '.CUUUUUUUUUUUUC.',
-        'CCUUUUUUUUUUUUCC',
-        'CCGGUUUUUUUUGGCC',
-        'CCGGUUUUUUUUGGCC',
+        '.CYYVUUUUUUVYYC.',
+        'CCUVUUUUUUUUVUCC',
+        'CCGGVUUUUUUVGGCC',
+        'CCGGVUUUUUUVGGCC',
         '.CUUTTTYYTTTUUC.',
-        '..UUYUUUUUUYUU..',
-        '....UUU..UUU....',
-        '....UUU..UUU....',
-        '....UUU..UUU....',
+        '..VVYVVVVVVYVV..',
+        '....VVV..VVV....',
+        '....VVV..VVV....',
+        '....VVV..VVV....',
         '...TTTT..TTTT...',
         '...TTTT..TTTT...',
         '...HHHH..HHHH...']

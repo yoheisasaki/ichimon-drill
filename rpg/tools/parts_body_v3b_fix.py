@@ -64,6 +64,26 @@ def closed_eyes(a):
         for x in xs: a[y, x] = [*OUT, 255]
     return a
 
+
+BLUE = (47, 102, 194)
+def erase_fists(a, ent):
+    """待機の両拳（肌色・影・桃色）を袖の青で塗りつぶす。右は手部品の範囲、左は左右対称の位置（輪郭は残す）"""
+    a = a.copy(); hx, hy = ent['handPos']; hh, hw = load(ent['hand']).shape[:2]; w = a.shape[1]
+    skin = [SK, (227, 166, 122), (229, 124, 91), (250, 227, 185)]
+    for x0, x1 in ((hx, hx + hw), (8, 18)):
+        for y in range(hy, hy + hh):
+            for x in range(x0, x1):
+                if 0 <= x < w and a[y, x, 3] > 0 and tuple(a[y, x, :3]) in skin: a[y, x] = [*BLUE, 255]
+    return a
+def draw_arm(a, p0, p1, thick=3):
+    """袖の青の腕を p0→p1 に描き、外側に輪郭1色・1px"""
+    a = a.copy(); h, w = a.shape[:2]; m = np.zeros((h, w), bool); n = 40
+    for i in range(n + 1):
+        cx = p0[0] + (p1[0] - p0[0]) * i / n; cy = p0[1] + (p1[1] - p0[1]) * i / n
+        yy, xx = np.ogrid[:h, :w]; m |= (yy - cy) ** 2 + (xx - cx) ** 2 <= (thick / 2 + 0.6) ** 2
+    ring = ndi.binary_dilation(m, structure=np.ones((3, 3), bool)) & ~m
+    a[ring] = [*OUT, 255]; a[m] = [*BLUE, 255]; return a
+
 def hand_layer(ent, shape):
     L = np.zeros(shape, np.uint8)
     if ent.get('hand'):
@@ -100,18 +120,34 @@ def main():
     idle = tone_shoulders(simplify_hair(idle, st - 3), fb + 1, fb + 11)
     win = load(f'body_{J}_win_L.png'); fbw, _, stw = face_info(win); win = tone_shoulders(simplify_hair(win, stw - 3), fbw + 1, fbw + 11)
     atk = paste_head(load(f'body_{J}_attack_L.png'), idle); fba = face_info(atk)[0]; atk = tone_shoulders(atk, fba + 1, fba + 11)
-    WS = 0.85
+    WS = 0.65
     e = ent('idle', 'L'); write_pose(J, 'idle', 'L', idle, e, load(e['hand']), e['handPos'], gripAngle=5, weaponScale=WS)
     e = ent('attack', 'L'); ah = load(e['hand']); write_pose(J, 'attack', 'L', atk, e, ah, e['handPos'], weaponScale=WS)
     e = ent('win', 'L'); write_pose(J, 'win', 'L', win, e, load(e['hand']), e['handPos'], weaponScale=WS)
-    e = ent('attack', 'L'); write_pose(J, 'ready', 'L', atk, e, ah, e['handPos'], gripAngle=20, weaponScale=WS)
-    hl = hand_layer(e, atk.shape); rows = [y for y in range(atk.shape[0]) if y not in (74, 77, 80)]; dx = [0] * len(rows)
-    gb, _ = remap(atk, rows, dx); ghl, _ = remap(hl, rows, dx); ha, hp = crop_hand(ghl)
-    write_pose(J, 'guard', 'L', gb, e, ha, hp, gripAngle=-12, weaponScale=WS, refoot=True)
+    # ready/guard：待機の身体の両拳を消し、腕を前へ描き直して両手で剣を持つ（待機の頭のまま）
+    ie = ent('idle', 'L'); fist = load(ie['hand']); fh, fw = fist.shape[:2]
+    base = erase_fists(idle, ie)
+    def two_hands(vertical, gap=1):
+        W_, H_ = (fw, fh * 2 + gap) if vertical else (fw * 2 + gap, fh); c = np.zeros((H_, W_, 4), np.uint8)
+        c[0:fh, 0:fw] = fist
+        if vertical: c[fh + gap:, :fw] = fist
+        else: c[:, fw + gap:] = fist
+        return c
+    # ready：剣を両手で身体の前に立てる（拳は腹の前に縦に2つ）
+    hc = two_hands(True, 0); hp = (26, 64)
+    rb = draw_arm(draw_arm(base, (49, 76), (hp[0] + 9, hp[1] + 3)), (13, 77), (hp[0] + 2, hp[1] + 13))
+    write_pose(J, 'ready', 'L', rb, ie, hc, list(hp), gripAngle=12, weaponScale=WS)
+    # guard：膝を曲げて3行低く、剣を横にして顔〜胸の前で受ける（拳は胸の前に横に2つ）
+    hc = two_hands(False); hp = (17, 52)
+    gb = draw_arm(draw_arm(base, (49, 76), (hp[0] + 17, hp[1] + 6)), (13, 77), (hp[0] + 4, hp[1] + 6))
+    rows = [y for y in range(gb.shape[0]) if y not in (85, 88, 91)]
+    gb, _ = remap(gb, rows, [0] * len(rows))
+    write_pose(J, 'guard', 'L', gb, ie, hc, list(hp), gripAngle=78, weaponScale=WS, refoot=True)
+    # hit：待機を大きく後ろへのけぞらせ、目を閉じる。剣は手から離さず右上へ流す
     e = ent('idle', 'L'); hl = hand_layer(e, idle.shape); hb = closed_eyes(idle)
-    rows = list(range(idle.shape[0])); dx = [-int(round(max(0, 72 - y) / 72 * 5)) for y in rows]
+    rows = list(range(idle.shape[0])); dx = [-int(round((max(0, 76 - y) / 76) ** 1.3 * 17)) for y in rows]
     hbb, _ = remap(hb, rows, dx); hhl, _ = remap(hl, rows, dx); ha, hp = crop_hand(hhl)
-    write_pose(J, 'hit', 'L', hbb, e, ha, hp, gripAngle=105, weaponScale=WS, refoot=True)
+    write_pose(J, 'hit', 'L', hbb, e, ha, hp, gripAngle=60, weaponScale=WS, refoot=True)
     from parts_body_v3b_s import build_s
     build_s(J, ent, save, write_pose)
 

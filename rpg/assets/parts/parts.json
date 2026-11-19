@@ -10413,7 +10413,7 @@
     77.5
    ],
    "gripAngle": 5,
-   "weaponScale": 0.85,
+   "weaponScale": 0.65,
    "hand": "hand_warrior_v3b_idle_L.png",
    "handPos": [
     44,
@@ -10435,7 +10435,7 @@
     50.0
    ],
    "gripAngle": 135,
-   "weaponScale": 0.85,
+   "weaponScale": 0.65,
    "hand": "hand_warrior_v3b_attack_L.png",
    "handPos": [
     55,
@@ -10457,7 +10457,7 @@
     22.0
    ],
    "gripAngle": 45,
-   "weaponScale": 0.85,
+   "weaponScale": 0.65,
    "hand": "hand_warrior_v3b_win_L.png",
    "handPos": [
     54,
@@ -10534,65 +10534,65 @@
    "faceBottom": 12
   },
   "warrior_v3b_ready_L": {
-   "w": 67,
-   "h": 95,
-   "foot": [
-    35.8,
-    94
-   ],
-   "grip": [
-    60.5,
-    50.0
-   ],
-   "gripAngle": 20,
-   "weaponScale": 0.85,
-   "hand": "hand_warrior_v3b_ready_L.png",
-   "handPos": [
-    55,
-    45
-   ],
-   "weaponLayer": "front",
-   "whole": true,
-   "faceBottom": 47
-  },
-  "warrior_v3b_guard_L": {
-   "w": 67,
-   "h": 92,
-   "foot": [
-    35.8,
-    91
-   ],
-   "grip": [
-    60.5,
-    50.0
-   ],
-   "gripAngle": -12,
-   "weaponScale": 0.85,
-   "hand": "hand_warrior_v3b_guard_L.png",
-   "handPos": [
-    55,
-    45
-   ],
-   "weaponLayer": "front",
-   "whole": true,
-   "faceBottom": 47
-  },
-  "warrior_v3b_hit_L": {
-   "w": 62,
+   "w": 57,
    "h": 96,
    "foot": [
-    34.7,
+    29.7,
     95
    ],
    "grip": [
-    54.5,
+    31.5,
+    73.0
+   ],
+   "gripAngle": 12,
+   "weaponScale": 0.65,
+   "hand": "hand_warrior_v3b_ready_L.png",
+   "handPos": [
+    26,
+    64
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "warrior_v3b_guard_L": {
+   "w": 57,
+   "h": 93,
+   "foot": [
+    29.7,
+    92
+   ],
+   "grip": [
+    28.5,
+    56.5
+   ],
+   "gripAngle": 78,
+   "weaponScale": 0.65,
+   "hand": "hand_warrior_v3b_guard_L.png",
+   "handPos": [
+    17,
+    52
+   ],
+   "weaponLayer": "front",
+   "whole": true,
+   "faceBottom": 48
+  },
+  "warrior_v3b_hit_L": {
+   "w": 74,
+   "h": 96,
+   "foot": [
+    46.7,
+    95
+   ],
+   "grip": [
+    66.5,
     77.5
    ],
-   "gripAngle": 105,
-   "weaponScale": 0.85,
+   "gripAngle": 60,
+   "weaponScale": 0.65,
    "hand": "hand_warrior_v3b_hit_L.png",
    "handPos": [
-    49,
+    61,
     73
    ],
    "weaponLayer": "front",
