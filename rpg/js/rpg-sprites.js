@@ -114,7 +114,9 @@
     if (costume === 'master') return pose === 'win' ? ['hero_' + job + '_master_win', 'hero_' + job + '_master'] : ['hero_' + job + '_master'];
     return pose === 'idle' ? ['hero_' + job] : ['hero_' + job + '_' + pose, 'hero_' + job];
   }
-  const POSES = { L: ['idle', 'ready', 'attack', 'hit', 'win'], S: ['idle', 'attack', 'hit', 'walk'] };
+  const POSES = { L: ['idle', 'ready', 'attack', 'guard', 'hit', 'win'], S: ['idle', 'walk', 'walk2', 'windup', 'attack', 'guard', 'win', 'hit'] };
+  // 部品が無い職の新ポーズは、近い旧ポーズで代用（新比率の職だけが新ポーズを持つ）
+  const POSE_FALLBACK = { guard: ['hit', 'idle'], windup: ['attack', 'idle'], walk2: ['walk', 'idle'], win: ['idle'], ready: ['idle'], walk: ['idle'] };
   const DEV = { entries: {} };
   const ENEMY_MISSING = new Set();
   let loadStarted = false;
@@ -130,8 +132,12 @@
     if (PARTS.state === 'loading') return { mode: 'wait', h };
     let why = PARTS.state === 'ready' ? '' : '部品なし';
     if (PARTS.state === 'ready') {
-      const J = PARTS.json, b = pickKey(J.body, bodyKeys(h.job, h.costume, h.pose, h.size)), fk = h.look.face % 4, hk = h.look.hairStyle % 6;
-      const hn = h.size === 'S' ? ['head_h' + hk + '_S'] : ['head_f' + fk + '_h' + hk + '_L_' + h.pose, 'head_f' + fk + '_h' + hk + '_L'], hd = pickKey(J.head, hn.concat(hn.map(n => n.replace(/^head_/, ''))));
+      const J = PARTS.json, fk = h.look.face % 4, hk = h.look.hairStyle % 6;
+      let b = pickKey(J.body, bodyKeys(h.job, h.costume, h.pose, h.size));
+      if (!b) for (const fp of (POSE_FALLBACK[h.pose] || [])) { b = pickKey(J.body, bodyKeys(h.job, h.costume, fp, h.size)); if (b) { h.pose = fp; break; } }
+      // 新比率の身体（body.heads === 'v2'）は専用の頭を使う（顔は戦士の確認段階では f0 のみ。表情は 攻撃/喜び を頭の差分で出す）
+      const v2 = b && b.v.heads === 'v2', ex = h.pose === 'attack' ? '_attack' : h.pose === 'win' ? '_win' : '';
+      const hn = v2 ? (h.size === 'S' ? ['head_v2_h' + hk + '_S'] : ['head_v2_f0_h' + hk + '_L' + ex, 'head_v2_f0_h' + hk + '_L']) : h.size === 'S' ? ['head_h' + hk + '_S'] : ['head_f' + fk + '_h' + hk + '_L_' + h.pose, 'head_f' + fk + '_h' + hk + '_L'], hd = pickKey(J.head, hn.concat(hn.map(n => n.replace(/^head_/, ''))));
       if (!b) why = '身体の部品なし（' + bodyKeys(h.job, h.costume, h.pose, h.size)[0] + '）'; else if (!hd) why = '頭の部品なし（' + hn[hn.length - 1] + '）';
       else {
         const bf = (b.key.startsWith('body_') ? stripPng(b.key) : 'body_' + stripPng(b.key)) + '.png', hf = (hd.key.startsWith('head_') ? stripPng(hd.key) : 'head_' + stripPng(hd.key)) + '.png', hand = b.v.hand ? String(b.v.hand) : null;

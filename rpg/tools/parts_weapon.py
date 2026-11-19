@@ -4,7 +4,9 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from parts_common import save_parts_json
-W = {'w_sword_1.png': {'itemId': 'w_sword_1', 'name': '青銅のつるぎ', 'grip': [6, 22], 'tipAngle': 45},
+W = {'w_start.png': {'itemId': 'w_start', 'name': 'はじまりの木の剣', 'grip': [7, 24], 'tipAngle': 45},
+     'w_sword_2.png': {'itemId': 'w_sword_2', 'name': '鉄のつるぎ', 'grip': [8, 23], 'tipAngle': 45},
+     'w_sword_1.png': {'itemId': 'w_sword_1', 'name': '青銅のつるぎ', 'grip': [6, 22], 'tipAngle': 45},
      'rw_sword_1.png': {'itemId': 'rw_sword_1', 'name': '火花のつるぎ', 'grip': [7, 25], 'tipAngle': 45},
      'w_staff_1.png': {'itemId': 'w_staff_1', 'name': '旅人の杖', 'grip': [8, 22], 'tipAngle': 45},
      'w_dagger_1.png': {'itemId': 'w_dagger_1', 'name': '銅の短剣', 'grip': [8, 24], 'tipAngle': 45},

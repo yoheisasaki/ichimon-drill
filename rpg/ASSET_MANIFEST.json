@@ -2,7 +2,7 @@
  "note": "状態: status＝素材の制作状態（正式＝制作済み・組み込み済み／仮＝コード描画の仮物／置換済み＝仮絵だったが画面から外した／予定行は 制作済み・一部・予定）。connected＝画面（rpg/js）が実際に読んでいるか（接続済み・未接続・対象外）。この2つは別の欄。件数は rpg/tools/refresh_manifest.py が数え直す",
  "updated": "2026-11-19",
  "counts": {
-  "正式": 773,
+  "正式": 774,
   "仮": 1,
   "置換済み": 5,
   "制作済み": 17,
@@ -11822,6 +11822,21 @@
    "path": "rpg/assets/chars/enemy_b_machinegod_strip.png",
    "status": "正式",
    "inspect": "正式画像（5bf19d7）。目視確認済み（2026-11-18）"
+  },
+  {
+   "id": "icon_w_start",
+   "use": "装備アイコン はじまりの木の剣（w_start）",
+   "path": "rpg/assets/icons/w_start.png",
+   "src": "シート(ChatGPT)から切り出し",
+   "display": "32px",
+   "anchor": "中央",
+   "status": "正式",
+   "transparent": true,
+   "ref": "rpg/assets/src/pilot/ref.png",
+   "prompt": "添付の装備アイコン（青銅・鉄の剣）と同じ画風・向きで、簡素な木製の練習用の剣（はじまりの木の剣）を3列x2行・マゼンタ背景で6案。採用は左上。…（全文は src/icons_w_start/prompt.txt）",
+   "inspect": "自動: マゼンタ残り0〜数px・32px四方・箱平均縮小。目視: ランク差を確認",
+   "connected": "接続済み",
+   "connectedWhere": "装備・店・図鑑（iconOf）と、戦士の手持ち（parts.json weapon）。はじまりの武器の絵（artWeapon は戦士のみ w_start のまま）"
   }
  ],
  "vendor": [

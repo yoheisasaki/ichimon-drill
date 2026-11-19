@@ -2,216 +2,228 @@
  "version": 1,
  "body": {
   "warrior_idle_L": {
-   "w": 70,
+   "w": 88,
    "h": 96,
    "foot": [
-    47.6,
+    53.8,
     95
    ],
    "neck": [
-    46.2,
-    32.0
+    54.1,
+    43.2
    ],
    "grip": [
-    65.0,
-    63.0
+    80.0,
+    64.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_warrior_idle_L.png",
    "handPos": [
-    61,
-    59
+    74,
+    58
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "warrior_attack_L": {
-   "w": 93,
-   "h": 94,
+   "w": 105,
+   "h": 95,
    "foot": [
-    35.5,
-    93
+    52.4,
+    94
    ],
    "neck": [
-    59.1,
-    32.0
+    61.3,
+    43.2
    ],
    "grip": [
-    87.5,
-    31.0
+    95.5,
+    39.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 1.0,
    "hand": "hand_warrior_attack_L.png",
    "handPos": [
-    83,
-    27
+    88,
+    32
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "warrior_ready_L": {
-   "w": 81,
-   "h": 93,
+   "w": 92,
+   "h": 96,
    "foot": [
-    39.7,
-    92
+    53.7,
+    95
    ],
    "neck": [
-    53.4,
-    32.0
+    53.6,
+    43.2
    ],
    "grip": [
-    75.0,
-    51.0
+    80.5,
+    54.0
    ],
    "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_warrior_ready_L.png",
    "handPos": [
-    71,
-    46
+    73,
+    47
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "warrior_hit_L": {
-   "w": 74,
+   "w": 100,
    "h": 95,
    "foot": [
-    45.1,
+    63.6,
     94
    ],
    "neck": [
-    34.7,
-    32.0
+    33.5,
+    43.2
    ],
    "grip": [
-    65.0,
-    42.5
+    80.5,
+    43.0
    ],
    "gripAngle": -45,
    "weaponScale": 1.0,
    "hand": "hand_warrior_hit_L.png",
    "handPos": [
-    61,
-    38
+    73,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "warrior_win_L": {
-   "w": 76,
-   "h": 97,
+   "w": 91,
+   "h": 99,
    "foot": [
-    50.5,
-    96
+    55.0,
+    98
    ],
    "neck": [
-    46.6,
-    32.0
+    50.7,
+    43.2
    ],
    "grip": [
-    71.0,
-    63.5
+    82.5,
+    42.0
    ],
-   "gripAngle": -45,
+   "gripAngle": 45,
    "weaponScale": 1.0,
    "hand": "hand_warrior_win_L.png",
    "handPos": [
-    67,
-    60
+    76,
+    36
    ],
+   "heads": "v2",
    "weaponLayer": "front"
   },
   "warrior_idle_S": {
-   "w": 19,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    12.1,
-    25
+    13.9,
+    27
    ],
    "neck": [
-    12.5,
-    10.0
+    14.3,
+    12.0
    ],
    "grip": [
-    17.5,
+    21.0,
     18.0
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
    "hand": "hand_warrior_idle_S.png",
    "handPos": [
-    16,
-    16
+    18,
+    15
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "warrior_attack_S": {
-   "w": 23,
-   "h": 25,
+   "w": 27,
+   "h": 27,
    "foot": [
-    7.3,
-    24
+    12.2,
+    26
    ],
    "neck": [
-    13.9,
-    10.0
+    16.2,
+    12.0
    ],
    "grip": [
-    21.0,
-    11.0
+    24.0,
+    13.0
    ],
-   "gripAngle": 45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_warrior_attack_S.png",
    "handPos": [
-    19,
-    9
+    21,
+    10
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "warrior_hit_S": {
-   "w": 22,
-   "h": 26,
+   "w": 26,
+   "h": 28,
    "foot": [
-    11.8,
-    25
+    17.0,
+    27
    ],
    "neck": [
-    9.2,
-    10.0
+    11.2,
+    12.0
    ],
    "grip": [
-    17.0,
-    11.5
+    21.5,
+    13.5
    ],
-   "gripAngle": -45,
+   "gripAngle": 135,
    "weaponScale": 0.5,
    "hand": "hand_warrior_hit_S.png",
    "handPos": [
-    15,
-    10
+    19,
+    11
    ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "warrior_walk_S": {
-   "w": 19,
-   "h": 26,
+   "w": 24,
+   "h": 28,
    "foot": [
-    10.0,
-    25
+    12.8,
+    27
    ],
    "neck": [
-    11.4,
-    10.0
+    14.8,
+    12.0
    ],
    "grip": [
-    16.4,
-    18.0
+    21.5,
+    15.5
    ],
    "gripAngle": 45,
    "weaponScale": 0.5,
-   "hand": null,
-   "handPos": null,
+   "hand": "hand_warrior_walk_S.png",
+   "handPos": [
+    19,
+    13
+   ],
+   "heads": "v2",
    "weaponLayer": "back"
   },
   "magicknight_idle_L": {
@@ -6279,6 +6291,128 @@
    "hand": null,
    "handPos": null,
    "weaponLayer": "back"
+  },
+  "warrior_guard_L": {
+   "w": 76,
+   "h": 89,
+   "foot": [
+    44.3,
+    88
+   ],
+   "neck": [
+    48.6,
+    43.2
+   ],
+   "grip": [
+    56.5,
+    49.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 1.0,
+   "hand": "hand_warrior_guard_L.png",
+   "handPos": [
+    49,
+    41
+   ],
+   "heads": "v2",
+   "weaponLayer": "front"
+  },
+  "warrior_walk2_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    11.7,
+    27
+   ],
+   "neck": [
+    13.9,
+    12.0
+   ],
+   "grip": [
+    20.5,
+    15.5
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_walk2_S.png",
+   "handPos": [
+    18,
+    13
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "warrior_windup_S": {
+   "w": 23,
+   "h": 28,
+   "foot": [
+    13.6,
+    27
+   ],
+   "neck": [
+    13.9,
+    12.0
+   ],
+   "grip": [
+    6.0,
+    9.0
+   ],
+   "gripAngle": -45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_windup_S.png",
+   "handPos": [
+    3,
+    6
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "warrior_guard_S": {
+   "w": 23,
+   "h": 27,
+   "foot": [
+    12.1,
+    26
+   ],
+   "neck": [
+    14.8,
+    12.0
+   ],
+   "grip": [
+    18.4,
+    16.2
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": null,
+   "handPos": null,
+   "heads": "v2",
+   "weaponLayer": "back"
+  },
+  "warrior_win_S": {
+   "w": 24,
+   "h": 28,
+   "foot": [
+    14.4,
+    27
+   ],
+   "neck": [
+    13.0,
+    12.0
+   ],
+   "grip": [
+    21.0,
+    8.0
+   ],
+   "gripAngle": 45,
+   "weaponScale": 0.5,
+   "hand": "hand_warrior_win_S.png",
+   "handPos": [
+    18,
+    5
+   ],
+   "heads": "v2",
+   "weaponLayer": "back"
   }
  },
  "head": {
@@ -6521,6 +6655,198 @@
     5.0,
     9.0
    ]
+  },
+  "head_v2_f0_h0_L": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f0_h0_L_attack": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.4,
+    43.0
+   ]
+  },
+  "head_v2_f0_h0_L_win": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.4,
+    43.0
+   ]
+  },
+  "head_v2_f0_h1_L": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.6,
+    40.0
+   ]
+  },
+  "head_v2_f0_h1_L_attack": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.6,
+    40.0
+   ]
+  },
+  "head_v2_f0_h1_L_win": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.6,
+    40.0
+   ]
+  },
+  "head_v2_f0_h2_L": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f0_h2_L_attack": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.5,
+    42.0
+   ]
+  },
+  "head_v2_f0_h2_L_win": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.5,
+    42.0
+   ]
+  },
+  "head_v2_f0_h3_L": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f0_h3_L_attack": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.2,
+    43.0
+   ]
+  },
+  "head_v2_f0_h3_L_win": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.2,
+    43.0
+   ]
+  },
+  "head_v2_f0_h4_L": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    19.9,
+    40.0
+   ]
+  },
+  "head_v2_f0_h4_L_attack": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    19.9,
+    40.0
+   ]
+  },
+  "head_v2_f0_h4_L_win": {
+   "w": 44,
+   "h": 40,
+   "neck": [
+    23.1,
+    40.0
+   ]
+  },
+  "head_v2_f0_h5_L": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_f0_h5_L_attack": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_f0_h5_L_win": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_h0_S": {
+   "w": 11,
+   "h": 12,
+   "neck": [
+    5.9,
+    12.0
+   ]
+  },
+  "head_v2_h1_S": {
+   "w": 10,
+   "h": 11,
+   "neck": [
+    5.4,
+    11.0
+   ]
+  },
+  "head_v2_h2_S": {
+   "w": 11,
+   "h": 12,
+   "neck": [
+    9.5,
+    12.0
+   ]
+  },
+  "head_v2_h3_S": {
+   "w": 11,
+   "h": 12,
+   "neck": [
+    6.1,
+    12.0
+   ]
+  },
+  "head_v2_h4_S": {
+   "w": 12,
+   "h": 11,
+   "neck": [
+    5.5,
+    11.0
+   ]
+  },
+  "head_v2_h5_S": {
+   "w": 11,
+   "h": 12,
+   "neck": [
+    6.0,
+    12.0
+   ]
   }
  },
  "weapon": {
@@ -6566,6 +6892,24 @@
    "grip": [
     16,
     16
+   ],
+   "tipAngle": 45
+  },
+  "w_start.png": {
+   "itemId": "w_start",
+   "name": "はじまりの木の剣",
+   "grip": [
+    7,
+    24
+   ],
+   "tipAngle": 45
+  },
+  "w_sword_2.png": {
+   "itemId": "w_sword_2",
+   "name": "鉄のつるぎ",
+   "grip": [
+    8,
+    23
    ],
    "tipAngle": 45
   }
@@ -8371,6 +8715,180 @@
     "#f0c39a",
     "#d9a77a",
     "#b97d56"
+   ],
+   "body_warrior_guard_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h0_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h0_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h1_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h1_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h2_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h2_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h3_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h3_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h4_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h4_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h5_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f0_h5_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h0_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h1_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h3_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h4_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_h5_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_walk2_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_windup_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_guard_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "body_warrior_win_S.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
    ]
   },
   "hair": {
@@ -8549,6 +9067,150 @@
     "#37200f"
    ],
    "head_h5_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h0_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h0_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h1_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h1_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h2_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h2_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h3_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h3_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h4_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h4_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h5_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f0_h5_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h0_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h1_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h2_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h3_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h4_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_h5_S.png": [
     "#b8804a",
     "#7a4a2a",
     "#56321e",

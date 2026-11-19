@@ -308,7 +308,8 @@
   // 画面に出す衣装（'master' か null）。選んでいて、いまの職業のマスター衣装を獲得済みのときだけ
   const costumeOf = (save, job) => { ensure(save); return save.look.outfit === 'master' && masterOwned(save, job || save.job) ? 'master' : null; };
   // 武器の絵に使うアイテムID。はじまりの武器・アイコンの無い物は、職業の最初の武器系統のランクIで描く
-  const artWeapon = (job, id) => { const it = id && D.ITEMS[id]; if (it && it.slot === 'weapon' && it.cat !== 'any') return id; return 'w_' + D.JOBS[job].weapons[0] + '_1'; };
+  const START_ART_JOBS = ['warrior'];   // はじまりの武器（木の剣）の絵と手持ちを用意した職（新比率の職から順に足す）
+  const artWeapon = (job, id) => { const it = id && D.ITEMS[id]; if (it && it.slot === 'weapon' && it.cat !== 'any') return id; if (id === 'w_start' && START_ART_JOBS.includes(job)) return 'w_start'; return 'w_' + D.JOBS[job].weapons[0] + '_1'; };
   const costumeColor = save => { ensure(save); const o = save.look.outfit; if (!o) return null; for (const q of Object.values(W.QUESTS)) if (q.costume && q.costume.id === o && save.rewards.costumes.includes(o)) return q.costume.color; return null; };
   const allCostumes = () => Object.values(W.QUESTS).filter(q => q.costume).map(q => ({ id: q.costume.id, name: q.costume.name, color: q.costume.color, from: q.name }));
   function setOutfit(save, id) { ensure(save); if (id === 'master') { if (!masterOwned(save, save.job)) return false; save.look.outfit = 'master'; return true; } if (id && !save.rewards.costumes.includes(id)) return false; save.look.outfit = id || null; return true; }
