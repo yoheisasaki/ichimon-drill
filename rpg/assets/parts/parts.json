@@ -8288,6 +8288,438 @@
     6.0,
     12.0
    ]
+  },
+  "head_v2_f1_h0_L": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.4,
+    43.0
+   ]
+  },
+  "head_v2_f1_h0_L_attack": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.4,
+    43.0
+   ]
+  },
+  "head_v2_f1_h0_L_win": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.3,
+    43.0
+   ]
+  },
+  "head_v2_f1_h1_L": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    21.4,
+    40.0
+   ]
+  },
+  "head_v2_f1_h1_L_attack": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.7,
+    40.0
+   ]
+  },
+  "head_v2_f1_h1_L_win": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.6,
+    40.0
+   ]
+  },
+  "head_v2_f1_h2_L": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f1_h2_L_attack": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.5,
+    42.0
+   ]
+  },
+  "head_v2_f1_h2_L_win": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.5,
+    42.0
+   ]
+  },
+  "head_v2_f1_h3_L": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f1_h3_L_attack": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.2,
+    43.0
+   ]
+  },
+  "head_v2_f1_h3_L_win": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.1,
+    43.0
+   ]
+  },
+  "head_v2_f1_h4_L": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    19.9,
+    40.0
+   ]
+  },
+  "head_v2_f1_h4_L_attack": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    24.0,
+    40.0
+   ]
+  },
+  "head_v2_f1_h4_L_win": {
+   "w": 44,
+   "h": 40,
+   "neck": [
+    23.1,
+    40.0
+   ]
+  },
+  "head_v2_f1_h5_L": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_f1_h5_L_attack": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_f1_h5_L_win": {
+   "w": 40,
+   "h": 41,
+   "neck": [
+    22.0,
+    41.0
+   ]
+  },
+  "head_v2_f2_h0_L": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f2_h0_L_attack": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f2_h0_L_win": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f2_h1_L": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    21.6,
+    40.0
+   ]
+  },
+  "head_v2_f2_h1_L_attack": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.8,
+    40.0
+   ]
+  },
+  "head_v2_f2_h1_L_win": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    21.8,
+    40.0
+   ]
+  },
+  "head_v2_f2_h2_L": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f2_h2_L_attack": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f2_h2_L_win": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f2_h3_L": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f2_h3_L_attack": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f2_h3_L_win": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f2_h4_L": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    24.1,
+    40.0
+   ]
+  },
+  "head_v2_f2_h4_L_attack": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    24.2,
+    40.0
+   ]
+  },
+  "head_v2_f2_h4_L_win": {
+   "w": 44,
+   "h": 40,
+   "neck": [
+    23.1,
+    40.0
+   ]
+  },
+  "head_v2_f2_h5_L": {
+   "w": 40,
+   "h": 41,
+   "neck": [
+    22.1,
+    41.0
+   ]
+  },
+  "head_v2_f2_h5_L_attack": {
+   "w": 40,
+   "h": 41,
+   "neck": [
+    22.1,
+    41.0
+   ]
+  },
+  "head_v2_f2_h5_L_win": {
+   "w": 40,
+   "h": 41,
+   "neck": [
+    22.1,
+    41.0
+   ]
+  },
+  "head_v2_f3_h0_L": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f3_h0_L_attack": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.5,
+    43.0
+   ]
+  },
+  "head_v2_f3_h0_L_win": {
+   "w": 40,
+   "h": 43,
+   "neck": [
+    21.4,
+    43.0
+   ]
+  },
+  "head_v2_f3_h1_L": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.6,
+    40.0
+   ]
+  },
+  "head_v2_f3_h1_L_attack": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.8,
+    40.0
+   ]
+  },
+  "head_v2_f3_h1_L_win": {
+   "w": 38,
+   "h": 40,
+   "neck": [
+    19.7,
+    40.0
+   ]
+  },
+  "head_v2_f3_h2_L": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f3_h2_L_attack": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f3_h2_L_win": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    34.7,
+    42.0
+   ]
+  },
+  "head_v2_f3_h3_L": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f3_h3_L_attack": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f3_h3_L_win": {
+   "w": 42,
+   "h": 43,
+   "neck": [
+    22.3,
+    43.0
+   ]
+  },
+  "head_v2_f3_h4_L": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    24.2,
+    40.0
+   ]
+  },
+  "head_v2_f3_h4_L_attack": {
+   "w": 45,
+   "h": 40,
+   "neck": [
+    24.1,
+    40.0
+   ]
+  },
+  "head_v2_f3_h4_L_win": {
+   "w": 44,
+   "h": 40,
+   "neck": [
+    23.1,
+    40.0
+   ]
+  },
+  "head_v2_f3_h5_L": {
+   "w": 39,
+   "h": 41,
+   "neck": [
+    22.1,
+    41.0
+   ]
+  },
+  "head_v2_f3_h5_L_attack": {
+   "w": 40,
+   "h": 41,
+   "neck": [
+    22.1,
+    41.0
+   ]
+  },
+  "head_v2_f3_h5_L_win": {
+   "w": 40,
+   "h": 42,
+   "neck": [
+    26.3,
+    42.0
+   ]
   }
  },
  "weapon": {
@@ -10690,6 +11122,330 @@
     "#f0c39a",
     "#d9a77a",
     "#b97d56"
+   ],
+   "head_v2_f1_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h0_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h0_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h1_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h1_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h2_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h2_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h3_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h3_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h4_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h4_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h5_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f1_h5_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h0_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h0_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h1_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h1_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h2_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h2_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h3_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h3_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h4_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h4_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h5_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f2_h5_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h0_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h0_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h0_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h1_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h1_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h1_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h2_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h2_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h2_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h3_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h3_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h3_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h4_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h4_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h4_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h5_L.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h5_L_attack.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
+   ],
+   "head_v2_f3_h5_L_win.png": [
+    "#f8dcc0",
+    "#f0c39a",
+    "#d9a77a",
+    "#b97d56"
    ]
   },
   "hair": {
@@ -11012,6 +11768,330 @@
     "#37200f"
    ],
    "head_v2_h5_S.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h0_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h0_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h1_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h1_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h2_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h2_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h3_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h3_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h4_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h4_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h5_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f1_h5_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h0_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h0_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h1_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h1_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h2_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h2_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h3_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h3_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h4_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h4_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h5_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f2_h5_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h0_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h0_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h0_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h1_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h1_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h1_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h2_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h2_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h2_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h3_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h3_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h3_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h4_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h4_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h4_L_win.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h5_L.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h5_L_attack.png": [
+    "#b8804a",
+    "#7a4a2a",
+    "#56321e",
+    "#37200f"
+   ],
+   "head_v2_f3_h5_L_win.png": [
     "#b8804a",
     "#7a4a2a",
     "#56321e",

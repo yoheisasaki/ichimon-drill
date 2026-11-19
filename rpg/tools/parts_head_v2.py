@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from parts_common import *
 
 size = sys.argv[1]
+FACE = int(os.environ.get('FACE', '0'))   # 顔番号。f1〜f3 は L のみ（S は髪型だけで顔差分なし）。例: FACE=1 python parts_head_v2.py L rpgv2_heads_L_f1.png
 sheet = sys.argv[2] if len(sys.argv) > 2 else os.path.join(SRC, 'rpgv2_heads_L.png')   # S も L の通常顔（1列目）から作る
 HEAD_H = {'L': 43, 'S': 12}
 HEAD_W = {'L': 40, 'S': 11}
@@ -64,7 +65,7 @@ for (r, c), cell in sorted(cells.items()):
     size_out = (max(1, round((x1 - x0) * sx)), max(1, round((y1 - y0) * sy)))
     im = mode_resize_idx(sub_idx, bm, PAL, size_out, DARKW[size], WCLASS)
     w, h = size_out
-    name = f'head_v2_f0_h{r}_L{EXPR[c]}.png' if size == 'L' else f'head_v2_h{r}_S.png'
+    name = f'head_v2_f{FACE}_h{r}_L{EXPR[c]}.png' if size == 'L' else f'head_v2_h{r}_S.png'
     Image.fromarray(im).save(os.path.join(PARTS, name))
     used = {tuple(p) for p in im[im[..., 3] > 0][:, :3].tolist()}
     neck = [round((nx - x0) * sx, 1), float(h)]
