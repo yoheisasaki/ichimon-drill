@@ -123,7 +123,8 @@
   }
   function css(fn) { ctx.save(); ctx.scale(1 / SCALE, 1 / SCALE); fn(); ctx.restore(); }
   function rrect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
-  const FONT = '700 12px "Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif';
+  const FONT = '400 12px "DotGothic16","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif';   // 帯の左上の札もドット文字（rpg-font.css と同じ）。読み込み後に描き直す
+  try { if (root.document && root.document.fonts && root.document.fonts.load) root.document.fonts.load('12px "DotGothic16"', '山脈技').then(() => { try { if (ctx) drawStrip(); } catch (e) {} }, () => {}); } catch (e) {}
   function drawStrip(o) {
     if (!ctx) return; o = o || {};
     const si = sceneInfo(); if (!si) return;

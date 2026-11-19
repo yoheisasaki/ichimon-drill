@@ -29,3 +29,10 @@
 - 一覧（list.html）で1問ごとに「テスト対策」チェック・「今回出す／今回は出さない」・「編集」（正解は選択肢の○をタップ。書いて答える問題は答えとOKの答え）。押したらすぐ送り、「保存中…／保存しました／保存できませんでした（もう一度）」を出す。
 - `data/questions.json` は書き換えない（毎時タスクが同じIDを直しても、ママの edit が優先）。
 - テスト用の差し替え：`?conf=<JSONを返すURL>`（読み先）、`?send=<URL>`（送り先。本番の Apps Script に書き込まないため）。
+
+## 息子の意見・「おかしい！」ボタン（2026-11-19）
+- どの画面でも右上の細い帯（`voice.js`・`voice.css`）：「おかしい！」＝1タップで今の状態を自動送信／「意見」＝気持ちのボタン＋ひとこと。ママモード（mama.html）には出ない。
+- 送り先は学習ボード（`common.js` の SEND_URL）に `api:"ichimon_voice"`。シート「息子の意見」（02_記録）に1件1行。「おかしい！」の全体 JSON は 02_記録 の `おかしい_YYYYMMDD-HHMMSS.json`（行の「ファイルID」）。電波がないときは端末（localStorage `ichimon.voice.v1`）にためて、次に開いたとき・電波が戻ったとき送る。子どもの意見と JSON は GitHub に上げない。
+- 「おかしい！」の JSON の読み方：`screen`（画面名）・`state`（問題ID・教科・何問目・解答済みか・解説が出ているか・RPG の画面と職）・`env`（画面サイズ・dpr・safe-area・文字の大きさ・スクロール位置・UA）・`anomalies`（自動検出：`hidden_by_strip`＝冒険帯に隠れる、`covered`＝ほかの要素に覆われる、`off_x`＝横にはみ出し、`overlap`＝重なり、`text_overflow`＝文字のはみ出し）・`elements`（主要要素の位置）・`console`（直近のエラー最大20）・`actions`（直近の操作最大30）・`dom`（表示中の画面の HTML。名前は〔名前〕に置換、約60KBまで）・`ls`（保存状態）。
+- 再現：`python tools/replay_report.py <おかしい_*.json> [出力フォルダ]`。同じ画面サイズ・保存状態・問題で開き直し、`replay.png` と今の自動検出を表示する（結果・報酬の画面は保存状態から戻せないので DOM と elements を読む）。版（`ver`）は「土台のコミット＋voice 版」。
+- 検査：`python tools/voice_test.py`（全画面で押せる・帯がかぶらない・送信の中身・解答状態が残る・電波なしでためる）、`python tools/shots_all.py <タグ> [--zoom] [--vp ...]`（全画面の撮影と自動検出）、`python tools/font_compare.py`（RPG の字体比較）。

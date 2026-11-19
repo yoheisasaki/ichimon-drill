@@ -1,0 +1,9 @@
+/* ゲーム画面（RPG）だけのドット文字。DotGothic16（Google Fonts・OFL・漢字あり）。問題文・選択肢・解説・入力欄は Klee One のまま。
+   ルビは小さい（7〜10px）ので、ドット字体ではつぶれる→読みやすい Klee One。ドット字体は太字を作ると崩れるので font-synthesis を止める */
+:root{--rpg-font:"DotGothic16","Klee One","Hiragino Maru Gothic ProN","Yu Gothic UI",Meiryo,sans-serif;--rpg-ruby-font:"Klee One","Hiragino Maru Gothic ProN","Yu Gothic UI",Meiryo,sans-serif}
+.rs,.rw,.rs-fx{font-family:var(--rpg-font);font-synthesis:none}
+.rs rt,.rw rt,.rs-fx rt{font-family:var(--rpg-ruby-font);font-synthesis:none}
+/* 学習の中身（間違えた問題・解説・問題文）は読みやすさ優先で Klee One */
+.rw #rwWrongBox,.rw .wrong-list,.rw .wi,.rs-sheet .subj,.rs-sheet .chip{font-family:"Klee One","Hiragino Maru Gothic ProN","Yu Gothic UI",Meiryo,sans-serif;font-synthesis:weight}
+/* 文字が大きい端末（拡大130%・幅320）で、見出し・タブ・名前が枠をはみ出さないよう折り返す */
+.rs-testname,.rs-title,.rs-tab2,.rs-jc-t,.rs-bchip,.rs-bonusrow b{overflow-wrap:anywhere;min-width:0}

@@ -1,6 +1,6 @@
 /* RPG 第2段：ホーム上部・下部ナビ・街・装備・店・鍛冶・転職・技設定・外見・図鑑・実績（絵は全て仮）。濃紺＋金枠 */
 body:has(.rs){background:#0b1329}
-.rs{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px 0;padding:12px 14px 8px;background:var(--navy);min-height:100vh;font-weight:700}
+.rs{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px 0;padding:12px 14px 8px;background:var(--navy);min-height:calc(100vh - var(--vb,0px));font-weight:700}
 .rs h1,.rs .rs-title{color:var(--gold)}
 .rs-head{display:flex;align-items:center;gap:6px;margin-bottom:10px}
 .rs-title{flex:1;text-align:center;font-size:21px;font-weight:900;letter-spacing:.04em;margin:0;padding:7px 4px;border:2px solid var(--gold);border-radius:12px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy),inset 0 0 0 4px #8a7036}
@@ -289,7 +289,7 @@ html.rb-off .rs-app rt,html.rb-off .rs-fx rt,html.rb-off #rwRoot rt,html.rb-off 
 
 /* ===== 修正指示書 08 5・6章：3層レイアウト（ヘッダー／中だけスクロール／下端操作）・詳細シート・各画面の配置 ===== */
 html:has(.rs3),body:has(.rs3){overflow:hidden}
-#app:has(>.rs3){padding:0;min-height:0;height:100vh;height:100dvh;overflow:hidden}
+#app:has(>.rs3){padding:0;min-height:0;height:calc(100vh - var(--vb,0px));height:calc(100dvh - var(--vb,0px));overflow:hidden}
 .rs.rs3{margin:0;padding:0;min-height:0;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;box-sizing:border-box}
 .rs3 .rs-head{flex:none;display:flex;align-items:center;gap:8px;margin:0;padding:4px 12px;height:52px;box-sizing:border-box}
 .rs3 .rs-title{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;height:44px;padding:0 20px;margin:0;font-size:21px;line-height:1.15;box-sizing:border-box}
@@ -430,7 +430,7 @@ html:has(.rs3),body:has(.rs3){overflow:hidden}
 
 /* ===== 08 6章 報酬：ヘッダー／中だけスクロール／下端「おわる」「次の10問」 ===== */
 html:has(.rw3),body:has(.rw3){overflow:hidden}
-#app:has(>.rw3){padding:0;min-height:0;height:100vh;height:100dvh;overflow:hidden}
+#app:has(>.rw3){padding:0;min-height:0;height:calc(100vh - var(--vb,0px));height:calc(100dvh - var(--vb,0px));overflow:hidden}
 .rw.rw3{margin:0;padding:0;min-height:0;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;box-sizing:border-box}
 .rw3 .rw-head{flex:none;padding:8px 14px 6px}
 .rw3 .rw-title{margin:0;font-size:22px;padding:4px 8px;line-height:1.3}

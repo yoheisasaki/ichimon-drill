@@ -1,0 +1,25 @@
+/* いけん／おかしい！ の帯。上端に固定。ページ全体を --vb ぶん下げ、中身にかぶらない */
+:root{--vb:calc(34px + env(safe-area-inset-top))}
+body{padding-top:var(--vb)}
+#vbar{position:fixed;left:0;right:0;top:0;height:var(--vb);padding:env(safe-area-inset-top) 8px 0;z-index:60;display:flex;justify-content:flex-end;align-items:center;gap:14px;background:#f1effc;box-sizing:border-box}
+body:has(.rs,.rw) #vbar{background:#0d1630}
+.vb{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:800;line-height:1;border:2px solid #cfcbe3;background:#fff;color:#6d6b85;white-space:nowrap}
+.vb svg{display:block;flex:none}
+.vb rt{font-size:.5em}
+.vb-oka{border-color:#e5584f;color:#b3362d}
+.vb:active{transform:translateY(1px)}
+#vsheet{position:fixed;inset:0;z-index:100;background:rgba(20,18,40,.55);display:flex;align-items:flex-end;justify-content:center}
+#vsheet[hidden]{display:none}
+.vs-p{width:100%;max-width:480px;background:#fff;color:#2b2a3a;border-radius:22px 22px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom));max-height:92dvh;overflow-y:auto;font-weight:700}
+.vs-h{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:20px;margin-bottom:6px}
+.vs-x{border:2px solid #e1ddf2;background:#fff;border-radius:999px;min-height:40px;padding:0 14px;font-size:15px;font-weight:800;color:#6d6b85}
+.vs-t{font-size:15px;color:#6d6b85;margin:4px 0 8px}
+.vs-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.vs-chip{min-height:48px;padding:6px 14px;border-radius:16px;border:3px solid #e1ddf2;background:#fff;font-size:17px;font-weight:800;line-height:1.7}
+.vs-chip.on{border-color:#4aa8f0;background:#e8f4ff}
+#vsText{width:100%;border:3px solid #e1ddf2;border-radius:14px;padding:8px 10px;font:inherit;font-size:17px;box-sizing:border-box;resize:none}
+.vs-send{display:block;width:100%;min-height:56px;margin-top:10px;border:0;border-radius:18px;background:#3cc07a;color:#fff;font-size:22px;font-weight:800;box-shadow:0 4px 0 #28955c}
+.vs-send:disabled{opacity:.45}
+.vs-done{text-align:center;font-size:19px;font-weight:800;color:#1f9a5a;min-height:28px;margin-top:8px}
+#vtoast{position:fixed;left:50%;top:calc(var(--vb) + 6px);transform:translateX(-50%);z-index:101;background:#2b2a3a;color:#fff;font-size:17px;font-weight:800;padding:10px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s}
+#vtoast.on{opacity:.95}

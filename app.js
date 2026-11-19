@@ -64,8 +64,10 @@ function expText(q) {
   return n ? (GROUP_RUBY[n] || n) + 'の問題です' : '';
 }
 function expHtml(q) { const t = expText(q); return t ? '<div class="exp">' + ruby(t) + '</div>' : ''; }
+// 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
+function revealNext() { const n = document.getElementById('next'); if (n && n.scrollIntoView) n.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
 function waitTap() {
-  document.getElementById('next').insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>');
+  document.getElementById('next').insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>'); revealNext();
   app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
 }
 function mapLabel(q) {
@@ -221,14 +223,14 @@ function answerInput(text) {
     S.seen.add(q.id);
     inp.classList.add('ok');
     nx.innerHTML = '<span class="okmsg">○ せいかい！</span>' + expHtml(q);
-    document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
+    document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ'; if (expText(q)) revealNext();
     S.timer = setTimeout(expText(q) ? waitTap : advance, expText(q) ? 600 : 800);
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     inp.classList.add('ng');
     reask(q);
-    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>' + expHtml(q);
+    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>' + expHtml(q); revealNext();
     S.timer = setTimeout(waitTap, 1100);
   }
 }
@@ -243,7 +245,7 @@ function answer(i) {
     S.seen.add(q.id);
     btns[i].classList.add('ok'); btns[i].querySelector('.dot').textContent = '○';
     document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
-    if (expText(q)) { document.getElementById('next').innerHTML = expHtml(q); S.timer = setTimeout(waitTap, 600); }
+    if (expText(q)) { document.getElementById('next').innerHTML = expHtml(q); revealNext(); S.timer = setTimeout(waitTap, 600); }
     else S.timer = setTimeout(advance, 600);
   } else {
     S.seen.add(q.id);
@@ -251,7 +253,7 @@ function answer(i) {
     if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
     reask(q);
-    document.getElementById('next').innerHTML = expHtml(q);
+    document.getElementById('next').innerHTML = expHtml(q); revealNext();
     S.timer = setTimeout(waitTap, 1100);
   }
 }

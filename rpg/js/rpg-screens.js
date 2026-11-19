@@ -393,8 +393,8 @@
       const have = !!s.inv.items[sel.id], can = C.canBuy(s, sel.id), st = statOfId(s, sel.id), cu = statOfId(s, s.equip[sel.slot]);
       const key = st.atk != null ? 'atk' : st.def != null ? 'def' : null, nm = key === 'atk' ? '攻撃' : '防御';
       const cmp = key ? `<span>${kr(nm)}</span><b>${cu[key] != null ? cu[key] : 0}</b><i class="arr">→</i><b>${st[key]}</b>${eqDiff(cu[key] != null ? cu[key] : 0, st[key])}` : `<span>${esc(M.effectShort(sel.id) || '特別な効果')}</span>`;
-      const why = have ? (M.isEquipped(s, sel.id) ? `${kr('装備')}中です。` : '持っています。') : can ? (s.coins < sel.price ? `${can}（あと ${sel.price - s.coins}）` : can) : `買うと ● ${s.coins} → ● ${s.coins - sel.price}`;
-      panel = `<div class="rs-shopsel">${iconOf(sel.id, 48)}<div class="rs-ss-t"><b>${esc(sel.name)}</b>${rankTag(sel)}<div class="rs-dr">${cmp}</div><div class="rs-shopwhy${!have && can ? ' ng' : ''}" id="shopWhy" aria-live="polite">${esc(why)}</div></div></div>`;
+      const why = have ? (M.isEquipped(s, sel.id) ? `${kr('装備')}中です。` : '持っています。') : esc(can ? (s.coins < sel.price ? `${can}（あと ${sel.price - s.coins}）` : can) : `買うと ● ${s.coins} → ● ${s.coins - sel.price}`);
+      panel = `<div class="rs-shopsel">${iconOf(sel.id, 48)}<div class="rs-ss-t"><b>${esc(sel.name)}</b>${rankTag(sel)}<div class="rs-dr">${cmp}</div><div class="rs-shopwhy${!have && can ? ' ng' : ''}" id="shopWhy" aria-live="polite">${why}</div></div></div>`;
       foot = `<button class="rs-btn" id="shopTry" data-try="${sel.id}">${have ? kr('装備') + 'へ' : kr('試着')}</button><button class="rs-big" id="shopBuy" ${have || can ? 'disabled' : ''} data-buy="${sel.id}">${have ? '購入済み' : sel.price + ' コインで' + kr('購入')}</button>`;
     }
     return frame('装備屋', `<div class="rs-tabs2">${tabs}</div>${panel}<div class="rs-scroll rs-list">${toggle}${rows}</div>`, { split: true, right, foot });

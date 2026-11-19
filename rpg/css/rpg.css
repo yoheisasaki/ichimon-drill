@@ -14,7 +14,7 @@
 
 /* 結果（報酬）画面：濃紺・金枠 */
 body:has(.rw){background:#0b1329}
-.rw{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px calc(-20px - env(safe-area-inset-bottom));padding:14px 14px calc(22px + env(safe-area-inset-bottom));background:var(--navy);min-height:100vh;font-weight:700}
+.rw{--navy:#0d1630;--navy2:#12204a;--gold:#d4af5a;--ink:#f4f1e4;--cyan:#8fe6f2;color:var(--ink);margin:-12px -14px calc(-20px - env(safe-area-inset-bottom));padding:14px 14px calc(22px + env(safe-area-inset-bottom));background:var(--navy);min-height:calc(100vh - var(--vb,0px));font-weight:700}
 .rw-title{text-align:center;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:.06em;margin:4px 0 6px;padding:8px;border:2px solid var(--gold);border-radius:14px;background:var(--navy2);box-shadow:inset 0 0 0 3px var(--navy),inset 0 0 0 4px #8a7036}
 .rw-place{text-align:center;font-size:16px;margin:0 0 8px;color:var(--ink)}
 .rw-scene{position:relative;border:2px solid var(--gold);border-radius:12px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 3px var(--navy)}
