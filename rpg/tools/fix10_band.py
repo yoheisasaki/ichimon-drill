@@ -41,6 +41,13 @@ with pw_() as pw:
     tiles = [hstack(list(r)) for r in rows]
     for name, part in (('base', tiles[:12]), ('master', tiles[12:24]), ('alt1', tiles[24:])):
         if part: vstack([hstack(part[k:k + 2]) for k in range(0, len(part), 2)]).convert('RGB').save(os.path.join(OUTD, f'all_{name}.png'))
+    # 全ポーズ一覧（2倍・人物の右側まで含め武器と弾道の出どころが見える範囲）
+    allp = {'base': [], 'master': [], 'alt1': []}
+    for j in JOBS:
+        w = WEAPON[j.split('_')[0]]; k = 'master' if j.endswith('_master') else 'alt1' if j.endswith('_alt1') else 'base'
+        allp[k].append(hstack([labeled(up(Sr(A, j, p, w).crop((58, 12, 118, 44)), 2), (j + ' ' if i == 0 else '') + p) for i, p in enumerate(POSES)], 4))
+    for k, v in allp.items():
+        if v: vstack(v).convert('RGB').save(os.path.join(OUTD, f'poses_all_{k}.png'))
     # 補助：人物だけ6倍（待機・攻撃）。実寸の一覧が主、これは細部の確認用
     dets = {'base': [], 'master': [], 'alt1': []}
     for j in JOBS:

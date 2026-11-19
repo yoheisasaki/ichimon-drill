@@ -22,6 +22,8 @@ def apply(job, rows, st, COL):
             fill(r, 1, 3, 'Y'); fill(r, 12, 14, 'Y')
     f = FEAT.get(job)
     if f: f(g, px, fill, sleeves, st, COL)
+    if 'A' in st: COL['A'] = st['A']
+    if 'S' in st: COL['S'] = st['S']
     return [''.join(r) for r in g]
 
 def f_warrior(g, px, fill, sleeves, st, COL):
@@ -33,7 +35,6 @@ def f_mage(g, px, fill, sleeves, st, COL):
     COL['P'] = (250, 249, 246)
     sleeves('V'); fill(1, 3, 12, 'D'); fill(0, 4, 11, 'D'); fill(2, 5, 10, 'D')       # 白い襟（広い）
     fill(10, 3, 12, 'Y')                                          # 金のすそ
-    px(5, 7, 'Y'); px(5, 8, 'Y')
 def f_priest(g, px, fill, sleeves, st, COL):
     sleeves('U'); fill(1, 3, 12, 'D'); fill(2, 5, 10, 'D')       # 青いスカーフ
     px(3, 7, 'Y'); px(3, 8, 'Y'); fill(4, 6, 9, 'Y'); px(5, 7, 'Y'); px(5, 8, 'Y')   # 金の十字
@@ -62,7 +63,6 @@ def U_of(st): return st['U']
 def f_sage(g, px, fill, sleeves, st, COL):
     sleeves('U'); fill(1, 3, 12, 'D'); fill(0, 4, 11, 'D'); fill(2, 5, 10, 'D')         # 青いスカーフ
     fill(10, 3, 12, 'Y'); fill(6, 5, 10, 'K')                      # 金のすそ・帯
-    for r in range(7, 10): px(r, 7, 'Y'); px(r, 8, 'Y')            # 前の金の縁
 def f_ninja(g, px, fill, sleeves, st, COL):
     COL['A'] = (250, 249, 246)
     sleeves('V'); fill(6, 3, 12, 'A'); px(7, 12, 'A'); px(8, 12, 'A'); px(8, 13, 'A')   # 白い帯と垂れ
@@ -80,7 +80,6 @@ def f_skyknight(g, px, fill, sleeves, st, COL):
     for r in range(2, 5): px(r, -2, 'P'); px(r, 17, 'P')
 def f_starseer(g, px, fill, sleeves, st, COL):
     sleeves('V'); fill(1, 3, 12, 'D'); fill(0, 4, 11, 'D'); fill(2, 5, 10, 'D')         # 金のスカーフ
-    for (r, c) in ((8, 5), (9, 9), (10, 6), (8, 11), (10, 10), (4, 7)): px(r, c, 'Y')   # 金の星
-    fill(10, 3, 12, 'V')
+    fill(10, 3, 12, 'Y')                                           # 金のすそ（星は1pxに潰れるので描かない）
 FEAT = dict(warrior=f_warrior, mage=f_mage, priest=f_priest, thief=f_thief, magicknight=f_magicknight, paladin=f_paladin, shadow=f_shadow, sage=f_sage,
             ninja=f_ninja, ranger=f_ranger, skyknight=f_skyknight, starseer=f_starseer)
