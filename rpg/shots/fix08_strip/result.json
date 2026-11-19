@@ -73,7 +73,7 @@
       5
      ]
     },
-    54,
+    52,
     {
      "x": 211,
      "y": 9,
@@ -85,7 +85,7 @@
       5
      ]
     },
-    41,
+    37,
     100,
     77,
     [
@@ -147,15 +147,15 @@
      "retreat": false,
      "bgOff": 6.206896551724138,
      "text": "勇猛の一撃",
-     "textEnd": 1793252012509194
+     "textEnd": 1793252490347146
     }
    ]
   },
   "B06 次問に移っても帯の canvas は同じ（作り直さない）": {
    "ok": true,
    "v": [
-    0.053332909408177254,
-    0.053332909408177254
+    0.20152945958440405,
+    0.20152945958440405
    ]
   },
   "B05 撃破の演出は最大800ms": {
@@ -271,15 +271,18 @@
      60
     ],
     [
-     41,
-     46,
-     47,
-     49,
+     37,
+     40,
+     43,
+     44,
+     45,
      51,
+     56,
      57,
      60,
      61,
-     62
+     62,
+     63
     ]
    ]
   },
@@ -399,6 +402,77 @@
     "live": true
    }
   },
+  "B09 最終回答（victory）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "victory",
+     "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\nはっぱスライムを倒たおした！\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン（学",
+     "last": "victory"
+    }
+   }
+  },
+  "B09 撃破：最終演出の途中で敵が消えている／勝ちの構え": {
+   "ok": true,
+   "v": {
+    "ready": true,
+    "eHp": 0,
+    "eMax": 5000,
+    "gone": true,
+    "retreat": false,
+    "bgOff": 0,
+    "text": null,
+    "textEnd": 0
+   }
+  },
+  "B09 最終回答（continue）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "continue",
+     "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\n今日きょうはここまで。続つづきから挑いどめます\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×",
+     "last": "continue"
+    }
+   }
+  },
+  "B09 最終回答（retreat）：最終演出は500ms以内で最後まで再生され、そのあと結果画面": {
+   "ok": true,
+   "v": {
+    "last": true,
+    "group_ms": [
+     {
+      "k": "group",
+      "ms": 480
+     }
+    ],
+    "result": {
+     "outcome": "retreat",
+     "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\n街まちに戻もどりました。取とり組くんだ分ぶんの報酬ほうしゅうを受うけ取とろう\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+4",
+     "last": "retreat"
+    }
+   }
+  },
+  "B09 撤退：主人公が引く（距離が開く）・色が落ちる": {
+   "ok": true,
+   "v": [
+    71,
+    false
+   ]
+  },
   "コンソールエラーなし": {
    "ok": true,
    "v": []
@@ -426,16 +500,16 @@
      "h": 56
     },
     "lastChoice": {
-     "t": 468,
-     "b": 536,
+     "t": 519,
+     "b": 587,
      "l": 14,
      "r": 376,
      "w": 362,
      "h": 68
     },
     "skip": {
-     "t": 550,
-     "b": 598,
+     "t": 601,
+     "b": 649,
      "l": 129,
      "r": 261,
      "w": 132,
@@ -444,14 +518,14 @@
     "submit": null,
     "map": null,
     "score": {
-     "t": 650,
-     "b": 672,
+     "t": 701,
+     "b": 723,
      "l": 14,
      "r": 376,
      "w": 362,
      "h": 22
     },
-    "docH": 744,
+    "docH": 795,
     "sy": 0
    },
    "strip": {
@@ -493,7 +567,7 @@
    }
   },
   "dash_moment": {
-   "dist": 54,
+   "dist": 52,
    "animating": true,
    "pending": 0,
    "running": true,
@@ -524,13 +598,13 @@
     "w": 34,
     "live": null
    },
-   "hx": 169.29090909090908,
+   "hx": 170.6727272727273,
    "ex": 223,
    "W": 362,
    "H": 44
   },
   "hit_moment": {
-   "dist": 41,
+   "dist": 37,
    "animating": true,
    "pending": 0,
    "running": true,
@@ -561,13 +635,13 @@
     "w": 34,
     "live": null
    },
-   "hx": 185,
+   "hx": 189,
    "ex": 226,
    "W": 362,
    "H": 44
   },
   "skill_moment": {
-   "dist": 41,
+   "dist": 37,
    "animating": true,
    "pending": 0,
    "running": true,
@@ -579,7 +653,7 @@
     "retreat": false,
     "bgOff": 0,
     "text": "勇猛の一撃",
-    "textEnd": 1793252012509194
+    "textEnd": 1793252490347146
    },
    "bar": {
     "x": 211,
@@ -598,7 +672,7 @@
     "w": 70,
     "live": true
    },
-   "hx": 185,
+   "hx": 189,
    "ex": 226,
    "W": 362,
    "H": 44
@@ -921,6 +995,318 @@
     "docH": 911,
     "sy": 211
    }
+  },
+  "final_victory": {
+   "a": {
+    "dist": 43,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 0,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 210,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 0,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 182.40298507462686,
+    "ex": 225.23880597014926,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 63,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 0,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 0,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 163,
+    "ex": 225.63829787234042,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "victory",
+    "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\nはっぱスライムを倒たおした！\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×3\n● コイン（学",
+    "last": "victory"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack+defeat",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 352,
+     "plan": 339
+    },
+    {
+     "k": "defeat",
+     "ms": 141,
+     "plan": 141
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
+  },
+  "final_continue": {
+   "a": {
+    "dist": 37,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 211,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 189,
+    "ex": 226,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 54,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 209,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 169.56842105263158,
+    "ex": 223.7578947368421,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "continue",
+    "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\n今日きょうはここまで。続つづきから挑いどめます\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+450\n初回しょかいボーナス ×",
+    "last": "continue"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 480,
+     "plan": 480
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
+  },
+  "final_retreat": {
+   "a": {
+    "dist": 57,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4880,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 205,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 163,
+    "ex": 220.24,
+    "W": 362,
+    "H": 44
+   },
+   "b": {
+    "dist": 71,
+    "animating": true,
+    "pending": 0,
+    "running": true,
+    "view": {
+     "ready": true,
+     "eHp": 4875,
+     "eMax": 5000,
+     "gone": false,
+     "retreat": false,
+     "bgOff": 0,
+     "text": null,
+     "textEnd": 0
+    },
+    "bar": {
+     "x": 208,
+     "y": 9,
+     "w": 30,
+     "h": 3,
+     "fill": 29,
+     "outer": [
+      32,
+      5
+     ]
+    },
+    "enemyH": 24,
+    "label": {
+     "text": "草原",
+     "w": 34,
+     "live": null
+    },
+    "hx": 152.29655172413794,
+    "ex": 223,
+    "W": 362,
+    "H": 44
+   },
+   "result": {
+    "outcome": "retreat",
+    "text": "冒険ぼうけんの成果せいか\n草原そうげん・風車かざぐるまの小道こみち\n街まちに戻もどりました。取とり組くんだ分ぶんの報酬ほうしゅうを受うけ取とろう\n正解せいかい 10 / 10\n復習ふくしゅう成功せいこう 0件けん\n★ 経験値けいけんち\n+4",
+    "last": "retreat"
+   },
+   "log": [
+    {
+     "k": "enqueue",
+     "n": "attack+enemy+retreat",
+     "planMs": 480,
+     "dropped": 0,
+     "pending": 1
+    },
+    {
+     "k": "attack",
+     "ms": 224,
+     "plan": 217
+    },
+    {
+     "k": "enemy",
+     "ms": 119,
+     "plan": 118
+    },
+    {
+     "k": "retreat",
+     "ms": 145,
+     "plan": 145
+    },
+    {
+     "k": "group",
+     "ms": 480
+    }
+   ]
   }
  },
  "console": [],

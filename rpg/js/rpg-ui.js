@@ -67,7 +67,8 @@
     if (!rv) S.lastOrigin = r.origin;
     RPG.persist();
     const st = RPG.save.active && RPG.save.active.battle.status;
-    RPG.play(r.events, { correct: !!ok, review: !!rv, killed: !!ok && st === 'won' && r.events.some(e => e.t === 'hero') });
+    const final = !!ok && S.idx === S.queue.length - 1;   // 最後の問題の正解：結果画面へ移る前の短い最終演出（0.5秒以内）
+    RPG.play(r.events, { correct: !!ok, review: !!rv, killed: !!ok && st === 'won' && r.events.some(e => e.t === 'hero'), retreated: st === 'retreat' && r.events.some(e => e.t === 'enemy'), final });
   };
   RPG.queueReview = function (q, S) {
     if (!S || !S.rpg || !RPG.ok) return true;
@@ -92,7 +93,7 @@
   const REWARD_FXS = 2;   // 報酬画面：エフェクト1ドット＝canvas 2px
   const ST = root.RPGStrip, TT = ST.T;
   const fxLive = [];
-  const LAB_MAX = 72, REACH = 11, PAIR_GAP = 15;   // 地域名の最大幅(CSS px)／踏み込み量(ドット)／主人公と敵の中心の半距離(ドット。中心距離＝30ドット＝60CSS px)
+  const LAB_MAX = 72, REACH = 13, PAIR_GAP = 15;   // 地域名の最大幅(CSS px)／踏み込み量(ドット)／主人公と敵の中心の半距離(ドット。中心距離＝30ドット＝60CSS px)
   // 画像が枠（CSS px）に収まらないとき、縮小率を返す（収まるなら1）。192pxボスの帯・報酬画面用
   function fitScale(im, maxW, maxH) { if (!im) return 1; return Math.min(1, maxW ? maxW / im.width : 1, maxH ? maxH / im.height : 1); }
   RPG.deferred = [];   // 旧仕様の名残（敵の反撃は回答と同時に再生する。常に空）
@@ -134,7 +135,7 @@
     const cx = W / 2 + 6, gy = H - 2, hx = cx - PAIR_GAP + (o.hdx || 0), ec = cx + PAIR_GAP + (o.edx || 0), bo = breath && !animating ? 0.5 : 0;
     const shadow = (x, w) => { ctx.fillStyle = 'rgba(20,28,60,.32)'; ctx.beginPath(); ctx.ellipse(x, gy + 0.5, w, 1.6, 0, 0, 7); ctx.fill(); };
     shadow(hx, 9);
-    const ho = { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || 'idle', o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
+    const ho = { job: si.job, look: si.look, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || (view.gone ? 'win' : 'idle'), o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
     if (SP.drawHeroLayered(ctx, ho) === 'wait' && ho.pose !== 'idle') SP.drawHeroLayered(ctx, Object.assign({}, ho, { pose: 'idle' }));   // 読込中のポーズがあっても主人公を消さない（待機の絵で代用）
     layout = { bar: null, enemyH: 0 };
     if (!view.gone || o.ealpha > 0) {
@@ -150,7 +151,11 @@
     if (o.proj) { const x = hx + 9 + (ec - 6 - hx - 9) * o.proj.p; SP.px(ctx, x, gy - 10, o.proj.col, 2); SP.px(ctx, x - 2, gy - 10, 'rgba(255,255,255,.7)', 1); }
     if (o.still) { const im = SP.IMGS['fx_' + o.still.kind + '_strip']; if (im) { ctx.save(); ctx.globalAlpha = 0.9; ctx.imageSmoothingEnabled = false; const k = ctx.getTransform().a || 1, w = im.width / k, h = im.height / k, cc = o.still.hero ? hx : ec; ctx.drawImage(im, cc - w / 2, gy - h - 2, w, h); ctx.restore(); } }
     fxLive.forEach(f => { if (f.started()) f.blit(ctx, f.at === 'hero' ? hx : f.at === 'melee' ? ec - 17 : ec, f.at === 'enemy' ? gy - 6 : gy, STRIP_FXS, 1, STRIP_DS); });
-    if (o.slash) { const c = o.slash === true ? ['#fff', '#ffe27a'] : o.slash; SP.px(ctx, hx + 9, gy - 12, c[0], 2); SP.px(ctx, hx + 11, gy - 10, c[1], 2); SP.px(ctx, hx + 13, gy - 8, c[0], 2); }
+    if (o.trail) {   // 命中の斬撃の軌跡：敵の体の上に1〜2コマ（剣が下向きでも当たったことが分かる）
+      const c = o.trail.col, pts = o.trail.f === 0 ? [[-6, -14], [-4, -12], [-2, -10], [0, -8], [2, -6], [4, -4]] : [[-3, -11], [-1, -9], [1, -7]];
+      pts.forEach(([x, y], i) => SP.px(ctx, ec + x, gy + y, i % 2 ? c[1] : c[0], 2));
+    }
+    if (o.glint) { for (let i = 0; i < 4; i++) SP.px(ctx, hx + 9, gy - 14 + i * 1.5, '#fff', 1.5); SP.px(ctx, hx + 10.5, gy - 12.5, '#bfe6ff', 1.5); }   // 守りの盾の縁が一瞬光る（1回）
     if (o.heal) { SP.px(ctx, hx - 2, gy - 18, '#5be08a', 1); SP.px(ctx, hx - 3, gy - 17, '#5be08a', 3); SP.px(ctx, hx - 2, gy - 16, '#5be08a', 1); }
     // 左端の短い表示：ふだんは地域名。技名・「できた！」・立て直し中は短時間これに置き換える（高さは増やさない）
     const live = view.text && nowMs() < view.textEnd, txt = live ? view.text : (view.retreat ? '立て直し中' : si.regionName);
@@ -196,13 +201,14 @@
       const [a, b, c, d] = sg.ph, e1 = a, e2 = a + b, e3 = a + b + c, r = {};
       if (t < e1) { r.hdx = dx(-1 * t / a); r.pose = 'windup'; }
       else if (t < e2) { const q = (t - e1) / b; r.hdx = sg.ranged ? 0 : dx(-1 + (REACH + 1) * q); r.pose = 'attack'; if (sg.ranged && !rm) r.proj = { p: q, col: sg.col || '#fff6c0' }; }
-      else if (t < e3) { r.hdx = sg.ranged ? 0 : dx(REACH); r.pose = 'attack'; r.edx = dx(1.5); r.eflash = sg.dmg > 0 && t < e2 + c * 0.6; r.slash = !sg.key ? (sg.k === 'skill' ? ['#9ad8ff', '#fff'] : true) : null; if (sg.key) r.stillKey = true; }
-      else { const q = Math.min(1, (t - e3) / d); r.hdx = dx(sg.ranged ? 0 : REACH * (1 - q)); r.edx = dx(1.5 * (1 - q)); r.pose = 'windup'; }
+      else if (t < e3) { r.hdx = sg.ranged ? 0 : dx(REACH); r.pose = 'attack'; r.edx = dx(1.5); r.eflash = sg.dmg > 0 && t < e2 + c * 0.4; if (sg.dmg > 0) r.trail = { f: t < e2 + c * 0.5 ? 0 : 1, col: sg.k === 'skill' ? ['#9ad8ff', '#fff'] : ['#fff', '#ffe27a'] }; if (sg.key) r.stillKey = true; }
+      else { const q = Math.min(1, (t - e3) / d); r.hdx = dx(sg.ranged ? 0 : REACH * (1 - q)); r.edx = dx(1.5 * (1 - q)); r.pose = 'idle'; }
       return r;
     }
     if (sg.k === 'support') return { pose: t < 140 ? 'windup' : 'attack', heal: !sg.key && sg.heal > 0 && t > 140, stillKey: t > 140 };
     if (sg.k === 'heal') return { heal: true, pose: 'idle' };
-    if (sg.k === 'guard') return { pose: 'guard', guard: true, hdx: dx(-1 * Math.min(1, t / 60)) };
+    if (sg.k === 'guard') return { pose: 'guard', guard: true, hdx: dx(-1.5 * Math.min(1, t / 60)), glint: t >= 30 && t < 110 };
+    if (sg.k === 'retreat') return { pose: t < 110 ? 'hurt' : 'walk', step: Math.floor(t / 100), hdx: dx(-8 * p), retreat: t >= 110 };
     if (sg.k === 'enemy') {
       const r = { guard: sg.reduced > 0 };
       if (t < 100) r.edx = dx(-6 * t / 100);
@@ -212,7 +218,7 @@
     }
     if (sg.k === 'walk') { st.bg = dx(10 * p); return { pose: 'walk', step: Math.floor(t / 100) }; }
     if (sg.k === 'defeat') {
-      if (t < sg.fade) return { ealpha: 1 - t / sg.fade, edx: dx(2 * t / sg.fade), pose: 'idle' };
+      if (sg.final || t < sg.fade) return { ealpha: Math.max(0, 1 - t / sg.fade), edx: dx(2 * Math.min(1, t / sg.fade)), pose: sg.final ? 'win' : 'idle' };
       const q = (t - sg.fade) / (sg.d - sg.fade); st.bg = dx(30 * q); return { ealpha: 0, pose: 'walk', step: Math.floor((t - sg.fade) / 130), gone: true };
     }
     return {};
@@ -233,7 +239,7 @@
     if (!ctx) return;
     const si = sceneInfo(); if (!si) return;
     const fx = FXL ? (id => FXL.keyFor(id)) : null, at = FXL ? (k => FXL.AT[k]) : null, nameOf = id => (D.SKILLS[id] ? D.SKILLS[id].name : null);
-    const segs = opt.correct === false ? (si.status === 'fight' ? ST.planWrong(events) : []) : ST.plan(events, { review: !!opt.review, killed: !!opt.killed, ranged: ST.rangedOf(si.job, si.weaponId), fx, at, name: nameOf });
+    const segs = opt.correct === false ? (si.status === 'fight' || opt.retreated ? ST.planWrong(events, { final: !!opt.final, retreated: !!opt.retreated }) : []) : ST.plan(events, { review: !!opt.review, killed: !!opt.killed, retreated: !!opt.retreated, final: !!opt.final, ranged: ST.rangedOf(si.job, si.weaponId), fx, at, name: nameOf });
     segs.forEach(s => { if (s.k === 'skill' || s.k === 'support') s.col = SP.JOB_COLOR[si.job] || '#ffd24a'; });
     if (!segs.length) return;
     const r = ST.enqueue(queue, segs, !!running); queue = r.queue;
@@ -259,10 +265,11 @@
     const t = Math.max(0, now - running.start), f = frameOf(sg, Math.min(t, sg.d), st, rm);
     // 命中の瞬間に敵の体力バーが減る（見た目だけ。確定値は回答処理で済んでいる）
     if (!st.hit && (sg.k === 'attack' || sg.k === 'skill' || sg.k === 'support') && t >= sg.hitAt) { st.hit = true; if (sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg); }
-    if (sg.k === 'defeat' && f.gone) { view.gone = true; view.eHp = 0; }
+    if (sg.k === 'defeat' && (f.gone || (sg.final && t >= sg.d))) { view.gone = true; view.eHp = 0; }
+    if (f.retreat) view.retreat = true;
     if (st.bg != null) view.bgOff = st.bg0 + st.bg;
     let still = null; if (f.stillKey && sg.key && !st.fxOk && st.kind && SP.IMGS['fx_' + st.kind + '_strip']) still = { kind: st.kind, hero: FXL.AT[sg.key] === 'hero' };
-    drawStrip({ hdx: f.hdx, edx: f.edx, pose: f.pose, step: f.step, guard: f.guard, eflash: f.eflash, ealpha: f.ealpha, proj: f.proj, slash: f.slash, heal: f.heal, still });
+    drawStrip({ hdx: f.hdx, edx: f.edx, pose: f.pose, step: f.step, guard: f.guard, eflash: f.eflash, ealpha: f.ealpha, proj: f.proj, heal: f.heal, glint: f.glint, trail: f.trail, still });
     if (t >= sg.d) {
       if (!st.hit && sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg);
       RPG.stripLog.push({ k: sg.k, ms: Math.round(t), plan: sg.d }); if (RPG.stripLog.length > 200) RPG.stripLog.shift();

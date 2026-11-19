@@ -296,13 +296,13 @@ with sync_playwright() as p:
     cl = pg.evaluate("() => window.__calls")
     chk('C04_waiting_no_battle_progress', pg.evaluate("() => JSON.stringify(RPG.save.active.battle)") == st0 and {c['pose'] for c in cl} <= {'idle'} and all(c['use'] == 'strip' for c in cl), sorted({c['pose'] for c in cl}))
     pg.evaluate(WRONG); pg.wait_for_function("() => document.getElementById('next') && document.getElementById('next').textContent.includes('つぎへ')", timeout=3000); pg.wait_for_timeout(1200)
-    cl = pg.evaluate("() => window.__calls"); chk('C05_wrong_answer_check_no_enemy_motion', 'hit' not in {c['pose'] for c in cl}, sorted({c['pose'] for c in cl}))
+    cl = pg.evaluate("() => window.__calls"); chk('C05_wrong_answer_check_small_guard_only', {c['pose'] for c in cl} <= {'idle', 'guard', 'hit'} and 'guard' in {c['pose'] for c in cl}, sorted({c['pose'] for c in cl}))   # 08: 不正解は小さく守る（guard）。敵の実際の反撃があれば被弾（hit）も小さく出る。踏み込み・攻撃ポーズは出ない
     pg.click('#next'); pg.wait_for_timeout(1500)
     dom = pg.evaluate("() => { const s = document.querySelector('.rpg-strip'); return {kids: [...s.children].map(e => e.tagName), aria: s.getAttribute('aria-hidden'), h: Math.round(s.querySelector('canvas').getBoundingClientRect().height), sound: RPG.save.settings.sound, text: s.innerText.trim()}; }")
     chk('C06_strip_only_canvas_no_buttons_no_numbers_sound_off', dom['kids'] == ['CANVAS'] and dom['aria'] == 'true' and dom['h'] == 44 and dom['sound'] is False and dom['text'] == '', dom)
     pg.context.close()
     pg = new_page(b, 390, reduce=True); boot(pg, WARRIOR); pg.evaluate("() => { filter = '社会'; units = {}; start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10)); }"); pg.wait_for_selector('.choice'); pg.evaluate(INSTR); pg.evaluate(CORRECT); pg.wait_for_timeout(1500)
-    poses = sorted({c['pose'] for c in pg.evaluate("() => window.__calls")}); chk('C06_reduce_motion_static_strip', set(poses) <= {'idle'}, poses)
+    poses = sorted({c['pose'] for c in pg.evaluate("() => window.__calls")}); chk('C06_reduce_motion_static_strip', set(poses) <= {'idle', 'windup', 'attack'} and 'attack' in poses, poses)   # 08: 動きを減らすときは踏み込み・背景移動なし、構え（ポーズ）の差とHPバー更新だけ。距離一定は fix08_strip.py B10 で確認
     pg.context.close()
     b.close()
 

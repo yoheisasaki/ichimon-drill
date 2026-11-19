@@ -219,6 +219,28 @@ with sync_playwright() as p:
         answer(pg, False); pg.clock.run_for(300); nextq(pg)
     if not saw_rv: chk('B03 復習で正解：「できた！」', False, '復習問題が出なかった')
     c.close()
+
+    # ---------- E. 最終回答の最終演出（撃破・継続・撤退）。結果画面へ移る前に0.5秒以内で見せ、結果画面の表示と矛盾しない ----------
+    for kind in ('victory', 'continue', 'retreat'):
+        c, pg = ctx_new(b); boot(pg); start(pg); pg.clock.run_for(300)
+        pg.evaluate("() => { const a = RPG.save.active.battle; a.enemy.hp = a.enemy.maxHp = 5000; RPG.persist(); RPG.stripSync(); }")
+        for i in range(9): answer(pg, True); pg.clock.run_for(1000)
+        is_last = pg.evaluate("() => S.idx === S.queue.length - 1")
+        if kind == 'victory': pg.evaluate("() => { RPG.save.active.battle.enemy.hp = 1; RPG.persist(); RPG.stripSync(); }")
+        if kind == 'retreat': pg.evaluate("() => { const a = RPG.save.active.battle; a.hero.hp = 1; a.enemy.count = 99; RPG.persist(); RPG.stripSync(); }")
+        n0 = pg.evaluate("() => RPG.stripLog.length"); answer(pg, True)
+        pg.clock.run_for(250); i1 = info(pg); shot(pg, f'10_final_{kind}_a', True)
+        pg.clock.run_for(200); i2 = info(pg); shot(pg, f'10_final_{kind}_b', True)
+        pg.clock.run_for(100); i3 = info(pg); shot(pg, f'10_final_{kind}_c', True)
+        log = pg.evaluate("() => RPG.stripLog.slice(%d)" % n0); grp = [x for x in log if x['k'] == 'group']
+        pg.clock.run_for(900)
+        res = pg.evaluate("() => { const r = document.getElementById('rwRoot'); return r ? {outcome: r.dataset.outcome, text: r.innerText.slice(0, 120), last: RPG.save.lastResult && RPG.save.lastResult.outcome} : null; }")
+        shot(pg, f'10_final_{kind}_result')
+        chk(f'B09 最終回答（{kind}）：最終演出は500ms以内で最後まで再生され、そのあと結果画面', is_last and grp and grp[0]['ms'] <= 500 and res and res['outcome'] == kind and res['last'] == kind, {'last': is_last, 'group_ms': grp, 'result': res})
+        R['measure'][f'final_{kind}'] = {'a': i1, 'b': i2, 'result': res, 'log': log}
+        if kind == 'victory': chk('B09 撃破：最終演出の途中で敵が消えている／勝ちの構え', i3['view']['gone'] and i3['bar'] is None, i3['view'])
+        if kind == 'retreat': chk('B09 撤退：主人公が引く（距離が開く）・色が落ちる', i2['dist'] > 60 or i2['view']['retreat'], [i2['dist'], i2['view']['retreat']])
+        c.close()
     b.close()
 R['console_errors'] = [x for x in R['console'] if x.startswith('error') or x.startswith('pageerror')]
 chk('コンソールエラーなし', not R['console_errors'], R['console_errors'][:3])
