@@ -85,7 +85,7 @@ with sync_playwright() as p:
         pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('#go'); settle(pg)
         h_home0 = hero(pg); shot(pg, '03_home_hero')
         # ---- 2. 範囲を決める ----
-        pg.click('.rs-range summary'); pg.click('.subj[data-f=社会]'); pg.wait_for_selector('.rs-range[open]'); shot(pg, '04_range_social')
+        pg.click('.rs-range summary'); pg.click('.subj[data-f=社会]'); pg.wait_for_selector('.rs-range[open]'); shot(pg, '04_range_social'); pg.click('#rsRangeX')
         chk('E1 range = 社会', pg.evaluate("() => filter") == '社会')
         # ---- 3. 10問（正解/不正解/わかんない＋復習） ----
         pg.click('#go'); pg.wait_for_selector('.choice, #ans'); settle(pg, 500); shot(pg, '05_quiz_first', full=False)
@@ -97,47 +97,47 @@ with sync_playwright() as p:
         info = pg.evaluate("() => { const q = s => document.querySelector(s); return { outcome: q('#rwRoot').dataset.outcome, total: q('#rwTotal').innerText, base: q('#rwCoinBase') && q('#rwCoinBase').innerText, open: !!q('#rwOpen'), text: q('#rwRoot').innerText.slice(0, 400) }; }")
         R['result_before_open'] = info; shot(pg, '06_result_sealed')
         sv1 = save(pg)
-        chk('E3 sealed chest exists, coins=base only', info['open'] and sv1['chests'][-1]['status'] == 'sealed' and sv1['coins'] == int(info['base'].replace('+', '')), [info['base'], sv1['coins']])
+        chk('E3 sealed chest exists, coins=base only', info['open'] and sv1['chests'][-1]['status'] == 'sealed' and sv1['coins'] == int(info['total'].replace('+', '')), [info['total'], sv1['coins']])
         c_before = sv1['coins']
         pg.click('#rwOpen'); pg.wait_for_function("() => !document.getElementById('rwOpen')", timeout=5000); settle(pg, 500); shot(pg, '07_result_opened')
         sv2 = save(pg); got = sv2['coins'] - c_before
         tot = pg.evaluate("() => document.getElementById('rwTotal').innerText")
-        chk('E3 formula 学習討伐＋宝箱＝合計 matches balance', f"{int(info['base'].replace('+',''))}" in tot and f"{sv2['coins']}" in tot and sv2['chests'][-1]['status'] == 'opened', [tot, sv2['coins'], got])
+        chk('E3 コイン1行：開封後は 学習討伐＋宝箱 の合算（残高と一致）', tot == '+' + str(int(info['total'].replace('+', '')) + got) and sv2['chests'][-1]['status'] == 'opened', [tot, sv2['coins'], got])
         R['result_after_open'] = {'total': tot, 'chest': sv2['chests'][-1].get('result')}
         pg.click('#end'); pg.wait_for_selector('#go'); settle(pg)
         chk('E7 no sealed chest: home has no chest entry', pg.query_selector('#rsChestBox') is None)
         coins = save(pg)['coins']; step(f'coins after adventure {coins}')
         # ---- 4. 店で武器を買う ----
-        pg.click('.rs-tab[data-tab=town]'); pg.wait_for_selector('[data-place=shop]'); pg.click('[data-place=shop]'); pg.wait_for_selector('[data-go=shop]'); pg.click('[data-go=shop]'); pg.wait_for_selector('[data-buy]')
+        pg.click('.rs-tab[data-tab=town]'); pg.wait_for_selector('.rs-tile[data-go=shop]'); pg.click('.rs-tile[data-go=shop]'); pg.wait_for_selector('[data-pick]')
         shot(pg, '08_shop')
-        buyable = pg.evaluate("() => [...document.querySelectorAll('[data-buy]')].map(b => ({id: b.dataset.buy, dis: b.disabled}))")
+        buyable = pg.evaluate("() => [...document.querySelectorAll('[data-pick]')].map(b => ({id: b.dataset.pick, dis: !!RPGCore.canBuy(RPG.save, b.dataset.pick)}))")
         ok_item = next((x for x in buyable if not x['dis']), None)
         chk('E4 an affordable weapon exists', ok_item is not None, [coins, buyable[:3]])
         if ok_item:
             wid = ok_item['id']; price = pg.evaluate("(id) => RPGData.ITEMS[id].price", wid)
-            pg.click(f'[data-buy={wid}]'); settle(pg, 300)
+            pg.click(f'[data-pick={wid}]'); pg.click(f'[data-buy={wid}]'); settle(pg, 300)
             s = save(pg); chk('E4 purchase: balance reduced by price, item owned', s['inv']['items'].get(wid) == 1 and s['coins'] == coins - price, [coins, price, s['coins']])
             shot(pg, '10_shop_bought')
             # 試着→取消→装備（最初の青銅の剣は「はじまりの武器」と同じ絵で描かれる＝既知。数値と表示名で確かめ、絵の差は鉄の剣で確かめる）
             pg.click(f'[data-try={wid}]'); pg.wait_for_selector('#eqOk'); settle(pg, 500)
             h_try = hero(pg); shot(pg, '11_equip_try')
-            chk('E4 try: preview weapon is the bought sword, numbers change', h_try['opt'].get('weaponId') == wid and pg.evaluate("() => document.querySelector('.rs-cmp').innerText").count('+') >= 1 or '+' in pg.evaluate("() => document.querySelector('.rs-cmp').innerText"), h_try['opt'])
+            chk('E4 try: preview weapon is the bought sword, numbers change', h_try['opt'].get('weaponId') == wid and pg.evaluate("() => document.querySelector('.rs-eqr').innerText").count('+') >= 1 or '+' in pg.evaluate("() => document.querySelector('.rs-eqr').innerText"), h_try['opt'])
             pg.click('#eqReset'); settle(pg, 400); shot(pg, '12_equip_after_cancel')
             chk('E4 cancel keeps saved weapon', save(pg)['equip']['weapon'] == 'w_start')
             pg.click(f'[data-eq={wid}]'); settle(pg, 400)
             pg.click('#eqOk'); settle(pg, 500); h_eq = hero(pg); shot(pg, '13_equip_confirmed')
             chk('E4 equip saved', save(pg)['equip']['weapon'] == wid and h_eq['opt'].get('weaponId') == wid, save(pg)['equip'])
             # 資金不足：防具・アクセの買えない商品は押せず、残高は変わらない（E7）
-            pg.click('.rs-tab[data-tab=town]'); pg.click('[data-place=shop]'); pg.click('[data-go=shop]'); pg.wait_for_selector('[data-st]'); pg.click('[data-st=armor]'); pg.wait_for_selector('[data-buy]')
-            broke = pg.evaluate("() => { const b = [...document.querySelectorAll('[data-buy]')].find(x => x.disabled); return b ? {id: b.dataset.buy, why: ((b.closest('.rs-shopitem') || b.parentElement).querySelector('.rs-why') || {}).textContent || ''} : null; }")
+            pg.click('#rsBack'); pg.wait_for_selector('[data-st]'); pg.click('[data-st=armor]'); pg.wait_for_selector('[data-pick]')
+            broke = pg.evaluate("() => { const b = [...document.querySelectorAll('[data-pick]')].find(x => RPGCore.canBuy(RPG.save, x.dataset.pick)); if (!b) return null; b.click(); return {id: b.dataset.pick, why: (document.getElementById('shopWhy') || {}).textContent || '', dis: document.getElementById('shopBuy').disabled}; }")
             c_now = save(pg)['coins']
             if broke:
-                pg.evaluate("(id) => document.querySelector('[data-buy=' + id + ']').click()", broke['id'])
+                pg.evaluate("() => document.getElementById('shopBuy').click()")
                 chk('E7 insufficient funds: buy disabled, reason shown, balance unchanged', save(pg)['coins'] == c_now and broke['id'] not in save(pg)['inv']['items'] and len(broke['why']) > 0, [broke, c_now])
                 shot(pg, '09_shop_insufficient')
             else: chk('E7 insufficient funds: buy disabled, reason shown, balance unchanged', False, 'no unaffordable item shown')
         # ---- 7. 異常系（転職条件未達：まだ基本職Lv10に届かない） ----
-        pg.click('.rs-tab[data-tab=me]'); pg.wait_for_selector('[data-go=jobs]'); pg.click('[data-go=jobs]'); pg.wait_for_selector('.rs-jobgrid')
+        pg.evaluate("() => RPG.go('me')"); pg.wait_for_selector('[data-go=jobs]'); pg.click('[data-go=jobs]'); pg.wait_for_selector('.rs-joblist')
         pg.click('[data-tier=adv]'); pg.click('.rs-jobcard >> nth=0'); pg.wait_for_selector('#jobDo'); settle(pg, 400)
         dis = pg.get_attribute('#jobDo', 'disabled') is not None; txt = pg.inner_text('.rs-app')
         chk('E7 job requirement unmet: button disabled & reason shown', dis and ('Lv10' in txt or 'Lv' in txt), txt[:200]); shot(pg, '14_job_unmet')
@@ -167,7 +167,7 @@ with sync_playwright() as p:
             R['unequippable_msg'] = msg; shot(pg, '18_equip_unusable')
         else: chk('E7 unequippable: bow row present', False)
         pg.click('#rsBack'); pg.wait_for_selector('[data-go=jobs]')
-        pg.click('[data-go=jobs]'); pg.wait_for_selector('.rs-jobgrid'); pg.click('[data-tier=adv]'); pg.wait_for_selector('.rs-jobcard')
+        pg.click('[data-go=jobs]'); pg.wait_for_selector('.rs-joblist'); pg.click('[data-tier=adv]'); pg.wait_for_selector('.rs-jobcard')
         # 魔法戦士のカード（職業名で探す）
         pg.click('.rs-jobcard:has-text("魔法戦士")'); pg.wait_for_selector('#jobDo'); settle(pg, 500)
         chk('E5 job unlocked: button enabled', pg.get_attribute('#jobDo', 'disabled') is None); shot(pg, '19_jobdetail_magicknight')
@@ -189,7 +189,7 @@ with sync_playwright() as p:
         chk('E6 じぶん screen hero: magicknight + saved weapon', len(me_calls) >= 1 and all(c['job'] == 'magicknight' for c in me_calls), me_calls[:2])
         pg.click('.rs-tab[data-tab=home]'); pg.wait_for_selector('#go'); settle(pg, 300)
         pg.evaluate("() => window.__calls.length = 0")
-        pg.click('.rs-range summary'); pg.click('.subj[data-f=かく]'); pg.wait_for_selector('.rs-range[open]'); chk('E2 second adventure range = かいてこたえる（入力問題）', pg.evaluate("() => filter") == 'かく')
+        pg.click('.rs-range summary'); pg.click('.subj[data-f=かく]'); pg.wait_for_selector('.rs-range[open]'); pg.click('#rsRangeX'); chk('E2 second adventure range = かいてこたえる（入力問題）', pg.evaluate("() => filter") == 'かく')
         pg.click('#go'); pg.wait_for_selector('.choice, #ans'); settle(pg, 900); shot(pg, '24_quiz_strip', full=False)
         sc = pg.evaluate("() => window.__calls"); R['strip_calls'] = sc[:4]
         sh = [c for c in sc if c['use'] == 'strip']

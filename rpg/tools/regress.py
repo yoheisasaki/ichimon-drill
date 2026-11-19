@@ -24,30 +24,30 @@ with sync_playwright() as p:
         b = getattr(p, engine).launch(headless=True)
         for w in (320, 375, 390, 430):
             ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-            ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
+            ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page()
             pg.on('console', lambda m, e=engine, w=w: M['console'].append(f'{e}/{w}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
             pg.on('pageerror', lambda e, en=engine, w=w: M['console'].append(f'{en}/{w}:pageerror:{e}'))
             pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
             res = {}
-            pg.goto(URL); pg.wait_for_selector('.subj')
+            pg.goto(URL); pg.wait_for_selector('#go')
             def shot(n):
                 if w == 390 and engine == 'chromium': pg.screenshot(path=os.path.join(OUT, n + '.png'))
             shot('1_home')
             pg.evaluate("() => start([qs().find(q => q.subject === '社会' && q.type !== 'input' && !q.map)])"); pg.wait_for_selector('.choice')
             res['choice'] = pg.evaluate(MEAS); shot('2_choice')
-            pg.click('#quit'); pg.wait_for_selector('.subj'); pg.evaluate("() => start([qs().find(q => q.map && q.type !== 'input')])"); pg.wait_for_selector('.map svg', timeout=8000)
+            pg.click('#quit'); pg.wait_for_selector('#go'); pg.evaluate("() => start([qs().find(q => q.map && q.type !== 'input')])"); pg.wait_for_selector('.map svg', timeout=8000)
             res['map'] = pg.evaluate(MEAS); shot('3_map')
-            pg.click('#quit'); pg.wait_for_selector('.subj'); pg.evaluate("() => start([qs().find(q => q.type === 'input')])"); pg.wait_for_selector('#ans')
+            pg.click('#quit'); pg.wait_for_selector('#go'); pg.evaluate("() => start([qs().find(q => q.type === 'input')])"); pg.wait_for_selector('#ans')
             res['input'] = pg.evaluate(MEAS); shot('4_input')
-            pg.click('#quit'); pg.wait_for_selector('.subj')
+            pg.click('#quit'); pg.wait_for_selector('#go')
             pg.evaluate("() => { const L = qs().filter(q => q.type !== 'input' && !q.map).sort((a, b) => plain(b.q).length - plain(a.q).length)[0]; start([L]); }")
             pg.wait_for_selector('.choice'); res['long'] = pg.evaluate(MEAS); res['long']['len'] = pg.evaluate("() => plain(S.cur.q).length"); shot('5_long')
             M['widths'][f'{engine}/{w}'] = res
             ctx.close()
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
+        ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page(); pg.route('**/script.google.com/**', lambda r: (blocked.append(r.request.url), r.abort()))
         ops = {}
-        pg.goto(URL); pg.wait_for_selector('.subj')
+        pg.goto(URL); pg.wait_for_selector('#go')
         ops['units_chip'] = pg.evaluate("() => { document.querySelector('button[data-f=\"社会\"]').click(); return document.querySelectorAll('.chip').length; }")
         pg.evaluate("() => { const c = document.querySelectorAll('.chip')[1]; if (c) c.click(); }")
         ops['sel_saved'] = pg.evaluate("() => localStorage.getItem('ichimon.sel.v1')")
@@ -63,8 +63,8 @@ with sync_playwright() as p:
         pg.click('#skipc'); pg.wait_for_function("() => document.getElementById('next').textContent.includes('つぎへ')", timeout=3000)
         ops['queue_rows'] = pg.evaluate("() => JSON.parse(localStorage.getItem('ichimon.queue.v1')).rows.map(r => ({ok: r.ok, skip: r.skip || 0, keys: Object.keys(r).sort().join()}))")
         ops['stats_keys'] = pg.evaluate("() => Object.keys(JSON.parse(localStorage.getItem('ichimon.stats.v1'))).length")
-        pg.click('#quit'); pg.wait_for_selector('.subj')
-        pg.evaluate("() => { filter='全部'; home(); }"); pg.click('#go'); pg.wait_for_selector('.choice')
+        pg.click('#quit'); pg.wait_for_selector('#go')
+        pg.evaluate("() => { window.__rangeOpen = false; filter='全部'; home(); }"); pg.click('#go'); pg.wait_for_selector('.choice')
         for _ in range(14):
             if pg.query_selector('.res-score') or pg.query_selector('#rwRoot'): break
             if pg.query_selector('#ans'):
@@ -74,7 +74,7 @@ with sync_playwright() as p:
             pg.wait_for_timeout(900)
         pg.wait_for_selector('.res-score, #rwRoot', timeout=5000)
         ops['result_kind'] = 'reward' if pg.query_selector('#rwRoot') else 'plain'
-        ops['result_text'] = pg.inner_text('.res-score, .rw-score')
+        ops['result_text'] = pg.inner_text('.res-score, .rw-score2')
         if engine == 'chromium': pg.screenshot(path=os.path.join(OUT, '6_result.png'))
         ops['result_buttons'] = pg.evaluate("() => [...document.querySelectorAll('.big, .rw-btns .rw-btn')].map(b => b.textContent)")
         M['ops'][engine] = ops; ctx.close(); b.close()

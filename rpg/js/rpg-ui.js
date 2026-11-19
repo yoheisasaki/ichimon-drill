@@ -294,15 +294,17 @@
     else line = `コイン +${r.coin} と ${esc(C.oreName(r.rank))} ×${Object.values(r.mats)[0]} を手に入れた！`;
     return line;
   }
-  function chestCardHtml(c) {
+  function chestCardHtml(c, compact) {
     const open = c.status === 'opened';
-    return `<div class="rw-drop" id="rwDrop" data-chest="${esc(c.id)}"><div class="rw-chest">${rb('{朝星|あさぼし}の{宝箱|たからばこ}')}${c.legacy ? '（受取済み）' : ''}</div><canvas id="rwChestCv" class="rw-chestcv" aria-hidden="true"></canvas>${open ? '' : `<button class="rw-open" id="rwOpen">${rb('{宝箱|たからばこ}を{開|あ}ける')}</button>`}<div class="rw-dropline" id="rwChestLine" ${open ? '' : 'hidden'}>${open ? chestContentHtml(c) : ''}</div><div class="rw-chestmsg" id="rwChestMsg" role="status"></div></div>`;
+    const lab = `<div class="rw-chest">${rb('{朝星|あさぼし}の{宝箱|たからばこ}')}${c.legacy ? '（受取済み）' : ''}</div>`, cv = '<canvas id="rwChestCv" class="rw-chestcv" aria-hidden="true"></canvas>';
+    const btn = open ? '' : `<button class="rw-open" id="rwOpen">${rb('{宝箱|たからばこ}を{開|あ}ける')}</button>`, line = `<div class="rw-dropline" id="rwChestLine" ${open ? '' : 'hidden'}>${open ? chestContentHtml(c) : ''}</div><div class="rw-chestmsg" id="rwChestMsg" role="status"></div>`;
+    return compact ? `<div class="rw-drop rw-compact" id="rwDrop" data-chest="${esc(c.id)}">${cv}<div class="rw-dtx">${lab}${btn}${line}</div></div>` : `<div class="rw-drop" id="rwDrop" data-chest="${esc(c.id)}">${lab}${cv}${btn}${line}</div>`;
   }
   // card 内の開封ボタンを動かす。保存（付与と opened を同時）が成功してから演出する。onDone(chest) は結果表示後
   function bindChestCard(card, onDone) {
     if (!card) return;
     const id = card.dataset.chest, ob = card.querySelector('#rwOpen'), cc = card.querySelector('#rwChestCv'), ln = card.querySelector('#rwChestLine'), msg = card.querySelector('#rwChestMsg');
-    if (cc) { const hasImg = !!SP.IMGS.chest_morning_closed; cc.width = hasImg ? 64 : 24; cc.height = hasImg ? 52 : 14; cc.style.width = hasImg ? '128px' : '144px'; cc.style.height = hasImg ? '104px' : '84px'; drawChestCv(cc, !ob, 0); }
+    if (cc) { const hasImg = !!SP.IMGS.chest_morning_closed, z = card.classList.contains('rw-compact') ? 1 : 2; cc.width = hasImg ? 64 : 24; cc.height = hasImg ? 52 : 14; cc.style.width = hasImg ? (64 * z) + 'px' : (72 * z) + 'px'; cc.style.height = hasImg ? (52 * z) + 'px' : (42 * z) + 'px'; drawChestCv(cc, !ob, 0); }
     if (!ob) return;
     ob.onclick = () => {
       if (ob.disabled) return; ob.disabled = true;
@@ -348,32 +350,30 @@
     const jd = D.JOBS[res.job.id], jl = C.jobLevel(res.job.id, RPG.save.jobXp[res.job.id]), nx = res.job.next;
     const pct = jl.capped ? 100 : Math.round(jl.into / jl.need * 100);
     const lvTxt = res.job.lvTo > res.job.lvFrom ? `${esc(jd.name)} Lv${res.job.lvFrom} → <b>Lv${res.job.lvTo}</b>` : `${esc(jd.name)} Lv${res.job.lvTo}`;
-    const newSk = res.newSkills.length ? `<div class="rw-new">${rb('{新|あたら}しい{技|わざ}')}：${res.newSkills.map(id => rb(D.SKILLS[id].ruby)).join('、')}</div>` : '';
-    const adv = res.adv.lvTo > res.adv.lvFrom ? `<div class="rw-row sm">${rb('{冒険者|ぼうけんしゃ}')} Lv${res.adv.lvFrom} → <b>Lv${res.adv.lvTo}</b></div>` : '';
-    const coinNote = [res.coinAnswers ? `学習 ${res.coinAnswers}` : '', res.coinKill ? `討伐 ${res.coinKill}` : '', res.coinWelcome ? `最初のお祝い ${res.coinWelcome}` : ''].filter(Boolean).join(' ＋ ');
+    const advUp = res.adv.lvTo > res.adv.lvFrom ? `<div class="rw-advup">${rb('{冒険者|ぼうけんしゃ}')} Lv${res.adv.lvFrom} → <b>Lv${res.adv.lvTo}</b></div>` : '';
+    const newSk = res.newSkills.length ? `<div class="rw-new"><span>${rb('{新|あたら}しい{技|わざ}')}：${res.newSkills.map(id => rb(D.SKILLS[id].ruby)).join('、')}</span><button class="rw-mini" id="rwSkill">${rb('{技|わざ}を{見|み}る')}</button></div>` : '';
+    const sc = `<div class="rw-sc"><small>${rb('{基本|きほん}')}</small><b>${res.C} / ${res.N}</b></div>` + (res.R > 0 ? `<div class="rw-sc rv"><small>${rb('{追加復習|ついかふくしゅう}')}</small><b>${rb('{成功|せいこう}')} ${res.R}${rb('{件|けん}')}</b></div>` : '');
     return `
-    <div class="rw" id="rwRoot" data-outcome="${res.outcome}">
-      <div class="rw-title">${rb('{冒険|ぼうけん}の{成果|せいか}')}</div>
-      <div class="rw-place">${esc(res.region)}・${esc(res.route.point)}</div>
+    <div class="rw rw3" id="rwRoot" data-outcome="${res.outcome}">
+      <header class="rw-head"><div class="rw-title">${rb('10{問|もん}おつかれさま！')}</div></header>
+      <main class="rw-body" id="rwBody">
       <div class="rw-scene"><canvas id="rwCanvas"></canvas><div class="rw-cap" id="rwCap">${cap}</div></div>
       <div class="rw-panel">
-        <div class="rw-score">${rb('{正解|せいかい}')} <b>${res.C} / ${res.N}</b></div>
-        <div class="rw-sub">${rb('{復習|ふくしゅう}')}成功 ${res.R}件</div>
-        ${hasWrong ? `<button class="rw-link" id="rwWrong" aria-expanded="false">▶ ${rb('{間違|まちが}えた{問題|もんだい}を{見|み}る')}</button><div id="rwWrongBox" hidden>${wrongHtml}</div>` : ''}
+        <div class="rw-score2" aria-label="正解数">${sc}</div>
         <div class="rw-row"><span>★ ${rb('{経験値|けいけんち}')}</span><b>+${res.xp}</b>${badge ? `<i class="rw-badge">${badge}</i>` : ''}</div>
-        <div class="rw-row"><span>● コイン（学習・討伐）</span><b id="rwCoinBase">+${tot.base}</b></div>
-        <div class="rw-note">${esc(coinNote)}</div>
-        <div class="rw-row rw-total"><span>今回のコイン</span><b id="rwTotal">${esc(tot.text)}</b></div>
-        <div class="rw-job"><div class="rw-jobt"><span>${lvTxt}</span><span>${jl.capped ? 'Lv上限' : nx ? `次の${rb('{技|わざ}')}まであと ${Math.max(0, nx.remain)}` : '全て覚えた'}</span></div><div class="rw-bar"><i style="width:${pct}%"></i></div></div>
-        ${newSk}${adv}
+        <div class="rw-row"><span>● コイン</span><b id="rwTotal">+${tot.total}</b></div><div class="rw-coinnote" id="rwCoinNote" ${tot.chestCoin ? '' : 'hidden'}>${tot.chestCoin ? `（${rb('{宝箱|たからばこ}')} +${tot.chestCoin} を${rb('{含|ふく}')}む）` : ''}</div>
+        <div class="rw-job"><div class="rw-jobt"><span>${lvTxt}</span><span>${jl.capped ? 'Lv上限' : nx ? `次の${rb('{技|わざ}')}まであと ${Math.max(0, nx.remain)}` : '全て覚えた'}</span></div><div class="rw-bar"><i style="width:${pct}%"></i></div>${advUp}</div>
+        ${newSk}
         ${res.drops.map(d => `<div class="rw-row sm">${esc(d.name)} ×${d.n}${d.thief ? '（宝の気配）' : ''}${res.firstClear ? '（初回報酬）' : ''}</div>`).join('')}
       </div>
-      ${chest ? chestCardHtml(chest) : ''}
+      <div class="rw-more3"><button class="rw-mini" id="rwDetail">${rb('{内訳|うちわけ}')}</button>${hasWrong ? `<button class="rw-mini" id="rwWrong" aria-haspopup="dialog">${rb('{間違|まちが}えた{問題|もんだい}')}</button>` : ''}<button class="rw-mini" id="rwEquip">${rb('{装備|そうび}を{見|み}る')}</button></div>
+      ${chest ? chestCardHtml(chest, true) : ''}
       ${clearHtml(res)}
       ${RPG.noticeHtml()}
-      <div class="rw-btns"><button class="rw-btn" id="end">おわる</button><button class="rw-btn" id="more">${rb('{次|つぎ}の10{問|もん}')}</button></div>
-      <button class="rw-link" id="rwEquip">${rb('{装備|そうび}を{見|み}る')}</button>
       ${res.mainClear ? '<button class="rw-link" id="rwEnding">エンディングを見る</button>' : ''}
+      <div id="rwWrongSrc" hidden>${wrongHtml}</div>
+      </main>
+      <footer class="rw-foot"><div class="rw-btns"><button class="rw-btn" id="end">おわる</button><button class="rw-btn" id="more">${rb('{次|つぎ}の10{問|もん}')}</button></div></footer>
     </div>`;
   };
   function drawChestCv(cv, open, p) {   // 開封の演出：ゆれる→ふたがひらく→光
@@ -386,16 +386,30 @@
   RPG.bindReward = function (res) {
     snd(res.adv.lvTo > res.adv.lvFrom || res.job.lvTo > res.job.lvFrom ? 'level' : 'reward');
     const enb = root.document.getElementById('rwEnding'); if (enb) enb.onclick = () => { if (RPG.open) RPG.open('ending', { from: 'result' }); };
-    bindChestCard(root.document.getElementById('rwDrop'), c => {
-      const t = C.rewardTotals(res, c), el = root.document.getElementById('rwTotal'); if (el) el.textContent = t.text;
+    bindChestCard(root.document.getElementById('rwDrop'), c => {   // 開けたら、コイン行を合算の1行に更新（開封前は箱のコインを足さない）
+      const t = C.rewardTotals(res, c), el = root.document.getElementById('rwTotal'), nt = root.document.getElementById('rwCoinNote');
+      if (el) el.textContent = '+' + t.total; if (nt && t.chestCoin) { nt.innerHTML = '（' + rb('{宝箱|たからばこ}') + ' +' + t.chestCoin + ' を' + rb('{含|ふく}') + 'む）'; nt.hidden = false; }
     });
     const eqb = root.document.getElementById('rwEquip'); if (eqb) eqb.onclick = () => { if (RPG.open) RPG.open('equip', { from: 'result' }); };
-    const w = root.document.getElementById('rwWrong'), box = root.document.getElementById('rwWrongBox');
-    if (w) w.onclick = () => { const o = box.hidden; box.hidden = !o; w.setAttribute('aria-expanded', String(o)); w.innerHTML = (o ? '▼ ' : '▶ ') + rb('{間違|まちが}えた{問題|もんだい}を{見|み}る'); };
+    const sheet = (title, html, name) => RPG.openSheet ? RPG.openSheet(title, html, name) : null;
+    const det = root.document.getElementById('rwDetail'); if (det) det.onclick = () => {
+      const ch = res.chestId ? C.chestById(RPG.save, res.chestId) : null, t = C.rewardTotals(res, ch);
+      const L = [['学習', res.coinAnswers], ['討伐', res.coinKill], ['最初のお祝い', res.coinWelcome]].filter(x => x[1]).map(x => `<div class="rw-row sm"><span>${x[0]}</span><b>+${x[1]}</b></div>`).join('');
+      sheet(rb('{内訳|うちわけ}'), `<div class="rw-h">● コイン +${t.total}</div>${L}${t.chestCoin ? `<div class="rw-row sm"><span>${rb('{宝箱|たからばこ}')}</span><b>+${t.chestCoin}</b></div>` : ''}<div class="rw-row sm"><span>★ ${rb('{経験値|けいけんち}')}</span><b>+${res.xp}</b></div><p class="rw-note">${res.xpMult > 1 ? `${rb('{経験値|けいけんち}')} ${res.xpBase} × ${res.xpMult}` : ''}</p>${res.drops.map(d => `<div class="rw-row sm"><span>${esc(d.name)}</span><b>×${d.n}</b></div>`).join('')}`, 'rwdetail');
+    };
+    const sk = root.document.getElementById('rwSkill'); if (sk) sk.onclick = () => {
+      const lv = res.job.lvTo, L = res.newSkills.map(id => { const k = D.SKILLS[id]; return `<div class="rw-row sm"><span><b>${rb(k.ruby || k.name)}</b><br><small>${esc(M.skillText(k, lv))}</small></span></div>`; }).join('');
+      sheet(rb('{新|あたら}しい{技|わざ}'), L, 'rwskill');
+    };
+    const w = root.document.getElementById('rwWrong'), src = root.document.getElementById('rwWrongSrc');
+    if (w && src) w.onclick = () => {
+      const b = sheet(rb('{間違|まちが}えた{問題|もんだい}'), src.innerHTML, 'rwwrong'); if (!b) return;
+      const ag = b.querySelector('#again'); if (ag) ag.onclick = () => { if (root.__again) root.__again(); };
+    };
     const c = root.document.getElementById('rwCanvas'); if (!c) return;
     // 上部は背景と主人公だけ。継続のときだけ生きている敵が並ぶ（攻撃演出・宝箱は置かない）
     const paint = () => {
-      const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k) * k; c.height = Math.round(c.width * 0.66 / k) * k;
+      const cssW = c.parentNode.clientWidth, k = 3; c.width = Math.ceil(cssW / k) * k; c.height = 150;
       const g = c.getContext('2d'); g.setTransform(k, 0, 0, k, 0, 0); const lw = c.width / k, lh = c.height / k;
       const rg = res.bg || D.ENEMIES[res.enemy.id].region;
       const gy2 = Math.round(lh * 0.88 / 2), cx = Math.round(lw / 4), cont = res.outcome === 'continue';

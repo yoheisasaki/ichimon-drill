@@ -21,11 +21,11 @@ with sync_playwright() as p:
     for engine in ('chromium', 'webkit'):
         b = getattr(p, engine).launch(headless=True)
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page()
+        ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page()
         pg.on('console', lambda m, e=engine: R['console'].append(f'{e}:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e, en=engine: R['console'].append(f'{en}:pageerror:{e}'))
         pg.route('**/script.google.com/**', blk)
-        pg.goto(URL); pg.wait_for_selector('.subj')
+        pg.goto(URL); pg.wait_for_selector('#go')
         chk(engine + ':rpg_ok', pg.evaluate('() => RPG.ok'))
         # 社会の4択で通常の1冒険（10問）。1問目から最後まで正解6/不正解4＋復習
         pg.evaluate("() => { filter = '社会'; units = {}; start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10)); }")
@@ -65,7 +65,7 @@ with sync_playwright() as p:
         rows = pg.evaluate("() => JSON.parse(localStorage.getItem('ichimon.queue.v1')).rows.map(r => Object.keys(r).sort().join())")
         chk(engine + ':rows_shape_unchanged', all(r in ('ok,pick,qid,rid,sess,t,test', 'ok,pick,qid,rid,sess,skip,t,test') for r in rows), len(rows))
         # 再読込しても結果を再計算しない（二重付与なし）
-        pg.reload(); pg.wait_for_selector('.subj')
+        pg.reload(); pg.wait_for_selector('#go')
         sv2 = pg.evaluate("() => JSON.parse(localStorage.getItem('ichimon.rpg.v1'))")
         chk(engine + ':reload_no_double', sv2['advXp'] == sv['advXp'] and sv2['coins'] == sv['coins'])
         # 終わる/もう1冒険
@@ -74,16 +74,16 @@ with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     def measure(w, rpg_on):
         ctx = b.new_context(viewport={'width': w, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
-        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
+        ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m: R['console'].append(f'cmp:{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
-        pg.goto(URL + ('' if rpg_on else '&rpg=0')); pg.wait_for_selector('.subj')
+        pg.goto(URL + ('' if rpg_on else '&rpg=0')); pg.wait_for_selector('#go')
         out = {}
         for name, sel in (('long', "qs().filter(q => q.type !== 'input' && !q.map).sort((a, b) => plain(b.q).length - plain(a.q).length)[0]"), ('map', "qs().find(q => q.map && q.type !== 'input')"), ('input', "qs().find(q => q.type === 'input')")):
             pg.evaluate(f"() => start([{sel}])")
             pg.wait_for_selector('.map svg' if name == 'map' else ('#ans' if name == 'input' else '.choice'), timeout=8000)
             out[name] = pg.evaluate("() => { const r = s => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return [Math.round(b.width), Math.round(b.height)]; }; const ch = [...document.querySelectorAll('.choice')].map(e => Math.round(e.getBoundingClientRect().height)); const st = document.querySelector('.rpg-strip canvas'); const sr = st ? st.getBoundingClientRect() : null; const lastEl = [...document.querySelectorAll('.choice,.skip,.next,.score,#submit,.credit')].pop(); const lb = lastEl ? lastEl.getBoundingClientRect().bottom : 0; return {card: r('.card'), map: r('.map'), choice: ch, ans: r('.ans'), submit: r('#submit'), skip: r('.skip'), strip: sr ? [Math.round(sr.height), Math.round(sr.top)] : null, contentBottom: Math.round(lb), hscroll: document.documentElement.scrollWidth > innerWidth, cardFs: getComputedStyle(document.querySelector('.card')).fontSize, choiceFs: document.querySelector('.choice') ? getComputedStyle(document.querySelector('.choice')).fontSize : null}; }")
             if w == 390 and rpg_on: pg.screenshot(path=os.path.join(OUT, f'q_{name}.png'))
-            pg.click('#quit'); pg.wait_for_selector('.subj')
+            pg.click('#quit'); pg.wait_for_selector('#go')
         ctx.close(); return out
     for w in (320, 375, 390, 430):
         a, c = measure(w, True), measure(w, False)

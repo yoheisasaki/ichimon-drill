@@ -304,6 +304,7 @@ function result() {
     <button class="big go" id="more">つぎの10もん</button>
     <button class="big plain" id="end">おわる</button>`;
   }
+  window.__again = () => start(shuffle(S.wrong), { manual: true });
   const again = document.getElementById('again');
   if (again) again.onclick = () => start(shuffle(S.wrong), { manual: true });
   document.getElementById('more').onclick = () => {

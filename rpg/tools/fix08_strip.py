@@ -35,7 +35,7 @@ def boot(pg, seed=None, clock=True):
     if clock: pg.clock.run_for(600); freeze(pg)
 def start(pg, flt=None):
     if flt:
-        pg.click('.rs-range summary'); pg.click(f'.subj[data-f={flt}]'); pg.wait_for_selector('.rs-range[open]')
+        pg.click('.rs-range summary'); pg.click(f'.subj[data-f={flt}]'); pg.wait_for_selector('.rs-range[open]'); pg.click('#rsRangeX')
     pg.click('#go'); pg.wait_for_selector('.choice, #ans'); pg.clock.run_for(300)
 def sv(pg): return pg.evaluate("() => JSON.parse(localStorage.getItem('%s'))" % SAVEK)
 def info(pg): return pg.evaluate("() => RPG.stripInfo()")

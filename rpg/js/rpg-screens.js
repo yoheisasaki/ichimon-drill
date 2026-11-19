@@ -38,15 +38,16 @@
   const heroCv = (use, o) => `<canvas class="rs-hcv rs-hcv-${use}" data-hero="${esc(JSON.stringify(heroOpts(use, o)))}" aria-hidden="true"></canvas>`;
   function paintHero(c) {
     const a = JSON.parse(c.dataset.hero), st = STAGE[a.use] || STAGE.self;
-    const W = st.w || Math.max(200, Math.round(c.parentNode.clientWidth || 300)), H = st.h; if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
+    const W = st.w || Math.max(200, Math.round(c.parentNode.clientWidth || 300)), H = st.h, dpr = Math.max(1, Math.min(3, Math.round(root.devicePixelRatio || 1)));   // 画面の実ピクセルに合わせて描く（1.5倍のような非整数倍でもドットの太さが揃って見える）
+    if (c.width !== W * dpr || c.height !== H * dpr) { c.width = W * dpr; c.height = H * dpr; }
     c.style.width = st.w ? W + 'px' : '100%'; c.style.height = H + 'px';
-    const g = c.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H); g.imageSmoothingEnabled = false;
+    const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); g.imageSmoothingEnabled = false;
     const bg = st.bg && SP.IMGS[st.bg];
     if (bg) { const sc = Math.max(W / bg.width, H / bg.height), dw = bg.width * sc, dh = bg.height * sc; g.drawImage(bg, (W - dw) / 2, (H - dh) * (a.use === 'home' ? 0.62 : 1), dw, dh); }
     else if (st.bg) { g.fillStyle = '#16244d'; g.fillRect(0, 0, W, H); }
     if (a.use !== 'mini') { g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(W * st.at, H - (st.gy || 8), 30 * st.k, 5 * st.k, 0, 0, 7); g.fill(); }
     const look0 = a.look || look();
-    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - (st.gy || 8), scale: st.k, outline: st.strip ? '#0d1630' : null });
+    const r = SP.drawHeroLayered(g, { job: a.job, costume: a.costume, weaponId: a.weaponId, pose: a.pose || st.pose, use: st.strip ? 'strip' : a.use, look: look0, x: Math.round(W * st.at), groundY: H - (st.gy || 8), scale: st.k * dpr, outline: st.strip ? '#0d1630' : null });
     c.dataset.drawn = r;
   }
   function paintHeroes(rootEl) { (rootEl || doc).querySelectorAll('canvas[data-hero]').forEach(c => { try { paintHero(c); } catch (e) { if (root.console) console.error('paintHero', e); } }); }
@@ -107,13 +108,13 @@
   let sheetOpener = null;
   function closeSheet(quiet) {
     const o = doc.getElementById('rsSheet'); if (!o) return false;
-    const rt = doc.getElementById('rsRoot'), nm = UI.sheet; o.remove(); if (rt) rt.classList.remove('sheet-open'); UI.sheet = null;
+    const rt = doc.getElementById('rsRoot') || doc.getElementById('rwRoot'), nm = UI.sheet; o.remove(); if (rt) rt.classList.remove('sheet-open'); UI.sheet = null;
     if (sheetOpener && sheetOpener.isConnected) { try { sheetOpener.focus({ preventScroll: true }); } catch (e) { } } sheetOpener = null;
     if (!quiet && nm && SHEETFN[nm] && SHEETFN[nm].onClose) SHEETFN[nm].onClose();
     return true;
   }
   function openSheet(title, html, name) {
-    closeSheet(true); const rt = doc.getElementById('rsRoot'); if (!rt) return null;
+    closeSheet(true); const rt = doc.getElementById('rsRoot') || doc.getElementById('rwRoot'); if (!rt) return null;
     sheetOpener = doc.activeElement;
     const o = doc.createElement('div'); o.className = 'rs-sheetbg'; o.id = 'rsSheet';
     o.innerHTML = `<div class="rs-sheet" role="dialog" aria-modal="true" aria-label="${esc(String(title).replace(/<[^>]*>/g, ''))}"><div class="rs-sheet-h"><b>${title}</b><button class="rs-sheet-x" id="rsSheetX">とじる</button></div><div class="rs-sheet-b" id="rsSheetB">${html}</div></div>`;

@@ -26,14 +26,14 @@ def answer(pg, ok):
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     def newpage(ctx):
-        ctx.add_init_script('window.__rangeOpen = true'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
+        ctx.add_init_script('window.__rangeOpen = false'); pg = ctx.new_page(); pg.route('**/script.google.com/**', blk)
         pg.on('console', lambda m: R['console'].append(f'{m.type}:{m.text}') if m.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}')); return pg
     # ---- A. 保存不能（setItem が例外）でも学習は動き、案内が出る
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
     pg = newpage(ctx)
     pg.add_init_script("const _s = Storage.prototype.setItem; Storage.prototype.setItem = function(k, v) { if (k.startsWith('ichimon.rpg')) throw new Error('QuotaExceededError'); return _s.call(this, k, v); };")
-    pg.goto(URL); pg.wait_for_selector('.subj')
+    pg.goto(URL); pg.wait_for_selector('#go')
     chk('A:rpg_disabled_on_storage_error', pg.evaluate('() => RPG.ok === false && RPG.err === "storage"'))
     chk('A:home_notice', pg.query_selector('.rpg-notice') is not None)
     if True: pg.screenshot(path=os.path.join(OUT, 'home_savefail.png'))
@@ -44,8 +44,8 @@ with sync_playwright() as p:
     ctx.close()
     # ---- B. 2タブ：古いタブは上書きしない
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    p1 = newpage(ctx); p1.goto(URL); p1.wait_for_selector('.subj')
-    p2 = newpage(ctx); p2.goto(URL); p2.wait_for_selector('.subj')
+    p1 = newpage(ctx); p1.goto(URL); p1.wait_for_selector('#go')
+    p2 = newpage(ctx); p2.goto(URL); p2.wait_for_selector('#go')
     p1.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); p1.wait_for_selector('.choice'); answer(p1, True)
     rev_after_p1 = p1.evaluate("() => JSON.parse(localStorage.getItem('ichimon.rpg.v1')).rev")
     p2.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); p2.wait_for_selector('.choice')
@@ -57,14 +57,14 @@ with sync_playwright() as p:
     ctx.close()
     # ---- C. 途中でやめる→再開（復習の持ち越し）・短いセッションの累積
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('.subj')
+    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('#go')
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); pg.wait_for_selector('.choice')
     answer(pg, False); answer(pg, True); answer(pg, True)      # 1問目×(復習待ち)、2,3問目○
-    pg.click('#quit'); pg.wait_for_selector('.subj')
+    pg.click('#quit'); pg.wait_for_selector('#go')
     st = pg.evaluate("() => { const a = RPG.save.active; return {n: a.basic.n, pending: a.reviews.pending.length, used: a.reviews.used}; }")
     chk('C:active_kept_after_quit', st['n'] == 3 and st['pending'] == 1, st)
     chk('C:home_progress_note', '3 / 10' in pg.inner_text('#app'))
-    pg.reload(); pg.wait_for_selector('.subj')
+    pg.reload(); pg.wait_for_selector('#go')
     st2 = pg.evaluate("() => { const a = RPG.save.active; return a ? {n: a.basic.n, pending: a.reviews.pending.length} : null; }")
     chk('C:active_kept_after_reload', st2 == {'n': 3, 'pending': 1}, st2)
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); pg.wait_for_selector('.choice')
@@ -82,7 +82,7 @@ with sync_playwright() as p:
     ctx.close()
     # ---- D. 短い範囲（3問しかない）：冒険3/10 を表示し宝箱は出ない
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('.subj')
+    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('#go')
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 3))"); pg.wait_for_selector('.choice')
     for _ in range(10):
         if pg.query_selector('.res-score'): break
@@ -95,7 +95,7 @@ with sync_playwright() as p:
     ctx.close()
     # ---- E. 入力問題：キーボード（フォーカス）中は帯を隠す
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('.subj')
+    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('#go')
     pg.evaluate("() => { start([qs().find(q => q.type === 'input')]); }"); pg.wait_for_selector('#ans')
     vis0 = pg.evaluate("() => !document.querySelector('.rpg-strip').hidden")
     pg.focus('#ans'); pg.wait_for_timeout(100)
@@ -107,7 +107,7 @@ with sync_playwright() as p:
     ctx.close()
     # ---- F. 正解/不正解の演出：不正解は「つぎへ」を押すまで敵の行動を出さない（状態は先に計算・保存される）
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('.subj')
+    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('#go')
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); pg.wait_for_selector('.choice')
     pg.evaluate(WRONG); pg.wait_for_timeout(200)
     d = pg.evaluate("() => ({deferred: RPG.deferred.length, hp: RPG.save.active.battle.hero.hp, max: RPG.save.active.battle.hero.maxHp})")
@@ -122,7 +122,7 @@ with sync_playwright() as p:
     ctx.close()
     # ---- G. reduce-motion でも動作し、帯の描画は静止
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, reduced_motion='reduce')
-    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('.subj')
+    pg = newpage(ctx); pg.goto(URL); pg.wait_for_selector('#go')
     pg.evaluate("() => start(pick(pool().filter(q => q.type !== 'input' && !q.map), 10))"); pg.wait_for_selector('.choice'); answer(pg, True)
     chk('G:reduce_motion_ok', pg.evaluate("() => RPG.ok") is True)
     ctx.close()

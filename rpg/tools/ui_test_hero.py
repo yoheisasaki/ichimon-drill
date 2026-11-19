@@ -24,7 +24,7 @@ WARRIOR = "s.job='warrior'; s.firstDone=true; s.coins=3000; ['w_sword_1','w_swor
 INSTR = "() => { const SP = RPGSprites, o = SP.drawHeroLayered; window.__calls = []; SP.drawHeroLayered = function (c, a) { const r = o.apply(this, arguments); window.__calls.push({use: a.use, job: a.job, weaponId: a.weaponId || null, costume: a.costume || null, pose: a.pose, look: a.look ? [a.look.face, a.look.hairStyle, a.look.skin, a.look.hair] : null, r}); return r; }; }"
 def new_page(b, w=390, h=844, reduce=False, open_range=False):
     ctx = b.new_context(viewport={'width': w, 'height': h}, device_scale_factor=2, is_mobile=True, has_touch=True, reduced_motion='reduce' if reduce else 'no-preference')
-    if open_range: ctx.add_init_script('window.__rangeOpen = true')
+    if open_range: ctx.add_init_script('window.__rangeOpen = false')
     pg = ctx.new_page(); pg.set_default_timeout(30000)
     pg.on('console', lambda m: R['console'].append(f'{m.type}:{m.text}') if m.type in ('error', 'warning') and 'willReadFrequently' not in m.text else None)
     pg.on('pageerror', lambda e: R['console'].append(f'pageerror:{e}'))
@@ -111,10 +111,10 @@ with sync_playwright() as p:
     shot(pg, 'fix_home_390', False)
     # --- A03/A04：試着・取り消し・確定 ---
     go(pg, 'equip'); pg.wait_for_timeout(400)
-    h0 = pix(pg); o0 = hero_cv(pg)['opt']; st0 = pg.evaluate("() => document.querySelectorAll('.rs-cmp td')[4].textContent")
+    h0 = pix(pg); o0 = hero_cv(pg)['opt']; st0 = pg.evaluate("() => document.querySelectorAll('.rs-eqr .rs-dr')[1].textContent")
     shot(pg, 'fix_equip_before_390', False)
     pg.click('[data-eq=w_sword_2]'); pg.wait_for_timeout(400)
-    h1 = pix(pg); o1 = hero_cv(pg)['opt']; st1 = pg.evaluate("() => [...document.querySelectorAll('.rs-cmp td')].map(t => t.textContent)")
+    h1 = pix(pg); o1 = hero_cv(pg)['opt']; st1 = pg.evaluate("() => { const r = document.querySelectorAll('.rs-eqr .rs-dr')[1], b = r.querySelectorAll('b'), d = r.querySelector('i:not(.arr)'); return ['', '', '', '', b[0].textContent, b[1].textContent, d.textContent]; }")
     shot(pg, 'fix_equip_try_390', False)
     chk('A03_try_changes_weapon_pixels', h0 != h1 and o1['weaponId'] == 'w_sword_2' and o0['weaponId'] == 'w_sword_1', [o0['weaponId'], o1['weaponId']])
     chk('A03_try_changes_numbers', st1[5] != st1[4] or st1[6] != '±0', st1)
@@ -182,9 +182,9 @@ with sync_playwright() as p:
     chk('A08_preview_does_not_change_save', pg.evaluate("() => localStorage.getItem('ichimon.rpg.v1')") == before)
     # --- B02：転職の順序 ---
     go(pg, 'jobdetail', {'job': 'magicknight'}); pg.wait_for_timeout(400)
-    pos = pg.evaluate("() => { const t = s => { const e = document.querySelector(s); return e ? Math.round(e.getBoundingClientRect().top) : null; }; return {hero: t('canvas[data-hero]'), name: t('.rs-jobname'), blurb: t('.rs-blurb'), req: t('.rs-req'), btn: t('#jobDo'), play: t('#jobPlay'), skills: t('.rs-det summary'), btnBottom: Math.round(document.getElementById('jobDo').getBoundingClientRect().bottom), vh: innerHeight}; }")
-    chk('B02_order_hero_name_blurb_req_button_then_details', pos['hero'] < pos['name'] < pos['blurb'] < pos['req'] < pos['btn'] < pos['skills'], pos)
-    chk('B02_main_button_in_first_screen_390', pos['btnBottom'] < pos['vh'] - 80, pos)
+    pos = pg.evaluate("() => { const t = s => { const e = document.querySelector(s); return e ? Math.round(e.getBoundingClientRect().top) : null; }; return {hero: t('canvas[data-hero]'), name: t('.rs-jobname'), blurb: t('.rs-blurb'), req: t('.rs-req'), btn: t('#jobDo'), play: t('#jobPlay'), skills: t('[data-sheet=jobskills]'), btnBottom: Math.round(document.getElementById('jobDo').getBoundingClientRect().bottom), vh: innerHeight}; }")
+    chk('B02_order_hero_name_blurb_req_skills_then_bottom_button', pos['hero'] < pos['name'] < pos['blurb'] < pos['req'] < pos['skills'] < pos['btn'], pos)
+    chk('B02_main_button_in_first_screen_390', pos['btnBottom'] <= pos['vh'], pos)
     chk('B02_details_collapsed', pg.evaluate("() => [...document.querySelectorAll('.rs-det')].every(d => !d.open)"))
     shot(pg, 'fix_jobdetail_390', False)
     # 初回転職：旧姿→光→新姿、とばせる。宝箱・NPCに触れない
@@ -205,7 +205,7 @@ with sync_playwright() as p:
         return pg.evaluate("([tpl, ids]) => ids.map(id => { const r = document.querySelector(tpl.replace('ID', id)); if (!r) return [id, null, null, null]; const b = r.querySelector('b'), im = r.querySelector('img.rs-ic'); return [id, b && b.textContent, im && im.getAttribute('src'), (r.querySelector('small') || {}).textContent]; })", [sel, ids])
     ids = ['w_sword_1', 'w_sword_2', 'rw_sword_1']
     eqr = rows('equip', '[data-eq=ID]', ids); go(pg, 'shop'); pg.wait_for_timeout(400)
-    shp = pg.evaluate("() => ['w_sword_1'].map(id => { const r = document.querySelector(`[data-try=${id}]`).closest('.rs-shopitem'); return [id, r.querySelector('b').textContent, r.querySelector('img.rs-ic').getAttribute('src'), r.querySelector('small').textContent]; })")
+    shp = pg.evaluate("() => ['w_sword_1'].map(id => { const r = document.querySelector(`[data-pick=${id}]`).closest('.rs-shopitem'); return [id, r.querySelector('b').textContent, r.querySelector('img.rs-ic').getAttribute('src'), r.querySelector('small').textContent]; })")
     go(pg, 'codex'); pg.click('[data-ct=item]'); pg.wait_for_timeout(400)
     cdx = pg.evaluate("() => { const out = {}; document.querySelectorAll('.rs-eqitem').forEach(r => { const b = r.querySelector('b'); const im = r.querySelector('img.rs-ic'); if (im) out[b.textContent] = [im.getAttribute('src'), (r.querySelector('small') || {}).textContent]; }); return out; }")
     okB3 = True; ev = []
@@ -219,16 +219,16 @@ with sync_playwright() as p:
     # --- 店：全商品アイコン、いまの職業の武器を先に、購入/試着は別操作 ---
     go(pg, 'shop'); pg.wait_for_timeout(300)
     sh = pg.evaluate("() => ({items: document.querySelectorAll('.rs-shopitem').length, icons: document.querySelectorAll('.rs-shopitem img.rs-ic').length, buy: document.querySelectorAll('[data-buy]').length, tryb: document.querySelectorAll('[data-try]').length, ng: [...document.querySelectorAll('.rs-shopitem small')].filter(s => s.textContent.includes('別の職業用')).length})")
-    chk('shop_all_items_have_icon_and_current_job_first', sh['items'] > 0 and sh['icons'] == sh['items'] and sh['ng'] == 0 and sh['tryb'] == sh['items'], sh)
+    chk('shop_all_items_have_icon_and_current_job_first', sh['items'] > 0 and sh['icons'] == sh['items'] and sh['ng'] == 0 and sh['tryb'] == 1 and sh['buy'] == 1, sh)
     for tab in ('armor', 'acc', 'sell'):
         pg.click(f'[data-st={tab}]'); pg.wait_for_timeout(200)
         t = pg.evaluate("() => ({items: document.querySelectorAll('.rs-shopitem').length, icons: document.querySelectorAll('.rs-shopitem img.rs-ic').length})"); chk(f'shop_{tab}_all_icons', t['items'] == t['icons'], t)
     pg.click('[data-st=weapon]'); pg.click('[data-shopall="1"]'); pg.wait_for_timeout(200)
     chk('shop_other_job_weapons_via_toggle', pg.evaluate("() => [...document.querySelectorAll('.rs-shopitem small')].some(s => { const c = s.cloneNode(true); c.querySelectorAll('rt').forEach(r => r.remove()); return c.textContent.includes('別の職業用'); })"))
     pg.evaluate("() => { const s = RPG.save; s.inv.items = Object.fromEntries(Object.entries(s.inv.items).filter(([k]) => k !== 'w_sword_3')); }")
-    pg.click('[data-try=w_sword_3]') if pg.query_selector('[data-try=w_sword_3]') else None
+    (pg.click('[data-pick=w_sword_3]'), pg.click('#shopTry')) if pg.query_selector('[data-pick=w_sword_3]') else None
     pg.wait_for_timeout(400)
-    if pg.query_selector('.rs-eqweapon'):
+    if pg.query_selector('.rs-eqr'):
         chk('shop_try_unowned_shows_label_and_cannot_equip', pg.evaluate("() => document.getElementById('eqOk').disabled") and save(pg)['equip']['weapon'] == 'w_sword_1')
     pg.context.close()
 
@@ -240,19 +240,19 @@ with sync_playwright() as p:
         for scr, prm in SCREENS:
             if scr == 'home': pg.evaluate("() => home()")
             else: go(pg, scr, prm)
-            pg.wait_for_timeout(250); l = pg.evaluate(LAYOUT)
-            if l['hscroll'] or l['lastBottom'] > l['navTop'] + 1 or l['spacer'] < l['navH']: bad.append([scr, l])
-        chk(f'B06_{w}px_no_hscroll_end_reachable_nav_spacer', not bad, bad)
+            pg.wait_for_timeout(250); l = pg.evaluate("() => { const b = document.getElementById('rsBody') || document.getElementById('rwBody'), f = document.querySelector('.rs-foot, .rw-foot'); return {hscroll: document.documentElement.scrollWidth > innerWidth, pageScroll: document.documentElement.scrollHeight > innerHeight + 1, bodyOverFoot: !!b && !!f && b.getBoundingClientRect().bottom > f.getBoundingClientRect().top + 1, foot: !!f}; }")
+            if l['hscroll'] or l['pageScroll'] or l['bodyOverFoot'] or not l['foot']: bad.append([scr, l])
+        chk(f'B06_{w}px_no_hscroll_no_page_scroll_body_above_foot', not bad, bad)
         pg.context.close()
     pg = new_page(b, 390); boot(pg, WARRIOR); bad = []
     pg.evaluate("() => { document.body.style.zoom = 1.3; }")
     for scr, prm in (('home', None), ('me', None), ('equip', None), ('shop', None), ('jobs', None), ('jobdetail', {'job': 'magicknight'}), ('look', None)):
         if scr == 'home': pg.evaluate("() => home()")
         else: go(pg, scr, prm)
-        pg.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)"); pg.wait_for_timeout(200)
+        pg.evaluate("() => document.querySelectorAll('.rs-body details:not(.rs-range)').forEach(d => d.open = true)"); pg.wait_for_timeout(200)
         l = pg.evaluate("() => ({h: document.documentElement.scrollWidth > innerWidth + 2, clip: [...document.querySelectorAll('#app button, #app .rs-it-t, #app .rs-nextskill')].filter(e => e.scrollWidth > e.clientWidth + 2).length})")
         main = {'jobdetail': '#jobDo', 'equip': '#eqOk', 'look': '#lookOk'}.get(scr); reach = True
-        if main: reach = pg.evaluate("(m) => { const e = document.querySelector(m); e.scrollIntoView({block: 'center'}); const r = e.getBoundingClientRect(), n = document.querySelector('.rs-nav').getBoundingClientRect(); return r.bottom <= n.top + 1 && r.top >= 0; }", main)
+        if main: reach = pg.evaluate("(m) => { const e = document.querySelector(m); e.scrollIntoView({block: 'center'}); const r = e.getBoundingClientRect(); return r.bottom <= innerHeight + 1 && r.top >= 0; }", main)
         if l['h'] or l['clip'] or not reach: bad.append([scr, l, reach])
     chk('B07_zoom130_no_clip_main_button_reachable_with_details_open', not bad, bad)
     pg.context.close()
