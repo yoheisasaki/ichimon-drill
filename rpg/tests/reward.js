@@ -157,5 +157,72 @@ t('D09 復習XPはoriginごとに1回（成功を重ねても加算されない�
   eq(s.active.reviews.ok.length, 1); const r = A.settle(s, 1); eq(r.R, 1); eq(r.xpBase, 10 * 10 + 5 * 9 + 5);
 });
 
+// ===== 追加修正10 3章：宝箱の表示用データ（実データと一致・全件を出す）=====
+t('T01 素材：素材IDどおりの名称・数量・用途（ランク別）／6ランクの絵は別物', () => {
+  [1, 2, 3, 4, 5, 6].forEach(r => { const v = C.chestView({ kind: 'mat', rank: r, mats: { ['ore_' + r]: 4 } }, 'warrior'); eq(v.primary.id, 'ore_' + r); eq(v.primary.name, C.oreName(r)); eq(v.primary.qty, 4); eq(v.primary.use, '装備を強くする素材'); eq(v.extras, []); });
+  const ids = new Set(); [1, 2, 3, 4, 5, 6].forEach(r => { const f = require('fs').readFileSync(require('path').join(__dirname, '..', 'assets', 'icons', 'ore_' + r + '.png')); ids.add(require('crypto').createHash('md5').update(f).digest('hex')); }); eq(ids.size, 6, '6ランクの鉱石絵はすべて別');
+});
+t('T02 装備：実物の名称・新装備の文言、使えない職では fit.ok=false', () => {
+  const v = C.chestView({ kind: 'rare', rank: 1, item: 'rw_sword_1', dup: false }, 'warrior');
+  eq(v.primary.kind, 'item'); eq(v.primary.id, 'rw_sword_1'); eq(v.primary.name, D.ITEMS.rw_sword_1.name); eq(v.primary.use, '新しい装備を手に入れた！'); ok(v.fit.ok);
+  const u = C.chestView({ kind: 'rare', rank: 1, item: 'rw_staff_1', dup: false }, 'warrior'); eq(u.fit.ok, false); eq(u.fit.job, D.JOBS.warrior.name);
+  ok(C.chestView({ kind: 'rare', rank: 1, item: 'ra_heavy_1', dup: false }, 'mage').fit.ok, '防具は職を問わない');
+});
+t('T03 コインのみ／重複変換／複数品：受取内容と一致し、全件が items に入る', () => {
+  const c = C.chestView({ kind: 'coin', rank: 1, coin: 40 }, 'warrior'); eq(c.primary.kind, 'coin'); eq(c.primary.qty, 40); eq(c.extras, []);
+  const m = C.chestView({ kind: 'coinmat', rank: 1, coin: 40, mats: { ore_1: 2 } }, 'warrior'); eq(m.items.length, 2); eq(m.primary.id, 'ore_1'); eq(m.extras.map(x => x.kind), ['coin']); eq(m.coin, 40);
+  const s = C.newSave(0); s.inv.items.rw_sword_1 = 1; C.addSealedChest(s, 'd1', { kind: 'rare', rank: 1, item: 'rw_sword_1', pityBefore: 0 }, {}); const o = C.openChest(s, 'd1');
+  const d = C.chestView(o.result, 'warrior'); eq(d.primary.id, 'ore_1'); eq(d.primary.qty, 3); eq(d.dupOf.id, 'rw_sword_1'); eq(d.dupOf.name, D.ITEMS.rw_sword_1.name); eq(s.inv.mats.ore_1, 3, '表示の数量＝実際に増えた数量');
+});
+t('T03 主役の規則は一定（装備 > 素材 > コイン）、実抽選300件で表示の合計が受取と一致', () => {
+  for (let i = 0; i < 300; i++) {
+    const s = C.newSave(0); s.coins = 0; const roll = C.rollChest(s, 'p' + i); C.addSealedChest(s, 'c', roll, {}); const o = C.openChest(s, 'c'), v = C.chestView(o.result, 'warrior');
+    const order = { item: 0, mat: 1, coin: 2 }; for (let k = 1; k < v.items.length; k++) ok(order[v.items[k - 1].kind] <= order[v.items[k].kind], '順序');
+    eq(v.items.filter(x => x.kind === 'coin').reduce((a, x) => a + x.qty, 0), s.coins, 'コイン一致');
+    v.items.filter(x => x.kind === 'mat').forEach(x => eq(s.inv.mats[x.id], x.qty, '素材一致'));
+  }
+});
+t('T07 装備・コイン・素材の箱も、二重開封で再付与なし・表示は同じ（再抽選なし）', () => {
+  [{ kind: 'rare', rank: 1, item: 'rw_sword_1', pityBefore: 0 }, { kind: 'coin', rank: 1, coin: 40, pityBefore: 0 }, { kind: 'mat', rank: 2, mats: { ore_2: 4 }, pityBefore: 0 }].forEach((roll, k) => {
+    const st = memStorage(), store = C.makeStore(st), s = fresh(); store.save(s); s.coins = 100; C.addSealedChest(s, 'x' + k, roll, {}); store.save(s);
+    const a = C.openChestPersist(s, store, 'x' + k, 0); const snap = JSON.stringify({ c: s.coins, i: s.inv }); const b = C.openChestPersist(s, store, 'x' + k, 0);
+    ok(a.ok && !a.already && b.already); eq(JSON.stringify({ c: s.coins, i: s.inv }), snap); eq(JSON.stringify(C.chestView(a.result, 'warrior')), JSON.stringify(C.chestView(b.result, 'warrior')));
+  });
+});
+// ===== 追加修正10 4章：成長ゲージ（既存の成長式 levelOf をそのまま使う）=====
+const NEEDJ = j => C.NEED[D.JOBS[j].tier];
+t('G01 進捗＝(E−T(L))/(T(L+1)−T(L))、残り＝T(L+1)−E（累積式と一致、全職×境界値）', () => {
+  D.JOB_IDS.forEach(j => [0, 1, 199, 200, 201, 4679, 4680, 12345, 28120, 60319, 60320].forEach(E => {
+    const v = C.growthView(j, E), fn = NEEDJ(j), L = v.lv;
+    if (v.capped) return; const T0 = C.cum(fn, L), T1 = C.cum(fn, L + 1);
+    ok(Math.abs(v.ratio - (E - T0) / (T1 - T0)) < 1e-12, j + ' E=' + E); eq(v.remain, T1 - E); ok(v.ratio >= 0 && v.ratio < 1, '0以上1未満（丸めで隠さない）'); eq(v.nextLv, L + 1);
+  }));
+});
+t('G01 境界：Lvちょうどは進捗0・残り＝そのLvの必要量、1 EXP 手前は前のLvでほぼ満タン', () => {
+  const fn = NEEDJ('warrior'), E = C.cum(fn, 9), v = C.growthView('warrior', E), w = C.growthView('warrior', E - 1);
+  eq(v.lv, 9); eq(v.ratio, 0); eq(v.remain, fn(9)); eq(w.lv, 8); eq(w.remain, 1); ok(w.ratio > 0.99 && w.ratio < 1);
+});
+t('G03 レベルアップ（1回・複数回）：到達Lv後の進捗と残り。lvFrom を保持し up=true', () => {
+  const fn = NEEDJ('warrior'), E = C.cum(fn, 9) + 60, v = C.growthView('warrior', E, { lvFrom: 8 }); eq(v.lv, 9); ok(v.up); eq(v.lvFrom, 8); eq(v.remain, fn(9) - 60); ok(Math.abs(v.ratio - 60 / fn(9)) < 1e-12);
+  const m = C.growthView('warrior', C.cum(fn, 9) + 10, { lvFrom: 6 }); eq([m.lvFrom, m.lv, m.up], [6, 9, true]);
+  eq(C.growthView('warrior', 5000, { lvFrom: 7 }).up, true); eq(C.growthView('warrior', 5000).up, false);
+});
+t('G02 全技習得後もレベルが上がるあいだは残りを維持し、補助行は「全習得」。技が残る間は「次の技」', () => {
+  D.JOB_IDS.forEach(j => { const last = Math.max(...D.SKILLS_OF[j].map(k => k.lv)); if (last >= C.CAP.job - 1) return; const v = C.growthView(j, C.cum(NEEDJ(j), last + 1) + 5); ok(!v.capped); eq(v.sub.type, 'all'); ok(v.remain > 0); ok(v.ratio > 0); });
+  const v = C.growthView('warrior', C.cum(NEEDJ('warrior'), 8) + 1); eq(v.sub.type, 'next'); ok(v.sub.lv > v.lv);
+});
+t('G04 最大Lv：capped・ゲージなし（ratio=null）・残り0・補助行なし、ゼロ除算なし', () => {
+  D.JOB_IDS.forEach(j => { const E = C.cum(NEEDJ(j), C.CAP.job); [E, E + 1, 1e9].forEach(x => { const v = C.growthView(j, x); ok(v.capped); eq(v.ratio, null); eq(v.remain, 0); eq(v.sub, null); eq(v.nextLv, null); }); });
+  const c = C.growthView('warrior', C.cum(NEEDJ('warrior'), 30), { lvFrom: 29 }); ok(c.up && c.capped);
+});
+t('G01 転職後の保存値：職業ごとの jobXp でその職のLvが決まる（他職の経験値が混ざらない）', () => {
+  const s = C.newSave(0); s.jobXp.warrior = 9000; s.jobXp.mage = 100; const w = C.growthView('warrior', s.jobXp.warrior), m = C.growthView('mage', s.jobXp.mage);
+  eq(w.lv, C.jobLevel('warrior', 9000).lv); eq(m.lv, 1); eq(m.remain, NEEDJ('mage')(1) - 100);
+});
+t('G05 冒険者Lv上昇は advUp の補助情報で、職業ゲージの値に影響しない', () => {
+  const a = C.growthView('warrior', 3000, { advFrom: 1, advTo: 2 }), b = C.growthView('warrior', 3000);
+  eq(a.advUp, { from: 1, to: 2 }); eq(b.advUp, null); eq([a.ratio, a.remain, a.lv], [b.ratio, b.remain, b.lv]);
+});
+
 console.log(JSON.stringify({ pass, fail, failures }, null, 1));
 process.exit(fail ? 1 : 0);

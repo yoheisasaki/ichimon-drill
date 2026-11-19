@@ -467,3 +467,21 @@ html:has(.rw3),body:has(.rw3){overflow:hidden}
 .rw3 .rw-stage{flex:none;padding:0 14px 8px}
 .rw3 .rw-scene{flex:none}
 .rw-nw{white-space:nowrap}
+/* 宝箱：開封後は獲得物が主役（同じ枠の左にアイコン、右に名称・数量・用途）／成長ゲージの補助行 */
+.rw-lead{flex:none;display:flex;align-items:center;justify-content:center;min-width:64px}
+.rw-lead.rw-gi{width:60px;height:60px;min-width:60px;border-radius:12px;background:#0b1430;border:2px solid #3a4a7a}
+.rw-gimg{width:48px;height:48px;display:block;image-rendering:pixelated;object-fit:contain}
+.rw-gnone{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b6bfd8}
+.rw-drop.rw-got .rw-dtx{gap:2px}
+.rw-gname{display:block;font-size:18px;font-weight:900;line-height:1.35;color:#fff3a0;text-wrap:pretty;overflow-wrap:anywhere}
+.rw-guse{display:block;font-size:15px;line-height:1.4;color:#cfd6ea;text-wrap:pretty}
+.rw-warn{color:#ffb0a0;font-size:14px}
+.rw-more{min-height:44px;padding:0 12px;border-radius:10px;border:2px solid #3a4a7a;background:#1b2c5c;color:#f4f1e4;font-size:14px;font-weight:800;text-align:left}
+.rw-grow{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:16px;line-height:1.4}.rw-grow small{font-size:14px;color:#cfd6ea}
+.rw-jobsub{font-size:14px;color:#ffe27a;margin-top:4px;line-height:1.4}
+.rw3 .rw-jobt{align-items:baseline}
+.rw-drop.rw-anim .rw-gi{animation:rw-pop .14s ease-out}
+.rw-drop.rw-rare.rw-anim .rw-gi{animation:rw-pop .14s ease-out,rw-glow .6s ease-out 1}
+@keyframes rw-pop{from{transform:scale(.6);opacity:.2}to{transform:scale(1);opacity:1}}
+@keyframes rw-glow{0%{box-shadow:0 0 0 0 #ffe27a}40%{box-shadow:0 0 14px 6px #ffe27a}100%{box-shadow:0 0 0 0 #ffe27a00}}
+@media (prefers-reduced-motion:reduce){.rw-drop.rw-anim .rw-gi,.rw-drop.rw-rare.rw-anim .rw-gi{animation:none}}

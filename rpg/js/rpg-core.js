@@ -261,5 +261,36 @@
     return { ok: true, backup };
   }
 
-  return { LS_RPG, LS_BACKUP, SAVE_VERSION, migrateSave, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rewardTotals, rollChest, applyChest, addSealedChest, chestById, sealedChests, openChest, openChestPersist, migrateChests, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
+  // ---------- 表示用の組み立て（DOM非依存。計算は既存の成長式 levelOf / nextSkill を使う） ----------
+  // 宝箱の中身 → 表示項目。主役は「装備 > 素材 > コイン」の順で1品目、残りは extras（黙って省略しない）
+  function chestView(r, job) {
+    if (!r) return null;
+    const items = [], mk = (kind, id, name, qty, use) => ({ kind, id, name, qty, use });
+    let dupOf = null, fit = null;
+    if (r.kind === 'rare' && r.item) {
+      const it = D.ITEMS[r.item];
+      if (r.dup) { dupOf = { id: r.item, name: it.name }; items.push(mk('mat', oreId(it.rank), oreName(it.rank), r.ore, '装備を強くする素材')); }
+      else {
+        items.push(mk('item', r.item, it.name, 1, '新しい装備を手に入れた！'));
+        const j = job && D.JOBS[job];
+        fit = !(it.slot === 'weapon' && j && it.cat !== 'any' && !j.weapons.includes(it.cat)) ? { ok: true } : { ok: false, job: j.name };
+      }
+    }
+    if (r.kind !== 'rare' || !r.dup) Object.keys(r.mats || {}).forEach(k => items.push(mk('mat', k, oreName(+k.slice(4)), r.mats[k], '装備を強くする素材')));
+    else Object.keys(r.mats || {}).forEach(k => { if (k !== items[0].id) items.push(mk('mat', k, oreName(+k.slice(4)), r.mats[k], '装備を強くする素材')); });
+    if (r.coin) items.push(mk('coin', 'coin', 'コイン', r.coin, '街での買い物に使える'));
+    const order = { item: 0, mat: 1, coin: 2 }; items.sort((a, b) => order[a.kind] - order[b.kind]);
+    return { items, primary: items[0] || null, extras: items.slice(1), dupOf, fit, coin: r.coin || 0 };
+  }
+  // 成長ゲージ：現在の職業の「次のレベルまで」。levelOf の into/need をそのまま使う（丸めない）
+  function growthView(job, xp, o) {
+    o = o || {};
+    const jl = jobLevel(job, xp), nx = nextSkill(job, xp);
+    const v = { job, lv: jl.lv, lvFrom: o.lvFrom == null ? jl.lv : o.lvFrom, capped: jl.capped, into: jl.into, need: jl.need,
+      remain: jl.capped ? 0 : jl.need - jl.into, ratio: jl.capped ? null : jl.into / jl.need, nextLv: jl.capped ? null : jl.lv + 1,
+      sub: jl.capped ? null : nx ? { type: 'next', lv: nx.skill.lv, skill: nx.skill.id } : { type: 'all' } };
+    v.up = v.lv > v.lvFrom; v.advUp = o.advFrom != null && o.advTo != null && o.advTo > o.advFrom ? { from: o.advFrom, to: o.advTo } : null;
+    return v;
+  }
+  return { LS_RPG, LS_BACKUP, SAVE_VERSION, migrateSave, WELCOME_COIN, ADV_UNIT, REVIEW_MAX, NEED, CAP, cum, levelOf, jobLevel, heroLevel, jobLevels, nextSkill, dayKey, xpMultOf, coinMultOf, todayKey, reserveSlot, rewardOf, hashStr, rngFrom, maxRank, oreId, oreName, addMat, grantItem, rewardTotals, chestView, growthView, rollChest, applyChest, addSealedChest, chestById, sealedChests, openChest, openChestPersist, migrateChests, canBuy, buy, equip, bestOwned, canChangeJob, newSave, validateSave, makeStore, buildExport, parseImport, applyImport };
 });
