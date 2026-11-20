@@ -279,9 +279,9 @@
   const NPC_OF = { guild: 'mira', forge: 'toto', ship: 'luca' };
   const npcImg = (id, alt) => { const k = NPC_OF[id], im = k && (alt && imgOf('npc_' + k + '_alt') || imgOf('npc_' + k)), a2 = k && imgOf('npc_' + k + '_alt'); return im ? `<img class="rs-npc" alt="" src="${im.src}"${a2 ? ` data-alt="${a2.src}" data-base="${imgOf('npc_' + k).src}"` : ''}>` : ''; };
   const NPC_WHO = { 'ミラ': 'mira', 'トト': 'toto', 'ルカ': 'luca', '黒鎧の騎士': 'knight' };
-  const TILES = [['shop', '店', 'shop', '買う・売る'], ['jobs', '転職', 'guild', 'ギルド'], ['forge', '鍛冶屋', 'forge', '強くする'], ['codex', '図鑑', 'room', '敵・装備'], ['equip', '装備', 'shop', '着がえる'], ['loadout', '技・作戦', 'temple', '神殿'], ['ach', '実績', 'guild', 'ギルド'], ['look', '名前・衣装', 'room', '自室']];
+  const TILES = [['shop', '店', 'shop', '買う・売る', 'shop'], ['jobs', '転職', 'guild', 'ギルド', 'guild'], ['forge', '鍛冶屋', 'forge', '強くする', 'forge'], ['codex', '図鑑', 'room', '敵・装備', 'codex'], ['equip', '装備', 'shop', '着がえる', 'equip'], ['loadout', '技・作戦', 'temple', '神殿', 'temple'], ['ach', '実績', 'guild', 'ギルド', 'ach'], ['look', '名前・衣装', 'room', '自室', 'room']];
   VIEWS.town = function () {
-    const tiles = TILES.map(([to, nm, cls, cap]) => `<button class="rs-tile s-${cls}" data-go="${to}" data-p='{"back":"town"}'><span class="rs-bld" aria-hidden="true"></span><span class="rs-tile-t"><b>${kr(nm)}</b><small>${kr(cap)}</small></span></button>`).join('');
+    const tiles = TILES.map(([to, nm, cls, cap, t]) => `<button class="rs-tile t-${t}" data-go="${to}" data-p='{"back":"town"}'><span class="rs-tile-t"><b>${kr(nm)}</b><small>${kr(cap)}</small></span></button>`).join('');
     return frame('風待ちの町', `<div class="rs-stage rs-stage-town">${heroCv('town')}</div><div class="rs-tiles" role="group" aria-label="まちの入口">${tiles}</div>`, { back: false });
   };
   AFTER.town = function () { };
@@ -426,7 +426,7 @@
       return `<span class="rs-mat">${esc(nm)} ×${s.inv.mats[k]}</span>`;
     }).join('') || '<small>まだありません</small>';
     return frame('鍛冶屋', `<div class="rs-panel c">${coinHtml()}<p class="rs-p">強化は +3まで。必ず成功します。1回ごとに基準の性能が +5%。</p></div>
-      <div class="rs-panel"><div class="rs-h2">素材</div><div class="rs-mats">${mats}</div></div>${uniquePanel(s)}<div class="rs-list">${rows}</div>`);
+      <div class="rs-panel"><div class="rs-h2">素材</div><div class="rs-mats">${mats}</div></div>${uniquePanel(s)}<div class="rs-list rs-forge-list">${rows}</div>`);
   };
   AFTER.forge = function () {
     app().querySelectorAll('[data-enh]').forEach(b => b.onclick = () => { const r = M.enhance(save(), b.dataset.enh); UI.msg = r.ok ? `+${r.lv} になりました！` : r.err; if (r.ok) commit(); rerender(); });

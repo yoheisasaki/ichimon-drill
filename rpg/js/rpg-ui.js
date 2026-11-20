@@ -299,7 +299,7 @@
     return '';
   }
   function chestSheetHtml(v) {
-    const row = g => `<div class="rw-grow">${giftIcon(g, 40)}<span><b>${giftName(g)}</b><br><small>${esc(g.use)}</small></span></div>`;
+    const row = g => `<div class="rw-grow">${giftIcon(g, 40)}<span><b>${giftName(g)}</b><br><small>${rb(g.use)}</small></span></div>`;
     let h = v.items.map(row).join('');
     if (v.dupOf) h += `<p class="rw-note">${rb('{持|も}っている{装備|そうび}')}「${esc(v.dupOf.name)}」${rb('が{出|で}たので、{素材|そざい}に{交換|こうかん}しました。')}</p>`;
     if (v.primary && v.primary.kind === 'item') { const fx = M.effectText(v.primary.id); if (fx) h += `<p class="rw-note">${esc(fx)}</p>`; }
@@ -308,7 +308,7 @@
   function chestContentHtml(c) {
     const r = c.result; if (!r) return '';
     const v = C.chestView(r, RPG.save && RPG.save.job), g = v.primary; if (!g) return '';
-    let l2 = esc(g.use);
+    let l2 = rb(g.use);
     if (v.dupOf) l2 = rb('{持|も}っている{装備|そうび}だったので{交換|こうかん}しました');
     else if (g.kind === 'item') l2 = rb('{新|あたら}しい{装備|そうび}を{手|て}に{入|い}れた！') + (v.fit.ok ? '' : `<br><small class="rw-warn">${esc(v.fit.job)}${rb('では{使|つか}えません')}</small>`);
     return `<b class="rw-gname">${giftName(g)}</b><span class="rw-guse">${l2}</span>`;
