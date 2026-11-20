@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="450" viewBox="0 0 720 450" role="img" aria-labelledby="t d">
+<title id="t">メダカのひれの位置</title><desc id="d">せびれ、おびれ、しりびれ、むなびれ、はらびれの5種類。左右にあるむなびれとはらびれはそれぞれ2枚で、合計7枚。</desc>
+<rect width="720" height="450" fill="#fffdf9"/><text x="32" y="48" font-family="sans-serif" font-size="29" font-weight="bold" fill="#1c3541">メダカのひれ</text>
+<path d="M95 213 Q174 131 372 164 Q464 173 553 193 L656 145 Q637 212 655 288 L553 240 Q443 265 350 261 Q184 269 95 213Z" fill="#dbdbbb" stroke="#665d44" stroke-width="4"/>
+<path d="M155 222 Q313 250 512 224" fill="none" stroke="#80a6a3" stroke-width="8" opacity=".6"/>
+<path d="M356 167 Q390 106 444 93 L459 179Z" fill="#e7d6a0" stroke="#766b50" stroke-width="4"/>
+<path d="M555 193 L653 143 Q628 215 655 285 L556 238Z" fill="#f3ddb3" stroke="#766b50" stroke-width="4"/>
+<path d="M396 256 Q425 320 483 319 L466 254Z" fill="#e8d5a9" stroke="#766b50" stroke-width="4"/>
+<path d="M183 235 Q235 302 267 245 Q255 214 183 235Z" fill="#e5ce95" stroke="#766b50" stroke-width="4"/>
+<path d="M309 252 Q323 298 341 278 L351 258Z" fill="#e5ce95" stroke="#766b50" stroke-width="4"/>
+<circle cx="132" cy="198" r="18" fill="#fff" stroke="#665d44" stroke-width="3"/><circle cx="135" cy="198" r="9" fill="#212c2b"/><path d="M95 213L77 223" stroke="#665d44" stroke-width="3"/><path d="M165 193Q171 222 165 248" fill="none" stroke="#807a64" stroke-width="3"/>
+<g font-family="sans-serif" font-size="23" font-weight="bold" fill="#243e47" stroke="#fff" stroke-width="4" paint-order="stroke">
+<text x="353" y="82">せびれ</text><text x="581" y="121">おびれ</text><text x="460" y="355">しりびれ</text><text x="96" y="347">むなびれ</text><text x="264" y="355">はらびれ</text></g>
+<g fill="none" stroke="#305b65" stroke-width="3"><path d="M394 90L421 130"/><path d="M620 127L619 176"/><path d="M485 333L448 297"/><path d="M177 320L226 259"/><path d="M314 330L327 275"/></g>
+<rect x="26" y="380" width="668" height="55" rx="15" fill="#eef6e9" stroke="#a0b99c"/><text x="360" y="415" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#294b35">5種類・合計7枚（むなびれ・はらびれは左右2枚ずつ）</text>
+</svg>
