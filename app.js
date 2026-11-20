@@ -34,7 +34,7 @@ const app = document.getElementById('app');
 
 // 11/28 マンスリー直前の重点問題。問題データ本体は削除しない。
 // ?all=1 で全問題に戻せる（例: mama.html?all=1）。
-const FOCUS_IDS = new Set(["ri-0004","ri-0018","ri-0019","ri-0033","ri-0036","ri-0042","ri-0061","ri-0062","ri-0063","ri-0064","ri-0065","sha-0020","sha-0023","sha-0029","sha-0035","sha-0040","sha-0054","sha-0055","sha-0056","sha-0057","sha-0059","sha-0060","sha-0063","sha-0064","sha-0066","sha-0067","sha-0201","sha-0202","koku-0014","koku-0015","koku-0042","koku-0057","koku-0061","koku-0201","koku-0202","koku-0205","map-0001","map-0009","map-0011","ri-0058"]);
+const FOCUS_IDS = new Set(["ri-0004","ri-0018","ri-0019","ri-0033","ri-0036","ri-0042","ri-0061","ri-0062","ri-0063","ri-0064","ri-0065","sha-0020","sha-0023","sha-0029","sha-0035","sha-0040","sha-0054","sha-0055","sha-0056","sha-0057","sha-0059","sha-0060","sha-0063","sha-0064","sha-0066","sha-0067","sha-0201","sha-0202","koku-0014","koku-0015","koku-0042","koku-0057","koku-0061","koku-0201","koku-0202","koku-0205","map-0001","map-0009","map-0011","ri-0058","koku-0241","koku-0242","koku-0243"]);
 const SHOW_ALL = PARAMS.get('all') === '1';
 function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
