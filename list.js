@@ -28,7 +28,7 @@ function item(q) {
   return `<li class="it${off ? ' off' : ''}" data-id="${esc(q.id)}"><div class="iq">${tags}${ruby(q.q)}</div>
     ${hid ? '<div class="tapshow">タップでこたえ</div>' : `<div class="ia">${ruby(q.a)}</div>${ch ? `<div class="ich">${ch}</div>` : ''}${acc}${q.exp ? `<div class="iexp">解説：${ruby(q.exp)}</div>` : ''}`}
     <div class="isrc">${esc(q.src || '')}</div>
-    <div class="ctl"><label class="pk"><input type="checkbox" data-act="pick" ${pk ? 'checked' : ''}>テスト対策</label><button class="fb offb" data-act="off" aria-pressed="${off}">${off ? '今回は出さない' : '今回出す'}</button><button class="fb" data-act="edit">編集</button></div>
+    <div class="ctl"><label class="pk"><input type="checkbox" data-act="pick" ${pk ? 'checked' : ''}>テスト対策</label><button class="fb offb" data-act="off" aria-pressed="${off}">${off ? '今回は出さない' : '今回出す'}</button><button class="fb" data-act="edit">編集</button><a class="fb" href="history.html?qid=${encodeURIComponent(q.id)}">解答履歴</a></div>
     ${editing === q.id ? editForm(q) : ''}</li>`;
 }
 function editForm(q) {
