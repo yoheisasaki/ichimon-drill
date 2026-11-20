@@ -39,11 +39,40 @@ const SHOW_ALL = PARAMS.get('all') === '1';
 function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
-function isMaster(id) { return st(id).s >= MASTER; }
-function isHard(id) { const x = st(id); return x.w > 0 && x.s < MASTER; }
-// 一度でも間違えた記録がある問題。連続正解して覚えた問題も含む。
+// 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
+// 従来の記録（due/verified を持たないもの）も、最後の正解日から自動的に判定する。
+const CHECK_AFTER_DAYS = 3;
+function localDay() {
+  const d = new Date();
+  return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+}
+function plusDays(day, n) {
+  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(day || '')) return '';
+  const [y,m,d] = day.split('-').map(Number);
+  const date = new Date(y, m - 1, d + n);
+  return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
+}
+function checkDay(x) {
+  return x.due || plusDays((x.t || '').slice(0,10), CHECK_AFTER_DAYS);
+}
+function isPending(id) {
+  const x = st(id);
+  return x.w > 0 && x.s >= MASTER && !x.verified;
+}
+function isDue(id) {
+  return isPending(id) && checkDay(st(id)) && checkDay(st(id)) <= localDay();
+}
+function isMaster(id) {
+  const x = st(id);
+  return x.w > 0 ? !!x.verified : x.s >= MASTER;
+}
+function isHard(id) {
+  const x = st(id);
+  return x.w > 0 && (x.s < MASTER || isDue(id));
+}
+// 「過去に間違えた問題」は履歴を消さず、いつでも取り出せる。
 function wasWrong(id) { return st(id).w > 0; }
-function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
+function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pending: list.filter(q => isPending(q.id) && !isDue(q.id)).length, due: list.filter(q => isDue(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
 // 初めての問題を優先。解いた問題は最後に解いた日時が古い順に回す。
 // 同じ10問に、できるだけ違う分野を混ぜる。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -182,7 +211,7 @@ function home() {
     const c = counts(list);
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${rpgOn ? `${ruby('{復習|ふくしゅう}')} ${c.hard}${ruby('{個|こ}')} ／ ${ruby('{覚|おぼ}')}えた ${c.ok}${ruby('{個|こ}')}<br>${ruby('{全部|ぜんぶ}')} ${c.all}${ruby('{個|こ}')}` : `${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ`}</small></button>`;
   };
-  const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), tp = pickPool();
+  const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), pending = p.filter(q => isPending(q.id) && !isDue(q.id)), tp = pickPool();
   const rangeOpen = !!window.__rangeOpen;
   const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
@@ -192,9 +221,10 @@ function home() {
   const note = rpgOn && RPG.progressNote ? RPG.progressNote() : null;
   const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span></button>${nowTxt ? `<div class="rs-contline">${ruby('{続|つづ}き')}：${nowTxt}${note ? `　<span>${ruby('{冒険|ぼうけん}')}の${ruby('{途中|とちゅう}')} ${note.n} / ${note.unit}</span>` : ''}</div>` : ''}` : `<button class="big go" id="go">${goLabel}</button>`;
   const hardHtml = rpgOn ? `<button class="big hard rs-hardrow" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}')}：${hard.length}${ruby('{項目|こうもく}')}<span class="rs-chg">${ruby('{復習|ふくしゅう}する')}</span></button>` : `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
-  const wrongHtml = rpgOn ? `<button class="big hard rs-hardrow" id="everwrong" ${everWrong.length ? '' : 'disabled'}>${ruby('{一度|いちど}でも{間違|まちが}えた{問題|もんだい}')}：${everWrong.length}${ruby('{問|もん}')}<span class="rs-chg">${ruby('{解|と}く')}</span></button>` : `<button class="big hard" id="everwrong" ${everWrong.length ? '' : 'disabled'}>一度でも間違えた問題（${everWrong.length}問）</button>`;
+  const wrongHtml = rpgOn ? `<button class="big hard rs-hardrow" id="everwrong" ${everWrong.length ? '' : 'disabled'}>${ruby('{過去|かこ}に{間違|まちが}えた{問題|もんだい}')}：${everWrong.length}${ruby('{問|もん}')}<span class="rs-chg">${ruby('{全部|ぜんぶ}の{履歴|りれき}')}</span></button>` : `<button class="big hard" id="everwrong" ${everWrong.length ? '' : 'disabled'}>過去に間違えた問題（全履歴 ${everWrong.length}問）</button>`;
+  const pendingHtml = pending.length ? `<div style="font-size:13px;color:#575970;padding:5px 12px 9px">3回連続正解した問題：${pending.length}問は3日後の確認待ち（今日の復習には出ません）</div>` : '';
   const testHtml = tp.length ? (rpgOn ? `<button class="big test" id="testp">${ruby('{今回|こんかい}のテスト{対策|たいさく}')}（${tp.length}${ruby('{個|こ}')}）</button>` : `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>`) : '';
-  const startHtml = goHtml + testHtml + hardHtml + wrongHtml;
+  const startHtml = goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
   const unitN = (units[filter] || []).length;
   const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
@@ -206,7 +236,7 @@ function home() {
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
       <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
-      ${hardHtml}${wrongHtml}</div>
+      ${hardHtml}${pendingHtml}${wrongHtml}</div>
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
@@ -404,8 +434,18 @@ function now() {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}${o >= 0 ? '+' : '-'}${p(Math.floor(a / 60))}:${p(a % 60)}`;
 }
 function record(q, ok, picked, skipped) {
-  const t = now(), x = Object.assign({ w: 0, c: 0, s: 0, l: '', t: '' }, stats[q.id]);
-  if (ok) { x.c++; x.s++; x.l = 'o'; } else { x.w++; x.s = 0; x.l = 'x'; if (skipped) x.k = (x.k || 0) + 1; }
+  const t = now(), day = t.slice(0,10), x = Object.assign({ w: 0, c: 0, s: 0, l: '', t: '' }, stats[q.id]);
+  // 後日確認の期限が来ていれば、今回の正解で「復習完了」。
+  // 期限より前に何度正解しても確認済みとはしない。
+  const verifying = x.w > 0 && x.s >= MASTER && !x.verified && !!checkDay(x) && day >= checkDay(x);
+  if (ok) {
+    x.c++; x.s++; x.l = 'o';
+    if (verifying) { x.verified = true; x.due = ''; }
+    else if (x.w > 0 && x.s === MASTER && !x.verified) x.due = plusDays(day, CHECK_AFTER_DAYS);
+  } else {
+    x.w++; x.s = 0; x.l = 'x'; x.verified = false; x.due = '';
+    if (skipped) x.k = (x.k || 0) + 1;
+  }
   x.t = t; stats[q.id] = x; save(LS_STATS, stats);
   queue.seq++;
   const row = { rid: dev + '-' + queue.seq, t, test: q.test, qid: q.id, ok, pick: plain(picked), sess: S.sess };
