@@ -68,6 +68,32 @@ function expText(q) {
   return n ? (GROUP_RUBY[n] || n) + 'の問題です' : '';
 }
 function expHtml(q) { const t = expText(q); return t ? '<div class="exp">' + ruby(t) + '</div>' : ''; }
+// 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
+// Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
+const BIRD_PHOTOS = {
+  'ヒヨドリ': ['Bulbul Brown-eared (ヒヨドリ).jpg', 'CC BY 2.0'],
+  'ツグミ': ['Dusky Thrush (Turdus eunomus) (24142348640).jpg', 'CC BY-SA 2.0'],
+  'マガモ': ['Mallard (Anas platyrhynchos).jpg', 'CC BY-SA 3.0'],
+  'ホトトギス': ['Cuculus poliocephalus.jpg', 'CC BY 2.0'],
+  'ツバメ': ['Barn Swallow (Hirundo rustica).jpg', 'CC BY-SA 2.0'],
+  'ウグイス': ['Japanese Bush Warbler.jpg', 'CC BY-SA 2.0']
+};
+function birdPhotoHtml(q) {
+  if (q.subject !== '理科' || q.unit !== '鳥のなかま') return '';
+  // 鳥名が問題文に登場するものだけ表示（「何鳥？」の答えを写真で示す形式にはしない）。
+  const questionText = plain(q.q);
+  const name = Object.keys(BIRD_PHOTOS).find(n => questionText.includes(n));
+  if (!name) return '';
+  const [filename, license] = BIRD_PHOTOS[name];
+  const fileUrl = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename);
+  const imgUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename) + '?width=520';
+  return '<figure style="max-width:360px;margin:8px auto 16px;text-align:center">' +
+    '<img src="' + imgUrl + '" alt="' + name + 'の実際の姿" loading="lazy" ' +
+    'style="display:block;max-width:100%;width:100%;height:190px;object-fit:contain;border-radius:12px;background:#f6f6f6" onerror="this.style.display=\'none\'">' +
+    '<figcaption style="font-size:14px;line-height:1.6;color:#555">' + name + 'の写真（姿のイメージ）' +
+    '<br><a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer" style="font-size:11px">写真・撮影者・利用条件：Wikimedia Commons（' + license + '）</a></figcaption></figure>';
+}
+
 // 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
 function revealNext() { const n = document.getElementById('next'); if (n && n.scrollIntoView) n.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
 function waitTap() {
@@ -184,7 +210,7 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div></div>
+    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div>${birdPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
