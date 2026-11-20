@@ -5,6 +5,7 @@ const NOSEND = PARAMS.get('nosend') === '1' || MAMA;
 const ROUND = 10, MASTER = 3, REASK_GAP = 3, REASK_MAX = 5, BATCH = 200;
 const SUBJECTS = ['国語', '算数', '理科', '社会'];
 const LS_SFX = MAMA ? '.mama' : '';
+const LS_DAILY = 'ichimon.daily.v1' + LS_SFX;
 const LS_STATS = 'ichimon.stats.v1' + LS_SFX, LS_Q = 'ichimon.queue.v1' + LS_SFX, LS_DEV = 'ichimon.dev.v1' + LS_SFX, LS_SEL = 'ichimon.sel.v1' + LS_SFX;
 // ---------- 保存（localStorage。使えなくても動く） ----------
 const mem = {};
@@ -195,6 +196,20 @@ function mapLabel(q) {
   return '地図：' + (m.hl && m.mark ? m.hl + 'の' + m.mark : (m.hl || m.mark || ''));
 }
 
+// 今日解いた回数。正解・不正解・わかんない・解き直しをそれぞれ1問として数える。
+function todaySolved() {
+  const day = now().slice(0, 10);
+  const daily = load(LS_DAILY, {});
+  return Number(daily[day] || 0);
+}
+function addTodaySolved(day) {
+  const daily = load(LS_DAILY, {});
+  daily[day] = Number(daily[day] || 0) + 1;
+  // 保存量を抑えるため、最近90日分を残す。
+  const keys = Object.keys(daily).sort();
+  keys.slice(0, Math.max(0, keys.length - 90)).forEach(k => delete daily[k]);
+  save(LS_DAILY, daily);
+}
 // ---------- 画面：最初 ----------
 function home() {
   app.className = ''; if (window.RPG) RPG.unmount();
@@ -232,6 +247,7 @@ function home() {
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
+    <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${RPG.homeBonus()}
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
@@ -244,6 +260,7 @@ function home() {
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
     ${subjectsHtml}
+    <div style="text-align:center;padding:8px 12px;font-weight:bold" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${startHtml}
     ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
@@ -452,6 +469,7 @@ function record(q, ok, picked, skipped) {
   if (skipped) row.skip = 1;
   queue.rows.push(row);
   save(LS_Q, queue);
+  addTodaySolved(day);
   if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
 }
 let sending = false;
