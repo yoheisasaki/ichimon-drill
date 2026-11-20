@@ -41,6 +41,8 @@ function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => id
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 function isMaster(id) { return st(id).s >= MASTER; }
 function isHard(id) { const x = st(id); return x.w > 0 && x.s < MASTER; }
+// 一度でも間違えた記録がある問題。連続正解して覚えた問題も含む。
+function wasWrong(id) { return st(id).w > 0; }
 function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
 function score(q) {
   const x = st(q.id), seen = x.w + x.c > 0;
@@ -147,7 +149,7 @@ function home() {
     const c = counts(list);
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${rpgOn ? `${ruby('{復習|ふくしゅう}')} ${c.hard}${ruby('{個|こ}')} ／ ${ruby('{覚|おぼ}')}えた ${c.ok}${ruby('{個|こ}')}<br>${ruby('{全部|ぜんぶ}')} ${c.all}${ruby('{個|こ}')}` : `${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ`}</small></button>`;
   };
-  const p = pool(), hard = p.filter(q => isHard(q.id)), tp = pickPool();
+  const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), tp = pickPool();
   const rangeOpen = !!window.__rangeOpen;
   const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
@@ -157,8 +159,9 @@ function home() {
   const note = rpgOn && RPG.progressNote ? RPG.progressNote() : null;
   const goHtml = rpgOn ? `<button class="big go rs-startbtn" id="go"><span class="rs-sb1">${goLabel}</span></button>${nowTxt ? `<div class="rs-contline">${ruby('{続|つづ}き')}：${nowTxt}${note ? `　<span>${ruby('{冒険|ぼうけん}')}の${ruby('{途中|とちゅう}')} ${note.n} / ${note.unit}</span>` : ''}</div>` : ''}` : `<button class="big go" id="go">${goLabel}</button>`;
   const hardHtml = rpgOn ? `<button class="big hard rs-hardrow" id="hard" ${hard.length ? '' : 'disabled'}>${ruby('{復習|ふくしゅう}が{必要|ひつよう}')}：${hard.length}${ruby('{項目|こうもく}')}<span class="rs-chg">${ruby('{復習|ふくしゅう}する')}</span></button>` : `<button class="big hard" id="hard" ${hard.length ? '' : 'disabled'}>${hardLabel}</button>`;
+  const wrongHtml = rpgOn ? `<button class="big hard rs-hardrow" id="everwrong" ${everWrong.length ? '' : 'disabled'}>${ruby('{一度|いちど}でも{間違|まちが}えた{問題|もんだい}')}：${everWrong.length}${ruby('{問|もん}')}<span class="rs-chg">${ruby('{解|と}く')}</span></button>` : `<button class="big hard" id="everwrong" ${everWrong.length ? '' : 'disabled'}>一度でも間違えた問題（${everWrong.length}問）</button>`;
   const testHtml = tp.length ? (rpgOn ? `<button class="big test" id="testp">${ruby('{今回|こんかい}のテスト{対策|たいさく}')}（${tp.length}${ruby('{個|こ}')}）</button>` : `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>`) : '';
-  const startHtml = goHtml + testHtml + hardHtml;
+  const startHtml = goHtml + testHtml + hardHtml + wrongHtml;
   const unitN = (units[filter] || []).length;
   const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
@@ -170,7 +173,7 @@ function home() {
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
       <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
-      ${hardHtml}</div>
+      ${hardHtml}${wrongHtml}</div>
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
@@ -199,6 +202,7 @@ function home() {
   }
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
   document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
+  document.getElementById('everwrong').onclick = () => start(pick(everWrong, ROUND), 'everwrong');
   const tb = document.getElementById('testp');
   if (tb) tb.onclick = () => start(pick(tp, ROUND), 'pick');
 }
@@ -347,7 +351,7 @@ function result() {
   const again = document.getElementById('again');
   if (again) again.onclick = () => start(shuffle(S.wrong), S.from, { manual: true });
   document.getElementById('more').onclick = () => {
-    const p = S.from === 'pick' ? pickPool() : pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
+    const p = S.from === 'pick' ? pickPool() : S.from === 'everwrong' ? pool().filter(q => wasWrong(q.id)) : pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
     start(pick(fresh.length >= 3 ? fresh : p, ROUND), S.from);
   };
   document.getElementById('end').onclick = () => home();
