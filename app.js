@@ -67,7 +67,18 @@ function expText(q) {
   const n = q.map.hl || (q.unit || '').replace(/^地図：/, '');
   return n ? (GROUP_RUBY[n] || n) + 'の問題です' : '';
 }
-function expHtml(q) { const t = expText(q); return t ? '<div class="exp">' + ruby(t) + '</div>' : ''; }
+// 図解は問題を解く前ではなく、答え合わせ後の解説だけに表示する。
+const EXPLANATION_IMAGES = {
+  'ri-0068': { src: 'images/medaka-fins.svg', alt: 'メダカのひれ5種類の位置。むなびれ、はらびれ、せびれ、しりびれ、おびれ。合計7枚。' },
+  'ri-0070': { src: 'images/pancreas-location.svg', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' }
+};
+function expHtml(q) {
+  const t = expText(q);
+  const im = EXPLANATION_IMAGES[q.id];
+  if (!t && !im) return '';
+  const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
+  return '<div class="exp">' + (t ? ruby(t) : '') + fig + '</div>';
+}
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
 const BIRD_PHOTOS = {
