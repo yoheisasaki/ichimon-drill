@@ -47,7 +47,7 @@ function localDay() {
   return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
 }
 function plusDays(day, n) {
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(day || '')) return '';
+  if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(day || '')) return '';
   const [y,m,d] = day.split('-').map(Number);
   const date = new Date(y, m - 1, d + n);
   return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
