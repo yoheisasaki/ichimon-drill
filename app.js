@@ -44,13 +44,46 @@ function isHard(id) { const x = st(id); return x.w > 0 && x.s < MASTER; }
 // 一度でも間違えた記録がある問題。連続正解して覚えた問題も含む。
 function wasWrong(id) { return st(id).w > 0; }
 function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
-function score(q) {
-  const x = st(q.id), seen = x.w + x.c > 0;
-  return x.w * 3 + (x.l === 'x' ? 5 : 0) + (seen ? 0 : 2) - x.s - (x.s >= MASTER ? 3 : 0);
-}
+// 初めての問題を優先。解いた問題は最後に解いた日時が古い順に回す。
+// 同じ10問に、できるだけ違う分野を混ぜる。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function pick(list, n) {
-  return shuffle(list).map(q => [q, score(q)]).sort((a, b) => b[1] - a[1]).slice(0, n).map(p => p[0]);
+  const never = [], done = [];
+  shuffle(list).forEach(q => {
+    const x = st(q.id);
+    (x.w + x.c > 0 ? done : never).push(q);
+  });
+  // 分野ごとに分け、各分野から1問ずつ取り出す。偏りを避ける。
+  function spread(questions, limit) {
+    const groups = new Map();
+    questions.forEach(q => {
+      const g = q.subject + ':' + groupOf(q);
+      if (!groups.has(g)) groups.set(g, []);
+      groups.get(g).push(q);
+    });
+    const buckets = shuffle([...groups.values()]);
+    const chosen = [];
+    while (chosen.length < limit && buckets.some(b => b.length)) {
+      for (const bucket of buckets) {
+        if (chosen.length >= limit) break;
+        if (bucket.length) chosen.push(bucket.shift());
+      }
+    }
+    return chosen;
+  }
+  const unseen = spread(never, n);
+  if (unseen.length >= n) return unseen;
+  // 直近に解いた問題が続かないよう、古く解いたものから候補にする。
+  done.sort((a, b) => (st(a.id).t || '').localeCompare(st(b.id).t || ''));
+  // 古い問題をまず優先しつつ、偏った分野を固めない。
+  const needed = n - unseen.length;
+  const oldest = done.slice(0, Math.max(needed * 3, needed));
+  const selected = spread(oldest, needed);
+  if (selected.length < needed) {
+    const used = new Set(selected.map(q => q.id));
+    selected.push(...done.filter(q => !used.has(q.id)).slice(0, needed - selected.length));
+  }
+  return shuffle(unseen.concat(selected));
 }
 function pool() {
   const sel = (units[filter] || []);
@@ -201,7 +234,7 @@ function home() {
     const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
   }
   document.getElementById('go').onclick = () => start(pick(p, ROUND));
-  document.getElementById('hard').onclick = () => start(pick(hard, ROUND));
+  document.getElementById('hard').onclick = () => start(pick(hard, ROUND), 'hard');
   document.getElementById('everwrong').onclick = () => start(pick(everWrong, ROUND), 'everwrong');
   const tb = document.getElementById('testp');
   if (tb) tb.onclick = () => start(pick(tp, ROUND), 'pick');
@@ -214,13 +247,15 @@ function start(list, from, opts) {
   if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
   list = pre.list;
   if (!list.length && !pre.reviews.length) return home();
-  S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), locked: false, timer: null };
+  S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), reaskedIds: new Set(), locked: false, timer: null };
   question();
 }
 // 間違えた問題を3問あとにもう一度（1回の延長は最大5問）。ぼうけん中は冒険単位で数える
 function reask(q) {
-  if (S.reask >= REASK_MAX) return;
+  // 間違えた直後の再確認は同じ問題につき1回まで。
+  if (S.reask >= REASK_MAX || S.reaskedIds.has(q.id)) return;
   if (S.rpg && !RPG.queueReview(q, S)) return;
+  S.reaskedIds.add(q.id);
   S.reask++;
   const at = Math.min(S.idx + REASK_GAP, S.queue.length);
   let w = q;
@@ -351,8 +386,14 @@ function result() {
   const again = document.getElementById('again');
   if (again) again.onclick = () => start(shuffle(S.wrong), S.from, { manual: true });
   document.getElementById('more').onclick = () => {
-    const p = S.from === 'pick' ? pickPool() : S.from === 'everwrong' ? pool().filter(q => wasWrong(q.id)) : pool(), done = new Set(S.queue.map(q => q.id)), fresh = p.filter(q => !done.has(q.id));
-    start(pick(fresh.length >= 3 ? fresh : p, ROUND), S.from);
+    const p = S.from === 'pick' ? pickPool() : S.from === 'everwrong' ? pool().filter(q => wasWrong(q.id)) : S.from === 'hard' ? pool().filter(q => isHard(q.id)) : pool();
+    const done = new Set(S.queue.map(q => q.id));
+    const fresh = p.filter(q => !done.has(q.id));
+    const next = pick(fresh, ROUND);
+    if (next.length < ROUND) next.push(...pick(p.filter(q => !done.has(q.id) && !next.some(n => n.id === q.id)), ROUND - next.length));
+    // 候補を一巡したときだけ、その回の問題を再度使う。
+    if (next.length < ROUND) next.push(...pick(p.filter(q => !next.some(n => n.id === q.id)), ROUND - next.length));
+    start(next, S.from);
   };
   document.getElementById('end').onclick = () => home();
 }
