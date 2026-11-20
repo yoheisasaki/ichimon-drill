@@ -70,7 +70,7 @@ function expText(q) {
 // 図解は問題を解く前ではなく、答え合わせ後の解説だけに表示する。
 const EXPLANATION_IMAGES = {
   'ri-0068': { src: 'images/medaka-fins.svg', alt: 'メダカのひれ5種類の位置。むなびれ、はらびれ、せびれ、しりびれ、おびれ。合計7枚。' },
-  'ri-0070': { src: 'images/pancreas-location.svg', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' }
+  'ri-0070': { src: 'images/pancreas-location-v2.webp', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' }
 };
 function expHtml(q) {
   const t = expText(q);
