@@ -89,6 +89,20 @@ const BIRD_PHOTOS = {
   'ツバメ': 'Barn Swallow (Hirundo rustica).jpg',
   'ウグイス': 'Japanese bush warbler（Horornis diphone）ウグイス.jpg'
 };
+// 社会・写真で見分ける問題。問題文では答えを隠し、写真は解答前に表示する。
+function socialPhotoHtml(q) {
+  if (q.subject !== '社会' || !q.photo || !q.photo.file) return '';
+  const filename = q.photo.file;
+  const fileUrl = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename);
+  const imgUrl = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580';
+  return '<figure style="max-width:460px;margin:10px auto 14px;text-align:center">' +
+    '<img src="' + imgUrl + '" alt="問題の参考写真" loading="eager" referrerpolicy="no-referrer" ' +
+    'style="display:block;max-width:100%;width:100%;max-height:275px;object-fit:contain;border-radius:12px;background:#f6f6f6" ' +
+    'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">' +
+    '<div style="display:none;padding:14px;font-size:13px">写真を表示できませんでした。下のリンクから写真を開いてね。</div>' +
+    '<figcaption style="font-size:12px;line-height:1.7;color:#666">出典：Wikimedia Commons　' +
+    '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">写真のページ</a></figcaption></figure>';
+}
 function birdPhotoHtml(q) {
   if (q.subject !== '理科' || q.unit !== '鳥のなかま') return '';
   const questionText = plain(q.q);
@@ -222,7 +236,7 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div>${birdPhotoHtml(q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div>${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
