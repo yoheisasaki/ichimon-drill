@@ -78,42 +78,61 @@ function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pe
 // 同じ10問に、できるだけ違う分野を混ぜる。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function pick(list, n) {
-  const never = [], done = [];
-  shuffle(list).forEach(q => {
+  // 苦手・新規・定着確認を混ぜる。復習完了の確認待ちは通常出題を控える。
+  const unique = [...new Map(list.map(q => [q.id, q])).values()];
+  const weak = [], fresh = [], old = [], pending = [];
+  unique.forEach(q => {
     const x = st(q.id);
-    (x.w + x.c > 0 ? done : never).push(q);
+    if (isPending(q.id) && !isDue(q.id)) pending.push(q);
+    else if (isHard(q.id)) weak.push(q);
+    else if (x.w + x.c === 0) fresh.push(q);
+    else old.push(q);
   });
-  // 分野ごとに分け、各分野から1問ずつ取り出す。偏りを避ける。
+  // 繰り返し間違える問題ほど上位。同程度なら最後に解いた日が古いものを優先。
+  weak.sort((a, b) => {
+    const x = st(a.id), y = st(b.id);
+    const pa = (isDue(a.id) ? 15 : 0) + x.w * 10 - x.s * 4;
+    const pb = (isDue(b.id) ? 15 : 0) + y.w * 10 - y.s * 4;
+    return pb - pa || (x.t || '').localeCompare(y.t || '');
+  });
+  old.sort((a, b) => (st(a.id).t || '').localeCompare(st(b.id).t || ''));
+  // 各分類内は、可能な限り異なる教科・単元を選んで偏りを防ぐ。
   function spread(questions, limit) {
-    const groups = new Map();
+    const buckets = new Map();
     questions.forEach(q => {
-      const g = q.subject + ':' + groupOf(q);
-      if (!groups.has(g)) groups.set(g, []);
-      groups.get(g).push(q);
+      const key = q.subject + ':' + groupOf(q);
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(q);
     });
-    const buckets = shuffle([...groups.values()]);
-    const chosen = [];
-    while (chosen.length < limit && buckets.some(b => b.length)) {
-      for (const bucket of buckets) {
-        if (chosen.length >= limit) break;
-        if (bucket.length) chosen.push(bucket.shift());
+    const selected = [], groups = [...buckets.values()];
+    while (selected.length < limit && groups.some(g => g.length)) {
+      for (const group of groups) {
+        if (selected.length >= limit) break;
+        if (group.length) selected.push(group.shift());
       }
     }
-    return chosen;
+    return selected;
   }
-  const unseen = spread(never, n);
-  if (unseen.length >= n) return unseen;
-  // 直近に解いた問題が続かないよう、古く解いたものから候補にする。
-  done.sort((a, b) => (st(a.id).t || '').localeCompare(st(b.id).t || ''));
-  // 古い問題をまず優先しつつ、偏った分野を固めない。
-  const needed = n - unseen.length;
-  const oldest = done.slice(0, Math.max(needed * 3, needed));
-  const selected = spread(oldest, needed);
-  if (selected.length < needed) {
-    const used = new Set(selected.map(q => q.id));
-    selected.push(...done.filter(q => !used.has(q.id)).slice(0, needed - selected.length));
+  // 10問なら苦手4・初見4・定着2が目安。候補不足時は空き枠を融通する。
+  const selected = [];
+  const used = new Set();
+  function take(candidates, limit) {
+    const available = candidates.filter(q => !used.has(q.id));
+    for (const q of spread(available, limit)) {
+      if (selected.length >= n) break;
+      selected.push(q); used.add(q.id);
+    }
   }
-  return shuffle(unseen.concat(selected));
+  take(weak, Math.ceil(n * 0.4));
+  take(fresh, Math.ceil(n * 0.4));
+  take(old, n - selected.length);
+  // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
+  if (selected.length < n) take(weak, n - selected.length);
+  if (selected.length < n) take(fresh, n - selected.length);
+  if (selected.length < n) take(old, n - selected.length);
+  if (selected.length < n) take(pending, n - selected.length);
+  // 優先順位による選定は保ち、実際の出題順だけ交互にする。
+  return spread(selected, n);
 }
 function pool() {
   const sel = (units[filter] || []);
