@@ -71,27 +71,28 @@ function expHtml(q) { const t = expText(q); return t ? '<div class="exp">' + rub
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
 const BIRD_PHOTOS = {
-  'ヒヨドリ': ['Bulbul Brown-eared (ヒヨドリ).jpg', 'CC BY 2.0'],
-  'ツグミ': ['Dusky Thrush (Turdus eunomus) (24142348640).jpg', 'CC BY-SA 2.0'],
-  'マガモ': ['Mallard (Anas platyrhynchos).jpg', 'CC BY-SA 3.0'],
-  'ホトトギス': ['Cuculus poliocephalus.jpg', 'CC BY 2.0'],
-  'ツバメ': ['Barn Swallow (Hirundo rustica).jpg', 'CC BY-SA 2.0'],
-  'ウグイス': ['Japanese Bush Warbler.jpg', 'CC BY-SA 2.0']
+  'ヒヨドリ': 'Hypsipetes amaurotis.jpg',
+  'ツグミ': 'Dusky Thrush (Turdus eunomus) (24142348640).jpg',
+  'マガモ': 'Mallard (Anas platyrhynchos).jpg',
+  'ホトトギス': 'Cuculus poliocephalus.jpg',
+  'ツバメ': 'Barn Swallow (Hirundo rustica).jpg',
+  'ウグイス': 'Japanese bush warbler（Horornis diphone）ウグイス.jpg'
 };
 function birdPhotoHtml(q) {
   if (q.subject !== '理科' || q.unit !== '鳥のなかま') return '';
-  // 鳥名が問題文に登場するものだけ表示（「何鳥？」の答えを写真で示す形式にはしない）。
   const questionText = plain(q.q);
   const name = Object.keys(BIRD_PHOTOS).find(n => questionText.includes(n));
   if (!name) return '';
-  const [filename, license] = BIRD_PHOTOS[name];
+  const filename = BIRD_PHOTOS[name];
   const fileUrl = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename);
-  const imgUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename) + '?width=520';
-  return '<figure style="max-width:360px;margin:8px auto 16px;text-align:center">' +
-    '<img src="' + imgUrl + '" alt="' + name + 'の実際の姿" loading="lazy" ' +
-    'style="display:block;max-width:100%;width:100%;height:190px;object-fit:contain;border-radius:12px;background:#f6f6f6" onerror="this.style.display=\'none\'">' +
-    '<figcaption style="font-size:14px;line-height:1.6;color:#555">' + name + 'の写真（姿のイメージ）' +
-    '<br><a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer" style="font-size:11px">写真・撮影者・利用条件：Wikimedia Commons（' + license + '）</a></figcaption></figure>';
+  const imgUrl = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=520';
+  return '<figure style="max-width:360px;margin:10px auto 14px;text-align:center">' +
+    '<img src="' + imgUrl + '" alt="' + name + 'の写真" loading="eager" referrerpolicy="no-referrer" ' +
+    'style="display:block;max-width:100%;width:100%;max-height:230px;object-fit:contain;border-radius:12px;background:#f6f6f6" ' +
+    'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">' +
+    '<div style="display:none;padding:18px;font-size:13px">写真を読み込めませんでした。下のリンクから鳥の姿を見ることができます。</div>' +
+    '<figcaption style="font-size:13px;line-height:1.7;color:#555">' + name + 'の姿<br>' +
+    '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">鳥の写真を見る（Wikimedia Commons）</a></figcaption></figure>';
 }
 
 // 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
