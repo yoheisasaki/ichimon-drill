@@ -22,7 +22,7 @@
   // 主人公の絵は全て heroCv（canvas＋data-hero）→ paintHeroes → SP.drawHeroLayered。画像の読込が終わると SP.onUpdate で描き直す
   // 舞台（背景）：用途ごとの背景画像・大きさ（canvas の1px＝CSSの1px。主人公は整数倍）
   const STAGE = {
-    home: { bg: 'bg_town', h: 190, k: 1.5, pose: 'idle', at: 0.5, gy: 24 }, self: { bg: 'bg_room_room', w: 150, h: 160, k: 1.35, pose: 'idle', at: 0.5, gy: 10 }, town: { bg: 'bg_town', h: 150, k: 1, pose: 'idle', at: 0.5, gy: 14 },
+    home: { bg: 'bg_town', h: 190, k: 1.1, pose: 'idle', at: 0.5, gy: 24 }, self: { bg: 'bg_room_room', w: 150, h: 160, k: 1.35, pose: 'idle', at: 0.5, gy: 10 }, town: { bg: 'bg_town', h: 150, k: 0.8, pose: 'idle', at: 0.5, gy: 14 },
     equip: { bg: 'bg_room_shop', w: 132, h: 160, k: 1.35, pose: 'idle', at: 0.5, gy: 10 }, job: { bg: 'bg_room_temple', h: 196, k: 1.5, pose: 'idle', at: 0.5, gy: 12 },
     jobcard: { bg: 'bg_room_temple', w: 56, h: 64, k: 0.5, pose: 'idle', at: 0.5, gy: 5 }, look: { bg: 'bg_room_room', h: 208, k: 2, pose: 'idle', at: 0.5 },
     ending: { bg: 'bg_crown', h: 232, k: 2, pose: 'win', at: 0.5 }, fx: { bg: 'bg_room_temple', w: 240, h: 232, k: 2, pose: 'idle', at: 0.5 }, mini: { w: 44, h: 36, k: 1, pose: 'idle', at: 0.5, plain: true, strip: true }
