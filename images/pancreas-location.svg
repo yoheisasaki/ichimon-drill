@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="470" viewBox="0 0 720 470" role="img" aria-labelledby="t d"><title id="t">すい臓の位置と働き</title><desc id="d">すい臓は胃の後ろ側に横長にあり、十二指腸につながって、すい液を送る。</desc><rect width="720" height="470" fill="#fffdf9"/>
+<text x="28" y="47" font-size="28" font-weight="bold" font-family="sans-serif" fill="#2e3543">すい臓の場所</text>
+<path d="M140 90 Q125 125 101 147 L74 280 Q55 373 116 415 L376 415 Q441 365 419 275 L390 150 Q360 125 338 90" fill="#f0e8df" stroke="#8c837c" stroke-width="4"/>
+<path d="M155 116 Q145 176 171 202 Q179 175 198 154 Q182 119 155 116Z" fill="#f1a8a6" opacity=".7"/>
+<path d="M317 116 Q337 177 302 205 Q292 169 275 157 Q287 117 317 116Z" fill="#f1a8a6" opacity=".7"/>
+<path d="M225 88 L225 171" stroke="#ab7c76" stroke-width="18" fill="none"/>
+<path d="M222 177 Q286 153 314 224 Q334 286 271 299 Q221 309 206 264 Q191 215 222 177Z" fill="#f5adb8" stroke="#af657b" stroke-width="5"/>
+<path d="M213 292 Q167 305 190 353 Q209 379 250 359 Q273 342 256 310" fill="none" stroke="#c56b79" stroke-width="25"/>
+<path d="M213 292 Q167 305 190 353 Q209 379 250 359 Q273 342 256 310" fill="none" stroke="#f7bac0" stroke-width="18"/>
+<path d="M169 281 Q188 258 234 259 Q273 257 318 282 Q330 304 302 318 Q258 315 221 326 Q174 331 169 281Z" fill="#e5ad4d" stroke="#a96c21" stroke-width="5"/>
+<path d="M232 290L255 332" fill="none" stroke="#b18140" stroke-width="4" stroke-dasharray="5 5"/>
+<g font-family="sans-serif" font-weight="bold" fill="#263d45"><text x="461" y="136" font-size="25">胃（い）</text><text x="461" y="243" font-size="25">すい臓</text><text x="461" y="345" font-size="25">十二指腸</text></g>
+<g fill="none" stroke="#3c6573" stroke-width="4"><path d="M448 129L305 232"/><path d="M448 238L297 295"/><path d="M448 337L254 343"/></g>
+<g fill="#3c6573"><circle cx="305" cy="232" r="6"/><circle cx="297" cy="295" r="6"/><circle cx="254" cy="343" r="6"/></g>
+<rect x="26" y="409" width="668" height="49" rx="13" fill="#fff1d8" stroke="#dcb46f"/><text x="360" y="441" text-anchor="middle" font-family="sans-serif" font-size="21" font-weight="bold" fill="#5d4323">胃の後ろ側にあり、十二指腸に「すい液」を送る</text>
+</svg>
