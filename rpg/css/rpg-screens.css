@@ -500,3 +500,7 @@ html:has(.rw3),body:has(.rw3){overflow:hidden}
 .rs-data .rpg-file rt,.rs-data .rpg-bkb button rt{line-height:1}
 /* 工房：最後の行がフッタに被らない余白 */
 .rs-forge-list{padding-bottom:24px}
+
+/* 子ども用更新ボタン：RPG共通のbutton指定に負けず、文字を明瞭に表示する */
+.rs-topbar button.kid-refresh-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:70px;min-height:40px;padding:5px 9px!important;border:2px solid #ffe27a!important;border-radius:12px!important;background:#ffe27a!important;color:#18264b!important;font-family:inherit;font-size:14px!important;font-weight:900!important;line-height:1.1!important;opacity:1!important;box-shadow:0 2px 0 #a88231!important}
+.rs-topbar button.kid-refresh-btn:disabled{opacity:.7!important}
