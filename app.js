@@ -32,6 +32,16 @@ function groupsOf(subject) {
 }
 let S = null; // 回の状態
 const app = document.getElementById('app');
+// 子ども画面の「更新」。学習記録とRPGの保存データは消さずに最新版を読み込む。
+// HTMLとapp.jsには更新時だけ新しいURLを使って、古いキャッシュを避ける。
+async function refreshKidApp() {
+  const btn = document.getElementById('kid-refresh');
+  if (btn) { btn.disabled = true; btn.textContent = '更新中…'; }
+  try { await flush(); } catch (e) { /* 未送信の記録は端末内のキューに残る */ }
+  const url = new URL(location.href);
+  url.searchParams.set('refresh', Date.now().toString());
+  location.replace(url.toString());
+}
 
 // 11/28 マンスリー直前の重点問題。問題データ本体は削除しない。
 // ?all=1 で全問題に戻せる（例: mama.html?all=1）。
@@ -287,7 +297,7 @@ function home() {
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
-    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリを最新版に更新">↻ 更新</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${RPG.homeBonus()}
@@ -298,6 +308,7 @@ function home() {
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
+    ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
@@ -307,6 +318,7 @@ function home() {
     ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     ${window.RPG ? RPG.navHtml('home') : ''}`;
+  if (!MAMA) { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
