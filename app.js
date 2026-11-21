@@ -98,6 +98,95 @@ function isHard(id) {
 }
 // 「過去に間違えた問題」は履歴を消さず、いつでも取り出せる。
 function wasWrong(id) { return st(id).w > 0; }
+
+// ---------- 風助の学習履歴：スマホとiPadを1人分として同期 ----------
+// 共通APIの全端末解答＋この端末の送信待ち（queue.rows）をridで重複排除し、
+// record()と同じ規則でstatsを再計算する。ママ用は一切同期しない。
+let historySyncPromise = null, historyLastSynced = 0, historyStartPending = false;
+const HISTORY_TIMEOUT = 6500, HISTORY_REFRESH_GAP = 15000;
+function replayKidAttempts(attempts) {
+  const x = { w: 0, c: 0, s: 0, l: '', t: '', verified: false, due: '', k: 0 };
+  for (const a of attempts) {
+    const t = String(a[0] || ''), day = t.slice(0, 10);
+    const chk = x.due || plusDays(x.t.slice(0, 10), CHECK_AFTER_DAYS);
+    if (a[1] === 'c') {
+      const verifying = x.w > 0 && x.s >= MASTER && !x.verified && !!chk && day >= chk;
+      x.c++; x.s++; x.l = 'o';
+      if (verifying) { x.verified = true; x.due = ''; }
+      else if (x.w > 0 && x.s === MASTER && !x.verified) x.due = plusDays(day, CHECK_AFTER_DAYS);
+    } else {
+      x.w++; x.s = 0; x.l = 'x'; x.verified = false; x.due = '';
+      if (a[1] === 'u') x.k++;
+    }
+    x.t = t;
+  }
+  return x;
+}
+function mergeKidAttempts(remote, local) {
+  const unique = new Map();
+  // サーバーのattemptsを先に読み、送信途中の同一ridは二重に数えない。
+  for (const a of remote.concat(local)) {
+    if (!Array.isArray(a) || a.length < 4 || !a[0] || !a[3]) continue;
+    if (a[1] !== 'c' && a[1] !== 'w' && a[1] !== 'u') continue;
+    if (!unique.has(String(a[3]))) unique.set(String(a[3]), a);
+  }
+  return [...unique.values()].sort((a, b) =>
+    (Date.parse(a[0]) || 0) - (Date.parse(b[0]) || 0));
+}
+function pendingKidAttempts() {
+  const p = new Map();
+  for (const r of queue.rows) {
+    if (!r.qid || !r.rid || !r.t) continue;
+    if (!p.has(r.qid)) p.set(r.qid, []);
+    p.get(r.qid).push([r.t, r.ok ? 'c' : (r.skip ? 'u' : 'w'), dev, r.rid]);
+  }
+  return p;
+}
+async function syncKidHistory(force = false) {
+  if (MAMA || !DATA) return;
+  if (historySyncPromise) return historySyncPromise;
+  if (!force && Date.now() - historyLastSynced < HISTORY_REFRESH_GAP) return;
+  historySyncPromise = (async () => {
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => { if (ctl) ctl.abort(); }, HISTORY_TIMEOUT);
+    try {
+      const url = (SEND_OVERRIDE || SEND_URL) + '?api=ichimon_history';
+      const r = await fetch(url, ctl ? { cache: 'no-cache', signal: ctl.signal } : { cache: 'no-cache' });
+      if (!r.ok) throw new Error('history HTTP error');
+      const h = await r.json();
+      if (!h || h.ok !== true || h.partial || !h.questions || typeof h.questions !== 'object' || Array.isArray(h.questions)) throw new Error('history format error');
+      // フェッチ中に解答した分もここで最新のキューから集める。
+      const pending = pendingKidAttempts(), next = Object.assign({}, stats);
+      const ids = new Set([...Object.keys(h.questions), ...pending.keys()]);
+      for (const id of ids) {
+        const remote = h.questions[id] && h.questions[id].attempts;
+        // 不完全なAPI応答で従来の履歴を消さない。
+        if (h.questions[id] && !Array.isArray(remote)) continue;
+        const all = mergeKidAttempts(remote || [], pending.get(id) || []);
+        if (all.length) next[id] = replayKidAttempts(all);
+      }
+      stats = next;
+      save(LS_STATS, stats);
+      historyLastSynced = Date.now();
+      // 解答中は画面を切り替えない。ホームにいる時だけ表示数を更新。
+      if (!historyStartPending && document.getElementById('go')) home();
+    } catch (e) {
+      // 電波がない時は今までどおり、この端末に残る履歴で学習する。
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
+  try { await historySyncPromise; } finally { historySyncPromise = null; }
+}
+async function beginKidSession(makeList, from, button) {
+  if (!MAMA) {
+    historyStartPending = true;
+    if (button) { button.disabled = true; button.textContent = '履歴を確認中…'; }
+    try { await syncKidHistory(true); } finally { historyStartPending = false; }
+  }
+  start(makeList(), from);
+}
+
 function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pending: list.filter(q => isPending(q.id) && !isDue(q.id)).length, due: list.filter(q => isDue(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
 // 初めての問題を優先。解いた問題は最後に解いた日時が古い順に回す。
 // 同じ10問に、できるだけ違う分野を混ぜる。
@@ -320,6 +409,7 @@ function home() {
     ${window.RPG ? RPG.navHtml('home') : ''}`;
   if (!MAMA) { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
+  if (!MAMA) void syncKidHistory();
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
   app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
     window.__rangeOpen = true; const g = b.dataset.g, cur = units[filter] || [];
@@ -334,11 +424,11 @@ function home() {
     const rx = document.getElementById('rsRangeX'); if (rx) rx.onclick = e => { e.preventDefault(); setO(false); };
     const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
   }
-  document.getElementById('go').onclick = () => start(pickStart(p, ROUND));
-  document.getElementById('hard').onclick = () => start(pick(hard, ROUND), 'hard');
-  document.getElementById('everwrong').onclick = () => start(pick(everWrong, ROUND), 'everwrong');
+  document.getElementById('go').onclick = e => beginKidSession(() => pickStart(pool(), ROUND), '', e.currentTarget);
+  document.getElementById('hard').onclick = e => beginKidSession(() => pick(pool().filter(q => isHard(q.id)), ROUND), 'hard', e.currentTarget);
+  document.getElementById('everwrong').onclick = e => beginKidSession(() => pick(pool().filter(q => wasWrong(q.id)), ROUND), 'everwrong', e.currentTarget);
   const tb = document.getElementById('testp');
-  if (tb) tb.onclick = () => start(pick(tp, ROUND), 'pick');
+  if (tb) tb.onclick = e => beginKidSession(() => pick(pickPool(), ROUND), 'pick', e.currentTarget);
 }
 
 // ---------- 回 ----------
