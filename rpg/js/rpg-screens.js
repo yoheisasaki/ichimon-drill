@@ -366,7 +366,7 @@
   // ---------- 店（8章6章：所持コイン・カテゴリ・商品リスト・選択品の比較・下端購入。購入ボタンの位置は固定。購入後は装備への導線） ----------
   const statOfId = (s, id) => id ? (M.statOf(s, id) || {}) : {};
   VIEWS.shop = function () {
-    const s = save(), rank = C.maxRank(s), tabs = [['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセ'], ['sell', '売る・返す']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${kr(nm)}</button>`).join('');
+    const s = save(), rank = C.maxRank(s), tabs = [['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセサリー'], ['sell', '売る・返す']].map(([id, nm]) => `<button class="rs-tab2${UI.shopTab === id ? ' on' : ''}" data-st="${id}">${kr(nm)}</button>`).join('');
     const right = `<span class="rs-hcoin">${coinHtml()}</span>`;
     if (UI.shopTab === 'sell') {
       const own = Object.keys(s.inv.items).filter(i => i !== 'w_start').map(i => D.ITEMS[i]);
