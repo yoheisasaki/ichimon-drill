@@ -44,6 +44,10 @@ SOUND_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
 // p40で間違い・未回答だったところの復習8問（既存4問＋新規4問）。
 const SOUND_WEAK_IDS = ["ri-0086","ri-0087","ri-0088","ri-0089","ri-0090","ri-0091","ri-0092","ri-0093"];
 SOUND_WEAK_IDS.forEach(id => FOCUS_IDS.add(id));
+// 社会・授業動画の追加14問は全問残す。直近の理科の間違いと社会第8回を先に出す。
+const SOCIAL_VIDEO_IDS = ["sha-0501","sha-0502","sha-0503","sha-0504","sha-0505","sha-0506","sha-0507","sha-0508","sha-0509","sha-0510","sha-0511","sha-0512","sha-0513","sha-0514"];
+const SOCIAL_HIGH_IDS = ["sha-0504","sha-0505","sha-0506","sha-0507"];
+SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
@@ -124,18 +128,22 @@ function pick(list, n) {
     }
     return selected;
   }
-  // 10問なら苦手4・初見4・定着2が目安。候補不足時は空き枠を融通する。
+  // 10問なら苦手6・初見3・定着1が目安。候補不足時は空き枠を融通する。
   const selected = [];
   const used = new Set();
-  function take(candidates, limit) {
+  function take(candidates, limit, priorityIds = []) {
     const available = candidates.filter(q => !used.has(q.id));
-    for (const q of spread(available, limit)) {
+    const byId = new Map(available.map(q => [q.id, q]));
+    const priority = priorityIds.map(id => byId.get(id)).filter(Boolean);
+    const prioritySet = new Set(priority.map(q => q.id));
+    const ordered = priority.concat(spread(available.filter(q => !prioritySet.has(q.id)), limit));
+    for (const q of ordered.slice(0, limit)) {
       if (selected.length >= n) break;
       selected.push(q); used.add(q.id);
     }
   }
-  take(weak, Math.ceil(n * 0.4));
-  take(fresh, Math.ceil(n * 0.4));
+  take(weak, Math.ceil(n * 0.6));
+  take(fresh, Math.ceil(n * 0.3), ['ri-0086','sha-0504','ri-0087','sha-0505','ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_FIRST_IDS,...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
   take(old, n - selected.length);
   // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
   if (selected.length < n) take(weak, n - selected.length);
@@ -145,19 +153,10 @@ function pick(list, n) {
   // 優先順位による選定は保ち、実際の出題順だけ交互にする。
   return spread(selected, n);
 }
-// 最初のスタートは、今回追加した音の10問の未回答分を先に出す。
-// 一度回答した問題は通常の出題ローテーションに戻す。教科を選んだときはその範囲を尊重。
-function pickStart(list, n) {
-  if (MAMA || !['全部', '理科', '社会', 'ちず'].includes(filter)) return pick(list, n);
-  const byId = new Map(list.map(q => [q.id, q]));
-  // 未回答の地図の直しを先頭に。次に今回の理科の弱点8問、続いて波形10問を優先。
-  // 学習範囲の絞り込みと既存の復習・履歴はそのまま尊重する。
-  const priority = MAP_REVIEW_FIRST_IDS.concat(SOUND_WEAK_IDS, SOUND_FIRST_IDS);
-  const first = priority.map(id => byId.get(id)).filter(q => q && st(q.id).w + st(q.id).c === 0).slice(0, n);
-  if (!first.length) return pick(list, n);
-  const used = new Set(first.map(q => q.id));
-  return first.concat(pick(list.filter(q => !used.has(q.id)), n - first.length));
-}
+// 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
+// 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
+function pickStart(list, n) { return pick(list, n); }
+
 function pool() {
   const sel = (units[filter] || []);
   return qs().filter(q => filter === '全部' || (filter === 'ちず' ? !!q.map : filter === 'かく' ? q.type === 'input' : q.subject === filter && (!sel.length || sel.includes(groupOf(q)))));
