@@ -84,7 +84,22 @@
       ps.forEach(p => { if (p.r) { const r = doc.createElement('ruby'); r.appendChild(doc.createTextNode(p.t)); const rt = doc.createElement('rt'); rt.textContent = p.r; r.appendChild(rt); f.appendChild(r); } else f.appendChild(doc.createTextNode(p.t)); });
       t.parentNode.replaceChild(f, t); n++;
     });
+    wrapFlexRuby(el);
     return n;
+  }
+  // flex／grid の直下に「文字＋ruby」が並ぶと、ruby と文字が別々の箱になって縦中央に揃えられ、ルビ付きの漢字だけ下にずれる（WebKit＝iPad で目立つ）。
+  // 並んだ文字と ruby を1つの span（rb-line）にまとめて、ふつうの1行として組ませる。
+  function wrapFlexRuby(el) {
+    if (!el || !el.querySelectorAll || !el.ownerDocument || !el.ownerDocument.defaultView) return;
+    const doc = el.ownerDocument, gcs = doc.defaultView.getComputedStyle.bind(doc.defaultView), seen = new Set();
+    Array.prototype.forEach.call(el.querySelectorAll('ruby'), r => {
+      const p = r.parentNode; if (!p || p.nodeType !== 1 || seen.has(p) || p.classList.contains('rb-line')) return;
+      seen.add(p); if (!/flex|grid/.test(gcs(p).display)) return;
+      let run = [];
+      const flush = () => { if (run.some(n => n.nodeName === 'RUBY')) { const s = doc.createElement('span'); s.className = 'rb-line'; p.insertBefore(s, run[0]); run.forEach(n => s.appendChild(n)); } run = []; };
+      Array.prototype.slice.call(p.childNodes).forEach(n => { if (n.nodeType === 3 || n.nodeName === 'RUBY') run.push(n); else flush(); });
+      flush();
+    });
   }
   let obs = null, pending = new Set(), sched = 0;
   function flushPending() {
