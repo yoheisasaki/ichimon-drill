@@ -43,7 +43,7 @@
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'kid-refresh-20261121';
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'shared-history-20261121';
   document.write('<script src="app.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 </body>
