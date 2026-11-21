@@ -37,6 +37,9 @@ const app = document.getElementById('app');
 // ?all=1 で全問題に戻せる（例: mama.html?all=1）。
 const FOCUS_IDS = new Set(["ri-0004","ri-0018","ri-0019","ri-0033","ri-0036","ri-0042","ri-0061","ri-0062","ri-0063","ri-0064","ri-0065","sha-0020","sha-0023","sha-0029","sha-0035","sha-0040","sha-0054","sha-0055","sha-0056","sha-0057","sha-0059","sha-0060","sha-0063","sha-0064","sha-0066","sha-0067","sha-0201","sha-0202","koku-0014","koku-0015","koku-0042","koku-0057","koku-0061","koku-0201","koku-0202","koku-0205","map-0001","map-0009","map-0011","ri-0058","koku-0241","koku-0242","koku-0243","ri-0066","ri-0067","ri-0068","ri-0069","ri-0070","ri-0071","ri-0072","ri-0073","ri-0074","ri-0075","sha-0301","sha-0302","sha-0303","sha-0304","sha-0305","sha-0306","sha-0307","sha-0308","sha-0309","sha-0310","sha-0311","sha-0312","sha-0313","sha-0314","sha-0315","sha-0316","sha-0317","sha-0318","sha-0319","sha-0320","sha-0321","sha-0322","sha-0323","sha-0324","sha-0325","sha-0326","sha-0327","sha-0328","sha-0329","sha-0330","sha-0331","sha-0332","sha-0333","sha-0334","sha-0335","sha-0336","sha-0337","sha-0338","sha-0339","sha-0340","sha-0341","sha-0342","sha-0343","sha-0344","sha-0345","sha-0346","sha-0347","sha-0348","sha-0349","sha-0350","sha-0351","sha-0352","sha-0353","map-0015","map-0020","map-0021","map-0022","map-0029","map-0030","map-0032","map-0035","map-0036","map-0041","map-0042","map-0044","map-0045","map-0051","map-0052","map-0053","map-0059","map-0060","map-0062","map-0065","map-0012","map-0013","map-0014","map-0023","map-0024","map-0025","map-0027","map-0028","map-0031","map-0033","map-0038","map-0039","map-0040","map-0043","map-0047","map-0048","map-0050","map-0054","map-0056","map-0057","map-0058","map-0061","map-0064","map-0066","map-0016","map-0017","map-0026","map-0049","map-0055","map-0034","map-0063","map-0068","sha-0032"]);
 const SHOW_ALL = PARAMS.get('all') === '1';
+// 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
+function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
+function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
@@ -161,7 +164,7 @@ function expHtml(q) {
   const im = EXPLANATION_IMAGES[q.id];
   if (!t && !im) return '';
   const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
-  return '<div class="exp">' + (t ? ruby(t) : '') + fig + '</div>';
+  return '<div class="exp">' + (t ? qr(t, q) : '') + fig + '</div>';
 }
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
@@ -337,14 +340,14 @@ function question() {
   app.innerHTML = `
     <div class="top">
       <button class="btn-quit" id="quit">✕ やめる</button>
-      <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : ruby(q.unit || '')}</div>
+      <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${ruby(q.q)}</div>${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
-    <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
+    <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
     ${isIn || MAMA ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">けってい</button></div>'}
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
@@ -446,7 +449,7 @@ function result() {
   flush();
   app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
-  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>${S.rpg ? ruby('{間違|まちが}えた{問題|もんだい}') : 'まちがえた もんだい'}</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${esc(mapLabel(q))}</span>` : ''}${ruby(q.q)}<b>こたえ：${ruby(q.a)}</b>${q.exp ? `<span class="wexp">${ruby(q.exp)}</span>` : ''}</div>`).join('')}</div>` : '';
+  const wrongHtml = S.wrong.length ? `<div class="wrong-list"><h2>${S.rpg ? ruby('{間違|まちが}えた{問題|もんだい}') : 'まちがえた もんだい'}</h2>${S.wrong.map(q => `<div class="wi">${q.map ? `<span class="ml">${KanjiRubyOn(q) ? qr(mapLabel(q), q) : esc(mapLabel(q))}</span>` : ''}${qr(q.q, q)}<b>こたえ：${q.type === 'input' ? ruby(q.a) : qr(q.a, q)}</b>${q.exp ? `<span class="wexp">${qr(q.exp, q)}</span>` : ''}</div>`).join('')}</div>` : '';
   const rg = window.RPG ? RPG.afterSession(S) : null;
   const rh = rg && rg.settled ? RPG.rewardHtml(rg.res, S, wrongHtml + '<button class="rw-btn alt" id="again">' + ruby('{間違|まちが}えたのだけもう1回') + '</button>', S.wrong.length > 0) : null;
   if (rh) {
