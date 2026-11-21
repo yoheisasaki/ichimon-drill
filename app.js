@@ -41,6 +41,9 @@ const MAP_REVIEW_FIRST_IDS = ["map-0009","map-0001"];
 // 音の高さ・波形の新規10問も、通常出題の最初に一度ずつ優先する。
 const SOUND_FIRST_IDS = ["ri-0076","ri-0077","ri-0078","ri-0079","ri-0080","ri-0081","ri-0082","ri-0083","ri-0084","ri-0085"];
 SOUND_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
+// p40で間違い・未回答だったところの復習8問（既存4問＋新規4問）。
+const SOUND_WEAK_IDS = ["ri-0086","ri-0087","ri-0088","ri-0089","ri-0090","ri-0091","ri-0092","ri-0093"];
+SOUND_WEAK_IDS.forEach(id => FOCUS_IDS.add(id));
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
@@ -147,9 +150,9 @@ function pick(list, n) {
 function pickStart(list, n) {
   if (MAMA || !['全部', '理科', '社会', 'ちず'].includes(filter)) return pick(list, n);
   const byId = new Map(list.map(q => [q.id, q]));
-  // 未回答の地図の直しを先頭に。その後は、先ほど追加した音の10問を優先。
+  // 未回答の地図の直しを先頭に。次に今回の理科の弱点8問、続いて波形10問を優先。
   // 学習範囲の絞り込みと既存の復習・履歴はそのまま尊重する。
-  const priority = MAP_REVIEW_FIRST_IDS.concat(SOUND_FIRST_IDS);
+  const priority = MAP_REVIEW_FIRST_IDS.concat(SOUND_WEAK_IDS, SOUND_FIRST_IDS);
   const first = priority.map(id => byId.get(id)).filter(q => q && st(q.id).w + st(q.id).c === 0).slice(0, n);
   if (!first.length) return pick(list, n);
   const used = new Set(first.map(q => q.id));
