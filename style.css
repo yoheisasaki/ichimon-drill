@@ -16,6 +16,11 @@ rt{font-size:.45em;color:#77758a;font-weight:600}
 .choice{display:flex;align-items:center;gap:14px;width:100%;min-height:68px;background:#fff;border:3px solid #e1ddf2;border-radius:22px;padding:8px 16px;font-size:24px;font-weight:800;text-align:left;box-shadow:0 4px 0 #ddd8f0;transition:transform .15s}
 .choice .dot{flex:none;width:30px;height:30px;border-radius:50%;border:3px solid #dcd8ee;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
 .choice:active{transform:translateY(2px)}
+.choice.sel{background:#ece8ff;border-color:#7b61e0;box-shadow:0 4px 0 #cfc6f5}
+.choice.sel .dot{background:#7b61e0;border-color:#7b61e0}
+.decidew{margin-top:14px}
+.decidew .big{margin-bottom:0}
+#decidew{scroll-margin-bottom:calc(72px + env(safe-area-inset-bottom))}
 .choice.ok{background:#d9f5e3;border-color:#3cc07a;animation:pop .35s}
 .choice.ok .dot{background:#3cc07a;border-color:#3cc07a}
 .choice.ng{background:#fde0e0;border-color:#e5584f}

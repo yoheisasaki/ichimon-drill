@@ -330,7 +330,7 @@ function reask(q) {
 }
 function question() {
   const q = S.queue[S.idx];
-  S.locked = false; S.cur = q;
+  S.locked = false; S.cur = q; S.sel = -1;
   const isIn = q.type === 'input';
   const opts = isIn ? [] : shuffle([q.a, ...q.choices]);
   S.opts = opts;
@@ -345,6 +345,7 @@ function question() {
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${ruby(o)}</span></button>`).join('')}</div>
+    ${isIn || MAMA ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">けってい</button></div>'}
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>
@@ -352,7 +353,8 @@ function question() {
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
-  app.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
+  app.querySelectorAll('.choice').forEach(b => b.onclick = () => MAMA ? answer(+b.dataset.i) : pickChoice(+b.dataset.i));
+  const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
   if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: isIn ? 2.4 : 1.7 }); }).catch(() => {});
 }
@@ -374,6 +376,7 @@ function answerInput(text) {
   if (S.locked) return; S.locked = true;
   const q = S.cur, skipped = text === null, ok = !skipped && judge(q, text);
   const inp = document.getElementById('ans');
+  sfx(ok ? 'correct' : 'wrong', 60);
   inp.blur(); inp.readOnly = true;
   document.getElementById('submit').disabled = true;
   if (skipped) S.skips++;
@@ -395,10 +398,23 @@ function answerInput(text) {
     S.timer = setTimeout(waitTap, 1100);
   }
 }
+// 効果音：rpg-sound.js の音（設定のオン・オフに従う）。鳴らせなくても答える操作は変えない
+function sfx(n, wait) { try { if (!MAMA && window.RPG && RPG.sound) { if (wait) setTimeout(() => { try { RPG.sound.play(n); } catch (e) {} }, wait); else RPG.sound.play(n); } } catch (e) {} }
+// 選択式：タップは「選ぶ」だけ（選び直せる）。「けってい」を押したら判定する
+function pickChoice(i) {
+  if (S.locked) return;
+  S.sel = i;
+  app.querySelectorAll('.choice').forEach((b, j) => { b.classList.toggle('sel', j === i); b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+  const dw = document.getElementById('decidew');
+  if (dw) { dw.hidden = false; if (dw.scrollIntoView) dw.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+}
 function answer(i) {
   if (S.locked) return; S.locked = true;
   const q = S.cur, skipped = i < 0, picked = skipped ? 'わかんない' : S.opts[i], ok = !skipped && picked === q.a;
   const btns = [...app.querySelectorAll('.choice')];
+  btns.forEach(b => b.classList.remove('sel'));
+  const dw = document.getElementById('decidew'); if (dw) dw.hidden = true;
+  sfx(ok ? 'correct' : 'wrong', 140);
   if (skipped) { S.skips++; }
   record(q, ok, picked, skipped);
   if (ok) {
