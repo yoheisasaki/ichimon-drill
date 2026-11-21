@@ -103,6 +103,36 @@
   let cv = null, ctx = null, W = 0, H = 0, raf = 0, animating = false, breath = 0, breathT = 0, textT = 0, bgCache = null, queue = [], running = null, layout = null;
   const view = { ready: false, eHp: 0, eMax: 1, gone: false, retreat: false, bgOff: 0, text: null, textEnd: 0 };   // いま見えている状態（確定状態に追いつく）
   const nowMs = () => (root.performance ? root.performance.now() : Date.now());
+  // 見た目だけの「次の敵」：本物の敵を倒したあと（戦闘は確定済み）、同じ地域の敵が右から歩いてきて、答えるたびに主人公が殴る。
+  // 報酬・経験値・記録・保存には一切つながらない（RPG.save も触らない）。cosm＝いま帯にいる敵、cp＝待ち行列に積んだ分まで進めた予定
+  let cosm = null, cp = null;
+  const COSM_HITS = 3;
+  function pickCosm(si, avoid) {
+    const ids = Object.keys(D.ENEMIES).filter(id => D.ENEMIES[id].region === si.region && !D.ENEMIES[id].boss && SP.IMGS['enemy_' + id + '_strip']);
+    const pool = ids.length > 1 ? ids.filter(id => id !== avoid) : ids; if (!pool.length) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function ensureCosm() {   // 帯を出し直したとき・待機に戻ったとき：倒したあとなのに敵がいなければ、その場に1体置く
+    if (!view.gone || cosm) return; const si = sceneInfo(); if (!si) return;
+    const id = pickCosm(si, si.enemyId); if (id) cosm = { id, hp: COSM_HITS, max: COSM_HITS };
+  }
+  function planCosm(si, segs, final) {   // 本物の撃破のあとに「次の敵が歩いてくる」、倒したあとの正解は「次の敵を殴る」に置き換える
+    if (final) return segs;
+    if (segs.some(s => s.k === 'defeat')) {
+      const id = pickCosm(si, si.enemyId); if (!id) return segs;
+      cp = { id, hp: COSM_HITS, max: COSM_HITS };
+      return segs.concat([{ k: 'spawn', d: 650, cosm: true, id, max: COSM_HITS }]);
+    }
+    if (si.status === 'won' && segs.length && segs.every(s => s.k === 'walk')) {
+      const live = (queue.length || running) ? (cp || cosm) : cosm; let base = live ? { id: live.id, hp: live.hp, max: live.max } : null, out = [];
+      if (!base || base.hp <= 0) { const id = pickCosm(si, base ? base.id : si.enemyId); if (!id) return segs; base = { id, hp: COSM_HITS, max: COSM_HITS }; out.push({ k: 'spawn', d: 650, cosm: true, id, max: COSM_HITS }); }
+      const hit = ST.plan([{ t: 'hero', act: 'normal', dmg: 1 }], { ranged: ST.rangedOf(si.job, si.weaponId) })[0];
+      hit.cosm = true; hit.cid = base.id; hit.cmax = base.max; base.hp = Math.max(0, base.hp - 1); out.push(hit);
+      if (base.hp <= 0) out.push({ k: 'defeat', d: ST.T.defeat, fade: ST.T.defeatFade, cosm: true }), out.push({ k: 'spawn', d: 650, cosm: true, id: pickCosm(si, base.id) || base.id, max: COSM_HITS }), base = null;
+      cp = base; return out;
+    }
+    return segs;
+  }
   function sceneInfo() {
     const a = RPG.save && RPG.save.active; if (!a) return null;
     const b = a.battle, ed = D.ENEMIES[a.enemyId];
@@ -110,7 +140,7 @@
     return { job: b.hero.job, costume: M.costumeOf(RPG.save, b.hero.job), weaponId: M.artWeapon(b.hero.job, wid), region: rid, regionName: rg ? rg.name : '', enemyId: ed.id, boss: ed.boss, status: b.status, guard: !!(b.hero.guard && b.hero.guard.left > 0), ehp: b.enemy.hp, emax: b.enemy.maxHp };
   }
   // 確定状態に合わせる（敵のHP・倒した／撤退）。演出が終わったとき、捨てたとき、帯を出したときに呼ぶ
-  function syncView() { const si = sceneInfo(); if (!si) return; view.eHp = si.ehp; view.eMax = Math.max(1, si.emax); view.gone = si.status === 'won'; view.retreat = si.status === 'retreat'; view.ready = true; }
+  function syncView() { const si = sceneInfo(); if (!si) return; if (si.status !== 'won') { cosm = null; cp = null; } view.eHp = si.ehp; view.eMax = Math.max(1, si.emax); view.gone = si.status === 'won'; view.retreat = si.status === 'retreat'; view.ready = true; }
   function bgTiles(si) {   // 背景は1回だけ描いて使い回す。通常と左右反転を並べて、移動しても継ぎ目が出ない
     const has = !!SP.IMGS['bg_' + si.region + '_strip'], key = si.region + '|' + W + '|' + H + '|' + has;
     if (bgCache && bgCache.key === key) return bgCache;
@@ -136,16 +166,18 @@
     const cx = W / 2 + 6, gy = H - 2, hx = cx - PAIR_GAP + (o.hdx || 0), ec = cx + PAIR_GAP + (o.edx || 0), bo = breath && !animating ? 0.5 : 0;
     const shadow = (x, w) => { ctx.fillStyle = 'rgba(20,28,60,.32)'; ctx.beginPath(); ctx.ellipse(x, gy + 0.5, w, 1.6, 0, 0, 7); ctx.fill(); };
     shadow(hx, 9);
-    const ho = { job: si.job, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || (view.gone ? 'win' : 'idle'), o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
+    const ce = cosm && view.gone ? cosm : null;
+    const ho = { job: si.job, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose: ST.poseOf(o.pose || (view.gone && !ce ? 'win' : 'idle'), o.step), x: hx, groundY: gy - bo, tint: view.retreat ? '#8a90a8' : null, guard: o.guard || si.guard, outline: '#141a3c' };
     if (SP.drawHeroLayered(ctx, ho) === 'wait' && ho.pose !== 'idle') SP.drawHeroLayered(ctx, Object.assign({}, ho, { pose: 'idle' }));   // 読込中のポーズがあっても主人公を消さない（待機の絵で代用）
     layout = { bar: null, enemyH: 0 };
-    if (!view.gone || o.ealpha > 0) {
-      const im = SP.IMGS['enemy_' + si.enemyId + '_strip'], fs = fitScale(im, 0, 32), eh = im ? Math.round(im.height * fs) : 24;
+    if (!view.gone || o.ealpha > 0 || ce) {
+      const eid = ce ? ce.id : si.enemyId, eboss = ce ? false : si.boss, ehp = ce ? ce.hp : view.eHp, emax = ce ? ce.max : view.eMax;
+      const im = SP.IMGS['enemy_' + eid + '_strip'], fs = fitScale(im, 0, 32), eh = im ? Math.round(im.height * fs) : 24;
       ctx.save(); if (o.ealpha != null) ctx.globalAlpha = Math.max(0, o.ealpha);
-      shadow(ec, 11); SP.drawEnemy(ctx, si.enemyId, si.boss, ec - 7, gy - (breath && !animating ? 0 : 0.5), { img: 'strip', tint: o.eflash ? '#fff' : null, outline: '#141a3c', scale: fs });
+      shadow(ec, 11); SP.drawEnemy(ctx, eid, eboss, ec - 7, gy - (breath && !animating ? 0 : 0.5), { img: 'strip', tint: o.eflash ? '#fff' : null, outline: '#141a3c', scale: fs });
       ctx.restore();
       // 敵の頭上の体力バー：幅30×高さ3（CSS px）。残りは長さで分かる（色だけに頼らない）
-      const frac = Math.max(0, Math.min(1, view.eHp / view.eMax)), fill = view.eHp <= 0 ? 0 : view.eHp >= view.eMax ? 30 : Math.min(29, Math.max(1, Math.round(30 * frac))), bx = Math.round(ec * SCALE - 15), by = Math.max(3, gy * SCALE - eh - 7);
+      const frac = Math.max(0, Math.min(1, ehp / emax)), fill = ehp <= 0 ? 0 : ehp >= emax ? 30 : Math.min(29, Math.max(1, Math.round(30 * frac))), bx = Math.round(ec * SCALE - 15), by = Math.max(3, gy * SCALE - eh - 7);
       css(() => { if (o.ealpha != null) ctx.globalAlpha = Math.max(0, o.ealpha); ctx.fillStyle = '#141a3c'; ctx.fillRect(bx - 1, by - 1, 32, 5); ctx.fillStyle = '#eceaf6'; ctx.fillRect(bx, by, 30, 3); ctx.fillStyle = frac > .5 ? '#2fb85a' : frac > .25 ? '#f0b429' : '#e5484d'; ctx.fillRect(bx, by, fill, 3); });
       layout = { bar: { x: bx, y: by, w: 30, h: 3, fill, outer: [32, 5] }, enemyH: eh };
     }
@@ -186,13 +218,14 @@
     const bs = root.getComputedStyle(box), inner = box.clientWidth - (parseFloat(bs.paddingLeft) || 0) - (parseFloat(bs.paddingRight) || 0), w = Math.ceil(Math.max(100, inner) / SCALE), h = 22;
     if (!ctx || w !== W || h !== H) { W = w; H = h; cv.width = W * SCALE; cv.height = H * SCALE; ctx = cv.getContext('2d'); ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0); bgCache = null; }
     if (!view.ready) syncView();
+    ensureCosm();
     warmPoses();
     drawStrip();
     clearInterval(breathT); if (!reduceMotion()) breathT = setInterval(() => { if (!ctx || animating || !cv) return; breath ^= 1; drawStrip(); }, 900);   // 待機中は小さく呼吸するだけ（戦闘や報酬は進まない）
     const inp = root.document.getElementById('ans');   // 入力問題：キーボード表示中は帯を隠し、閉じたら最新状態で出す
     if (inp) { inp.addEventListener('focus', () => { box.hidden = true; }); inp.addEventListener('blur', () => { box.hidden = false; if (!running) syncView(); drawStrip(); }); }
   };
-  RPG.unmount = function () { cancelAnimationFrame(raf); clearInterval(breathT); clearTimeout(textT); animating = false; rewardRedraw = null; cv = ctx = null; queue = []; running = null; fxLive.length = 0; view.ready = false; view.bgOff = 0; view.text = null; bgCache = null; layout = null; };
+  RPG.unmount = function () { cancelAnimationFrame(raf); clearInterval(breathT); clearTimeout(textT); animating = false; rewardRedraw = null; cv = ctx = null; queue = []; running = null; fxLive.length = 0; view.ready = false; view.bgOff = 0; view.text = null; bgCache = null; layout = null; cosm = null; cp = null; };
   // 出来事を短く再生。演出は計算結果に影響しない（省略しても同じ）
   const snd = n => { try { if (RPG.sound) RPG.sound.play(n); } catch (e) {} };
   // 区間の時刻 t(ms) での見た目。reduce-motion(rm)では踏み込み・背景移動・弾道を省き、構え（ポーズ）の差と体力バーだけにする
@@ -217,6 +250,7 @@
       else { const q = (t - 160) / (sg.d - 160); r.edx = dx(-6 * (1 - q)); if (sg.dmg > 0 && q < .5) { r.pose = 'hurt'; r.hdx = dx(-1.5 * (1 - q * 2)); } }
       return r;
     }
+    if (sg.k === 'spawn') { const e0 = W + 12 - (W / 2 + 6 + PAIR_GAP); st.bg = dx(14 * p); return { pose: 'walk', step: Math.floor(t / 100), edx: dx(e0 * (1 - (1 - Math.pow(1 - p, 2)))), gone: false }; }
     if (sg.k === 'walk') { st.bg = dx(10 * p); return { pose: 'walk', step: Math.floor(t / 100) }; }
     if (sg.k === 'defeat') {
       if (sg.final || t < sg.fade) return { ealpha: Math.max(0, 1 - t / sg.fade), edx: dx(2 * Math.min(1, t / sg.fade)), pose: sg.final ? 'win' : 'idle' };
@@ -226,6 +260,8 @@
   }
   function segStart(sg, now, st, rm) {
     st.bg0 = view.bgOff; st.hit = false;
+    if (sg.k === 'spawn') cosm = { id: sg.id, hp: sg.max, max: sg.max };
+    else if (sg.cosm && sg.k === 'attack' && !cosm) cosm = { id: sg.cid, hp: sg.cmax, max: sg.cmax };
     if (sg.text) { view.text = sg.text; view.textEnd = now + TT.TEXT_MS; }
     if ((sg.k === 'skill' || sg.k === 'support') && sg.key && FXL && !rm) {
       const job = RPG.save && RPG.save.active ? RPG.save.active.battle.hero.job : null;
@@ -240,9 +276,10 @@
     if (!ctx) return;
     const si = sceneInfo(); if (!si) return;
     const fx = FXL ? (id => FXL.keyFor(id)) : null, at = FXL ? (k => FXL.AT[k]) : null, nameOf = id => (D.SKILLS[id] ? D.SKILLS[id].name : null);
-    const segs = opt.correct === false ? (si.status === 'fight' || opt.retreated ? ST.planWrong(events, { final: !!opt.final, retreated: !!opt.retreated }) : []) : ST.plan(events, { review: !!opt.review, killed: !!opt.killed, retreated: !!opt.retreated, final: !!opt.final, ranged: ST.rangedOf(si.job, si.weaponId), fx, at, name: nameOf });
+    let segs = opt.correct === false ? (si.status === 'fight' || opt.retreated ? ST.planWrong(events, { final: !!opt.final, retreated: !!opt.retreated }) : []) : ST.plan(events, { review: !!opt.review, killed: !!opt.killed, retreated: !!opt.retreated, final: !!opt.final, ranged: ST.rangedOf(si.job, si.weaponId), fx, at, name: nameOf });
     segs.forEach(s => { if (s.k === 'skill' || s.k === 'support') s.col = SP.JOB_COLOR[si.job] || '#ffd24a'; });
     if (!segs.length) return;
+    if (opt.correct !== false) { segs = planCosm(si, segs, !!opt.final); if (segs.some(s => s.cosm && s.k === 'attack')) snd('attack'); }
     const r = ST.enqueue(queue, segs, !!running); queue = r.queue;
     RPG.stripLog.push({ k: 'enqueue', n: segs.map(s => s.k).join('+'), planMs: ST.total(segs), dropped: r.dropped, pending: queue.length }); if (RPG.stripLog.length > 200) RPG.stripLog.shift();
     if (!animating) { animating = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
@@ -253,7 +290,7 @@
     fxLive.forEach(f => f.update(0.016)); for (let j = fxLive.length - 1; j >= 0; j--) if (fxLive[j].started() && fxLive[j].done()) fxLive.splice(j, 1);
     if (!running) {
       if (!queue.length) {
-        syncView(); view.bgOff = Math.round(view.bgOff); drawStrip();
+        syncView(); ensureCosm(); view.bgOff = Math.round(view.bgOff); drawStrip();
         if (fxLive.length) { raf = requestAnimationFrame(tick); return; }
         animating = false; const rest = view.textEnd - nowMs();
         if (view.text && rest > 0) { clearTimeout(textT); textT = setTimeout(() => { if (ctx && !animating) drawStrip(); }, rest + 20); }
@@ -265,14 +302,16 @@
     if (!running.begun) { running.begun = true; segStart(sg, nowMs(), st, rm); }
     const t = Math.max(0, now - running.start), f = frameOf(sg, Math.min(t, sg.d), st, rm);
     // 命中の瞬間に敵の体力バーが減る（見た目だけ。確定値は回答処理で済んでいる）
-    if (!st.hit && (sg.k === 'attack' || sg.k === 'skill' || sg.k === 'support') && t >= sg.hitAt) { st.hit = true; if (sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg); }
-    if (sg.k === 'defeat' && (f.gone || (sg.final && t >= sg.d))) { view.gone = true; view.eHp = 0; }
+    if (!st.hit && (sg.k === 'attack' || sg.k === 'skill' || sg.k === 'support') && t >= sg.hitAt) { st.hit = true; if (sg.cosm) { if (cosm) cosm.hp = Math.max(0, cosm.hp - 1); } else if (sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg); }
+    if (sg.k === 'defeat' && sg.cosm) { if (f.gone) cosm = null; }
+    else if (sg.k === 'defeat' && (f.gone || (sg.final && t >= sg.d))) { view.gone = true; view.eHp = 0; }
     if (f.retreat) view.retreat = true;
     if (st.bg != null) view.bgOff = st.bg0 + st.bg;
     let still = null; if (f.stillKey && sg.key && !st.fxOk && st.kind && SP.IMGS['fx_' + st.kind + '_strip']) still = { kind: st.kind, hero: FXL.AT[sg.key] === 'hero' };
     drawStrip({ hdx: f.hdx, edx: f.edx, pose: f.pose, step: f.step, guard: f.guard, eflash: f.eflash, ealpha: f.ealpha, proj: f.proj, heal: f.heal, glint: f.glint, trail: f.trail, still });
     if (t >= sg.d) {
-      if (!st.hit && sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg);
+      if (!st.hit && sg.cosm) { if (cosm && sg.k === 'attack') cosm.hp = Math.max(0, cosm.hp - 1); }
+      else if (!st.hit && sg.dmg > 0) view.eHp = Math.max(0, view.eHp - sg.dmg);
       RPG.stripLog.push({ k: sg.k, ms: Math.round(t), plan: sg.d }); if (RPG.stripLog.length > 200) RPG.stripLog.shift();
       running.i++; running.start += sg.d; running.begun = false; running.st = {};
       if (running.i >= running.segs.length) { RPG.stripLog.push({ k: 'group', ms: Math.round(now - running.t0) }); running = null; }
