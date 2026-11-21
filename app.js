@@ -149,6 +149,8 @@ async function syncKidHistory(force = false) {
   historySyncPromise = (async () => {
     const ctl = typeof AbortController === 'function' ? new AbortController() : null;
     const timer = setTimeout(() => { if (ctl) ctl.abort(); }, HISTORY_TIMEOUT);
+    // 同期中に送信が完了してキューから消えても、回答の取りこぼしを防ぐ。
+    const waitingAtStart = pendingKidAttempts();
     try {
       const url = (SEND_OVERRIDE || SEND_URL) + '?api=ichimon_history';
       const r = await fetch(url, ctl ? { cache: 'no-cache', signal: ctl.signal } : { cache: 'no-cache' });
@@ -156,7 +158,12 @@ async function syncKidHistory(force = false) {
       const h = await r.json();
       if (!h || h.ok !== true || h.partial || !h.questions || typeof h.questions !== 'object' || Array.isArray(h.questions)) throw new Error('history format error');
       // フェッチ中に解答した分もここで最新のキューから集める。
-      const pending = pendingKidAttempts(), next = Object.assign({}, stats);
+      const pending = pendingKidAttempts();
+      for (const [id, atts] of waitingAtStart) {
+        if (!pending.has(id)) pending.set(id, []);
+        pending.get(id).push(...atts);
+      }
+      const next = Object.assign({}, stats);
       const ids = new Set([...Object.keys(h.questions), ...pending.keys()]);
       for (const id of ids) {
         const remote = h.questions[id] && h.questions[id].attempts;
