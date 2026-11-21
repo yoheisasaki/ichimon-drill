@@ -144,3 +144,10 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .card .qt{line-height:2.05}
 .exp{line-height:2}
 .wi,.wi .wexp{line-height:2}
+
+/* 風助用・トップ画面の更新ボタン */
+.kid-refresh-btn{border:2px solid #7b6cf0;border-radius:999px;background:#fff;color:#574ac6;font-weight:800;font-size:14px;line-height:1.2;padding:8px 11px;min-height:38px;white-space:nowrap;box-shadow:0 2px 0 #d2cdf1}
+.kid-refresh-btn:disabled{opacity:.65;cursor:wait}
+.kid-refresh-row{text-align:right;margin:0 4px 8px}
+.rs-topbar .kid-refresh-btn{flex:none;font-size:13px;padding:6px 9px;min-height:36px}
+@media(max-width:360px){.rs-topbar .kid-refresh-btn{font-size:12px;padding:6px 7px}}
