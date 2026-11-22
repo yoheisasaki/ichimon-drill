@@ -793,5 +793,11 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 Promise.all([fetch(PARAMS.get('data') || 'data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
-  home(); flush();
+  home();
+  // 共有設定のボタンが反応しない端末のための直接アクセス。
+  // 最新のクイズとRPGデータを読み込んだ後で開く（セーブは変更しない）。
+  if (PARAMS.get('openCloud') === '1' && window.RPG && RPG.ok && typeof RPG.open === 'function') {
+    RPG.open('data');
+  }
+  flush();
 }).catch(() => { app.innerHTML = '<div class="empty">もんだいを よみこめませんでした。<br>ネットを つないで もう一度ひらいてね。</div>'; });
