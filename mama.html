@@ -2,21 +2,55 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f1effc">
-<title>一問一答（ママ用）</title>
+<title>一問一答（ママ用・冒険）</title>
 <link rel="manifest" href="manifest-mama.webmanifest">
 <link rel="icon" href="icons/mama.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/mama-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=DotGothic16&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="rpg/css/rpg.css">
+<link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
+<link rel="stylesheet" href="rpg/css/rpg-font.css">
+<link rel="stylesheet" href="rpg/css/rpg-life.css?v=life-20261123">
+<link rel="stylesheet" href="voice.css">
+<script src="voice.js"></script>
 </head>
 <body>
 <main id="app"></main>
+<script src="rpg/js/rpg-ruby-dict.js"></script>
+<script src="rpg/js/rpg-ruby.js"></script>
+<script src="rpg/js/rpg-data.js?v=life-20261123"></script>
+<script src="rpg/js/rpg-world.js"></script>
+<script src="rpg/js/rpg-story.js"></script>
+<script src="rpg/js/rpg-core.js"></script>
+<script src="rpg/js/rpg-battle.js"></script>
+<script src="rpg/js/rpg-meta.js"></script>
+<script src="rpg/js/rpg-adventure.js?v=life-20261123"></script>
+<script src="rpg/js/rpg-sprites.js"></script>
+<script src="rpg/js/rpg-fx.js"></script>
+<script src="rpg/js/rpg-strip.js"></script>
+<script src="rpg/js/rpg-ui.js?v=life-20261123"></script>
+<script src="rpg/js/rpg-life.js?v=life-20261123"></script>
+<script src="rpg/js/rpg-mapdata.js"></script>
+<script>
+  // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'life-20261123';
+  document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
+  document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
+</script>
+<script src="kanji-ruby.js?v=20261121"></script>
 <script src="map.js"></script>
 <script src="common.js"></script>
-<script src="app.js?v=spaced-review-20261120"></script>
+<script>
+  // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
+  // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'life-20261123';
+  document.write('<script src="app.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
+</script>
 </body>
 </html>
