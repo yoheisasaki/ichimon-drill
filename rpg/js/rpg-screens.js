@@ -217,8 +217,7 @@
   const lifeCost = cost => Object.entries(cost).map(([id,n])=>LF.MATERIALS[id]+'×'+n).join('・');
   VIEWS.worldlife = function () {
     if(!LF)return frame('マイワールド','<p>最新版に更新してください。</p>',{back:false});
-    const s=save(),l=LF.ensure(s),time=LF.playState(s),playable=time.left>0;
-    const mins=Math.floor(time.left/60000),secs=String(Math.floor(time.left/1000)%60).padStart(2,'0');
+    const s=save(),l=LF.ensure(s),time=LF.playState(s),playable=!time.done;
     const petCards=LF.PETS.map(p=>{
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
       return `<div class="life-pet-wrap"><button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
@@ -238,8 +237,7 @@
     return frame('マイワールド',`
       <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
-      <div class="life-timer">ゲーム時間　残り <b id="lifeLeft">${mins}:${secs}</b> ／ 1日5分</div>
-      ${playable?'':'<p class="rs-why">今日はここまで！ 作ったものは保存されています。また明日ね。</p>'}</div>
+      ${playable?'':'<p class="rs-why">今日はここまで！ 作ったものは保存してあるよ。また次に続きを作ろうね。</p>'}</div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
@@ -252,7 +250,16 @@
   };
   AFTER.worldlife = function () {
     if(!LF)return;
-    const panel=app(),run=(f)=>{if(LF.playState(save()).left<=0){UI.msg='今日はここまで。また明日ね！';rerender();return;}const res=f();if(res&&res.msg)UI.msg=res.msg;if(!res||res.ok!==false)commit();rerender();};
+    const panel=app(),run=(f)=>{
+      if(LF.playState(save()).done){UI.msg='今日はここまで。また次に続きを作ろうね！';rerender();return;}
+      const res=f(),ok=!res||res.ok!==false;
+      if(ok && LF.finishPlay(save())){
+        // 操作が完了してから終える。時間やカウントダウンは見せない。
+        UI.msg=(res&&res.msg?res.msg+'　':'')+'今日のマイワールドはここまで！ 続きはまた今度ね。';
+      } else if(res&&res.msg) UI.msg=res.msg;
+      if(ok)commit();
+      rerender();
+    };
     panel.querySelectorAll('[data-life-pet]').forEach(b=>b.onclick=()=>run(()=>LF.setParty(save(),b.dataset.lifePet)));
     panel.querySelectorAll('[data-life-feed]').forEach(b=>b.onclick=()=>run(()=>LF.feed(save(),b.dataset.lifeFeed)));
     panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
@@ -262,10 +269,8 @@
     lifeTicker=setInterval(()=>{
       if(doc.hidden||UI.screen!=='worldlife'){return;}
       const t=LF.spendPlay(save(),1000);
-      const lbl=doc.getElementById('lifeLeft');
-      if(lbl)lbl.textContent=Math.floor(t.left/60000)+':'+String(Math.floor(t.left/1000)%60).padStart(2,'0');
       if(Math.floor(t.used)%5000===0)commit();
-      if(!t.left){stopLifeTimer();commit();UI.msg='今日のマイワールドはおしまい。また明日！';rerender();}
+      if(t.done){stopLifeTimer();commit();UI.msg='今日のマイワールドはここまで！ 続きはまた今度ね。';rerender();}
     },1000);
   };
 
