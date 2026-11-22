@@ -482,7 +482,7 @@ function home() {
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
-    ${MAMA ? '<div class="mama-identity" role="banner"><div class="mama-identity-title">🌷 ママ専用アプリ</div><div class="mama-identity-sub">ママの冒険・ママの学習記録　｜　風助用とは別</div></div>' : ''}
+    
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリを最新版に更新">↻ 更新</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
@@ -495,7 +495,7 @@ function home() {
       ${hardHtml}${pendingHtml}${wrongHtml}</div>
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
-    ${MAMA ? '<div class="mama-identity" role="banner"><div class="mama-identity-title">🌷 ママ専用アプリ</div><div class="mama-identity-sub">ママの冒険・ママの学習記録　｜　風助用とは別</div></div>' : ''}
+    
     <h1>一問一答</h1>
     ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
@@ -577,7 +577,7 @@ function question() {
   const opts = isIn ? [] : shuffle([q.a, ...q.choices]);
   S.opts = opts;
   app.innerHTML = `
-    ${MAMA ? '<div class="mama-identity mama-identity-compact"><strong>🌷 ママ専用</strong><span>風助用とは別</span></div>' : ''}
+    
     <div class="top">
       <button class="btn-quit" id="quit">✕ やめる</button>
       <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
