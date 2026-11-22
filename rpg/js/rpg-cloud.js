@@ -65,19 +65,24 @@
     return applyCloud(remote);
   }
   async function push(first){
-    if(!getKey()||busy||RPG.save.active)return fail('解答が終わってから同期してください');
+    if(!getKey()||busy||(!first&&RPG.save.active))return fail('解答が終わってから同期してください');
     if(!first&&!ready)return fail('先に同期の初期設定をしてください');
     busy=true;status='保存中';
+    // 初回保存だけ、解答途中の端末でも可能にする。
+    // 端末上の途中経過はそのまま保存し、クラウドには確定済みの進行だけ送る。
+    // 他端末で途中の問題を引き継ぐことはしない。
     const local=snapshot(),base=first?0:cloudVersion;
+    const hadActive=!!local.active;
+    const upload=hadActive&&first?{...local,active:null}:local;
     try{
-      const x=await post(base,local);
+      const x=await post(base,upload);
       if(!x||!x.ok){
         if(x&&x.error==='conflict'){remote=null;return fail('ほかの端末で変更されています。クラウドを確認してください');}
         return fail('保存失敗：'+String(x&&x.error||'通信エラー'));
       }
       cloudVersion=x.version;syncedRev=local.rev;ready=true;remote=null;
       write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
-      status='同期済み';if(RPG.save.rev!==local.rev)onPersist();return state();
+      status=hadActive&&first?'初回保存完了。途中の問題はこのスマホに残っています':'同期済み';if(RPG.save.rev!==local.rev)onPersist();return state();
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
     finally{busy=false;}
   }
