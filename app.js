@@ -318,7 +318,15 @@ function expText(q) {
 // 図解は問題を解く前ではなく、答え合わせ後の解説だけに表示する。
 const EXPLANATION_IMAGES = {
   'ri-0068': { src: 'images/medaka-fins.svg', alt: 'メダカのひれ5種類の位置。むなびれ、はらびれ、せびれ、しりびれ、おびれ。合計7枚。' },
-  'ri-0070': { src: 'images/pancreas-location-v2.webp', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' }
+  'ri-0070': { src: 'images/pancreas-location-v2.webp', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' },
+  'ri-0078': { src: 'images/sound-wave-count.svg', alt: '同じ時間に波が4個あるAと8個あるBの波形' },
+  'ri-0079': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
+  'ri-0080': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
+  'ri-0081': { src: 'images/sound-wave-count.svg', alt: '同じ時間の波の数を比べる図' },
+  'ri-0082': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までの振れ幅を示す波形' },
+  'ri-0083': { src: 'images/sound-wave-change.svg', alt: '波の数を半分にして振れ幅を2倍にした波形の比較' },
+  'ri-0084': { src: 'images/sound-wave-change.svg', alt: '振動回数が半分になると波の横幅が2倍になる比較図' },
+  'ri-0085': { src: 'images/sound-wave-change.svg', alt: '低くて大きい音の波形と元の波形の比較図' }
 };
 function expHtml(q) {
   const t = expText(q);
@@ -326,6 +334,18 @@ function expHtml(q) {
   if (!t && !im) return '';
   const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
   return '<div class="exp">' + (t ? qr(t, q) : '') + fig + '</div>';
+}
+// 音の波の図：答えを先に示さないものだけ問題中にも表示する。
+const QUESTION_WAVE_IMAGES = {
+  'ri-0078': 'images/sound-wave-count.svg',
+  'ri-0079': 'images/sound-wave-amplitude.svg',
+  'ri-0080': 'images/sound-wave-amplitude.svg',
+  'ri-0081': 'images/sound-wave-count.svg',
+  'ri-0082': 'images/sound-wave-amplitude.svg'
+};
+function waveQuestionHtml(q) {
+  const src = QUESTION_WAVE_IMAGES[q.id];
+  return src ? '<img src="' + src + '?v=20261123" alt="音の波形を考えるための図" loading="eager" style="display:block;width:100%;max-width:620px;height:auto;margin:10px auto;border-radius:8px;background:#fff">' : '';
 }
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
@@ -508,7 +528,7 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
