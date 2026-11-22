@@ -408,9 +408,21 @@ function birdPhotoHtml(q) {
 
 // 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
 function revealNext() { const n = document.getElementById('next'); if (n && n.scrollIntoView) n.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
-function waitTap() {
-  document.getElementById('next').insertAdjacentHTML('beforeend', '<div class="tapnext">タップして つぎへ ▶</div>'); revealNext();
-  app.onclick = e => { if (e.target.closest('#quit')) return; app.onclick = null; advance(); };
+// 判定後は必ず結果を見せ、「つぎの問題へ」を押すまで進まない。
+function showAnswerFeedback(q, ok, skipped) {
+  const nx = document.getElementById('next');
+  if (!nx) return;
+  const heading = ok ? '○ せいかい！' : skipped ? '？ わかんない' : '× ざんねん！';
+  const answer = '<div class="feedback-answer"><span>正しい答え</span><strong>' + ruby(q.a) + '</strong></div>';
+  const explanation = expHtml(q);
+  nx.innerHTML = '<section class="answer-feedback ' + (ok ? 'feedback-ok' : 'feedback-ng') +
+    '" role="status" aria-live="polite"><div class="feedback-heading">' + heading + '</div>' +
+    (ok ? '<div class="feedback-sub">やったね！</div>' : '<div class="feedback-sub">答えと解説を確認しよう</div>') +
+    answer + explanation + '</section>' +
+    '<button type="button" class="big feedback-next" id="next-question">つぎの問題へ ▶</button>';
+  const nextButton = document.getElementById('next-question');
+  nextButton.onclick = () => { if (nextButton.disabled) return; nextButton.disabled = true; advance(); };
+  revealNext();
 }
 function mapLabel(q) {
   const m = q.map; if (!m) return '';
@@ -591,24 +603,21 @@ function answerInput(text) {
   sfx(ok ? 'correct' : 'wrong', 60);
   inp.blur(); inp.readOnly = true;
   document.getElementById('submit').disabled = true;
+  document.getElementById('skip').disabled = true;
   if (skipped) S.skips++;
   record(q, ok, skipped ? 'わかんない' : String(text).trim(), skipped);
-  const nx = document.getElementById('next');
   if (ok) {
     if (!S.seen.has(q.id)) S.correct++;
     S.seen.add(q.id);
     inp.classList.add('ok');
-    nx.innerHTML = '<span class="okmsg">○ せいかい！</span>' + expHtml(q);
-    document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ'; if (expText(q)) revealNext();
-    S.timer = setTimeout(expText(q) ? waitTap : advance, expText(q) ? 600 : 800);
+    document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     inp.classList.add('ng');
     reask(q);
-    nx.innerHTML = '<div class="correct">× こたえ：' + ruby(q.a) + '</div>' + expHtml(q); revealNext();
-    S.timer = setTimeout(waitTap, 1100);
   }
+  showAnswerFeedback(q, ok, skipped);
 }
 // 効果音：rpg-sound.js の音（設定のオン・オフに従う）。鳴らせなくても答える操作は変えない
 function sfx(n, wait) { try { if (!MAMA && window.RPG && RPG.sound) { if (wait) setTimeout(() => { try { RPG.sound.play(n); } catch (e) {} }, wait); else RPG.sound.play(n); } } catch (e) {} }
@@ -624,27 +633,25 @@ function answer(i) {
   if (S.locked) return; S.locked = true;
   const q = S.cur, skipped = i < 0, picked = skipped ? 'わかんない' : S.opts[i], ok = !skipped && picked === q.a;
   const btns = [...app.querySelectorAll('.choice')];
-  btns.forEach(b => b.classList.remove('sel'));
+  btns.forEach(b => { b.classList.remove('sel'); b.disabled = true; });
   const dw = document.getElementById('decidew'); if (dw) dw.hidden = true;
+  const skipBtn = document.getElementById('skipc'); if (skipBtn) skipBtn.disabled = true;
   sfx(ok ? 'correct' : 'wrong', 140);
-  if (skipped) { S.skips++; }
+  if (skipped) S.skips++;
   record(q, ok, picked, skipped);
   if (ok) {
     if (!S.seen.has(q.id)) S.correct++;
     S.seen.add(q.id);
     btns[i].classList.add('ok'); btns[i].querySelector('.dot').textContent = '○';
     document.querySelector('.score').textContent = 'せいかい ' + S.correct + 'こ';
-    if (expText(q)) { document.getElementById('next').innerHTML = expHtml(q); revealNext(); S.timer = setTimeout(waitTap, 600); }
-    else S.timer = setTimeout(advance, 600);
   } else {
     S.seen.add(q.id);
     if (!S.wrongIds.has(q.id)) { S.wrongIds.add(q.id); S.wrong.push(q); }
     if (!skipped) { btns[i].classList.add('ng'); btns[i].querySelector('.dot').textContent = '×'; }
     btns.forEach((b, j) => { if (S.opts[j] === q.a) b.classList.add('glow'); else if (j !== i) b.classList.add('dim'); });
     reask(q);
-    document.getElementById('next').innerHTML = expHtml(q); revealNext();
-    S.timer = setTimeout(waitTap, 1100);
   }
+  showAnswerFeedback(q, ok, skipped);
 }
 function advance() {
   clearTimeout(S.timer); app.onclick = null;
