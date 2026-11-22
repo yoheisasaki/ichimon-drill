@@ -19,7 +19,7 @@
   const LF = root.RPGLife;
   const followers = () => LF && RPG.ok ? `<span class="life-followers" aria-label="冒険のおとも">${LF.party(save()).map((p,i)=>`<span class="life-follow life-follow-${i}" title="${esc(p.name)}">${p.emoji}</span>`).join('')}</span>` : '';
   let lifeTicker = null;
-  function stopLifeTimer() { if(lifeTicker){clearInterval(lifeTicker);lifeTicker=null;} }
+  function stopLifeTimer() { if(lifeTicker){clearInterval(lifeTicker);lifeTicker=null;if(RPG.ok)RPG.persist();} }
 
   // ---------- 小さな部品 ----------
   const RuRb = root.RPGRuby, rb = RuRb.render;   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
