@@ -151,3 +151,17 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .kid-refresh-row{text-align:right;margin:0 4px 8px}
 .rs-topbar .kid-refresh-btn{flex:none;font-size:13px;padding:6px 9px;min-height:36px}
 @media(max-width:360px){.rs-topbar .kid-refresh-btn{font-size:12px;padding:6px 7px}}
+
+/* 解答判定：色だけに頼らず、大きな○×と答えを必ず表示する。 */
+.answer-feedback{padding:16px 12px;border-radius:22px;border:3px solid #d7e8dd;background:#e8f7ed;text-align:center;color:#174d30;box-shadow:0 4px 0 #c3dfcc}
+.answer-feedback.feedback-ng{background:#fff1e9;border-color:#f6c4ae;color:#973b20;box-shadow:0 4px 0 #efd4c8}
+.feedback-heading{font-size:clamp(28px,8vw,40px);font-weight:900;line-height:1.6;letter-spacing:.02em}
+.feedback-sub{font-size:17px;font-weight:800;margin:0 0 12px}
+.feedback-answer{background:#fff;border-radius:14px;padding:12px;color:#26233a;text-align:left;line-height:1.65}
+.feedback-answer span{display:block;font-size:14px;font-weight:800;color:#6c6777}
+.feedback-answer strong{display:block;font-size:23px;overflow-wrap:anywhere}
+.answer-feedback .exp{margin-top:12px;background:#fffdf5;color:#26233a}
+.feedback-next{margin:15px 0 8px;background:#386fce;box-shadow:0 5px 0 #254d95;color:white}
+.feedback-next:disabled{opacity:.6}
+.choice:disabled{cursor:default;opacity:1}
+.choice.dim:disabled{opacity:.55}
