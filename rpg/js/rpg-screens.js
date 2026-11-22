@@ -660,7 +660,7 @@
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () {
     const cloud=root.RPG.cloud;
@@ -670,7 +670,25 @@
       show();
       const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
       doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
-      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドのセーブに切り替えます。iPad側の解きかけの問題も置き換わります。現在のセーブをバックアップしてから読み込みます。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
+      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドのセーブに切り替えます。このiPadで解きかけの問題も置き換わります。現在のRPGデータをバックアップしてから読み込みます。よいですか？'))return;guard(async key=>{
+        // 古いクラウド同期コードがiPadに残っていても安全に読み込む。
+        // 元のセーブを検証付きで退避した後だけ、一時的に解答中フラグを外す。
+        const previous=JSON.stringify(RPG.save);
+        try{
+          RPG.io.set(C.LS_BACKUP,previous);
+          if(RPG.io.get(C.LS_BACKUP)!==previous)throw Error('バックアップに失敗');
+        }catch(e){show({status:'バックアップできなかったため読み込みは中止しました'});return;}
+        if(key)await cloud.connect(key);
+        else await cloud.connect();
+        const wasActive=RPG.save.active;
+        if(wasActive)RPG.save.active=null;
+        try{
+          const result=await cloud.chooseCloud();
+          if(!result.ready||!String(result.status).includes('読み込み済み')){
+            if(wasActive)RPG.save.active=wasActive;
+          }
+        }catch(e){if(wasActive)RPG.save.active=wasActive;throw e;}
+      });};
       doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
       doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
     }
@@ -782,7 +800,7 @@
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
       <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。はじめはオフです。</p>
