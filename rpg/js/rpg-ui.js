@@ -39,7 +39,7 @@
   RPG.persist = function () {
     if (!RPG.ok) return false;
     const r = RPG.store.save(RPG.save);
-    if (r.ok) return true;
+    if (r.ok) { if (RPG.cloud && RPG.cloud.onPersist) RPG.cloud.onPersist(); return true; }
     RPG.err = r.err; if (r.err === 'stale') RPG.ok = false;
     return false;
   };
