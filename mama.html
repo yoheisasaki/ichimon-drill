@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=DotGothic16&display=swap">
-<link rel="stylesheet" href="style.css?v=mama-footer-fix-20261123">
+<link rel="stylesheet" href="style.css?v=mama-nav-clearance-20261123v3">
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
@@ -21,6 +21,9 @@
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
 <style>
+/* iPhoneのアプリ内ブラウザの下部ツールバーを避けるための表示域 */
+:root{--mama-browser-clearance:116px}
+@media (display-mode:standalone){:root{--mama-browser-clearance:0px}}
 /* iPhone対策：固定のママ用ヘッダー分を除いた高さだけRPGに割り当てる */
 html:has(body.mama-mode .rs3),html:has(body.mama-mode .rw3){height:100%;overflow:hidden}
 body.mama-mode:has(#app > .rs3),
@@ -28,7 +31,7 @@ body.mama-mode:has(#app > .rw3){
   display:flex!important;
   flex-direction:column!important;
   height:100vh!important;
-  height:100dvh!important;
+  height:calc(100dvh - var(--mama-browser-clearance, 116px))!important;
   min-height:0!important;
   overflow:hidden!important;
 }
