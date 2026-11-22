@@ -13,13 +13,45 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=DotGothic16&display=swap">
-<link rel="stylesheet" href="style.css?v=mama-menu-visible-20261123v2">
+<link rel="stylesheet" href="style.css?v=mama-footer-fix-20261123">
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
 <link rel="stylesheet" href="rpg/css/rpg-life.css?v=life-20261123">
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
+<style>
+/* iPhone対策：固定のママ用ヘッダー分を除いた高さだけRPGに割り当てる */
+html:has(body.mama-mode .rs3),html:has(body.mama-mode .rw3){height:100%;overflow:hidden}
+body.mama-mode:has(#app > .rs3),
+body.mama-mode:has(#app > .rw3){
+  display:flex!important;
+  flex-direction:column!important;
+  height:100vh!important;
+  height:100dvh!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+body.mama-mode:has(#app > .rs3) .mama-permanent-header,
+body.mama-mode:has(#app > .rw3) .mama-permanent-header{
+  flex:0 0 auto!important;
+  position:relative!important;
+  top:auto!important;
+  z-index:2500;
+}
+body.mama-mode #app:has(>.rs3),
+body.mama-mode #app:has(>.rw3){
+  flex:1 1 0!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+body.mama-mode #app>.rs3,
+body.mama-mode #app>.rw3{height:100%!important;min-height:0!important}
+body.mama-mode .rs3 .rs-foot,
+body.mama-mode .rw3 .rw-foot{flex:0 0 auto!important}
+</style>
 </head>
 <body class="mama-mode">
 <header class="mama-permanent-header" aria-label="ママ専用アプリ"><strong>🌷 ママ専用アプリ</strong><nav class="mama-admin-nav" aria-label="ママ用管理メニュー"><a href="mama.html">🎮 ゲーム</a><a href="list.html">📚 問題一覧</a><a href="history.html">📊 風助の履歴</a></nav></header>
