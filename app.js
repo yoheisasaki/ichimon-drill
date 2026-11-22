@@ -59,7 +59,7 @@ const SOCIAL_VIDEO_IDS = ["sha-0501","sha-0502","sha-0503","sha-0504","sha-0505"
 const SOCIAL_HIGH_IDS = ["sha-0504","sha-0505","sha-0506","sha-0507"];
 SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
 // 読めなかった工芸品の用語：絹織物・陶磁器・漆器の復習を出題対象に加える。
-const CRAFT_READING_FIRST_IDS = ['sha-0067', 'sha-0377', 'sha-0395'];
+const CRAFT_READING_FIRST_IDS = ['sha-0521', 'sha-0523', 'sha-0525', 'sha-0522', 'sha-0524', 'sha-0526', 'sha-0067', 'sha-0377', 'sha-0395'];
 CRAFT_READING_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
