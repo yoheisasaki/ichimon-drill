@@ -51,6 +51,40 @@
     return m ? `<div class="rpg-notice" role="alert">${m}</div>` : '';
   };
 
+
+  RPG.studyMilestones = function (stats) {
+    const total = Object.values(stats || {}).reduce((n, x) => n + (Number(x.c) || 0) + (Number(x.w) || 0), 0);
+    if (!RPG.ok) return { total, next: (Math.floor(total / 100) + 1) * 100 };
+    const s = RPG.save; M.ensure(s); s.stats = s.stats || {};
+    const prev = s.stats.studyMilestones || { max: 0, claimed: [] };
+    const next = { max: Math.max(prev.max || 0, total), claimed: (prev.claimed || []).slice() };
+    for (let target = 100; target <= next.max; target += 100) {
+      if (next.claimed.includes(target)) continue;
+      if (target === 200) {
+        s.inv.items.x_study_cloak = 1;
+        s.codex.items.x_study_cloak = 1;
+      } else {
+        const id = 'study-milestone-' + target;
+        if (!C.chestById(s, id)) {
+          const rank = C.maxRank(s), all = Object.values(D.ITEMS).filter(it => it.rarity === 'rare' && it.rank === rank && it.id !== 'x_study_cloak');
+          const wanted = all.filter(it => it.wish === s.wish && !s.inv.items[it.id]), fresh = all.filter(it => !s.inv.items[it.id]);
+          const pool = wanted.length ? wanted : fresh.length ? fresh : all;
+          if (pool.length) {
+            const item = pool[Math.floor(C.rngFrom(id)() * pool.length)];
+            C.addSealedChest(s, id, { kind: 'rare', item: item.id, rank, wish: s.wish, pityBefore: s.chest.pity }, { milestone: target, got: C.dayKey(NOW()) });
+          }
+        }
+      }
+      if (target === 300 && !s.rewards.titles.includes('三百問の探究者')) s.rewards.titles.push('三百問の探究者');
+      next.claimed.push(target);
+    }
+    if (!s.stats.studyMilestones || next.max !== prev.max || next.claimed.length !== prev.claimed.length) {
+      s.stats.studyMilestones = next;
+      if (!RPG.persist()) return { total, next: (Math.floor(total / 100) + 1) * 100, error: true };
+    }
+    return { total: next.max, next: (Math.floor(next.max / 100) + 1) * 100 };
+  };
+
   // ---------- 学習セッションとの接続 ----------
   function snapOf(q) { return { id: q.id, q: q.q, a: q.a, choices: q.choices, type: q.type, accept: q.accept, map: q.map, unit: q.unit, subject: q.subject, test: q.test }; }
   RPG.beforeStart = function (list) {
