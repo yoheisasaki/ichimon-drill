@@ -16,7 +16,7 @@
     try { Object.values(D.JOBS).forEach(j => RU.registerNote(j.name, j.ruby)); Object.values(D.SKILLS).forEach(s => RU.registerNote(s.name, s.ruby)); D.REGIONS.forEach(r => RU.registerNote(r.name, r.ruby)); RU.init(); if (root.document && root.document.body) RU.observe(root.document); else root.addEventListener('DOMContentLoaded', () => RU.observe(root.document)); } catch (e) { if (root.console) console.error('ruby init', e); }
     if (PARAMS.get('rpg') === '0') { RPG.err = 'off'; return; }   // 動作確認用：RPG を切って学習だけ動かす
     // ママ用は別の冒険セーブを使う。子どものRPGセーブは読み書きしない。
-    const isMamaAdventure = /\\/mama\\.html$/.test(root.location.pathname) || PARAMS.get('mama') === '1';
+    const isMamaAdventure = /\/mama\.html$/.test(root.location.pathname) || PARAMS.get('mama') === '1';
     const scopedKey = k => isMamaAdventure ? k + '.mama' : k;
     const io = { get: k => root.localStorage.getItem(scopedKey(k)), set: (k, v) => root.localStorage.setItem(scopedKey(k), v) };
     RPG.io = io; RPG.store = C.makeStore(io);
@@ -585,7 +585,7 @@
     ex.onclick = () => {
       try {
         const get = k => { try { return JSON.parse(root.localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
-        const txt = C.buildExport({ stats: get(/\\/mama\\.html$/.test(root.location.pathname) ? 'ichimon.stats.v1.mama' : 'ichimon.stats.v1') || {}, sel: get(/\\/mama\\.html$/.test(root.location.pathname) ? 'ichimon.sel.v1.mama' : 'ichimon.sel.v1'), rpg: RPG.ok ? RPG.save : get(C.LS_RPG) }, NOW());
+        const txt = C.buildExport({ stats: get(/\/mama\.html$/.test(root.location.pathname) ? 'ichimon.stats.v1.mama' : 'ichimon.stats.v1') || {}, sel: get(/\/mama\.html$/.test(root.location.pathname) ? 'ichimon.sel.v1.mama' : 'ichimon.sel.v1'), rpg: RPG.ok ? RPG.save : get(/\/mama\.html$/.test(root.location.pathname) ? C.LS_RPG + '.mama' : C.LS_RPG) }, NOW());
         const a = root.document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' })); a.download = 'ichimon-save-' + new Date().toISOString().slice(0, 10) + '.json';
         root.document.body.appendChild(a); a.click(); a.remove(); msg.textContent = '書き出しました（ダウンロードを見てね）。';
       } catch (e) { msg.textContent = '書き出せませんでした。'; }
