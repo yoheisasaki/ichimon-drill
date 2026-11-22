@@ -35,8 +35,12 @@
 <script src="rpg/js/rpg-strip.js"></script>
 <script src="rpg/js/rpg-ui.js"></script>
 <script src="rpg/js/rpg-mapdata.js"></script>
-<script src="rpg/js/rpg-screens.js?v=ios-audio-fix-20261123"></script>
-<script src="rpg/js/rpg-sound.js?v=ios-audio-fix-20261123"></script>
+<script>
+  // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'bgm-settings-20261123b';
+  document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\\/script>');
+  document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\\/script>');
+</script>
 <script src="kanji-ruby.js?v=20261121"></script>
 <script src="map.js"></script>
 <script src="common.js"></script>
