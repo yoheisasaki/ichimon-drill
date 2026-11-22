@@ -47,13 +47,14 @@
     l.explored = l.explored || {};
     l.play = l.play || {day:nowDay(),used:0};
     for (const p of PETS) {
-      if (l.total >= p.at && !l.pets[p.id]) l.pets[p.id] = {xp:0};
+      if (l.total >= p.at && !l.pets[p.id]) l.pets[p.id] = {xp:p.id==='dragon'?10:0};
     }
     l.party = l.party.filter((x,i,a)=>l.pets[x] && a.indexOf(x)===i).slice(0,3);
     if (!l.party.length) l.party=['dragon'];
     return l;
   }
-  function stage(xp) {return xp>=180?'進化':xp>=90?'成長':xp>=30?'こども':'赤ちゃん';}
+  function stage(xp) {return xp>=180?'進化':xp>=90?'成長':xp>=10?'赤ちゃん':'たまご';}
+  function visual(p,xp){return xp<10?'🥚':xp>=180?p.emoji+'✨':p.emoji;}
   function level(xp) {return Math.min(30,1+Math.floor(xp/30));}
   function sync(save, totals, day, daily) {
     const l=ensure(save); if(!l)return false;
@@ -64,7 +65,7 @@
       for(const id of l.party)if(l.pets[id])l.pets[id].xp+=delta;
       l.total=total;changed=true;
     }
-    for(const p of PETS)if(l.total>=p.at&&!l.pets[p.id]){l.pets[p.id]={xp:0};changed=true;}
+    for(const p of PETS)if(l.total>=p.at&&!l.pets[p.id]){l.pets[p.id]={xp:p.id==='dragon'?10:0};changed=true;}
     const d=String(day||nowDay()),n=Number(daily||0);
     const claimed=l.claimedDays[d]||[];
     for(let target=10;target<=n;target+=10){
@@ -80,7 +81,7 @@
     while(days.length>100)delete l.claimedDays[days.shift()];
     return changed;
   }
-  function party(save) {const l=ensure(save);return l.party.map(id=>PETS.find(p=>p.id===id)).filter(Boolean);}
+  function party(save) {const l=ensure(save);return l.party.map(id=>{const p=PETS.find(p=>p.id===id);return p?Object.assign({},p,{emoji:visual(p,l.pets[id].xp)}):null;}).filter(Boolean);}
   function setParty(save,id) {
     const l=ensure(save);if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
     if(l.party.includes(id)){if(l.party.length===1)return {ok:false,msg:'最低1匹は連れていこう'};l.party=l.party.filter(x=>x!==id);}
@@ -127,7 +128,7 @@
   function spendPlay(save,ms,day){
     const l=ensure(save);const p=playState(save,day);l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,level,craft,remove,explore,playState,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,craft,remove,explore,playState,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.lifeSync = function(stats,day,daily) {
       if(!root.RPG.ok)return;
