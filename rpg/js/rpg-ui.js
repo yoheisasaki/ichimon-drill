@@ -85,6 +85,14 @@
     return { total: next.max, next: (Math.floor(next.max / 100) + 1) * 100 };
   };
 
+  // 毎日30問に到達したら1回だけ宝箱を作る。
+  RPG.dailyStudyReward = function (day, solved) {
+    if (!RPG.ok || !/^\d{4}-\d{2}-\d{2}$/.test(day) || solved < 30) return false;
+    const s = RPG.save, id = 'daily-study-30-' + day;
+    if (C.chestById(s, id)) return false;
+    C.addSealedChest(s, id, C.rollChest(s, id), { dailyGoal: 30, got: day });
+    return RPG.persist();
+  };
   // ---------- 学習セッションとの接続 ----------
   function snapOf(q) { return { id: q.id, q: q.q, a: q.a, choices: q.choices, type: q.type, accept: q.accept, map: q.map, unit: q.unit, subject: q.subject, test: q.test }; }
   RPG.beforeStart = function (list) {
