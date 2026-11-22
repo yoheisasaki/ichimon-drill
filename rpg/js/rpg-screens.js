@@ -237,7 +237,7 @@
     return frame('マイワールド',`
       <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
-      ${playable?'':'<p class="rs-why">今日はここまで！ 作ったものは保存してあるよ。また次に続きを作ろうね。</p>'}</div>
+      ${playable?'':'<p class="rs-why">今日のマイワールド、おつかれさま！ 記録はちゃんと保存してあるよ。</p>'}</div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
@@ -251,11 +251,11 @@
   AFTER.worldlife = function () {
     if(!LF)return;
     const panel=app(),run=(f)=>{
-      if(LF.playState(save()).done){UI.msg='今日はここまで。また次に続きを作ろうね！';rerender();return;}
+      if(LF.playState(save()).done){UI.msg='今日のマイワールド、おつかれさま！ 記録は保存してあるよ。';rerender();return;}
       const res=f(),ok=!res||res.ok!==false;
       if(ok && LF.finishPlay(save())){
         // 操作が完了してから終える。時間やカウントダウンは見せない。
-        UI.msg=(res&&res.msg?res.msg+'　':'')+'今日のマイワールドはここまで！ 続きはまた今度ね。';
+        UI.msg=(res&&res.msg?res.msg+'　':'')+'今日のマイワールド、おつかれさま！ 記録はちゃんと保存したよ。';
       } else if(res&&res.msg) UI.msg=res.msg;
       if(ok)commit();
       rerender();
@@ -270,7 +270,7 @@
       if(doc.hidden||UI.screen!=='worldlife'){return;}
       const t=LF.spendPlay(save(),1000);
       if(Math.floor(t.used)%5000===0)commit();
-      if(t.done){stopLifeTimer();commit();UI.msg='今日のマイワールドはここまで！ 続きはまた今度ね。';rerender();}
+      if(t.done){stopLifeTimer();commit();UI.msg='今日のマイワールド、おつかれさま！ 記録はちゃんと保存したよ。';rerender();}
     },1000);
   };
 
