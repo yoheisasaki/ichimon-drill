@@ -261,7 +261,19 @@ function pick(list, n) {
 }
 // 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
-function pickStart(list, n) { return pick(list, n); }
+function pickStart(list, n) {
+  const picked = pick(list, n);
+  // 結城紬の実物写真は、まだ一度も解いていない場合だけ最初に見せる。
+  // 一度解いた後は通常の苦手・復習・幅広い出題ルールに戻す。
+  const textile = list.find(q => q.id === 'sha-0067');
+  if (textile && n > 0 && !st(textile.id).w && !st(textile.id).c) {
+    const i = picked.findIndex(q => q.id === textile.id);
+    if (i >= 0) picked.splice(i, 1);
+    else if (picked.length >= n) picked.pop();
+    picked.unshift(textile);
+  }
+  return picked;
+}
 
 function pool() {
   const sel = (units[filter] || []);
