@@ -178,6 +178,22 @@ async function syncKidHistory(force = false) {
       stats = next;
       save(LS_STATS, stats);
       if (window.RPG && RPG.studyMilestones) RPG.studyMilestones(stats);
+              // 端末間で同じ解答を二重に数えず、今日の解答数に反映。
+       const byId = new Map();
+       for (const [qid, info] of Object.entries(h.questions)) {
+         const remote = Array.isArray(info && info.attempts) ? info.attempts : [];
+         for (const a of mergeKidAttempts(remote, pending.get(qid) || [])) byId.set(String(a[3]), a);
+       }
+       for (const [qid, attempts] of pending) {
+         if (h.questions[qid]) continue;
+         for (const a of mergeKidAttempts([], attempts)) byId.set(String(a[3]), a);
+       }
+       const dayCounts = {};
+       byId.forEach(a => { const d = String(a[0] || '').slice(0,10); if (/^\d{4}-\d{2}-\d{2}$/.test(d)) dayCounts[d] = (dayCounts[d] || 0) + 1; });
+       const daily = load(LS_DAILY, {});
+       Object.entries(dayCounts).forEach(([d,n]) => { daily[d] = Math.max(Number(daily[d] || 0), n); });
+       save(LS_DAILY, daily);
+       if (window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
        historyLastSynced = Date.now();
       // 解答中は画面を切り替えない。ホームにいる時だけ表示数を更新。
       if (!historyStartPending && document.getElementById('go')) home();
@@ -413,11 +429,13 @@ function addTodaySolved(day) {
   const keys = Object.keys(daily).sort();
   keys.slice(0, Math.max(0, keys.length - 90)).forEach(k => delete daily[k]);
   save(LS_DAILY, daily);
+  if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(day, daily[day]);
 }
 // ---------- 画面：最初 ----------
 function home() {
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   app.className = ''; if (window.RPG) RPG.unmount();
+  if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
   if (filter !== '全部' && filter !== 'ちず' && filter !== 'かく' && !subs.includes(filter)) filter = '全部';
@@ -454,6 +472,7 @@ function home() {
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
+    ${!MAMA ? (() => { const n = todaySolved(); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🎯 きょうの30問：${Math.min(n,30)}/30　${n >= 30 ? "達成！宝箱を開こう！" : "あと"+(30-n)+"問"}</div>`; })() : ""}
     ${RPG.homeBonus()}
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
