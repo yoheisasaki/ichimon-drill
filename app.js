@@ -58,6 +58,9 @@ SOUND_WEAK_IDS.forEach(id => FOCUS_IDS.add(id));
 const SOCIAL_VIDEO_IDS = ["sha-0501","sha-0502","sha-0503","sha-0504","sha-0505","sha-0506","sha-0507","sha-0508","sha-0509","sha-0510","sha-0511","sha-0512","sha-0513","sha-0514"];
 const SOCIAL_HIGH_IDS = ["sha-0504","sha-0505","sha-0506","sha-0507"];
 SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
+// 読めなかった工芸品の用語：絹織物・陶磁器・漆器の復習を出題対象に加える。
+const CRAFT_READING_FIRST_IDS = ['sha-0067', 'sha-0377', 'sha-0395'];
+CRAFT_READING_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
@@ -263,16 +266,16 @@ function pick(list, n) {
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
   const picked = pick(list, n);
-  // 結城紬の実物写真は、まだ一度も解いていない場合だけ最初に見せる。
-  // 一度解いた後は通常の苦手・復習・幅広い出題ルールに戻す。
-  const textile = list.find(q => q.id === 'sha-0067');
-  if (textile && n > 0 && !st(textile.id).w && !st(textile.id).c) {
-    const i = picked.findIndex(q => q.id === textile.id);
-    if (i >= 0) picked.splice(i, 1);
-    else if (picked.length >= n) picked.pop();
-    picked.unshift(textile);
-  }
-  return picked;
+  // 工芸品の読みに迷った3語を初回だけ先頭に配置する。
+  // すでに解いた問題、選択した教科・単元以外は優先しない。
+  // 2回目以降は通常の苦手・復習・幅広い出題ルールを使う。
+  const first = CRAFT_READING_FIRST_IDS
+    .map(id => list.find(q => q.id === id))
+    .filter(q => q && st(q.id).w + st(q.id).c === 0)
+    .slice(0, n);
+  if (!first.length) return picked;
+  const ids = new Set(first.map(q => q.id));
+  return first.concat(picked.filter(q => !ids.has(q.id))).slice(0, n);
 }
 
 function pool() {
