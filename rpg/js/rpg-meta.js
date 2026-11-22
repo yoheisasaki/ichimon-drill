@@ -5,7 +5,7 @@
   const m = factory(isN ? require('./rpg-data.js') : root.RPGData, isN ? require('./rpg-core.js') : root.RPGCore, isN ? require('./rpg-battle.js') : root.RPGBattle, isN ? require('./rpg-world.js') : root.RPGWorld);
   if (isN) module.exports = m; else root.RPGMeta = m;
 })(typeof self !== 'undefined' ? self : this, function (D, C, B, W) {
-  const SELL_RATE = 0.25, ENH_COST_RATE = [0.20, 0.35, 0.50], ENH_ORE = [2, 4, 6];
+  const SELL_RATE = 0.25, ENH_COST_RATE = [0.10, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.30], ENH_ORE = [1, 1, 2, 2, 3, 3, 4, 4];
   const NAME_MAX = 8;
 
   // 古い保存データに足りない欄を補う（v1 のまま追加。既存の値は変えない）
