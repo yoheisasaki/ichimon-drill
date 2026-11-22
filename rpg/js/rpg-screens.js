@@ -662,7 +662,20 @@
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
       <p class="rs-p" id="cloudStatus" role="status"></p><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
-  AFTER.data = function () { const d = app().querySelector('.rpg-bk'); if (d) d.open = true; RPG.bindHome(); };
+  AFTER.data = function () {
+    const cloud=root.RPG.cloud;
+    if(cloud && doc.getElementById('cloudKey')){
+      const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
+      const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;};
+      show();
+      const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
+      doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
+      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドの進行をこの端末に読み込みます。端末の現在の進行はバックアップします。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
+      doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
+      doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
+    }
+    const d = app().querySelector('.rpg-bk'); if (d) d.open = true; RPG.bindHome();
+  };
 
   // ===================== 第3段 =====================
   // ---------- おはなし（区間ごとの短い会話。スキップ・読み返しできる） ----------
@@ -769,7 +782,7 @@
       <div class="rs-h2">冒険のBGM</div><p class="rs-p">ぼうけんの地図でオリジナル音楽が流れます。音もオンにしてください。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.music ? ' on' : ''}" id="bgmOn" aria-pressed="${!!st.music}">オン</button><button class="rs-chip${!st.music ? ' on' : ''}" id="bgmOff" aria-pressed="${!st.music}">オフ</button></div>
       <div class="rs-h2">振動</div><p class="rs-p">報酬のときに震えます（端末が対応しているときだけ）。はじめはオフです。</p>
-      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
+      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel"><button class="rs-big" data-go="data">スマホ・iPadのRPG共有（ゲームのデータ）</button></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
     const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (RPG.sound) { if (v && (k === 'sound' || k === 'music')) RPG.sound.unlock(); RPG.sound.syncMusic(); } rerender(); };
