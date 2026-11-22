@@ -9,11 +9,17 @@
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const save = () => RPG.save;
-  const UI = { shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
-  const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['me', '{自分|じぶん}']];
-  const ROOT_OF = { adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
+  const UI = { lifeRecipe:'pet',lifeRemove:false, shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
+  const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['worldlife', 'マイワールド'], ['me', '{自分|じぶん}']];
+  const ROOT_OF = { worldlife: 'worldlife', adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const PARENT = { place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'jobs', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const TACTICS = [['auto', 'おまかせ', '様子を見て自動で選ぶ'], ['attack', '攻める', '攻撃を主に。回復は HPが低い時だけ'], ['guard', '守る', '予告された大技にそなえ、回復も早め']];
+
+  // 同行するペットは3匹まで。RPGの画面でも主人公と一緒に見える。
+  const LF = root.RPGLife;
+  const followers = () => LF && RPG.ok ? `<span class="life-followers" aria-label="冒険のおとも">${LF.party(save()).map((p,i)=>`<span class="life-follow life-follow-${i}" title="${esc(p.name)}">${p.emoji}</span>`).join('')}</span>` : '';
+  let lifeTicker = null;
+  function stopLifeTimer() { if(lifeTicker){clearInterval(lifeTicker);lifeTicker=null;} }
 
   // ---------- 小さな部品 ----------
   const RuRb = root.RPGRuby, rb = RuRb.render;   // {漢字|よみ} → <ruby>（共通の安全なレンダラー）
@@ -130,7 +136,7 @@
   RPG.homeTop = function () {
     if (!RPG.ok) return RPG.noticeHtml();
     const s = save(), job = s.job, jl = C.jobLevel(job, s.jobXp[job]);
-    return `${noticeBox()}<div class="rs-hc-meta"><span class="rs-hjob">${jobRb(job)} Lv${jl.lv}</span>${coinHtml()}</div><section class="rs-home" aria-label="冒険者の様子"><div class="rs-stage">${heroCv('home')}</div></section>`;
+    return `${noticeBox()}<div class="rs-hc-meta"><span class="rs-hjob">${jobRb(job)} Lv${jl.lv}</span>${coinHtml()}</div><section class="rs-home" aria-label="冒険者の様子"><div class="rs-stage">${heroCv('home')}${followers()}</div></section>`;
   };
   // 開始ボタンの下の「続き：地域名」（今の冒険の場所）
   RPG.homeNow = function () {
@@ -173,6 +179,7 @@
     return `<div class="rs rs3${opt.split ? ' split' : ''}" id="rsRoot"><header class="rs-head">${back ? '<button class="rs-back" id="rsBack" aria-label="もどる">‹ もどる</button>' : '<span class="rs-back sp"></span>'}<h1 class="rs-title">${title}</h1>${opt.right || '<span class="rs-back sp"></span>'}</header>${UI.msg ? `<div class="rs-msg" role="status">${esc(UI.msg)}</div>` : ''}<main class="rs-body" id="rsBody">${noticeBox()}${body}</main>${foot}</div>`;
   }
   function go(name, params) {
+    stopLifeTimer();
     UI.screen = name; UI.params = params || {}; UI.msg = ''; UI.sheet = null;
     if (RPG.sound) RPG.sound.setScene(name === 'adv');
     if (name === 'equip') { UI.eq = Object.assign({}, save().equip); UI.slot = 'weapon'; const ti = params && params.tryItem && D.ITEMS[params.tryItem]; if (ti) { UI.slot = ti.slot; UI.eq[ti.slot] = ti.id; } }
@@ -183,6 +190,7 @@
     UI.confirm = null; render(); root.scrollTo && root.scrollTo(0, 0);
   }
   function render() {
+    stopLifeTimer();
     const A = app(); if (!RPG.ok && !save()) { root.home(); return; }
     RPG.unmount && RPG.unmount(); A.className = 'rs-app';
     const f = VIEWS[UI.screen] || VIEWS.me; A.innerHTML = f(UI.params);
@@ -224,6 +232,7 @@
     const list = info.map((x, i) => x.ch === ch ? nodeHtml(x, i - first) : '').join('');
     const mapImg = nowKey ? `rpg/assets/bg/bg_map_${esc(nowKey)}.png` : '';
     return frame('冒険', `
+      <div class="rs-panel life-adventure-party"><b>冒険のおとも</b> ${followers()}</div>
       <div class="rs-panel rs-advnow"><div class="rs-now"><canvas class="rs-ecv" id="rsEnemy" data-en="${r.enemy}" data-boss="${ed.boss ? 1 : 0}" data-box="72" aria-hidden="true"></canvas>
         <div class="rs-advtx"><small>${kr('現在地')}</small><b>${esc(regName)}</b><small>${kr('次の目的')}</small><b>${esc(goal)}</b>${a && a.basic.n > 0 ? `<small class="rs-adv-n">冒険 ${a.basic.n} / ${C.ADV_UNIT}問（続き）${hpKeep < 100 ? '　敵の残りHP ' + hpKeep + '%' : ''}</small>` : hpKeep < 100 ? `<small class="rs-adv-n">敵の残りHP ${hpKeep}%（続きの戦い）</small>` : ''}</div></div>
         <button class="rs-big" id="rsStart">現在地から再開</button></div>
@@ -283,7 +292,7 @@
   const TILES = [['shop', '店', 'shop', '買う・売る', 'shop'], ['jobs', '転職', 'guild', 'ギルド', 'guild'], ['forge', '鍛冶屋', 'forge', '強くする', 'forge'], ['codex', '図鑑', 'room', '敵・装備', 'codex'], ['equip', '装備', 'shop', '着がえる', 'equip'], ['loadout', '技・作戦', 'temple', '神殿', 'temple'], ['ach', '実績', 'guild', 'ギルド', 'ach'], ['look', '名前・衣装', 'room', '自室', 'room']];
   VIEWS.town = function () {
     const tiles = TILES.map(([to, nm, cls, cap, t]) => `<button class="rs-tile t-${t}" data-go="${to}" data-p='{"back":"town"}'><span class="rs-tile-t"><b>${kr(nm)}</b><small>${kr(cap)}</small></span></button>`).join('');
-    return frame('風待ちの町', `<div class="rs-stage rs-stage-town">${heroCv('town')}</div><div class="rs-tiles" role="group" aria-label="まちの入口">${tiles}</div>`, { back: false });
+    return frame('風待ちの町', `<div class="rs-stage rs-stage-town">${heroCv('town')}${followers()}</div><div class="rs-tiles" role="group" aria-label="まちの入口">${tiles}</div>`, { back: false });
   };
   AFTER.town = function () { };
   VIEWS.place = function (p) {
