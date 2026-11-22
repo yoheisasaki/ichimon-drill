@@ -1,10 +1,10 @@
 {
-  "name": "一問一答ママ",
-  "short_name": "一問一答ママ",
+  "name": "🌷 ママ専用 一問一答と冒険",
+  "short_name": "🌷ママ専用",
   "start_url": "./mama.html",
   "display": "standalone",
-  "background_color": "#f1effc",
-  "theme_color": "#f1effc",
+  "background_color": "#fff4f6",
+  "theme_color": "#a52e6b",
   "lang": "ja",
   "icons": [
     {
