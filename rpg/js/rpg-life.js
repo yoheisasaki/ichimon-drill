@@ -85,6 +85,54 @@
     while(days.length>100)delete l.claimedDays[days.shift()];
     return changed;
   }
+  // 訪問ボーナス：連続ログインではなく累計訪問日数。休んでも回数を失わない。
+  // 同じ日の再表示・端末での再起動では二重付与しない。
+  const VISIT_REWARDS = [
+    {emoji:'🪵',name:'木材×3'},
+    {emoji:'🍎',name:'ペットのエサ×2'},
+    {emoji:'💎',name:'宝石×2'},
+    {emoji:'⛏️',name:'石×3と鉄×2'},
+    {emoji:'🐾',name:'同行ペットの成長＋10'},
+    {emoji:'🗺️',name:'地図のかけら×2'},
+    {emoji:'🎁',name:'特別な宝箱'}
+  ];
+  function visitInfo(save) {
+    const l=ensure(save),v=l.visits||{total:0,lastDay:'',lastReward:null};
+    return {total:v.total||0,step:(v.total||0)%7,round:Math.floor((v.total||0)/7),
+      next:(v.total||0)%7+1,lastDay:v.lastDay||'',lastReward:v.lastReward||null,
+      today:v.lastDay===nowDay(),rewards:VISIT_REWARDS};
+  }
+  function visit(save,day) {
+    const l=ensure(save),d=String(day||nowDay());
+    if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(d))return {changed:false,error:'日付が不正'};
+    l.visits=l.visits||{total:0,lastDay:'',lastReward:null};
+    const v=l.visits;
+    if(v.lastDay===d||v.lastDay>d)return {changed:false,info:visitInfo(save)};
+    const nth=(v.total||0)+1,step=((nth-1)%7)+1;
+    let r=VISIT_REWARDS[step-1];
+    if(step===1)l.materials.wood=(l.materials.wood||0)+3;
+    if(step===2)l.food=(l.food||0)+2;
+    if(step===3)l.materials.crystal=(l.materials.crystal||0)+2;
+    if(step===4){l.materials.stone=(l.materials.stone||0)+3;l.materials.iron=(l.materials.iron||0)+2;}
+    if(step===5){for(const id of l.party){if(l.pets[id])l.pets[id].xp+=10;}}
+    if(step===6)l.shards=(l.shards||0)+2;
+    if(step===7 && root.RPGCore) {
+      const C=root.RPGCore, D=root.RPGData,id='visit-week-'+Math.floor((nth-1)/7);
+      if(!C.chestById(save,id)){
+        const roll=C.rollChest(save,id);
+        // 7回目だけは未所持のレア装備を優先する特別な宝箱。
+        if(D && D.ITEMS){
+          const rares=Object.values(D.ITEMS).filter(x=>x.rarity==='rare' && x.rank===roll.rank);
+          const fresh=rares.filter(x=>!save.inv.items[x.id]);
+          const pool=fresh.length?fresh:rares;
+          if(pool.length){roll.kind='rare';roll.item=pool[Math.floor(C.rngFrom(id)()*pool.length)].id;delete roll.mats;delete roll.coin;}
+        }
+        C.addSealedChest(save,id,roll,{visitBonus:7,got:d});
+      }
+    }
+    v.total=nth;v.lastDay=d;v.lastReward={step,emoji:r.emoji,name:r.name,day:d};
+    return {changed:true,info:visitInfo(save)};
+  }
   function party(save) {const l=ensure(save);return l.party.map(id=>{const p=PETS.find(p=>p.id===id);return p?Object.assign({},p,{emoji:visual(p,l.pets[id].xp)}):null;}).filter(Boolean);}
   function setParty(save,id) {
     const l=ensure(save);if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
@@ -151,8 +199,15 @@
     if(l.play.used>=MAX_PLAY_MS)l.play.done=true;
     return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
+    root.RPG.visitBonus = function(day) {
+      if(!root.RPG.ok)return null;
+      const result=visit(root.RPG.save,day||nowDay());
+      if(result.changed && !root.RPG.persist())return null;
+      return result.info;
+    };
+    root.RPG.visitInfo = function(){return root.RPG.ok?visitInfo(root.RPG.save):null;};
     root.RPG.lifeSync = function(stats,day,daily) {
       if(!root.RPG.ok)return;
       const total=Object.values(stats||{}).reduce((n,x)=>n+(Number(x.c)||0)+(Number(x.w)||0),0);
