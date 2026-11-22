@@ -104,7 +104,7 @@
   }
   function visit(save,day) {
     const l=ensure(save),d=String(day||nowDay());
-    if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(d))return {changed:false,error:'日付が不正'};
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return {changed:false,error:'日付が不正'};
     l.visits=l.visits||{total:0,lastDay:'',lastReward:null};
     const v=l.visits;
     if(v.lastDay===d||v.lastDay>d)return {changed:false,info:visitInfo(save)};
