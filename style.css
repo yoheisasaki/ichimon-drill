@@ -165,3 +165,14 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .feedback-next:disabled{opacity:.6}
 .choice:disabled{cursor:default;opacity:1}
 .choice.dim:disabled{opacity:.55}
+
+/* ママ用の画面を風助用と明確に区別する */
+body.mama-mode{background:#fff4f6}
+body.mama-mode .mama-identity{background:#a52e6b;color:#fff;border:3px solid #7f1c4c;border-radius:18px;padding:14px 12px;margin:0 0 14px;text-align:center;box-shadow:0 4px 0 #eac1d5}
+.mama-identity-title{font-size:26px;font-weight:900;line-height:1.45}
+.mama-identity-sub{font-size:13px;font-weight:800;line-height:1.5}
+body.mama-mode .mama-identity-compact{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 12px;margin-bottom:10px}
+.mama-identity-compact strong{font-size:19px}
+.mama-identity-compact span{font-size:12px}
+body.mama-mode .mama{background:#fff1f6;border-color:#d47a9c;color:#782649}
+body.mama-mode .rs-topbar{background:#fff4f6}
