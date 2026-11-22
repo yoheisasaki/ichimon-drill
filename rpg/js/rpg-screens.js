@@ -692,7 +692,7 @@
       <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
-    const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); if (RPG.sound) RPG.sound.syncMusic(); rerender(); };
+    const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (RPG.sound) { if (v && (k === 'sound' || k === 'music')) RPG.sound.unlock(); RPG.sound.syncMusic(); } rerender(); };
     doc.getElementById('rbOn').onclick = () => { RuRb.setOn(true); rerender(); }; doc.getElementById('rbOff').onclick = () => { RuRb.setOn(false); rerender(); };
     doc.getElementById('snOn').onclick = () => set('sound', true); doc.getElementById('snOff').onclick = () => set('sound', false);
     doc.getElementById('bgmOn').onclick = () => set('music', true); doc.getElementById('bgmOff').onclick = () => set('music', false);
