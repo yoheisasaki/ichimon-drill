@@ -105,6 +105,10 @@
     }
     save.coins += coin;
     // 同行ペットの探索能力。勝利のたびに建築素材が少しずつ増える。
+    if(outcome === 'victory' && save.life && ed.boss){
+      save.life.bossShards=save.life.bossShards||{};
+      if(!save.life.bossShards[ed.id]){save.life.bossShards[ed.id]=1;save.life.shards=(save.life.shards||0)+1;}
+    }
     if(outcome === 'victory' && save.life && save.life.materials){
       const companions = save.life.party || [], materials = save.life.materials;
       if(companions.includes('mole')) materials.stone=(materials.stone||0)+1;
