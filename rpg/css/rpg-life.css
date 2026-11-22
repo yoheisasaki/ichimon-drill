@@ -43,3 +43,7 @@
 .rpg-strip{position:fixed}
 .rpg-strip .life-strip-pets{position:absolute;right:20px;bottom:calc(5px + env(safe-area-inset-bottom));z-index:10;pointer-events:none;gap:0}
 .rpg-strip .life-strip-pets .life-follow{font-size:16px}
+
+.life-pet-wrap{display:flex;flex-direction:column;gap:4px;min-width:0}
+.life-pet-wrap .life-pet{width:100%;flex:1}
+.life-pet-wrap .life-feed{min-height:32px;font-size:11px;white-space:normal}
