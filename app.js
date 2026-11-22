@@ -532,7 +532,7 @@ function question() {
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
-    ${isIn || MAMA ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">けってい</button></div>'}
+    ${isIn ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">けってい</button></div>'}
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>
@@ -540,7 +540,7 @@ function question() {
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
-  app.querySelectorAll('.choice').forEach(b => b.onclick = () => MAMA ? answer(+b.dataset.i) : pickChoice(+b.dataset.i));
+  app.querySelectorAll('.choice').forEach(b => b.onclick = () => pickChoice(+b.dataset.i));
   const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
   if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: isIn ? 2.4 : 1.7 }); }).catch(() => {});
