@@ -392,8 +392,8 @@
   }
   const START_WEAPON = { id: 'w_start', slot: 'weapon', cat: 'any', wish: 'sword', rank: 0, rarity: 'normal', name: 'はじまりの武器', atk: 3, price: 0 };
   ITEMS.w_start = START_WEAPON;
-  // 強化：+1ごとに基準性能+5%（最大+3。必ず成功）。レア補正（約+10%）は店売りの基準値に加算。基準値＝同ランク・同系統の通常品
-  const ENH_MAX = 3, ENH_STEP = 0.05;
+  // 強化：+1ごとに基準性能+7.5%（最大+8。必ず成功）。レア補正（約+10%）は店売りの基準値に加算。基準値＝同ランク・同系統の通常品
+  const ENH_MAX = 8, ENH_STEP = 0.075;
   function enhBase(it) { const n = it.rarity === 'rare' ? ITEMS[it.id.replace(/^r/, '')] : it; return n || it; }
   function enhBonus(it, lv) {   // 武器の攻撃・防具の防御に加える値
     if (!it || !lv || !it.rank) return 0; const b = enhBase(it);
