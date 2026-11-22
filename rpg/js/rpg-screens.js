@@ -222,7 +222,7 @@
     const petCards=LF.PETS.map(p=>{
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
       return `<button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
-        <span class="life-emoji">${p.emoji}</span><b>${esc(p.name)}</b>
+        <span class="life-emoji">${owned?LF.visual(p,pet.xp):'🥚'}</span><b>${esc(p.name)}</b>
         <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
         <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button>`;
     }).join('');
