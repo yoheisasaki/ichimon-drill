@@ -140,7 +140,11 @@
   function fitScale(im, maxW, maxH) { if (!im) return 1; return Math.min(1, maxW ? maxW / im.width : 1, maxH ? maxH / im.height : 1); }
   RPG.deferred = [];   // 旧仕様の名残（敵の反撃は回答と同時に再生する。常に空）
   RPG.stripLog = [];   // 計測用：{k, ms, plan}（演出の実時間）
-  RPG.stripHtml = function (S) { return S && S.rpg && RPG.ok ? '<div class="rpg-strip" aria-hidden="true"></div>' : ''; };
+  RPG.stripHtml = function (S) {
+    if(!S||!S.rpg||!RPG.ok)return '';
+    const companions=root.RPGLife?root.RPGLife.party(RPG.save).map((p,i)=>'<span class="life-follow life-follow-'+i+'">'+p.emoji+'</span>').join(''):'';
+    return '<div class="rpg-strip" aria-hidden="true"><span class="life-followers life-strip-pets">'+companions+'</span></div>';
+  };
   // 帯の canvas は学習中ずっと同じものを使い回す（次問でも作り直さない。mount で新しい枠へ付け替えるだけ）
   let cv = null, ctx = null, W = 0, H = 0, raf = 0, animating = false, breath = 0, breathT = 0, textT = 0, bgCache = null, queue = [], running = null, layout = null;
   const view = { ready: false, eHp: 0, eMax: 1, gone: false, retreat: false, bgOff: 0, text: null, textEnd: 0 };   // いま見えている状態（確定状態に追いつく）
