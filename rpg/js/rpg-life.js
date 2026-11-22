@@ -31,7 +31,9 @@
     {id:'village',name:'かくれ村',emoji:'🏘️',need:10,loot:{wood:3,stone:3,crystal:2}}
   ];
   const MATERIALS = {wood:'木材',stone:'石',iron:'鉄',crystal:'宝石'};
-  const MAX_PLAY_MS = 5 * 60 * 1000;
+  // 5分は目安。建築などの操作が完了するまでは遮らず、最大7分で終了。
+  const SOFT_PLAY_MS = 5 * 60 * 1000;
+  const MAX_PLAY_MS = 7 * 60 * 1000;
   const nowDay = () => new Date().toLocaleDateString('sv-SE', {timeZone:'Asia/Tokyo'});
   function ensure(save) {
     if (!save) return null;
@@ -46,7 +48,7 @@
     l.claimedDays = l.claimedDays || {};
     l.shards = Number(l.shards || 0);
     l.explored = l.explored || {};
-    l.play = l.play || {day:nowDay(),used:0};
+    l.play = l.play || {day:nowDay(),used:0,done:false};
     for (const p of PETS) {
       if (l.total >= p.at && !l.pets[p.id]) l.pets[p.id] = {xp:p.id==='dragon'?10:0};
     }
@@ -132,13 +134,24 @@
   }
   function playState(save,day) {
     const l=ensure(save),d=day||nowDay();
-    if(l.play.day!==d)l.play={day:d,used:0};
-    return {used:l.play.used,left:Math.max(0,MAX_PLAY_MS-l.play.used),max:MAX_PLAY_MS};
+    if(l.play.day!==d)l.play={day:d,used:0,done:false};
+    // 旧版で5分が過ぎた保存データにも、新しい「キリの良いところで終了」を適用する。
+    return {used:l.play.used,done:!!l.play.done,softReached:l.play.used>=SOFT_PLAY_MS,max:MAX_PLAY_MS};
+  }
+  function finishPlay(save,day) {
+    const l=ensure(save),state=playState(save,day);
+    if(state.done||!state.softReached)return false;
+    l.play.done=true;
+    return true;
   }
   function spendPlay(save,ms,day){
-    const l=ensure(save);const p=playState(save,day);l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));return playState(save,day);
+    const l=ensure(save),p=playState(save,day);
+    if(p.done)return p;
+    l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));
+    if(l.play.used>=MAX_PLAY_MS)l.play.done=true;
+    return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.lifeSync = function(stats,day,daily) {
       if(!root.RPG.ok)return;
