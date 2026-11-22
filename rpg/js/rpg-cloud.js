@@ -8,7 +8,7 @@
   const read=k=>{try{return root.localStorage.getItem(k)||''}catch(e){return ''}};
   const write=(k,v)=>{try{root.localStorage.setItem(k,v)}catch(e){}};
   const getKey=()=>read(KEY);
-  const endpoint=()=>((root.SEND_OVERRIDE||root.SEND_URL)||'');
+  const endpoint=()=>((typeof SEND_OVERRIDE !== 'undefined' && SEND_OVERRIDE) || (typeof SEND_URL !== 'undefined' && SEND_URL) || '');
   const url=()=>endpoint()+'?api=ichimon_game&key='+encodeURIComponent(getKey())+'&t='+Date.now();
   const valid=s=>s&&C.validateSave(C.migrateSave(JSON.parse(JSON.stringify(s)))).length===0;
   function snapshot(){return JSON.parse(JSON.stringify(RPG.save));}
@@ -74,7 +74,7 @@
       }
       cloudVersion=x.version;syncedRev=local.rev;ready=true;remote=null;
       write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
-      status='同期済み';return state();
+      status='同期済み';if(RPG.save.rev!==local.rev)onPersist();return state();
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
     finally{busy=false;}
   }
