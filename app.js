@@ -265,17 +265,37 @@ function pick(list, n) {
 // 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
-  const picked = pick(list, n);
-  // 工芸品の読みに迷った3語を初回だけ先頭に配置する。
-  // すでに解いた問題、選択した教科・単元以外は優先しない。
-  // 2回目以降は通常の苦手・復習・幅広い出題ルールを使う。
-  const first = CRAFT_READING_FIRST_IDS
-    .map(id => list.find(q => q.id === id))
-    .filter(q => q && st(q.id).w + st(q.id).c === 0)
-    .slice(0, n);
-  if (!first.length) return picked;
-  const ids = new Set(first.map(q => q.id));
-  return first.concat(picked.filter(q => !ids.has(q.id))).slice(0, n);
+  // 工芸品の新規・苦手は大切だが、同じ分野が連続しないよう10問に最大2問まで。
+  // ほかの教科・単元の問題と混ぜ、工芸品は3問目・8問目を目安に配置する。
+  // すでに正解した問題は通常の復習選定に任せ、最初に押し付けない。
+  const craftIds = new Set(CRAFT_READING_FIRST_IDS);
+  const craftPool = list.filter(q => craftIds.has(q.id));
+  const priority = CRAFT_READING_FIRST_IDS
+    .map(id => craftPool.find(q => q.id === id))
+    .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
+    .slice(0, Math.min(2, Math.max(1, Math.floor(n / 5))));
+  const chosen = pick(list.filter(q => !craftIds.has(q.id)), n - priority.length);
+  // 教科・単元が偏っていても、同じ教科が続きすぎないよう並べ直す。
+  const mixed = [];
+  const pending = chosen.slice();
+  while (pending.length) {
+    const last = mixed.length ? mixed[mixed.length - 1].subject : '';
+    const next = pending.findIndex(q => q.subject !== last);
+    mixed.push(pending.splice(next >= 0 ? next : 0, 1)[0]);
+  }
+  for (let i = 0; i < priority.length; i++) {
+    const pos = Math.min(i === 0 ? 2 : 7, mixed.length);
+    mixed.splice(pos, 0, priority[i]);
+  }
+  // 工芸品以外の候補が足りない場合のみ、残りの問題で埋める。
+  if (mixed.length < n) {
+    const used = new Set(mixed.map(q => q.id));
+    for (const q of pick(list.filter(q => !used.has(q.id)), n - mixed.length)) {
+      if (mixed.length >= n) break;
+      mixed.push(q);
+    }
+  }
+  return mixed.slice(0, n);
 }
 
 function pool() {
