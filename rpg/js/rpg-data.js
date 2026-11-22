@@ -392,6 +392,7 @@
   }
   const START_WEAPON = { id: 'w_start', slot: 'weapon', cat: 'any', wish: 'sword', rank: 0, rarity: 'normal', name: 'はじまりの武器', atk: 3, price: 0 };
   ITEMS.w_start = START_WEAPON;
+  ITEMS.x_study_cloak = { id: 'x_study_cloak', slot: 'acc', cat: 'charm', wish: 'acc', rank: 1, rarity: 'rare', name: '学びのマント', price: 300, fx: { hpPct: 0.15 } };
   // 強化：+1ごとに基準性能+7.5%（最大+8。必ず成功）。レア補正（約+10%）は店売りの基準値に加算。基準値＝同ランク・同系統の通常品
   const ENH_MAX = 8, ENH_STEP = 0.075;
   function enhBase(it) { const n = it.rarity === 'rare' ? ITEMS[it.id.replace(/^r/, '')] : it; return n || it; }
