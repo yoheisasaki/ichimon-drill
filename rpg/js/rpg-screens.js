@@ -211,6 +211,63 @@
 
   const VIEWS = {}, AFTER = {};
 
+
+  // ---------- マイワールド（ペット8種類、最大3匹同行、建築と探検） ----------
+  const lifeMaterials = l => Object.entries(LF.MATERIALS).map(([id,nm])=>`<span class="life-material">${nm} <b>${l.materials[id]||0}</b></span>`).join('');
+  const lifeCost = cost => Object.entries(cost).map(([id,n])=>LF.MATERIALS[id]+'×'+n).join('・');
+  VIEWS.worldlife = function () {
+    if(!LF)return frame('マイワールド','<p>最新版に更新してください。</p>',{back:false});
+    const s=save(),l=LF.ensure(s),time=LF.playState(s),playable=time.left>0;
+    const mins=Math.floor(time.left/60000),secs=String(Math.floor(time.left/1000)%60).padStart(2,'0');
+    const petCards=LF.PETS.map(p=>{
+      const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
+      return `<button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
+        <span class="life-emoji">${p.emoji}</span><b>${esc(p.name)}</b>
+        <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
+        <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button>`;
+    }).join('');
+    const cells=Array.from({length:36},(_,i)=>{
+      const x=i%6,y=Math.floor(i/6),item=l.map.find(t=>t.x===x&&t.y===y),r=item&&LF.RECIPES.find(a=>a.id===item.id);
+      return `<button class="life-cell ${item?'occupied':''}" data-life-x="${x}" data-life-y="${y}" ${!playable?'disabled':''} aria-label="${r?esc(r.name):'空き地'}・${x+1}列${y+1}行">${r?r.emoji:'·'}</button>`;
+    }).join('');
+    const recipe=LF.RECIPES.map(r=>`<button class="life-recipe ${UI.lifeRecipe===r.id&&!UI.lifeRemove?'selected':''}" data-life-recipe="${r.id}" ${!playable?'disabled':''}><span>${r.emoji}</span><b>${esc(r.name)}</b><small>${lifeCost(r.cost)}</small></button>`).join('');
+    const zones=LF.ZONES.map(z=>{
+      const unlocked=l.shards>=z.need,done=l.explored[LF.nowDay()];
+      return `<button class="life-zone" data-life-zone="${z.id}" ${!unlocked||done||!playable?'disabled':''}>${z.emoji} ${esc(z.name)} <small>${!unlocked?'地図のかけら '+l.shards+'/'+z.need:done?'今日は探検ずみ':'探検する'}</small></button>`;
+    }).join('');
+    return frame('マイワールド',`
+      <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
+      <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
+      <div class="life-timer">ゲーム時間　残り <b id="lifeLeft">${mins}:${secs}</b> ／ 1日5分</div>
+      ${playable?'':'<p class="rs-why">今日はここまで！ 作ったものは保存されています。また明日ね。</p>'}</div>
+      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。</p><div class="life-pets">${petCards}</div></div>
+      <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
+      <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
+      <div class="life-map" role="group" aria-label="建築できる6かける6マスの土地">${cells}</div>
+      <div class="rs-h3">クラフト台</div><div class="life-recipes">${recipe}</div>
+      <button class="rs-btn ${UI.lifeRemove?'on':''}" id="lifeRemove" ${!playable?'disabled':''}>${UI.lifeRemove?'✓ 片付けるモード':'片付ける'}</button></div>
+      <div class="rs-panel"><div class="rs-h2">🗺️ 秘密の探検　地図のかけら ${l.shards}枚</div><p class="rs-p">30問達成ごとに地図のかけらを獲得。探検は1日1回。連れていくペットによって見つかる素材が変わるよ。</p><div class="life-zones">${zones}</div></div>
+      <div class="rs-panel"><p class="rs-p">進化や建築は翌日へ持ち越せるよ。勉強を休んでもペットは弱らないので安心してね。</p></div>
+    `,{back:false});
+  };
+  AFTER.worldlife = function () {
+    if(!LF)return;
+    const panel=app(),run=(f)=>{if(LF.playState(save()).left<=0){UI.msg='今日はここまで。また明日ね！';rerender();return;}const res=f();if(res&&res.msg)UI.msg=res.msg;if(!res||res.ok!==false)commit();rerender();};
+    panel.querySelectorAll('[data-life-pet]').forEach(b=>b.onclick=()=>run(()=>LF.setParty(save(),b.dataset.lifePet)));
+    panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
+    panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
+    panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
+    const rem=doc.getElementById('lifeRemove');if(rem)rem.onclick=()=>{UI.lifeRemove=!UI.lifeRemove;rerender();};
+    lifeTicker=setInterval(()=>{
+      if(doc.hidden||UI.screen!=='worldlife'){return;}
+      const t=LF.spendPlay(save(),1000);
+      const lbl=doc.getElementById('lifeLeft');
+      if(lbl)lbl.textContent=Math.floor(t.left/60000)+':'+String(Math.floor(t.left/1000)%60).padStart(2,'0');
+      if(Math.floor(t.used)%5000===0)commit();
+      if(!t.left){stopLifeTimer();commit();UI.msg='今日のマイワールドはおしまい。また明日！';rerender();}
+    },1000);
+  };
+
   // ---------- ぼうけん（8章6章：現在地と次の目的を上段／現在地から再開／章ごとの地域マップ。お話・他の冒険・技・お願い・世界地図は詳細シートへ） ----------
   const CH_NAME = { 1: '第1章　消えた灯台', 2: '第2章　空の下の世界', 3: '第3章　十二のしるし' };
   const advCtx = () => {
