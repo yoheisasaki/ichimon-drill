@@ -648,7 +648,15 @@
   };
 
   // ---------- ゲームのデータ（バックアップ） ----------
-  VIEWS.data = function () { return frame('ゲームのデータ', `<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
+  VIEWS.data = function () { return frame('ゲームのデータ', `${root.RPG.cloud ? `
+      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div>
+      <p class="rs-p">ペット・マイワールド・装備・レベルを同じセーブで遊ぶための設定。学習記録の同期とは別です。保護者が設定してください。</p>
+      <label for="cloudKey" class="rs-p">家族の共有鍵（20文字以上）</label>
+      <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
+      <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
+      <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () { const d = app().querySelector('.rpg-bk'); if (d) d.open = true; RPG.bindHome(); };
 
   // ===================== 第3段 =====================
@@ -765,6 +773,17 @@
     doc.getElementById('bgmOn').onclick = () => set('music', true); doc.getElementById('bgmOff').onclick = () => set('music', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
+    const cloud=root.RPG.cloud;
+    if(cloud){
+      const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
+      const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;};
+      show();
+      const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
+      doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
+      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドの進行をこの端末に読み込みます。端末の現在の進行はバックアップします。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
+      doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
+      doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
+    }
     const bk = app().querySelector('.rpg-bk'); if (bk) bk.open = true; RPG.bindHome();
   };
 
