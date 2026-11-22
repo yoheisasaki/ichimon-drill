@@ -496,7 +496,7 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     <h1>一問一答</h1>
     ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
-    ${MAMA ? '<div class="mama"><b>ママ用</b>（きろくは のこりません／むすこさんの記録とは べつ）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a></div>' : ''}
+    ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
     ${subjectsHtml}
@@ -505,6 +505,22 @@ function home() {
     ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     ${window.RPG ? RPG.navHtml('home') : ''}`;
+  if (MAMA && !rpgOn) {
+    const btn = document.getElementById('mama-rpg-retry');
+    if (btn) btn.onclick = () => {
+      btn.disabled = true;
+      const status = document.getElementById('mama-rpg-status');
+      try {
+        if (!window.RPG || typeof RPG.init !== 'function') throw new Error('RPGスクリプト未読込');
+        RPG.init();
+        if (!RPG.ok) throw new Error('起動できません：' + (RPG.err || '初期化エラー'));
+        home();
+      } catch (e) {
+        if (status) status.textContent = '冒険を起動できませんでした：' + (e.message || String(e));
+        btn.disabled = false;
+      }
+    };
+  }
   if (!MAMA) { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   if (!MAMA) void syncKidHistory();
