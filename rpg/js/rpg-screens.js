@@ -155,7 +155,7 @@
   SHEETFN.bonus = function () {
     const s = save(), g = s.goal && D.JOBS[s.goal.job] ? s.goal.job : null, b = bonusState();
     let goalTxt = ''; if (g) { const left = M.jobProgress(s, g).filter(r => !r.pending && !r.done); goalTxt = `<p class="rs-p big">${kr('目標')}：${jobRb(g)}${left.length ? '' : '（もうなれる！）'}</p>`; }
-    const body = openSheet(rb('{今日|きょう}のボーナス'), `<p class="rs-p big">${rb('{今日|きょう}の{冒険|ぼうけん}は、1{回目|かいめ}が{経験値|けいけんち}×3、2{回目|かいめ}が×2。3{回目|かいめ}からは ふつうの{経験値|けいけんち}です。')}</p><p class="rs-p big">${rb('{今日|きょう}{使|つか}った{回数|かいすう}')}：${Math.min(b.used, 2)} / 2</p>${goalTxt}${RPG.homeChestHtml ? RPG.homeChestHtml().replace('<details', '<details open') : ''}`, 'bonus');
+    const body = openSheet(rb('{今日|きょう}のボーナス'), `<p class="rs-p big">${rb('{今日|きょう}の{冒険|ぼうけん}は、1{回目|かいめ}が{経験値|けいけんち}×3、2{回目|かいめ}が×2。3{回目|かいめ}からは ふつうの{経験値|けいけんち}です。')}</p><p class="rs-p big">${rb('{今日|きょう}{使|つか}った{回数|かいすう}')}：${Math.min(b.used, 3)} / 3</p>${goalTxt}${RPG.homeChestHtml ? RPG.homeChestHtml().replace('<details', '<details open') : ''}`, 'bonus');
     if (body && RPG.bindHomeChests) RPG.bindHomeChests();
   };
   SHEETFN.bonus.onClose = () => { if (doc.querySelector('.rs-homewrap')) root.home(); };
@@ -419,13 +419,13 @@
       const i = M.enhanceInfo(s, it.id), lv = i.lv;
       const st = statLine(it.id), after = i.after != null && lv < D.ENH_MAX ? `→ ${it.atk != null ? '攻撃' : '防御'} ${i.after}` : '';
       return `<div class="rs-item"><div><b>${esc(it.name)}${lv ? ' +' + lv : ''}</b>${rankTag(it)}${rareTag(it)}</div><small>${esc(st)} ${esc(after)}${it.slot === 'acc' ? '　（効果の量が +5%ずつ）' : ''}</small>
-        ${lv >= D.ENH_MAX ? '<span class="rs-small">最大（+3）</span>' : `<small>費用 ${i.coin}コイン ＋ ${esc(C.oreName(it.rank))} ×${i.ore}（持ち ${i.have}）</small><button class="rs-btn sm" data-enh="${it.id}" ${i.err ? 'disabled' : ''}>+${lv + 1}に強化</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`}</div>`;
+        ${lv >= D.ENH_MAX ? '<span class="rs-small">最大（+${D.ENH_MAX}）</span>' : `<small>費用 ${i.coin}コイン ＋ ${esc(C.oreName(it.rank))} ×${i.ore}（持ち ${i.have}）</small><button class="rs-btn sm" data-enh="${it.id}" ${i.err ? 'disabled' : ''}>+${lv + 1}に強化</button>${i.err ? `<small class="rs-why">${esc(i.err)}</small>` : ''}`}</div>`;
     }).join('') || '<p class="rs-p">鍛えられる装備がありません。</p>';
     const mats = Object.keys(s.inv.mats).filter(k => s.inv.mats[k] > 0).map(k => {
       let nm = k; if (k.startsWith('ore_')) nm = C.oreName(+k.slice(4)); else if (k.startsWith('bm_')) { const r = D.REGIONS.find(x => 'bm_' + x.id === k); nm = r ? r.mat : k; }
       return `<span class="rs-mat">${esc(nm)} ×${s.inv.mats[k]}</span>`;
     }).join('') || '<small>まだありません</small>';
-    return frame('鍛冶屋', `<div class="rs-panel c">${coinHtml()}<p class="rs-p">強化は +3まで。必ず成功します。1回ごとに基準の性能が +5%。</p></div>
+    return frame('鍛冶屋', `<div class="rs-panel c">${coinHtml()}<p class="rs-p">強化は +8まで。必ず成功します。1回ごとに基準の性能が +7.5%。</p></div>
       <div class="rs-panel"><div class="rs-h2">素材</div><div class="rs-mats">${mats}</div></div>${uniquePanel(s)}<div class="rs-list rs-forge-list">${rows}</div>`);
   };
   AFTER.forge = function () {
