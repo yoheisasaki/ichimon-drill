@@ -11,7 +11,6 @@
 @media(prefers-reduced-motion:reduce){.life-follow{animation:none}}
 .life-adventure-party{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:10px 15px}
 .life-welcome p{font-size:14px;line-height:1.7;margin:8px 0}
-.life-timer{padding:9px 12px;background:rgba(122,132,164,.12);border-radius:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}
 .life-pets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .life-pet{min-height:106px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:2px solid #ccd1d8;background:#fafcff;border-radius:12px;color:#24324c;padding:9px 3px;font:inherit}
 .life-pet.selected{border-color:#4c8d72;background:#e4f4eb}
