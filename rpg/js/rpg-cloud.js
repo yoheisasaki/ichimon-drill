@@ -50,7 +50,8 @@
       if(x.save){
         remote=x;
         // 同じ端末で同期済みで、ローカル変更が無ければ自動取得できる
-        if(stored&&stored.version<=x.version&&stored.rev===RPG.save.rev)return applyCloud(x);
+        if(stored&&stored.version===x.version&&stored.rev===RPG.save.rev){syncedRev=RPG.save.rev;ready=true;remote=null;status='同期済み';return state();}
+        if(stored&&stored.version<x.version&&stored.rev===RPG.save.rev)return applyCloud(x);
         status='クラウドにセーブあり。どちらを使うか選んでください';
       }else{remote=null;status='クラウドは空です。この端末を最初のセーブにできます';}
     }catch(e){status='接続できません：'+String(e.message||e);remote=null;}
