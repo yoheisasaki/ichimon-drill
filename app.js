@@ -451,6 +451,19 @@ function addTodaySolved(day) {
   save(LS_DAILY, daily);
   if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(day, daily[day]);
 }
+// 途中終了しても残る回答数を表示する（進行データそのものは毎問保存済み）。
+function totalSolved() {
+  return Object.values(stats).reduce((sum, v) => sum + (Number(v.c) || 0) + (Number(v.w) || 0), 0);
+}
+function answeredProgressHtml() {
+  const active = window.RPG && RPG.ok && RPG.save && RPG.save.active;
+  const adventure = active ? ' ／ 冒険 ' + active.basic.n + ' / 10問' : '';
+  return '📘 今日 ' + todaySolved() + '問 ／ 累計 ' + totalSolved() + '問' + adventure + '<small style="display:block;font-size:12px;font-weight:600">途中でやめても、解いた数は保存されます</small>';
+}
+function refreshAnsweredProgress() {
+  const el = document.getElementById('answered-progress');
+  if (el) el.innerHTML = answeredProgressHtml();
+}
 // ---------- 画面：最初 ----------
 function home() {
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
@@ -593,6 +606,7 @@ function question() {
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
+    <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
     <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
@@ -604,7 +618,7 @@ function question() {
     ${window.RPG ? RPG.stripHtml(S) : ''}`;
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
-  document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); };
+  document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); }; // 問題数・冒険進行は解答時に保存済み
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => pickChoice(+b.dataset.i));
   const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
@@ -755,6 +769,7 @@ function record(q, ok, picked, skipped) {
   addTodaySolved(day);
   if (!MAMA && window.RPG && RPG.lifeSync) RPG.lifeSync(stats,day,todaySolved());
   if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
+  refreshAnsweredProgress();
 }
 let sending = false;
 function post(rows, mode) {
