@@ -18,14 +18,43 @@
     job: [[262, .1, 'triangle', .07], [330, .1, 'triangle', .07], [392, .1, 'triangle', .07], [523, .1, 'triangle', .07], [659, .1, 'triangle', .07], [784, .3, 'triangle', .07]]
   };
   const settings = () => (RPG.save && RPG.save.settings) || {};
+  // 著作物を使わない、冒険マップ専用の小さなオリジナルBGM。
+  const melody = [392, 494, 587, 494, 440, 523, 659, 523, 392, 494, 587, 784, 659, 523, 494, 0];
+  let musicTimer = null, step = 0, musicScene = false;
+  function stopMusic() {
+    if (musicTimer !== null) clearInterval(musicTimer);
+    musicTimer = null; step = 0;
+  }
+  function syncMusic() {
+    if (!musicScene || !Snd.enabled() || !settings().music || (root.document && root.document.hidden)) { stopMusic(); return; }
+    if (!ctx || ctx.state !== 'running' || musicTimer !== null) return;
+    const tick = () => {
+      if (!musicScene || !Snd.enabled() || !settings().music || (root.document && root.document.hidden)) { stopMusic(); return; }
+      try {
+        const hz = melody[step % melody.length], t = ctx.currentTime + .01;
+        if (hz) {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'triangle'; o.frequency.value = hz;
+          g.gain.setValueAtTime(.016, t);
+          g.gain.exponentialRampToValueAtTime(.0001, t + .27);
+          o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + .29);
+        }
+        step++;
+      } catch (_) { stopMusic(); }
+    };
+    tick(); musicTimer = setInterval(tick, 320);
+  }
   const Snd = {
     SEQ, log: [],
     enabled: () => !!(RPG.ok && settings().sound),
+    setScene(on) { musicScene = !!on; syncMusic(); },
+    syncMusic,
     // ユーザー操作の中で呼ぶ（スイッチをオンにしたとき・画面を触ったとき）
     unlock() {
       if (ctx || !Snd.enabled()) return;
       try { const AC = root.AudioContext || root.webkitAudioContext; if (AC) ctx = new AC(); } catch (e) { ctx = null; }
-      if (ctx && ctx.state === 'suspended' && ctx.resume) { try { ctx.resume(); } catch (e) {} }
+      if (ctx && ctx.state === 'suspended' && ctx.resume) { try { ctx.resume().then(syncMusic).catch(() => {}); } catch (e) {} }
+      else syncMusic();
     },
     play(name) {
       Snd.log.push(name); if (Snd.log.length > 50) Snd.log.shift();
@@ -43,5 +72,6 @@
     }
   };
   RPG.sound = Snd;
+  if (root.document) root.document.addEventListener('visibilitychange', syncMusic);
   ['pointerdown', 'touchend', 'keydown'].forEach(ev => { try { root.addEventListener(ev, () => Snd.unlock(), { passive: true }); } catch (e) {} });
 })(typeof self !== 'undefined' ? self : this);
