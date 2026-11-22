@@ -177,7 +177,8 @@ async function syncKidHistory(force = false) {
       }
       stats = next;
       save(LS_STATS, stats);
-      historyLastSynced = Date.now();
+      if (window.RPG && RPG.studyMilestones) RPG.studyMilestones(stats);
+       historyLastSynced = Date.now();
       // 解答中は画面を切り替えない。ホームにいる時だけ表示数を更新。
       if (!historyStartPending && document.getElementById('go')) home();
     } catch (e) {
@@ -451,6 +452,7 @@ function home() {
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリを最新版に更新">↻ 更新</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
+    ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
     ${RPG.homeBonus()}
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
@@ -686,6 +688,7 @@ function record(q, ok, picked, skipped) {
     if (skipped) x.k = (x.k || 0) + 1;
   }
   x.t = t; stats[q.id] = x; save(LS_STATS, stats);
+  if (!MAMA && window.RPG && RPG.studyMilestones) RPG.studyMilestones(stats);
   queue.seq++;
   const row = { rid: dev + '-' + queue.seq, t, test: q.test, qid: q.id, ok, pick: plain(picked), sess: S.sess };
   if (skipped) row.skip = 1;
