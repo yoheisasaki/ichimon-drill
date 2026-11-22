@@ -221,10 +221,10 @@
     const mins=Math.floor(time.left/60000),secs=String(Math.floor(time.left/1000)%60).padStart(2,'0');
     const petCards=LF.PETS.map(p=>{
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
-      return `<button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
+      return `<div class="life-pet-wrap"><button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
         <span class="life-emoji">${owned?LF.visual(p,pet.xp):'🥚'}</span><b>${esc(p.name)}</b>
         <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
-        <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button>`;
+        <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
     }).join('');
     const cells=Array.from({length:36},(_,i)=>{
       const x=i%6,y=Math.floor(i/6),item=l.map.find(t=>t.x===x&&t.y===y),r=item&&LF.RECIPES.find(a=>a.id===item.id);
@@ -240,7 +240,7 @@
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
       <div class="life-timer">ゲーム時間　残り <b id="lifeLeft">${mins}:${secs}</b> ／ 1日5分</div>
       ${playable?'':'<p class="rs-why">今日はここまで！ 作ったものは保存されています。また明日ね。</p>'}</div>
-      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。</p><div class="life-pets">${petCards}</div></div>
+      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
       <div class="life-map" role="group" aria-label="建築できる6かける6マスの土地">${cells}</div>
@@ -254,6 +254,7 @@
     if(!LF)return;
     const panel=app(),run=(f)=>{if(LF.playState(save()).left<=0){UI.msg='今日はここまで。また明日ね！';rerender();return;}const res=f();if(res&&res.msg)UI.msg=res.msg;if(!res||res.ok!==false)commit();rerender();};
     panel.querySelectorAll('[data-life-pet]').forEach(b=>b.onclick=()=>run(()=>LF.setParty(save(),b.dataset.lifePet)));
+    panel.querySelectorAll('[data-life-feed]').forEach(b=>b.onclick=()=>run(()=>LF.feed(save(),b.dataset.lifeFeed)));
     panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
     panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
     panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
