@@ -41,6 +41,7 @@
     l.total = Number(l.total || 0);
     l.party = Array.isArray(l.party) ? l.party : ['dragon'];
     l.materials = l.materials || {wood:5,stone:3,iron:0,crystal:0};
+    l.food=Number(l.food||0); l.fedDays=l.fedDays||{};
     l.map = l.map || [{x:2,y:2,id:'house'}];
     l.claimedDays = l.claimedDays || {};
     l.shards = Number(l.shards || 0);
@@ -70,6 +71,7 @@
     const claimed=l.claimedDays[d]||[];
     for(let target=10;target<=n;target+=10){
       if(claimed.includes(target))continue;
+      l.food++;
       l.materials.wood=(l.materials.wood||0)+2;
       l.materials.stone=(l.materials.stone||0)+1;
       if(target%20===0)l.materials.iron=(l.materials.iron||0)+1;
@@ -87,6 +89,14 @@
     if(l.party.includes(id)){if(l.party.length===1)return {ok:false,msg:'最低1匹は連れていこう'};l.party=l.party.filter(x=>x!==id);}
     else {if(l.party.length>=3)return {ok:false,msg:'3匹まで。先にほかの子をお休みさせてね'};l.party.push(id);}
     return {ok:true,msg:'冒険の仲間を変更しました'};
+  }
+  function feed(save,id,day){
+    const l=ensure(save),d=day||nowDay();
+    if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
+    if(l.fedDays[id]===d)return {ok:false,msg:'今日はもうエサをあげたよ'};
+    if(l.food<1)return {ok:false,msg:'エサが足りないよ。問題を10問解くと増えるよ'};
+    l.food--;l.pets[id].xp+=10;l.fedDays[id]=d;
+    return {ok:true,msg:(PETS.find(p=>p.id===id)||{}).name+'が喜んだ！ 成長ポイント＋10'};
   }
   function canPay(l,cost){return Object.entries(cost).every(([id,n])=>(l.materials[id]||0)>=n);}
   function craft(save,id,x,y){
@@ -128,7 +138,7 @@
   function spendPlay(save,ms,day){
     const l=ensure(save);const p=playState(save,day);l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,craft,remove,explore,playState,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.lifeSync = function(stats,day,daily) {
       if(!root.RPG.ok)return;
