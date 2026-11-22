@@ -128,4 +128,12 @@
     const l=ensure(save);const p=playState(save,day);l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));return playState(save,day);
   }
   root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,ensure,sync,party,setParty,stage,level,craft,remove,explore,playState,spendPlay,nowDay};
+  if(root.RPG) {
+    root.RPG.lifeSync = function(stats,day,daily) {
+      if(!root.RPG.ok)return;
+      const total=Object.values(stats||{}).reduce((n,x)=>n+(Number(x.c)||0)+(Number(x.w)||0),0);
+      if(sync(root.RPG.save,total,day,daily))root.RPG.persist();
+    };
+    // 以前から答えた回数があれば再読込時に引き継ぐ（今までの記録を消さない）。
+  }
 })(typeof self!=='undefined'?self:this);
