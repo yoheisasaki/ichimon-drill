@@ -194,6 +194,7 @@ async function syncKidHistory(force = false) {
        Object.entries(dayCounts).forEach(([d,n]) => { daily[d] = Math.max(Number(daily[d] || 0), n); });
        save(LS_DAILY, daily);
        if (window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
+       if (window.RPG && RPG.lifeSync) RPG.lifeSync(stats, now().slice(0,10),todaySolved());
        historyLastSynced = Date.now();
       // 解答中は画面を切り替えない。ホームにいる時だけ表示数を更新。
       if (!historyStartPending && document.getElementById('go')) home();
@@ -436,6 +437,7 @@ function home() {
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   app.className = ''; if (window.RPG) RPG.unmount();
   if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
+  if (!MAMA && window.RPG && RPG.lifeSync) RPG.lifeSync(stats,now().slice(0,10),todaySolved());
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
   if (filter !== '全部' && filter !== 'ちず' && filter !== 'かく' && !subs.includes(filter)) filter = '全部';
@@ -716,6 +718,7 @@ function record(q, ok, picked, skipped) {
   queue.rows.push(row);
   save(LS_Q, queue);
   addTodaySolved(day);
+  if (!MAMA && window.RPG && RPG.lifeSync) RPG.lifeSync(stats,day,todaySolved());
   if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
 }
 let sending = false;
