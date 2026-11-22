@@ -487,7 +487,7 @@ function home() {
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
-    ${!MAMA ? (() => { const n = todaySolved(); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🎯 きょうの30問：${Math.min(n,30)}/30　${n >= 30 ? "達成！宝箱を開こう！" : "あと"+(30-n)+"問"}</div>`; })() : ""}
+    ${!MAMA ? (() => { const n = todaySolved(),done=n>=30; return `<section class="rs-30reward ${done ? "done" : ""}" aria-label="今日の30問チャレンジ" data-noruby><div class="rs-30reward-head"><strong>${done ? "🎉 30問達成！" : "🎁 今日の30問チャレンジ"}</strong><span>${Math.min(n,30)}/30問</span></div><div class="rs-30reward-track" role="progressbar" aria-label="今日の30問" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(n,30)}"><span style="width:${Math.min(100,Math.max(0,n/30*100))}%"></span></div><p>${done ? "ごほうびをゲット！ 宝箱は下の「未開封の宝箱」から開けられるよ。" : "30問解くと 🎁 宝箱 ＋ 🗺️ 地図のかけら ＋ 🧱 建築素材 がもらえるよ！"}</p>${done ? "<small>地図のかけらと素材はマイワールドに追加済み！</small>" : `<small>ごほうびまで、あと${30-n}問！</small>`}</section>`; })() : ""}
     ${RPG.homeBonus()}
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
