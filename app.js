@@ -416,6 +416,7 @@ function addTodaySolved(day) {
 }
 // ---------- 画面：最初 ----------
 function home() {
+  if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   app.className = ''; if (window.RPG) RPG.unmount();
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
@@ -497,6 +498,7 @@ function home() {
 
 // ---------- 回 ----------
 function start(list, from, opts) {
+  if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
   let pre = { list, reviews: [], reask: 0, rpg: false };
   if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
