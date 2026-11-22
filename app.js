@@ -349,6 +349,13 @@ const EXPLANATION_IMAGES = {
 function expHtml(q) {
   const t = expText(q);
   const im = EXPLANATION_IMAGES[q.id];
+  // 結城紬の写真は「解答後の解説」にも載せる。建物や機織り機ではなく、織物そのもの。
+  if (q.id === 'sha-0067') {
+    return '<div class="exp"><b>結城紬（ゆうきつむぎ）</b>は、茨城県の結城市などで作られる伝統的な絹織物だよ。<br>写真は結城紬の亀甲柄（きっこうがら）の布だよ。' +
+      '<figure style="margin:12px auto;max-width:400px;text-align:center">' +
+      '<img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG" alt="結城紬の亀甲柄の絹織物の写真" loading="eager" referrerpolicy="no-referrer" style="width:100%;height:auto;border-radius:10px;background:white">' +
+      '<figcaption style="font-size:12px;line-height:1.6">結城紬の織物そのもの（撮影：Moraykaita／CC BY-SA 3.0）<br><a target="_blank" rel="noopener noreferrer" href="https://commons.wikimedia.org/wiki/File:Yuki-kikko.JPG">写真を大きく見る</a></figcaption></figure></div>';
+  }
   if (!t && !im) return '';
   const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
   return '<div class="exp">' + (t ? qr(t, q) : '') + fig + '</div>';
@@ -380,12 +387,12 @@ function socialPhotoHtml(q) {
   if (q.subject !== '社会' || !q.photo || !q.photo.file) return '';
   const filename = q.photo.file;
   const fileUrl = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename);
-  const imgUrl = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580';
+  const imgUrl = filename === 'Yuki-kikko.JPG' ? 'https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG' : 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580';
   return '<figure style="max-width:460px;margin:10px auto 14px;text-align:center">' +
     '<img src="' + imgUrl + '" alt="問題の参考写真" loading="eager" referrerpolicy="no-referrer" ' +
     'style="display:block;max-width:100%;width:100%;max-height:275px;object-fit:contain;border-radius:12px;background:#f6f6f6" ' +
     'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">' +
-    '<div style="display:none;padding:14px;font-size:13px">写真を表示できませんでした。下のリンクから写真を開いてね。</div>' +
+    '<div style="display:none;padding:14px;font-size:13px">写真を表示できませんでした。下の「写真のページ」から写真を見てね。</div>' +
     '<figcaption style="font-size:12px;line-height:1.7;color:#666">出典：Wikimedia Commons　' +
     '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">写真のページ</a></figcaption></figure>';
 }
