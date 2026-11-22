@@ -38,7 +38,7 @@
     const key = todayKey(save, ms), used = (save.daily.used[key] || 0) + 1;
     save.daily.used[key] = used; if (!save.daily.maxKey || key > save.daily.maxKey) save.daily.maxKey = key;
     const keys = Object.keys(save.daily.used).sort(); while (keys.length > 14) delete save.daily.used[keys.shift()];
-    return { key, no: used, xpMult: xpMultOf(used), coinMult: coinMultOf(used), chest: used <= 2 };
+    return { key, no: used, xpMult: xpMultOf(used), coinMult: coinMultOf(used), chest: used <= 3 };
   }
 
   // ---------- 報酬 ----------
@@ -76,8 +76,14 @@
   // ---------- 宝箱（開封前に結果を確定して保存） ----------
   function rollChest(save, seed) {
     const rng = rngFrom(seed), pity = save.chest.pity, rank = maxRank(save), wish = save.wish;
-    let kind = pity >= 4 ? 'rare' : (x => x < 0.2 ? 'rare' : x < 0.6 ? 'mat' : 'coinmat')(rng());
-    const cands = Object.values(D.ITEMS).filter(i => i.rarity === 'rare' && i.wish === wish && i.rank === rank);
+    let kind = pity >= 2 ? 'rare' : (x => x < 0.4 ? 'rare' : x < 0.7 ? 'mat' : 'coinmat')(rng());
+    // お願いの種類を優先し、未所持の装備を選ぶ。同種類が全部そろっていたら
+    // 同ランクの別種類から未所持品を探して、装備が増える機会を確保する。
+    const rare = Object.values(D.ITEMS).filter(i => i.rarity === 'rare' && i.rank === rank);
+    const preferred = rare.filter(i => i.wish === wish);
+    const freshPreferred = preferred.filter(i => !save.inv.items[i.id]);
+    const freshAny = rare.filter(i => !save.inv.items[i.id]);
+    const cands = freshPreferred.length ? freshPreferred : freshAny.length ? freshAny : preferred;
     if (kind === 'rare' && !cands.length) kind = 'mat';
     const r = { kind, rank, wish, pityBefore: pity };
     if (kind === 'rare') r.item = cands[Math.floor(rng() * cands.length)].id;
