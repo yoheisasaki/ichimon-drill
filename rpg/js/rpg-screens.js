@@ -670,7 +670,7 @@
       show();
       const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
       doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
-      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドの進行をこの端末に読み込みます。端末の現在の進行はバックアップします。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
+      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドのセーブに切り替えます。iPad側の解きかけの問題も置き換わります。現在のセーブをバックアップしてから読み込みます。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
       doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
       doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
     }
