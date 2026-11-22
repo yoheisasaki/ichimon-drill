@@ -174,6 +174,7 @@
   }
   function go(name, params) {
     UI.screen = name; UI.params = params || {}; UI.msg = ''; UI.sheet = null;
+    if (RPG.sound) RPG.sound.setScene(name === 'adv');
     if (name === 'equip') { UI.eq = Object.assign({}, save().equip); UI.slot = 'weapon'; const ti = params && params.tryItem && D.ITEMS[params.tryItem]; if (ti) { UI.slot = ti.slot; UI.eq[ti.slot] = ti.id; } }
     if (name === 'shop') { UI.shopSel = null; }
     if (name === 'loadout') { UI.sel = M.currentSkills(save()).slice(); UI.tactic = save().loadout.tactic || 'auto'; }
@@ -683,15 +684,18 @@
     const st = save().settings, rbOn = RuRb.isOn();
     return frame('設定', `<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
-      <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。BGMはありません。はじめはオフです。</p>
+      <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">音を鳴らす</button></div>
+      <div class="rs-h2">冒険のBGM</div><p class="rs-p">ぼうけんの地図でオリジナル音楽が流れます。音もオンにしてください。はじめはオフです。</p>
+      <div class="rs-chips"><button class="rs-chip${st.music ? ' on' : ''}" id="bgmOn" aria-pressed="${!!st.music}">オン</button><button class="rs-chip${!st.music ? ' on' : ''}" id="bgmOff" aria-pressed="${!st.music}">オフ</button></div>
       <div class="rs-h2">振動</div><p class="rs-p">報酬のときに震えます（端末が対応しているときだけ）。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
-    const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); rerender(); };
+    const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (k === 'sound' && v && RPG.sound) RPG.sound.unlock(); if (RPG.sound) RPG.sound.syncMusic(); rerender(); };
     doc.getElementById('rbOn').onclick = () => { RuRb.setOn(true); rerender(); }; doc.getElementById('rbOff').onclick = () => { RuRb.setOn(false); rerender(); };
     doc.getElementById('snOn').onclick = () => set('sound', true); doc.getElementById('snOff').onclick = () => set('sound', false);
+    doc.getElementById('bgmOn').onclick = () => set('music', true); doc.getElementById('bgmOff').onclick = () => set('music', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
     const bk = app().querySelector('.rpg-bk'); if (bk) bk.open = true; RPG.bindHome();
