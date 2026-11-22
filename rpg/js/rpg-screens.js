@@ -775,14 +775,22 @@
   // ---------- せってい（音・振動。どちらも初期オフ） ----------
   VIEWS.settings = function () {
     const st = save().settings, rbOn = RuRb.isOn();
-    return frame('設定', `<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
+    return frame('設定', `${root.RPG.cloud ? `
+      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div>
+      <p class="rs-p">ペット・マイワールド・装備・レベルを同じセーブで遊ぶための設定。学習記録の同期とは別です。保護者が設定してください。</p>
+      <label for="cloudKey" class="rs-p">家族の共有鍵（20文字以上）</label>
+      <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
+      <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
+      <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      </div>` : ''}<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
       <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.sound ? ' on' : ''}" id="snOn" aria-pressed="${!!st.sound}">オン</button><button class="rs-chip${!st.sound ? ' on' : ''}" id="snOff" aria-pressed="${!st.sound}">オフ</button><button class="rs-chip" id="snTest">音を鳴らす</button></div>
       <div class="rs-h2">冒険のBGM</div><p class="rs-p">ぼうけんの地図でオリジナル音楽が流れます。音もオンにしてください。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.music ? ' on' : ''}" id="bgmOn" aria-pressed="${!!st.music}">オン</button><button class="rs-chip${!st.music ? ' on' : ''}" id="bgmOff" aria-pressed="${!st.music}">オフ</button></div>
       <div class="rs-h2">振動</div><p class="rs-p">報酬のときに震えます（端末が対応しているときだけ）。はじめはオフです。</p>
-      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel"><a class="rs-big" href="?openCloud=1&refresh=cloud-link-20261123v2" style="display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;min-height:70px">スマホ・iPadのRPG共有（ここを開く）</a></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
+      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
     const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (RPG.sound) { if (v && (k === 'sound' || k === 'music')) RPG.sound.unlock(); RPG.sound.syncMusic(); } rerender(); };
@@ -791,7 +799,7 @@
     doc.getElementById('bgmOn').onclick = () => set('music', true); doc.getElementById('bgmOff').onclick = () => set('music', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
-    const bk = app().querySelector('.rpg-bk'); if (bk) bk.open = true; RPG.bindHome();
+    AFTER.data(); // 共有設定もこの画面上で直接操作できるようにする
   };
 
   // しょうごう・いしょう（クリア後の ごほうび）
