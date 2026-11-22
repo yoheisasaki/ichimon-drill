@@ -28,10 +28,16 @@
     const r = currentRoute(save), snap = heroSnapshot(save), ed = D.ENEMIES[r.enemy];
     const hp = keptHp(save, r);
     const n = (save.stats.adventures || 0) + 1;
+    const battle = B.newBattle(Object.assign({ enemyId: r.enemy, enemyStats: r.stats, enemyHp: hp }, snap));
+    const pets = (save.life && Array.isArray(save.life.party)) ? save.life.party : [];
+    if(pets.includes('dragon')) battle.hero.atk = Math.round(battle.hero.atk * 1.05);
+    if(pets.includes('slime')) {battle.hero.maxHp = Math.round(battle.hero.maxHp * 1.05);battle.hero.hp = battle.hero.maxHp;}
+    if(pets.includes('penguin')) battle.hero.def = Math.round(battle.hero.def * 1.04);
+    if(pets.includes('bird')) battle.enemy.atk = Math.round(battle.enemy.atk * 0.96);
     save.active = {
       id: 'adv' + n + '-' + (ms || 0).toString(36), no: n, started: ms || 0, step: r.quest ? M.questState(save, r.quest).step : save.progress.step, route: { region: r.region, point: r.point, seg: r.seg, boss: r.boss, rematch: r.rematch, quest: r.quest || null, bg: r.bg || null, g: r.g },
       enemyId: r.enemy, hero: snap, slot: null, basic: { n: 0, c: 0 }, reviews: { ok: [], pending: [], used: 0 }, seq: 0, events: {},
-      battle: B.newBattle(Object.assign({ enemyId: r.enemy, enemyStats: r.stats, enemyHp: hp }, snap))
+      battle
     };
     M.onBegin(save);
     return save.active;
@@ -98,6 +104,14 @@
       }
     }
     save.coins += coin;
+    // 同行ペットの探索能力。勝利のたびに建築素材が少しずつ増える。
+    if(outcome === 'victory' && save.life && save.life.materials){
+      const companions = save.life.party || [], materials = save.life.materials;
+      if(companions.includes('mole')) materials.stone=(materials.stone||0)+1;
+      if(companions.includes('wolf')) materials.wood=(materials.wood||0)+1;
+      if(ed.boss && companions.includes('cat')) materials.crystal=(materials.crystal||0)+1;
+      if(ed.boss && companions.includes('fox')) materials.crystal=(materials.crystal||0)+1;
+    }
     if (outcome === 'victory') M.killEnemy(save, ed.id);
     // 道のり
     const route = D.ROUTE[Math.min(a.step, D.ROUTE.length - 1)];
