@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=DotGothic16&display=swap">
-<link rel="stylesheet" href="style.css?v=mama-nav-clearance-20261123v3">
+<link rel="stylesheet" href="style.css?v=mama-upper-nav-20261123">
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
@@ -21,43 +21,41 @@
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
 <style>
-/* iPhoneのアプリ内ブラウザの下部ツールバーを避けるための表示域 */
-:root{--mama-browser-clearance:116px}
-@media (display-mode:standalone){:root{--mama-browser-clearance:0px}}
-/* iPhone対策：固定のママ用ヘッダー分を除いた高さだけRPGに割り当てる */
-html:has(body.mama-mode .rs3),html:has(body.mama-mode .rw3){height:100%;overflow:hidden}
-body.mama-mode:has(#app > .rs3),
-body.mama-mode:has(#app > .rw3){
-  display:flex!important;
-  flex-direction:column!important;
-  height:100vh!important;
-  height:calc(100dvh - var(--mama-browser-clearance, 116px))!important;
-  min-height:0!important;
-  overflow:hidden!important;
+/* ママ用：RPG本体の描画とは独立した上部ナビを常設 */
+body.mama-mode .mama-game-nav{
+ display:flex;flex:0 0 auto;gap:3px;align-items:stretch;
+ padding:5px 6px;background:#0d1630;border-bottom:2px solid #d4af5a;
+ position:relative;z-index:2600;
 }
-body.mama-mode:has(#app > .rs3) .mama-permanent-header,
-body.mama-mode:has(#app > .rw3) .mama-permanent-header{
-  flex:0 0 auto!important;
-  position:relative!important;
-  top:auto!important;
-  z-index:2500;
+body.mama-mode .mama-game-nav button{
+ flex:1;min-width:0;padding:10px 2px;min-height:46px;
+ border:1px solid #d4af5a;border-radius:8px;background:#192b53;color:white;
+ font-size:clamp(11px,3.2vw,15px);font-weight:800;line-height:1.2;
 }
-body.mama-mode #app:has(>.rs3),
-body.mama-mode #app:has(>.rw3){
-  flex:1 1 0!important;
-  height:auto!important;
-  min-height:0!important;
-  max-height:none!important;
-  overflow:hidden!important;
+body.mama-mode .mama-game-nav button[aria-current="page"]{background:#286d74;border-color:#ffe27a;color:#fff}
+body.mama-mode:has(#app>.rs3),body.mama-mode:has(#app>.rw3){
+ display:flex!important;flex-direction:column!important;
+ height:100dvh!important;min-height:0!important;overflow:hidden!important;
 }
-body.mama-mode #app>.rs3,
-body.mama-mode #app>.rw3{height:100%!important;min-height:0!important}
-body.mama-mode .rs3 .rs-foot,
-body.mama-mode .rw3 .rw-foot{flex:0 0 auto!important}
+body.mama-mode:has(#app>.rs3) .mama-permanent-header,
+body.mama-mode:has(#app>.rw3) .mama-permanent-header{
+ position:relative!important;top:auto!important;flex:0 0 auto!important;
+}
+body.mama-mode #app:has(>.rs3),body.mama-mode #app:has(>.rw3){
+ flex:1 1 0!important;min-height:0!important;height:auto!important;overflow:hidden!important;
+}
+body.mama-mode #app>.rs3,body.mama-mode #app>.rw3{height:100%!important;min-height:0!important}
 </style>
 </head>
 <body class="mama-mode">
 <header class="mama-permanent-header" aria-label="ママ専用アプリ"><strong>🌷 ママ専用アプリ</strong><nav class="mama-admin-nav" aria-label="ママ用管理メニュー"><a href="mama.html">🎮 ゲーム</a><a href="list.html">📚 問題一覧</a><a href="history.html">📊 風助の履歴</a></nav></header>
+<nav class="mama-game-nav" aria-label="ママ用ゲームの移動">
+<button type="button" data-mama-screen="home">ホーム</button>
+<button type="button" data-mama-screen="adv">冒険</button>
+<button type="button" data-mama-screen="town">街</button>
+<button type="button" data-mama-screen="worldlife">マイワールド</button>
+<button type="button" data-mama-screen="me">自分</button>
+</nav>
 <main id="app"></main>
 <script src="rpg/js/rpg-ruby-dict.js"></script>
 <script src="rpg/js/rpg-ruby.js"></script>
@@ -88,6 +86,30 @@ body.mama-mode .rw3 .rw-foot{flex:0 0 auto!important}
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
   const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'mama-menu-20261123';
   document.write('<script src="app.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
+</script>
+<script>
+(function(){
+  const nav = document.querySelector('.mama-game-nav');
+  if(!nav)return;
+  nav.addEventListener('click',function(e){
+    const button=e.target.closest('[data-mama-screen]');
+    if(!button)return;
+    const screen=button.dataset.mamaScreen;
+    if(screen==='home'){
+      if(typeof window.home==='function'){window.home();return;}
+      location.href='mama.html?refresh=mama-upper-nav-20261123';
+      return;
+    }
+    if(window.RPG && RPG.ok && typeof RPG.go==='function'){
+      RPG.go(screen);
+      nav.querySelectorAll('button').forEach(b=>b.removeAttribute('aria-current'));
+      button.setAttribute('aria-current','page');
+    }else{
+      const banner=document.querySelector('.mama-permanent-header strong');
+      if(banner)banner.textContent='🌷 ママ専用：冒険を読み込み中';
+    }
+  });
+})();
 </script>
 </body>
 </html>
