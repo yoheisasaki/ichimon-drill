@@ -449,6 +449,7 @@ function home() {
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   app.className = ''; if (window.RPG) RPG.unmount();
   if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
+  if (!MAMA && window.RPG && RPG.visitBonus) RPG.visitBonus(now().slice(0,10));
   if (!MAMA && window.RPG && RPG.lifeSync) RPG.lifeSync(stats,now().slice(0,10),todaySolved());
   const all = qs();
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
@@ -488,6 +489,7 @@ function home() {
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
     ${!MAMA ? (() => { const n = todaySolved(),done=n>=30; return `<section class="rs-30reward ${done ? "done" : ""}" aria-label="今日の30問チャレンジ" data-noruby><div class="rs-30reward-head"><strong>${done ? "🎉 30問達成！" : "🎁 今日の30問チャレンジ"}</strong><span>${Math.min(n,30)}/30問</span></div><div class="rs-30reward-track" role="progressbar" aria-label="今日の30問" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(n,30)}"><span style="width:${Math.min(100,Math.max(0,n/30*100))}%"></span></div><p>${done ? "ごほうびをゲット！ 宝箱は下の「未開封の宝箱」から開けられるよ。" : "30問解くと 🎁 宝箱 ＋ 🗺️ 地図のかけら ＋ 🧱 建築素材 がもらえるよ！"}</p>${done ? "<small>地図のかけらと素材はマイワールドに追加済み！</small>" : `<small>ごほうびまで、あと${30-n}問！</small>`}</section>`; })() : ""}
+    ${!MAMA && RPG.visitInfo ? (() => { const v=RPG.visitInfo(); if(!v)return ''; const r=v.lastReward,idx=(v.total-1)%7,slots=v.rewards.map((x,i)=>`<span class="rs-visit-dot ${i<=idx?'got':''}" title="${i+1}回目：${x.name}">${i<=idx?'✓':i+1}</span>`).join(''); return `<section class="rs-visit-reward" data-noruby aria-label="訪問ボーナス"><div class="rs-visit-title"><strong>🎁 冒険のごほうび</strong><b>${v.total?((v.total-1)%7+1):0}/7回</b></div><p>${r&&r.day===now().slice(0,10)?'今日のプレゼント：'+r.emoji+' '+r.name+' をゲット！':'アプリを開くと1日1回プレゼント！'}</p><div class="rs-visit-steps" aria-label="7回訪問の進み具合">${slots}</div><small>${v.total%7===0?'🎉 7回目の特別な宝箱をゲット！ 宝箱から開けよう！':'あと'+(7-v.total%7)+'回の訪問で 🎁 特別な宝箱！'}　休んでも進み具合はそのまま。</small></section>`; })() : ''}
     ${RPG.homeBonus()}
     ${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
