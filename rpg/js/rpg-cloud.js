@@ -3,6 +3,8 @@
 // 端末の変更とクラウドの変更が競合したら勝手に上書きせず、選択を求める。
 (function(root){
   const RPG=root.RPG,C=root.RPGCore,M=root.RPGMeta;
+  // ママ用のゲームは風助のクラウドとは絶対に混ぜない。
+  if(root.location && (/\/mama\.html$/.test(root.location.pathname||'') || new URLSearchParams(root.location.search||'').get('mama')==='1'))return;
   const KEY='ichimon.rpg.cloud.key.v1',BASE='ichimon.rpg.cloud.base.v1';
   let cloudVersion=0,syncedRev=null,ready=false,busy=false,timer=null,status='未設定',remote=null;
   const read=k=>{try{return root.localStorage.getItem(k)||''}catch(e){return ''}};
