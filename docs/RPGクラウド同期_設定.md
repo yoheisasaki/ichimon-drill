@@ -2,7 +2,7 @@
 
 ## 現状
 - 学習履歴 API (`?api=ichimon_history`) は稼働済み。
-- RPG の共有 API (`?api=ichimon_game`) は **サーバーへ組み込んで再デプロイするまで使えません**。
+- RPG の共有 API (`?api=ichimon_game`) は 2026-11-23 に学習ボードへ組み込み・再デプロイ済み（@71、URL は従来どおり）。共有鍵は父が管理（GitHub には置かない）。保存ファイルは Google ドライブ 02_記録 の `ichimon-rpg-cloud-save.json`。下の「学習ボード Apps Script」の手順は完了済み。
 - アプリ側のUI・クラウド同期クライアントは実装済み。API 未設定時はゲームを端末内に保存し続けます。学習・装備・建築は消しません。
 
 ## 学習ボード Apps Script（オーナーによる作業）
