@@ -62,10 +62,13 @@ body.mama-mode .mama-permanent-header>.mama-game-nav button{
  border:2px solid #ffe27a!important;border-radius:8px!important;
  pointer-events:auto!important;visibility:visible!important;
 }
+/* ママ用：どの画面でも押せる独立した更新ボタン */
+body.mama-mode .mama-header-tools{display:flex;align-items:center;justify-content:space-between;gap:9px}
+body.mama-mode #mama-refresh{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:38px;min-width:82px;padding:5px 10px;border:2px solid #fff2b0;border-radius:9px;color:#fff!important;background:#a52e6b!important;font-size:14px;font-weight:800;position:relative;z-index:4000;pointer-events:auto}
 </style>
 </head>
 <body class="mama-mode">
-<header class="mama-permanent-header" aria-label="ママ専用アプリ"><strong>🌷 ママ専用アプリ</strong><nav class="mama-admin-nav" aria-label="ママ用管理メニュー"><a href="mama.html">🎮 ゲーム</a><a href="list.html">📚 問題一覧</a><a href="history.html">📊 風助の履歴</a></nav><nav class="mama-game-nav" aria-label="ママ用ゲームの移動">
+<header class="mama-permanent-header" aria-label="ママ専用アプリ"><div class="mama-header-tools"><strong>🌷 ママ専用アプリ</strong><button type="button" id="mama-refresh" aria-label="母用アプリを最新版に更新">↻ 更新</button></div><nav class="mama-admin-nav" aria-label="ママ用管理メニュー"><a href="mama.html">🎮 ゲーム</a><a href="list.html">📚 問題一覧</a><a href="history.html">📊 風助の履歴</a></nav><nav class="mama-game-nav" aria-label="ママ用ゲームの移動">
 <button type="button" data-mama-screen="home">ホーム</button>
 <button type="button" data-mama-screen="adv">冒険</button>
 <button type="button" data-mama-screen="town">街</button>
@@ -74,6 +77,19 @@ body.mama-mode .mama-permanent-header>.mama-game-nav button{
 </nav></header>
 
 <main id="app"></main>
+<script>
+// 独立した更新処理。RPG本体の起動状態に依存せず、母用セーブや学習記録は消さない。
+(function(){
+  const btn=document.getElementById('mama-refresh');
+  if(!btn)return;
+  btn.addEventListener('click',function(){
+    btn.disabled=true;btn.textContent='更新中…';
+    const url=new URL(window.location.href);
+    url.searchParams.set('refresh',String(Date.now()));
+    window.location.replace(url.toString());
+  });
+})();
+</script>
 <script src="rpg/js/rpg-ruby-dict.js"></script>
 <script src="rpg/js/rpg-ruby.js"></script>
 <script src="rpg/js/rpg-data.js?v=life-20261123"></script>
@@ -101,8 +117,8 @@ body.mama-mode .mama-permanent-header>.mama-game-nav button{
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'mama-yuki-photo-20261123';
-  document.write('<script src="app-yuki-photo-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'mama-refresh-fixed-20261123';
+  document.write('<script src="app.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 <script>
 (function(){
