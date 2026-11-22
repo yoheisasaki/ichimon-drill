@@ -791,17 +791,6 @@
     doc.getElementById('bgmOn').onclick = () => set('music', true); doc.getElementById('bgmOff').onclick = () => set('music', false);
     doc.getElementById('vbOn').onclick = () => set('vibrate', true); doc.getElementById('vbOff').onclick = () => set('vibrate', false);
     doc.getElementById('snTest').onclick = () => { if (RPG.sound) { RPG.sound.unlock(); RPG.sound.play('reward'); } };
-    const cloud=root.RPG.cloud;
-    if(cloud){
-      const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
-      const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;};
-      show();
-      const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
-      doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
-      doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドの進行をこの端末に読み込みます。端末の現在の進行はバックアップします。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.chooseCloud();});};
-      doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
-      doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
-    }
     const bk = app().querySelector('.rpg-bk'); if (bk) bk.open = true; RPG.bindHome();
   };
 
