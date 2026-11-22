@@ -28,10 +28,15 @@
     return res.json();
   }
   function applyCloud(x){
-    if(!valid(x.save)||RPG.save.active)return fail('解答中は読み込めません。問題終了後に試してください');
-    // 先に現端末のデータをバックアップ。破壊的な読み込みは保護者操作のみ。
+    if(!valid(x.save))return fail('クラウドのセーブを確認できません');
+    // 解答中でも保護者が明示的に選んだ場合のみ読み込めるようにする。
+    // 元セーブのバックアップが書き込めなければ、端末の進行は変更しない。
     const key=C.LS_BACKUP;
-    try{RPG.io.set(key,JSON.stringify(RPG.save));}catch(e){}
+    try{
+      const original=JSON.stringify(RPG.save);
+      RPG.io.set(key,original);
+      if(RPG.io.get(key)!==original)return fail('バックアップできなかったため、読み込みを中止しました');
+    }catch(e){return fail('バックアップできなかったため、読み込みを中止しました');}
     const s=C.migrateSave(JSON.parse(JSON.stringify(x.save)));
     s.rev=RPG.save.rev;
     const result=RPG.store.save(s);
