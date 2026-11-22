@@ -36,10 +36,11 @@
 <script src="rpg/js/rpg-strip.js"></script>
 <script src="rpg/js/rpg-ui.js?v=life-20261123"></script>
 <script src="rpg/js/rpg-life.js?v=life-20261123"></script>
+<script src="rpg/js/rpg-cloud.js?v=cloud-20261123"></script>
 <script src="rpg/js/rpg-mapdata.js"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'life-20261123';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'cloud-20261123';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
