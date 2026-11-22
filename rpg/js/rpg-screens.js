@@ -782,7 +782,7 @@
       <div class="rs-h2">冒険のBGM</div><p class="rs-p">ぼうけんの地図でオリジナル音楽が流れます。音もオンにしてください。はじめはオフです。</p>
       <div class="rs-chips"><button class="rs-chip${st.music ? ' on' : ''}" id="bgmOn" aria-pressed="${!!st.music}">オン</button><button class="rs-chip${!st.music ? ' on' : ''}" id="bgmOff" aria-pressed="${!st.music}">オフ</button></div>
       <div class="rs-h2">振動</div><p class="rs-p">報酬のときに震えます（端末が対応しているときだけ）。はじめはオフです。</p>
-      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel"><button class="rs-big" data-go="data">スマホ・iPadのRPG共有（ゲームのデータ）</button></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
+      <div class="rs-chips"><button class="rs-chip${st.vibrate ? ' on' : ''}" id="vbOn" aria-pressed="${!!st.vibrate}">オン</button><button class="rs-chip${!st.vibrate ? ' on' : ''}" id="vbOff" aria-pressed="${!st.vibrate}">オフ</button></div></div><div class="rs-panel"><a class="rs-big" href="?openCloud=1&refresh=cloud-link-20261123v2" style="display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;min-height:70px">スマホ・iPadのRPG共有（ここを開く）</a></div><div class="rs-panel rs-data">${RPG.homeHtml()}</div>`);
   };
   AFTER.settings = function () {
     const st = save().settings, set = (k, v) => { st[k] = v; commit(); if (RPG.sound) { if (v && (k === 'sound' || k === 'music')) RPG.sound.unlock(); RPG.sound.syncMusic(); } rerender(); };
