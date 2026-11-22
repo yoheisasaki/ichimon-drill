@@ -491,7 +491,7 @@ function home() {
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリを最新版に更新">↻ 更新</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリをさいしんにする">↻ リロード</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
@@ -532,7 +532,7 @@ function home() {
       }
     };
   }
-  if (!MAMA) { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
+  { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   if (!MAMA) void syncKidHistory();
   app.querySelectorAll('.subj').forEach(b => b.onclick = () => { window.__rangeOpen = true; filter = b.dataset.f; saveSel(); home(); });
