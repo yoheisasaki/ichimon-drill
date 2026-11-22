@@ -1,0 +1,38 @@
+
+/* マイワールドは既存RPGの色・余白を引き継いだ小さな建築ゲーム。 */
+.rs-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.rs-nav .rs-tab{font-size:clamp(10px,2.8vw,13px);min-width:0;padding-left:2px;padding-right:2px}
+.rs-home .rs-stage,.rs-stage-town{position:relative}
+.life-followers{display:inline-flex;gap:4px;align-items:end;justify-content:center;vertical-align:middle}
+.rs-stage>.life-followers{position:absolute;bottom:5px;left:8%;z-index:6;pointer-events:none}
+.life-follow{display:inline-block;font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:22px;line-height:1.4;filter:drop-shadow(1px 2px 1px rgba(0,0,0,.35));animation:life-bounce 1.2s ease-in-out infinite alternate}
+.life-follow-1{animation-delay:.25s}.life-follow-2{animation-delay:.5s}
+@keyframes life-bounce{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){.life-follow{animation:none}}
+.life-adventure-party{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:10px 15px}
+.life-welcome p{font-size:14px;line-height:1.7;margin:8px 0}
+.life-timer{padding:9px 12px;background:rgba(122,132,164,.12);border-radius:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.life-pets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.life-pet{min-height:106px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:2px solid #ccd1d8;background:#fafcff;border-radius:12px;color:#24324c;padding:9px 3px;font:inherit}
+.life-pet.selected{border-color:#4c8d72;background:#e4f4eb}
+.life-pet:disabled{opacity:.6}
+.life-pet .life-emoji{font-size:28px}
+.life-pet b{font-size:14px}
+.life-pet small{font-size:11px;color:#425169;text-align:center}
+.life-materials{display:flex;flex-wrap:wrap;gap:7px}
+.life-material{background:#eaf1f6;color:#29415f;border-radius:20px;padding:5px 10px;font-size:12px}
+.life-map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;margin:13px auto;max-width:390px;padding:8px;background:#8eb77b;border:5px solid #53774c;border-radius:12px}
+.life-cell{min-width:0;aspect-ratio:1;background:#cde5a9;border:1px solid #8cb774;border-radius:4px;font-size:clamp(15px,5vw,28px);display:flex;align-items:center;justify-content:center;color:#678e59;padding:0;cursor:pointer}
+.life-cell.occupied{background:#b2d38c}
+.life-cell:disabled{cursor:default;opacity:.8}
+.life-recipes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.life-recipe{display:grid;grid-template-columns:32px 1fr;grid-template-rows:auto auto;gap:0 6px;align-items:center;text-align:left;border:1px solid #bdc7d5;border-radius:9px;background:#f6f8fc;color:#26354b;padding:10px 8px;font:inherit}
+.life-recipe span{grid-row:span 2;font-size:24px}
+.life-recipe b{font-size:13px}
+.life-recipe small{font-size:10px;color:#53657b}
+.life-recipe.selected{border:2px solid #478b70;background:#e4f4eb}
+.life-zones{display:flex;flex-direction:column;gap:8px}
+.life-zone{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;background:#ecf5ef;color:#264239;border-radius:9px;padding:12px;font:inherit;border:1px solid #aac8b4}
+.life-zone small{font-size:11px;color:#456452}
+.life-zone:disabled{opacity:.65}
+@media(min-width:550px){.life-pets{grid-template-columns:repeat(4,minmax(0,1fr))}.life-recipes{grid-template-columns:repeat(3,minmax(0,1fr))}}
