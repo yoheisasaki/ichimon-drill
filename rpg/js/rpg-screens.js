@@ -753,14 +753,14 @@
 
   // ---------- ゲームのデータ（バックアップ） ----------
   VIEWS.data = function () { return frame('ゲームのデータ', `${root.RPG.cloud ? `
-      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div>
+      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div><p class="rs-p" id="cloudBalance" role="status" style="font-weight:900;font-size:17px;line-height:1.65;padding:14px;border:3px solid #e6c46e;border-radius:12px;background:#203154;color:#fff;margin:14px 0">📱 この端末：確認中 ／ ☁️ クラウド：未確認</p>
       <p class="rs-p">ペット・マイワールド・装備・レベルを同じセーブで遊ぶための設定。学習記録の同期とは別です。保護者が設定してください。</p>
       <label for="cloudKey" class="rs-p">家族の共有鍵（20文字以上）</label>
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><p class="rs-p" id="cloudBalance" style="font-weight:900;padding:10px;border:2px solid #e6c46e;border-radius:10px"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () {
     const cloud=root.RPG.cloud;
@@ -768,6 +768,7 @@
       const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
       const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;const b=doc.getElementById('cloudBalance');if(b){const n=Number(q.localPoints);b.textContent='この端末：'+(Number.isFinite(n)?n:'―')+'ポイント ／ クラウド：'+(q.cloudPoints==null?'未確認':q.cloudPoints)+'ポイント'+(q.cloudPoints!=null&&q.cloudPoints!==n?' ⚠️ 不一致':'');}};
       show();
+      if(cloud.state().connected && cloud.autoCheck) cloud.autoCheck(true);
       const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
       doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
       doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドのセーブに切り替えます。このiPadで解きかけの問題も置き換わります。現在のRPGデータをバックアップしてから読み込みます。よいですか？'))return;guard(async key=>{
@@ -898,14 +899,14 @@
   VIEWS.settings = function () {
     const st = save().settings, rbOn = RuRb.isOn();
     return frame('設定', `${root.RPG.cloud ? `
-      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div>
+      <div class="rs-panel"><div class="rs-h2">スマホ・iPadのRPG共有</div><p class="rs-p" id="cloudBalance" role="status" style="font-weight:900;font-size:17px;line-height:1.65;padding:14px;border:3px solid #e6c46e;border-radius:12px;background:#203154;color:#fff;margin:14px 0">📱 この端末：確認中 ／ ☁️ クラウド：未確認</p>
       <p class="rs-p">ペット・マイワールド・装備・レベルを同じセーブで遊ぶための設定。学習記録の同期とは別です。保護者が設定してください。</p>
       <label for="cloudKey" class="rs-p">家族の共有鍵（20文字以上）</label>
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><p class="rs-p" id="cloudBalance" style="font-weight:900;padding:10px;border:2px solid #e6c46e;border-radius:10px"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
       <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。はじめはオフです。</p>
