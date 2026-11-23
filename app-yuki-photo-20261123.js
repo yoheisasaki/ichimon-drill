@@ -689,10 +689,10 @@ function question() {
     
     <div class="top">
       <button class="btn-quit" id="quit">✕ やめる</button>
-      <button class="btn-quit" type="button" id="pauseSave" style="background:#e9f8ed;color:#174f37;border:2px solid #448568;border-radius:10px;padding:8px;font-weight:bold">💾 ここまで保存してやめる</button>
       <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
+    <button class="big plain" type="button" id="pauseSave" style="width:100%;margin:0 0 12px;min-height:48px;background:#e9f8ed;color:#174f37;border:2px solid #448568;border-radius:12px;font-size:16px;font-weight:bold">💾 ここまで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
