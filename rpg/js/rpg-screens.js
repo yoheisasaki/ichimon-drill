@@ -760,13 +760,13 @@
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><p class="rs-p" id="cloudBalance" style="font-weight:900;padding:10px;border:2px solid #e6c46e;border-radius:10px"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () {
     const cloud=root.RPG.cloud;
     if(cloud && doc.getElementById('cloudKey')){
       const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
-      const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;};
+      const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;const b=doc.getElementById('cloudBalance');if(b){const n=Number(q.localPoints);b.textContent='この端末：'+(Number.isFinite(n)?n:'―')+'ポイント ／ クラウド：'+(q.cloudPoints==null?'未確認':q.cloudPoints)+'ポイント'+(q.cloudPoints!=null&&q.cloudPoints!==n?' ⚠️ 不一致':'');}};
       show();
       const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
       doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
