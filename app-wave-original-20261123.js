@@ -48,9 +48,13 @@ async function refreshKidApp() {
 const FOCUS_IDS = new Set(["ri-0004","ri-0018","ri-0019","ri-0033","ri-0036","ri-0042","ri-0061","ri-0062","ri-0063","ri-0064","ri-0065","sha-0020","sha-0023","sha-0029","sha-0035","sha-0040","sha-0054","sha-0055","sha-0056","sha-0057","sha-0059","sha-0060","sha-0063","sha-0064","sha-0066","sha-0067","sha-0201","sha-0202","koku-0014","koku-0015","koku-0042","koku-0057","koku-0061","koku-0201","koku-0202","koku-0205","map-0001","map-0009","map-0011","ri-0058","koku-0241","koku-0242","koku-0243","ri-0066","ri-0067","ri-0068","ri-0069","ri-0070","ri-0071","ri-0072","ri-0073","ri-0074","ri-0075","sha-0301","sha-0302","sha-0303","sha-0304","sha-0305","sha-0306","sha-0307","sha-0308","sha-0309","sha-0310","sha-0311","sha-0312","sha-0313","sha-0314","sha-0315","sha-0316","sha-0317","sha-0318","sha-0319","sha-0320","sha-0321","sha-0322","sha-0323","sha-0324","sha-0325","sha-0326","sha-0327","sha-0328","sha-0329","sha-0330","sha-0331","sha-0332","sha-0333","sha-0334","sha-0335","sha-0336","sha-0337","sha-0338","sha-0339","sha-0340","sha-0341","sha-0342","sha-0343","sha-0344","sha-0345","sha-0346","sha-0347","sha-0348","sha-0349","sha-0350","sha-0351","sha-0352","sha-0353","map-0015","map-0020","map-0021","map-0022","map-0029","map-0030","map-0032","map-0035","map-0036","map-0041","map-0042","map-0044","map-0045","map-0051","map-0052","map-0053","map-0059","map-0060","map-0062","map-0065","map-0012","map-0013","map-0014","map-0023","map-0024","map-0025","map-0027","map-0028","map-0031","map-0033","map-0038","map-0039","map-0040","map-0043","map-0047","map-0048","map-0050","map-0054","map-0056","map-0057","map-0058","map-0061","map-0064","map-0066","map-0016","map-0017","map-0026","map-0049","map-0055","map-0034","map-0063","map-0068","sha-0032"]);
 // 最新の地図直し（群馬・山梨）を優先。既存の地図問題を再利用し、重複追加しない。
 const MAP_REVIEW_FIRST_IDS = ["map-0009","map-0001"];
-// 音の高さ・波形の新規10問も、通常出題の最初に一度ずつ優先する。
-const SOUND_FIRST_IDS = ["ri-0076","ri-0077","ri-0078","ri-0079","ri-0080","ri-0081","ri-0082","ri-0083","ri-0084","ri-0085"];
-SOUND_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
+// 塾配布の第5回対策で扱われた音の基本（振動・音の高低・コップ・雷）を先にする。
+const SOUND_BASIC_FIRST_IDS = ["ri-0074","ri-0073","ri-0075","ri-0076","ri-0077","ri-0078","ri-0079","ri-0080"];
+// 波形の数やマス目の計算は削除せず発展扱いにし、通常の10問では頻度を落とす。
+const SOUND_ADVANCED_IDS = new Set(["ri-0081","ri-0082","ri-0083","ri-0084"]);
+SOUND_BASIC_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
+SOUND_ADVANCED_IDS.forEach(id => FOCUS_IDS.add(id));
+["ri-0085"].forEach(id => FOCUS_IDS.add(id));
 // p40で間違い・未回答だったところの復習8問（既存4問＋新規4問）。
 const SOUND_WEAK_IDS = ["ri-0086","ri-0087","ri-0088","ri-0089","ri-0090","ri-0091","ri-0092","ri-0093"];
 SOUND_WEAK_IDS.forEach(id => FOCUS_IDS.add(id));
@@ -270,7 +274,7 @@ function pick(list, n) {
     }
   }
   take(weak, Math.ceil(n * 0.6));
-  take(fresh, Math.ceil(n * 0.3), ['ri-0086','sha-0504','ri-0087','sha-0505','ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_FIRST_IDS,...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
+  take(fresh, Math.ceil(n * 0.3), ['ri-0086','sha-0504','ri-0087','sha-0505',...SOUND_BASIC_FIRST_IDS,'ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
   take(old, n - selected.length);
   // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
   if (selected.length < n) take(weak, n - selected.length);
@@ -283,6 +287,15 @@ function pick(list, n) {
 // 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
+  // 基本優先。波形の発展4問は通常スタート4回に1回だけ、最大1問。
+  // 「まちがえた問題」「復習が必要」などの専用ボタンでは制限しない。
+  const soundCountKey = 'ichimon.sound.advanced.turn.v1' + LS_SFX;
+  const turn = Number(lsGet(soundCountKey) || 0) + 1;
+  lsSet(soundCountKey, String(turn));
+  const basic = list.filter(q => !SOUND_ADVANCED_IDS.has(q.id));
+  const advanced = list.filter(q => SOUND_ADVANCED_IDS.has(q.id));
+  const allowAdvanced = turn % 4 === 0 && advanced.length > 0 && basic.length >= n - 1;
+  const normalCount = Math.max(0, n - (allowAdvanced ? 1 : 0));
   // 工芸品の新規・苦手は大切だが、同じ分野が連続しないよう10問に最大2問まで。
   // ほかの教科・単元の問題と混ぜ、工芸品は3問目・8問目を目安に配置する。
   // すでに正解した問題は通常の復習選定に任せ、最初に押し付けない。
@@ -292,7 +305,9 @@ function pickStart(list, n) {
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
     .slice(0, Math.min(2, Math.max(1, Math.floor(n / 5))));
-  const chosen = pick(list.filter(q => !craftIds.has(q.id)), n - priority.length);
+  const chosen = pick(basic.filter(q => !craftIds.has(q.id)), Math.max(0, normalCount - priority.length));
+  // 発展は多くても1問。未出題を優先し、あれば復習も残す。
+  if (allowAdvanced) chosen.push(...pick(advanced, 1));
   // 教科・単元が偏っていても、同じ教科が続きすぎないよう並べ直す。
   const mixed = [];
   const pending = chosen.slice();
@@ -308,7 +323,7 @@ function pickStart(list, n) {
   // 工芸品以外の候補が足りない場合のみ、残りの問題で埋める。
   if (mixed.length < n) {
     const used = new Set(mixed.map(q => q.id));
-    for (const q of pick(list.filter(q => !used.has(q.id)), n - mixed.length)) {
+    for (const q of pick(basic.filter(q => !used.has(q.id)), n - mixed.length)) {
       if (mixed.length >= n) break;
       mixed.push(q);
     }
