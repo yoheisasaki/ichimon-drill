@@ -314,6 +314,7 @@
       <p class="rs-p">🧪 お試し期間中：遊ぶ時間の制限なし</p></div>
       <div class="rs-panel life-point-panel">
         <div class="rs-h2">🛒 ポイントショップ</div>
+        ${root.RPG.cloud?(()=>{const c=root.RPG.cloud.state();return '<p class="rs-p" role="status" style="font-size:13px;font-weight:800;padding:8px;border-radius:8px;background:'+(c.ready?'#e4f7e6':'#fff0cd')+';color:#27394a">☁️ ゲーム同期：'+esc(c.status)+(c.ready?'':' ／ この端末のポイントを保護中。別端末との自動共有は未確認')+'</p>'})():''}
         <p class="rs-p" style="font-weight:900;font-size:17px">⭐ ${l.foodPoints||0} ポイント</p>
         <p class="rs-p">正解1問で1ポイント。ためたポイントでペットのエサを買おう！</p>
         <div class="life-point-shop">
