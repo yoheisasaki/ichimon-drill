@@ -349,8 +349,11 @@
   }
   RPG.play = function (events, opt) {
     opt = opt || {};
-    // 不正解時は敵の攻撃演出を残しても音は鳴らさない。
-    if (opt.correct !== false) events.forEach(e => { if (e.t === 'hero') snd(e.act === 'normal' ? 'attack' : 'skill'); else if (e.t === 'enemy' && e.dmg > 0) snd('hit'); });
+    // 不正解そのものは無音。実際に敵の攻撃を受けるイベントだけ「ビシュッ」と鳴らす。
+    events.forEach(e => {
+      if (e.t === 'hero' && opt.correct !== false) snd(e.act === 'normal' ? 'attack' : 'skill');
+      else if (e.t === 'enemy' && e.dmg > 0) snd('hit');
+    });
     if (!ctx) return;
     const si = sceneInfo(); if (!si) return;
     const fx = FXL ? (id => FXL.keyFor(id)) : null, at = FXL ? (k => FXL.AT[k]) : null, nameOf = id => (D.SKILLS[id] ? D.SKILLS[id].name : null);
