@@ -246,6 +246,12 @@
     render(); const b2 = doc.getElementById('rsBody'), sc2 = doc.querySelector('#rsBody .rs-scroll'); if (b2) b2.scrollTop = y1; if (sc2) sc2.scrollTop = y2;
   };
 
+  if (RPG.cloud) RPG.cloud.onUpdate = function () {
+    // クラウドからポイントが反映されたらマイワールド/同期画面だけ静かに再描画。
+    // 学習中の問題画面と解答ボタンには触れない。
+    if ((UI.screen === 'worldlife'||UI.screen === 'data') && doc.getElementById('rsRoot')) rerender();
+  };
+
   const VIEWS = {}, AFTER = {};
 
 
