@@ -187,7 +187,7 @@
     if (name === 'loadout') { UI.sel = M.currentSkills(save()).slice(); UI.tactic = save().loadout.tactic || 'auto'; }
     if (name === 'look') { UI.look = { outfit: save().look.outfit || null }; UI.name = save().name || ''; }
     if (name === 'jobs') UI.tier = (params && params.tier) || UI.tier;
-    UI.confirm = null; render(); root.scrollTo && root.scrollTo(0, 0);
+    UI.confirm = null; render(); if (name !== 'worldlife' && root.scrollTo) root.scrollTo(0, 0);
   }
   function render() {
     stopLifeTimer();
