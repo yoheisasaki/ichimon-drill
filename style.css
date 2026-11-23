@@ -231,3 +231,10 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
  border:2px solid #c9d0e6;box-shadow:0 2px 0 #aeb8d2;border-radius:12px
 }
 .kid-refresh-primary .kid-refresh-main{font-size:16px;font-weight:800}
+
+/* 更新ボタン：現在の小さなサイズを維持して黄色だけを戻す */
+.kid-refresh-lead .kid-refresh-primary{
+ min-height:51px;padding:8px 12px;background:#ffdd54;color:#26214a;
+ border:2px solid #d2ad33;box-shadow:0 2px 0 #b78016;border-radius:12px
+}
+.kid-refresh-lead .kid-refresh-primary .kid-refresh-main{font-size:16px;font-weight:800}
