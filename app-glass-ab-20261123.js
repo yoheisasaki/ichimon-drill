@@ -544,7 +544,6 @@ function home() {
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="rs-study-first">${goHtml}${continueHtml}</div>
     <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
@@ -553,7 +552,7 @@ function home() {
     ${!MAMA ? (() => { const n = todaySolved(),done=n>=30; return `<section class="rs-30reward ${done ? "done" : ""}" aria-label="今日の30問チャレンジ" data-noruby><div class="rs-30reward-head"><strong>${done ? "🎉 30問達成！" : "🎁 今日の30問チャレンジ"}</strong><span>${Math.min(n,30)}/30問</span></div><div class="rs-30reward-track" role="progressbar" aria-label="今日の30問" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(n,30)}"><span style="width:${Math.min(100,Math.max(0,n/30*100))}%"></span></div><p>${done ? "ごほうびをゲット！ 宝箱は下の「未開封の宝箱」から開けられるよ。" : "30問解くと 🎁 宝箱 ＋ 🗺️ 地図のかけら ＋ 🧱 建築素材 がもらえるよ！"}</p>${done ? "<small>地図のかけらと素材はマイワールドに追加済み！</small>" : `<small>ごほうびまで、あと${30-n}問！</small>`}</section>`; })() : ""}
     ${!MAMA && RPG.visitInfo ? (() => { const v=RPG.visitInfo(); if(!v)return ''; const r=v.lastReward,idx=(v.total-1)%7,slots=v.rewards.map((x,i)=>`<span class="rs-visit-dot ${i<=idx?'got':''}" title="${i+1}回目：${x.name}">${i<=idx?'✓':i+1}</span>`).join(''); return `<section class="rs-visit-reward" data-noruby aria-label="訪問ボーナス"><div class="rs-visit-title"><strong>🎁 冒険のごほうび</strong><b>${v.total?((v.total-1)%7+1):0}/7回</b></div><p>${r&&r.day===now().slice(0,10)?'今日のプレゼント：'+r.emoji+' '+r.name+' をゲット！':'アプリを開くと1日1回プレゼント！'}</p><div class="rs-visit-steps" aria-label="7回訪問の進み具合">${slots}</div><small>${v.total%7===0?'🎉 7回目の特別な宝箱をゲット！ 宝箱から開けよう！':'あと'+(7-v.total%7)+'回の訪問で 🎁 特別な宝箱！'}　休んでも進み具合はそのまま。</small></section>`; })() : ''}
     ${RPG.homeBonus()}
-    ${testHtml}
+    ${continueHtml}${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
       <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
       ${hardHtml}${pendingHtml}${wrongHtml}</div>
@@ -561,13 +560,13 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
-    ${MAMA ? '' : '<div class="rs-study-first">' + goHtml + continueHtml + '</div><div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
+    ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
     ${subjectsHtml}
     <div style="text-align:center;padding:8px 12px;font-weight:bold" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
-    ${MAMA ? startHtml : testHtml + hardHtml + pendingHtml + wrongHtml}
+    ${startHtml}
     ${window.RPG ? RPG.homeHtml() : ''}
     <div class="credit" data-noruby>地図：国土数値情報（行政区域データ）を加工して作成</div>
     ${window.RPG ? RPG.navHtml('home') : ''}`;
