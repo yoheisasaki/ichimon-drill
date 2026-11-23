@@ -258,3 +258,22 @@ body:has(#app.rs-worldlife-screen) {
 .pet-growth-track{display:block;width:88%;max-width:180px;height:9px;flex:none;background:#d6e1ed;border:1px solid #7d96af;border-radius:12px;overflow:hidden;margin:5px auto}
 .pet-growth-track>span{display:block;height:100%;background:linear-gradient(90deg,#3c9c85,#8be0af);border-radius:12px}
 .life-pet .life-emoji{font-size:inherit}
+
+/* 2026-11-23 立体ブロック建築：旧36ボタンの平面グリッドを廃止 */
+.life-build-panel .life-map-iso{display:block!important;width:100%;max-width:540px;margin:14px auto;padding:0;background:#cdeef4;border:3px solid #668c69;border-radius:20px;overflow:hidden;box-shadow:0 8px 0 #537652,0 16px 25px #315b3b30}
+.life-iso-svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.life-iso-tile{cursor:pointer;outline:none}
+.life-iso-tile:focus polygon:first-child{stroke:#ffdc57;stroke-width:3}
+.life-iso-tile:active{filter:brightness(1.15)}
+.life-build-mode{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:13px}
+.life-build-mode .rs-btn{min-width:0;font-size:12px;line-height:1.4;padding:9px 4px;white-space:normal;min-height:49px}
+.life-block-palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:12px 0}
+.life-block-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:80px;padding:8px 3px;border:2px solid #b9cbd2;border-radius:13px;background:#f8fbff;color:#254157;font:inherit;cursor:pointer}
+.life-block-choice b{font-size:13px}.life-block-choice small{font-size:11px}
+.life-block-choice.selected{background:#e1f5ee;border:3px solid #267d58}
+.life-block-chip{width:29px;height:23px;border:2px solid #6a5138;border-bottom-width:6px;transform:skewY(-12deg);background:#dba669;box-shadow:4px 4px 0 #916039}
+.life-block-chip.stone{background:#c2cbd4;border-color:#889ba9;box-shadow:4px 4px 0 #6f8291}
+.life-block-chip.iron{background:#a5d8dc;border-color:#679ea9;box-shadow:4px 4px 0 #477c87}
+.life-block-chip.crystal{background:#bd9bff;border-color:#846bd7;box-shadow:4px 4px 0 #6551af}
+.life-build-hint{font-size:12px;line-height:1.65;color:#466b53;background:#e9f6ed;padding:10px;border-radius:11px}
+@media(max-width:370px){.life-build-mode .rs-btn{font-size:11px}.life-block-choice b{font-size:11px}}
