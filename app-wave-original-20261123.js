@@ -555,6 +555,20 @@ function closeFeedbackScreen() {
   const old = document.getElementById('quiz-feedback-screen');
   if (old) old.remove();
 }
+// 冒険表示は保存処理の状態に左右されず、正誤画面で必ず知らせる。
+// RPG処理が停止したときに成功したように見せず、エラーを見える形で伝える。
+function quizRpgFeedbackHtml() {
+  if (!S || !S.rpg) return '';
+  const r = window.RPG;
+  const alive = !!(r && r.ok && r.save && r.save.active);
+  const base = alive && typeof r.answerProgressHtml === 'function' ? r.answerProgressHtml(S) : '';
+  if (base) return base;
+  const n = alive ? Math.max(0, Number(r.save.active.basic.n) || 0) : Math.min(10, S.idx + 1);
+  return '<div class="quiz-rpg-progress" role="status" style="margin:12px 0;padding:12px;border:2px solid #d7b66c;background:#1f3157;color:#fff;border-radius:14px;text-align:center;font-weight:800;line-height:1.6">' +
+    '⚔️ 冒険 ' + n + ' / 10問' +
+    (!alive ? '<div style="font-size:13px">RPGの進行状態を確認できません。学習履歴は別に保存されています。アプリを更新して確認してください。</div>' : '') +
+    '</div>';
+}
 function showAnswerFeedback(q, ok, skipped) {
   if (!S) return;
   S.explanationViewed = false;
@@ -573,7 +587,7 @@ function showAnswerFeedback(q, ok, skipped) {
     '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
     '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
     (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '')+
-    (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
+    quizRpgFeedbackHtml()+
     '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
     '</div></div>';
   document.body.appendChild(screen);
@@ -591,7 +605,7 @@ function showAnswerFeedback(q, ok, skipped) {
       '<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>'+
       (explanation || '<div class="exp">答えを確認できたね！</div>')+
       (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '')+
-      (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
+      quizRpgFeedbackHtml()+
       '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
       '</div>';
     S.explanationViewed = true;
