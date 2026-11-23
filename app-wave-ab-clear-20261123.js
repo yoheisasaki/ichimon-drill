@@ -376,16 +376,33 @@ function expHtml(q) {
   const im = EXPLANATION_IMAGES[q.id];
   // 音の問題：正解・不正解のあとに「高さ」と「大きさ」を毎回見比べられる。
   // 同じ時間に並ぶ波の数は音の高さ、中央線から山・谷までの振れ幅は音の大きさ。
-  const soundGuide = q.subject === '理科' && ['音の高さ', '音の大きさ', '波形の読み方'].includes(q.unit) &&
-    !['ri-0073'].includes(q.id)
-    ? '<section class="sound-wave-guide" aria-label="音の波形の見方" style="margin-top:12px;padding:12px;border:2px solid #b4d6ee;border-radius:12px;background:#f4faff;color:#213d5a;line-height:1.8">' +
-        '<b style="font-size:17px">🔎 音の波形（はけい）の見方</b>' +
-        '<p><b>① 音の高さ → 同じ時間の波の数</b><br>波がたくさん並ぶ（振動する回数が多い）ほど<b>高い音</b>。波が少ないほど<b>低い音</b>。山と山の間がせまいほど高い音だよ。</p>' +
-        '<img src="images/sound-wave-count.svg?v=sound-guide-20261123" alt="同じ時間の波が4個と8個の例。波が多いほど高い音" loading="lazy" style="display:block;width:100%;max-width:440px;height:auto;margin:8px auto;background:white;border-radius:8px">' +
-        '<p><b>② 音の大きさ → 振れ幅（ふれはば）</b><br>中央の線から山のてっぺんまでの高さが振れ幅。谷の底までも同じ長さだよ。振れ幅が<b>大きいほど大きい音</b>、小さいほど小さい音。</p>' +
-        '<img src="images/sound-wave-amplitude.svg?v=sound-guide-20261123" alt="中央線から山の頂上までの距離が振れ幅" loading="lazy" style="display:block;width:100%;max-width:440px;height:auto;margin:8px auto;background:white;border-radius:8px">' +
-        '<p style="margin-bottom:0"><b>③ 波形を描くコツ</b><br>高い音にする → 横に波を増やす。大きい音にする → 縦に山と谷を大きくする。<br><b>覚え方：横の波の数＝高さ ／ 縦の振れ幅＝大きさ</b><br>※ 山から谷まで全部の長さは、振れ幅の2倍だよ。</p>' +
-      '</section>' : '';
+  const soundGuide = q.subject === '理科' && ['音の高さ', '音の大きさ', '波形の読み方'].includes(q.unit) && q.id !== 'ri-0073'
+    ? '<section class="sound-wave-guide" aria-label="音の波形の見方" style="margin-top:12px;padding:12px;background:#f4faff;border:2px solid #9dc6e7;border-radius:14px;line-height:1.6;color:#1d3653">' +
+      '<strong style="display:block;font-size:19px;margin-bottom:8px">図を見ながら音をくらべよう</strong>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">① 音の高さ＝横に並ぶ波の数</strong>' +
+        '<img src="images/sound-wave-count.svg?v=guide-diagram-2" loading="eager" alt="Aは同じ時間に波が4個、Bは8個の波形。Bのほうが音が高い" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：4個 → 低い音<br>図のB：8個 → 高い音</p>' +
+        '<p style="margin:6px 0">同じ時間なら、波がぎゅっと多く並ぶほど高い音。山から次の山までの横幅がせまくなるよ。</p>' +
+      '</div>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">② 音の大きさ＝縦の振れ幅（ふれはば）</strong>' +
+        '<img src="images/sound-wave-amplitude-compare-ab.svg?v=guide-diagram-2" loading="eager" alt="同じ波の数でAは振れ幅1、Bは振れ幅2。縦の大きさだけが違う" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：振れ幅1 → 小さい音<br>図のB：振れ幅2 → 大きい音</p>' +
+        '<p style="margin:6px 0">オレンジの印を見てね。<b>中央の線から山のてっぺんまで</b>が振れ幅だよ。波の数が同じなら、音の高さは同じだよ。</p>' +
+      '</div>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">③ 振れ幅はどこ？</strong>' +
+        '<img src="images/sound-wave-amplitude.svg?v=guide-diagram-2" loading="eager" alt="中央線から山までを示す矢印。山から谷まで全部ではない" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0">中央線から山までが1つの振れ幅。山から谷まで全部の長さは、振れ幅の<b>2倍</b>になるよ。</p>' +
+      '</div>' +
+      '<div style="background:#fff2cb;padding:10px;border-radius:12px">' +
+        '<strong style="font-size:17px">④ 波形をかくとき</strong>' +
+        '<img src="images/sound-wave-change.svg?v=guide-diagram-2" loading="eager" alt="波が4個で振れ幅2マスの波を、波が2個で振れ幅4マスに変えた図" style="display:block;width:100%;height:auto;margin:8px auto;background:white;border-radius:8px">' +
+        '<p style="margin:6px 0">上の波：4個・振れ幅2マス。下の波：2個・振れ幅4マス。<b>波の数が半分→音は低くなる／振れ幅が2倍→音は大きくなる。</b></p>' +
+      '</div>' +
+      '<p style="margin:10px 2px 0;font-weight:900;text-align:center">横の波の数 → 高さ　／　縦の振れ幅 → 大きさ</p>' +
+    '</section>' : '';
   // 結城紬の写真は「解答後の解説」にも載せる。建物や機織り機ではなく、織物そのもの。
   if (q.id === 'sha-0067') {
     return '<div class="exp"><b>結城紬（ゆうきつむぎ）</b>は、茨城県の結城市などで作られる伝統的な絹織物だよ。<br>写真は結城紬の亀甲柄（きっこうがら）の布だよ。' +
