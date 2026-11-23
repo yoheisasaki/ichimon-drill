@@ -170,7 +170,7 @@
   function feed(save,id,day){
     const l=ensure(save),d=day||nowDay();
     if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
-    if(l.fedDays[id]===d)return {ok:false,msg:'今日はもうエサをあげたよ'};
+    // 買ったエサは1日に何度でも使える。使用数は手持ちの個数で制御する。
     if(l.food<1)return {ok:false,msg:'エサが足りないよ。問題を10問解くと増えるよ'};
     l.food--;l.pets[id].xp+=10;l.fedDays[id]=d;
     return {ok:true,msg:(PETS.find(p=>p.id===id)||{}).name+'が喜んだ！ 成長ポイント＋10'};
