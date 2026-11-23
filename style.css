@@ -358,3 +358,14 @@ body:has(#app > .top):has(#app > .choices) #app{
 @media(prefers-reduced-motion:reduce){
   #app:has(> .top):has(> .choices) .choice{transition:none}
 }
+
+/* 不正解の全画面で、実際のRPG戦闘帯を前面に移して被弾を見せる。 */
+.quiz-feedback-screen .quiz-hit-stage{position:relative;isolation:isolate;width:100%;max-width:480px;min-height:132px;padding:10px 10px 12px;margin:4px auto 12px;overflow:hidden;box-sizing:border-box;border:3px solid #caa45f;border-radius:15px;background:linear-gradient(180deg,#203255,#101b35);box-shadow:0 4px 0 #946f35;color:#fff;text-align:center}
+.quiz-feedback-screen .quiz-hit-caption{font-size:17px;font-weight:900;letter-spacing:.05em;margin:0 0 6px}
+.quiz-feedback-screen .quiz-hit-stage .rpg-strip{position:relative!important;inset:auto!important;display:block!important;visibility:visible!important;opacity:1!important;padding:2px!important;margin:0 auto!important;background:transparent!important;max-width:none!important;width:100%!important;z-index:1!important}
+.quiz-feedback-screen .quiz-hit-stage .rpg-strip canvas{display:block!important;width:100%!important;height:72px!important;max-height:none!important;border-radius:8px!important;box-shadow:none!important}
+.quiz-feedback-screen .quiz-hit-slash{position:absolute;z-index:3;pointer-events:none;left:43%;top:23%;height:76px;width:12px;border-radius:80%;background:linear-gradient(90deg,transparent,#fef9c9,#fff,transparent);filter:drop-shadow(0 0 7px #fff4bb);transform:translate(55px,-40px) rotate(45deg) scaleY(.25);opacity:0;animation:quiz-hit-swipe .56s ease-out .08s 1 both}
+.quiz-feedback-screen .quiz-hit-impact{position:absolute;z-index:4;top:20%;right:7%;padding:3px 8px;border-radius:9px;background:#4a1621e8;border:2px solid #fce7bb;font-size:clamp(18px,5vw,25px);font-weight:900;color:#fffbe5;text-shadow:1px 2px #722a32;transform:scale(.75);opacity:0;pointer-events:none;animation:quiz-hit-word .8s ease-out .21s 1 both}
+@keyframes quiz-hit-swipe{0%{opacity:0;transform:translate(55px,-40px) rotate(45deg) scaleY(.25)}35%{opacity:1}75%{opacity:1;transform:translate(-15px,24px) rotate(45deg) scaleY(1.1)}100%{opacity:0;transform:translate(-25px,36px) rotate(45deg) scaleY(1.1)}}
+@keyframes quiz-hit-word{0%{opacity:0;transform:scale(.75)}28%,62%{opacity:1;transform:scale(1.06)}100%{opacity:0;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.quiz-feedback-screen .quiz-hit-slash{animation:none;opacity:.65;transform:translate(0,0) rotate(45deg)}.quiz-feedback-screen .quiz-hit-impact{animation:none;opacity:1;transform:none}}
