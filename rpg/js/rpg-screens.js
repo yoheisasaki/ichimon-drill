@@ -905,7 +905,7 @@
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
-      <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
+      <p class="rs-p" id="cloudStatus" role="status"></p><p class="rs-p" id="cloudBalance" style="font-weight:900;padding:10px;border:2px solid #e6c46e;border-radius:10px"></p><small>同期照合版 2026/11/24</small><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
       <div class="rs-panel"><div class="rs-h2">音</div><p class="rs-p">冒険中の小さな音（正解・不正解・決定・攻撃・報酬など）。はじめはオフです。</p>
