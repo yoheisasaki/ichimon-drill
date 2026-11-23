@@ -77,22 +77,43 @@
 .rs-worldlife-screen .life-pet small, .rs-worldlife-screen .life-pet b {overflow-wrap:anywhere;line-height:1.45}
 .rs-worldlife-screen .rs-body {scroll-behavior:auto;overscroll-behavior-x:none}
 
-/* iOSの動的アドレスバーに合わせて100dvhが伸縮し、縦スクロールが跳ねるのを防ぐ。 */
-html:has(.rs-worldlife-screen), body:has(.rs-worldlife-screen) {overscroll-behavior-y:none;overflow:hidden}
-#app.rs-worldlife-screen:has(>.rs3) {height:calc(100vh - var(--vb,0px));height:calc(100svh - var(--vb,0px));overscroll-behavior-y:none}
-.rs-worldlife-screen .rs3 .rs-body {overscroll-behavior-y:contain;overflow-anchor:none;scroll-behavior:auto}
-.rs-worldlife-screen .rs3 .rs-body > * {overflow-anchor:none}
-
-/* マイワールドを開いた瞬間のiPhone画面上下ジャンプ対策。外側の文書スクロールと切り離す。 */
-#app.rs-worldlife-screen {
-  position:fixed;
-  top:0;bottom:0;left:0;right:0;
-  width:100%;max-width:480px;margin:0 auto;padding:0;
-  height:100vh!important;min-height:0!important;overflow:hidden;
+/* iOSのマイワールド：外側の画面は一切スクロールさせず、内側の一覧だけ動かす。
+   vh/dvh/svh の高さの競合と WebKit のスクロール連鎖を避ける。 */
+html:has(#app.rs-worldlife-screen),
+body:has(#app.rs-worldlife-screen) {
+  height:100%;
+  overflow:hidden!important;
   overscroll-behavior:none;
 }
-@supports(height:100svh) {
-  #app.rs-worldlife-screen {height:100svh!important;bottom:auto}
+#app.rs-worldlife-screen {
+  position:fixed!important;
+  inset:0!important;
+  width:100%;
+  max-width:480px;
+  margin:0 auto!important;
+  padding:0!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+  contain:layout;
 }
-#app.rs-worldlife-screen > .rs3 {height:100%;min-height:0;overflow:hidden}
-#app.rs-worldlife-screen .rs3 .rs-body {min-height:0;overflow-y:auto;-webkit-overflow-scrolling:auto;scroll-behavior:auto}
+#app.rs-worldlife-screen > .rs3 {
+  width:100%;
+  height:100%!important;
+  min-height:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+#app.rs-worldlife-screen .rs3 .rs-body {
+  flex:1 1 0%;
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  overflow-anchor:none;
+  scroll-behavior:auto!important;
+}
