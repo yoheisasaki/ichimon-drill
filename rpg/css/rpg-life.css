@@ -117,3 +117,22 @@ body:has(#app.rs-worldlife-screen) {
   overflow-anchor:none;
   scroll-behavior:auto!important;
 }
+
+
+/* もちもの：購入分を含め、現在の所持数をまとめて表示する。 */
+.life-inventory{border:2px solid #e2ba63!important;background:#fff9e9!important;color:#202d43!important}
+.life-inventory .rs-h2{color:#24324c!important}
+.life-inventory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.life-inventory-item{display:flex;align-items:center;flex-wrap:wrap;gap:5px;background:#fff;border:1.5px solid #b9a06a;border-radius:10px;padding:10px 8px;color:#202d43;font-size:13px;line-height:1.45;min-width:0}
+.life-inventory-item span{flex:1;min-width:0}
+.life-inventory-item b{font-size:15px;color:#15253d;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ペットは未解放・本日エサ済みでも文字を薄くしない。操作不可は表示で区別。 */
+.life-pet-wrap .life-pet{background:#fffdf3;border:2px solid #778aa3;color:#172842;opacity:1!important}
+.life-pet-wrap .life-pet.selected{background:#d5f2df;border:3px solid #247552;color:#123728}
+.life-pet-wrap .life-pet b{color:inherit;font-size:15px;font-weight:900}
+.life-pet-wrap .life-pet small{color:#243b59;font-size:12px;font-weight:700;line-height:1.5}
+.life-pet-wrap .life-pet:disabled{opacity:1!important;background:#f1f3f5;border-color:#8b98aa;color:#24324a}
+.life-pet-wrap .life-pet:disabled small{color:#384d65}
+.life-pet-wrap .life-feed{color:#fff!important;background:#264c79!important;border:2px solid #496e9e!important;font-weight:800;font-size:12px;opacity:1!important}
+.life-pet-wrap .life-feed:disabled{color:#293a50!important;background:#d5dce5!important;border-color:#8f9db0!important;opacity:1!important}
