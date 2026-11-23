@@ -171,6 +171,7 @@ function renderResults() {
 
 function render() {
   readDraft();
+  const subs = SUBJECTS.filter(subject => DATA.questions.some(q => q.subject === subject));
   const keep = term;
   root.innerHTML = `<div class="lhead">
     <div class="lt">問題の一覧（ママ用）<a href="mama.html">もどる</a></div>
