@@ -76,3 +76,9 @@
 .rs-worldlife-screen .life-pet-wrap, .rs-worldlife-screen .life-pet {min-width:0;max-width:100%}
 .rs-worldlife-screen .life-pet small, .rs-worldlife-screen .life-pet b {overflow-wrap:anywhere;line-height:1.45}
 .rs-worldlife-screen .rs-body {scroll-behavior:auto;overscroll-behavior-x:none}
+
+/* iOSの動的アドレスバーに合わせて100dvhが伸縮し、縦スクロールが跳ねるのを防ぐ。 */
+html:has(.rs-worldlife-screen), body:has(.rs-worldlife-screen) {overscroll-behavior-y:none;overflow:hidden}
+#app.rs-worldlife-screen:has(>.rs3) {height:calc(100vh - var(--vb,0px));height:calc(100svh - var(--vb,0px));overscroll-behavior-y:none}
+.rs-worldlife-screen .rs3 .rs-body {overscroll-behavior-y:contain;overflow-anchor:none;scroll-behavior:auto}
+.rs-worldlife-screen .rs3 .rs-body > * {overflow-anchor:none}
