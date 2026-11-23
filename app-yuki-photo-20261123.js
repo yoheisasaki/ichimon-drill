@@ -518,7 +518,8 @@ function home() {
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリをさいしんにする">↻ リロード</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="まずここを押して最新版に更新する"><span class="kid-refresh-first">① まずここを押して！</span><span class="kid-refresh-main">↻ 最新版に更新</span></button></div>
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
@@ -533,7 +534,7 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
-    ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
+    ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="まずここを押して最新版に更新する"><span class="kid-refresh-first">① まずここを押して！</span><span class="kid-refresh-main">↻ 最新版に更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
