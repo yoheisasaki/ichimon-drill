@@ -380,16 +380,16 @@ function expHtml(q) {
     ? '<section class="sound-wave-guide" aria-label="音の波形の見方" style="margin-top:12px;padding:12px;background:#f4faff;border:2px solid #9dc6e7;border-radius:14px;line-height:1.6;color:#1d3653">' +
       '<strong style="display:block;font-size:19px;margin-bottom:8px">図を見ながら音をくらべよう</strong>' +
       '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
-        '<strong style="font-size:17px">① 音の高さ＝横に並ぶ波の数</strong>' +
+        '<strong style="font-size:17px">① 音の高さ ＝ <mark style="background:#bceaff;border-radius:4px;padding:1px 4px"><b>横に並ぶ波の数</b></mark></strong>' +
         '<img src="images/sound-wave-count.svg?v=guide-diagram-2" loading="eager" alt="Aは同じ時間に波が4個、Bは8個の波形。Bのほうが音が高い" style="display:block;width:100%;height:auto;margin:8px auto">' +
-        '<p style="margin:6px 0;font-weight:bold">図のA：4個 → 低い音<br>図のB：8個 → 高い音</p>' +
-        '<p style="margin:6px 0">同じ時間なら、波がぎゅっと多く並ぶほど高い音。山から次の山までの横幅がせまくなるよ。</p>' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：4個 → <mark style="background:#bceaff;padding:1px 4px"><b>低い音</b></mark><br>図のB：8個 → <mark style="background:#bceaff;padding:1px 4px"><b>高い音</b></mark></p>' +
+        '<p style="margin:6px 0"><b><u>同じ時間</u></b>なら、<mark style="background:#bceaff"><b>波が多いほど高い音</b></mark>。山から次の山までの横幅がせまくなるよ。</p>' +
       '</div>' +
       '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
-        '<strong style="font-size:17px">② 音の大きさ＝縦の振れ幅（ふれはば）</strong>' +
+        '<strong style="font-size:17px">② 音の大きさ ＝ <mark style="background:#ffe69a;border-radius:4px;padding:1px 4px"><b>縦の振れ幅（ふれはば）</b></mark></strong>' +
         '<img src="images/sound-wave-amplitude-compare-ab.svg?v=guide-diagram-2" loading="eager" alt="同じ波の数でAは振れ幅1、Bは振れ幅2。縦の大きさだけが違う" style="display:block;width:100%;height:auto;margin:8px auto">' +
-        '<p style="margin:6px 0;font-weight:bold">図のA：振れ幅1 → 小さい音<br>図のB：振れ幅2 → 大きい音</p>' +
-        '<p style="margin:6px 0">オレンジの印を見てね。<b>中央の線から山のてっぺんまで</b>が振れ幅だよ。波の数が同じなら、音の高さは同じだよ。</p>' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：振れ幅1 → <mark style="background:#ffe69a;padding:1px 4px"><b>小さい音</b></mark><br>図のB：振れ幅2 → <mark style="background:#ffe69a;padding:1px 4px"><b>大きい音</b></mark></p>' +
+        '<p style="margin:6px 0">オレンジの印を見てね。<b><u>中央の線から山のてっぺんまで</u></b>が振れ幅。<mark style="background:#ffe69a"><b>振れ幅が大きいほど大きい音</b></mark>。波の数が同じなら音の高さは変わらないよ。</p>' +
       '</div>' +
       '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
         '<strong style="font-size:17px">③ 振れ幅はどこ？</strong>' +
@@ -401,7 +401,7 @@ function expHtml(q) {
         '<img src="images/sound-wave-change.svg?v=guide-diagram-2" loading="eager" alt="波が4個で振れ幅2マスの波を、波が2個で振れ幅4マスに変えた図" style="display:block;width:100%;height:auto;margin:8px auto;background:white;border-radius:8px">' +
         '<p style="margin:6px 0">上の波：4個・振れ幅2マス。下の波：2個・振れ幅4マス。<b>波の数が半分→音は低くなる／振れ幅が2倍→音は大きくなる。</b></p>' +
       '</div>' +
-      '<p style="margin:10px 2px 0;font-weight:900;text-align:center">横の波の数 → 高さ　／　縦の振れ幅 → 大きさ</p>' +
+      '<p style="margin:10px 2px 0;font-weight:900;text-align:center"><span style="display:block;background:#bceaff;border-radius:7px;padding:5px">横の波の数 → 音の高さ</span><span style="display:block;background:#ffe69a;border-radius:7px;padding:5px;margin-top:6px">縦の振れ幅 → 音の大きさ</span></p>' +
     '</section>' : '';
   // 結城紬の写真は「解答後の解説」にも載せる。建物や機織り機ではなく、織物そのもの。
   if (q.id === 'sha-0067') {
