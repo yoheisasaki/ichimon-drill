@@ -481,39 +481,55 @@ function birdPhotoHtml(q) {
     '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">鳥の写真を見る（Wikimedia Commons）</a></figcaption></figure>';
 }
 
-// 判定直後は「せいかい！」などの結果だけを見せる。
-// 長い解説や写真は「解説を見る」を押すまで表示しない。
-function revealNext() {
-  const n=document.getElementById('next');
-  if(n && n.scrollIntoView) n.scrollIntoView({block:'start',behavior:'smooth'});
+// 答え合わせは画面下への追記ではなく、全画面で結果から先に見せる。
+function closeFeedbackScreen() {
+  const old = document.getElementById('quiz-feedback-screen');
+  if (old) old.remove();
 }
-function showAnswerFeedback(q,ok,skipped) {
-  // 解説を開くまで次の問題への進行を禁止する（正解・不正解・スキップ共通）。
+function showAnswerFeedback(q, ok, skipped) {
+  if (!S) return;
   S.explanationViewed = false;
-  const nx=document.getElementById('next');
-  if(!nx)return;
-  const heading=ok?'○ せいかい！':skipped?'？ わかんない':'× ざんねん！';
-  const sub=ok?'やったね！':'答えと解説を確認しよう';
-  nx.innerHTML='<section class="answer-feedback feedback-first '+(ok?'feedback-ok':'feedback-ng')+
-    '" role="status" aria-live="polite"><div class="feedback-heading">'+heading+'</div>'+
-    '<div class="feedback-sub">'+sub+'</div>'+
-    '<button type="button" class="big feedback-show-exp" id="show-explanation">答えと解説を見る ▶</button></section>';
-  const show=document.getElementById('show-explanation');
-  show.onclick=()=>{
-    if(show.disabled)return;
-    show.disabled=true;
-    const answer='<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>';
-    const explanation=expHtml(q);
+  closeFeedbackScreen();
+  const heading = ok ? '○ せいかい！' : skipped ? '？ わかんない' : '× ざんねん！';
+  const subtitle = ok ? 'やったね！' : '答えと解説を確認しよう';
+  const screen = document.createElement('section');
+  screen.id = 'quiz-feedback-screen';
+  screen.className = 'quiz-feedback-screen ' + (ok ? 'is-correct' : 'is-incorrect');
+  screen.setAttribute('role', 'dialog');
+  screen.setAttribute('aria-modal', 'true');
+  screen.setAttribute('aria-label', ok ? 'せいかい' : skipped ? 'わかんない' : 'ざんねん');
+  screen.innerHTML = '<div class="quiz-feedback-inner" id="quiz-feedback-inner">'+
+    '<div class="quiz-feedback-verdict" id="quiz-feedback-verdict">'+
+    '<div class="quiz-feedback-symbol">'+(ok ? '○' : skipped ? '？' : '×')+'</div>'+
+    '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
+    '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
+    '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
+    '</div></div>';
+  document.body.appendChild(screen);
+  screen.scrollTop = 0;
+  const show = document.getElementById('quiz-show-explanation');
+  show.onclick = () => {
+    if (show.disabled) return;
+    show.disabled = true;
+    const detail = document.getElementById('quiz-feedback-inner');
+    if (!detail) return;
+    const explanation = expHtml(q);
+    detail.innerHTML = '<div class="quiz-feedback-detail">'+
+      '<h2 class="quiz-feedback-detail-title">'+heading+'</h2>'+
+      '<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>'+
+      (explanation || '<div class="exp">答えを確認できたね！</div>')+
+      '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
+      '</div>';
     S.explanationViewed = true;
-    nx.innerHTML='<section class="answer-feedback '+(ok?'feedback-ok':'feedback-ng')+
-      '" role="status"><div class="feedback-heading">'+heading+'</div>'+
-      '<div class="feedback-sub">'+sub+'</div>'+answer+explanation+'</section>'+
-      '<button type="button" class="big feedback-next" id="next-question">つぎの問題へ ▶</button>';
-    const nextButton=document.getElementById('next-question');
-    nextButton.onclick=()=>{if(nextButton.disabled)return;nextButton.disabled=true;advance();};
-    revealNext();
+    screen.scrollTop = 0;
+    const next = document.getElementById('quiz-next-question');
+    next.onclick = () => {
+      if (next.disabled || !S || !S.explanationViewed) return;
+      next.disabled = true;
+      closeFeedbackScreen();
+      advance();
+    };
   };
-  revealNext();
 }
 function mapLabel(q) {
   const m = q.map; if (!m) return '';
@@ -784,6 +800,7 @@ function reask(q) {
   S.queue.splice(at, 0, w);
 }
 function question() {
+  closeFeedbackScreen();
   const q = S.queue[S.idx];
   S.locked = false; S.cur = q; S.sel = -1;
   const isIn = q.type === 'input';
@@ -900,6 +917,7 @@ function advance() {
 
 // ---------- 画面：おわり ----------
 function result() {
+  closeFeedbackScreen();
   clearPausedQuiz();
   flush();
   app.className = ''; if (window.RPG) RPG.unmount();
