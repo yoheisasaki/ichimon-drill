@@ -218,11 +218,19 @@
   VIEWS.worldlife = function () {
     if(!LF)return frame('マイワールド','<p>最新版に更新してください。</p>',{back:false});
     const s=save(),l=LF.ensure(s),time=LF.playState(s),playable=!time.done;
+    const petGrowthHint = xp => {
+      const next = xp < 10 ? 10 : xp < 90 ? 90 : xp < 180 ? 180 : null;
+      if (next === null) return '✨ 進化ずみ（最高段階）';
+      const remain = next - xp;
+      const name = next === 10 ? '赤ちゃん' : next === 90 ? '成長' : '進化';
+      return name + 'まで あと' + remain + 'ポイント（エサだけなら約' + Math.ceil(remain / 10) + '回）';
+    };
     const petCards=LF.PETS.map(p=>{
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
       return `<div class="life-pet-wrap"><button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
         <span class="life-emoji">${owned?LF.visual(p,pet.xp):'🥚'}</span><b>${esc(p.name)}</b>
         <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
+        <small>${owned?'成長ポイント '+pet.xp+' ／ '+petGrowthHint(pet.xp):''}</small>
         <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
     }).join('');
     const cells=Array.from({length:36},(_,i)=>{
@@ -250,7 +258,7 @@
           </div>`).join('')}
         </div>
       </div>
-      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
+      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
       <div class="life-map" role="group" aria-label="建築できる6かける6マスの土地">${cells}</div>
