@@ -45,7 +45,7 @@
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
   const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'standalone-home-reset-20261123';
-  document.write('<script src="rpg/js/rpg-screens.js?v=worldlife-flicker-timer-fix-20261123?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
+  document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
 <script src="kanji-ruby.js?v=20261121"></script>
