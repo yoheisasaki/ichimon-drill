@@ -143,8 +143,7 @@ function refreshHead() {
   if (b) b.textContent = 'テスト対策だけ表示（' + CONF.pick.length + '）';
 }
 
-function render() {
-  readDraft();
+function renderResults() {
   const all = DATA.questions;
   const shown = all.filter(match);
   const subs = SUBJECTS.filter(s => all.some(q => q.subject === s));
@@ -165,18 +164,27 @@ function render() {
       });
     });
   });
+  const target = document.getElementById('search-results');
+  if (target) target.innerHTML = body || '<div class="empty">ありません</div>';
+  refreshHead();
+}
+
+function render() {
+  readDraft();
   const keep = term;
   root.innerHTML = `<div class="lhead">
     <div class="lt">問題の一覧（ママ用）<a href="mama.html">もどる</a></div>
     <div class="lf">${['全部'].concat(subs).map(s => `<button class="fb ${subj === s ? 'sel' : ''}" data-s="${s}">${s === '全部' ? 'ぜんぶ' : s}</button>`).join('')}</div>
     <div class="lq"><input id="qs" type="search" placeholder="問題・こたえ・単元でさがす" value="${esc(keep).replace(/"/g, '&quot;')}"><button class="fb ${hide ? 'sel' : ''}" id="hd">こたえをかくす</button></div>
     <div class="lq" style="margin-top:6px"><button class="fb ${onlyPick ? 'sel' : ''}" id="po">テスト対策だけ表示（${CONF.pick.length}）</button><span id="st">${statHtml()}</span></div>
-    <div class="cnt" id="cnt">${cntText()}</div></div>${body || '<div class="empty">ありません</div>'}`;
+    <div class="cnt" id="cnt">${cntText()}</div></div><div id="search-results"></div>`;
   root.querySelectorAll('.fb[data-s]').forEach(b => b.onclick = () => { subj = b.dataset.s; render(); });
   document.getElementById('hd').onclick = () => { hide = !hide; revealed.clear(); render(); };
   document.getElementById('po').onclick = () => { onlyPick = !onlyPick; render(); };
   const inp = document.getElementById('qs');
-  inp.oninput = () => { term = inp.value.trim(); const p = inp.selectionStart; render(); const n = document.getElementById('qs'); n.focus(); try { n.setSelectionRange(p, p); } catch (e) {} };
+  // 検索時は入力欄を作り直さず、IMEの変換・候補確定・カーソルを保持する。
+  inp.oninput = () => { term = inp.value.trim(); renderResults(); };
+  renderResults();
 }
 
 root.addEventListener('click', e => {
