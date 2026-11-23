@@ -433,6 +433,7 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
   'ri-0081': 'images/sound-wave-two-cycles.svg',
   'ri-0082': 'images/sound-wave-grid-two.svg',
+  'ri-0083': 'images/sound-wave-original-4-amp2.svg',
   'ri-0084': 'images/sound-wave-width-2-5.svg',
   'ri-0092': 'images/bottle-blow-water-a-b.svg'
 };
