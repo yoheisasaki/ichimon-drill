@@ -279,12 +279,12 @@
       <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
       <p class="rs-p">🧪 お試し期間中：遊ぶ時間の制限なし</p></div>
-      <div class="rs-panel" style="border:2px solid #e2ba63;border-radius:12px;padding:12px;margin-bottom:12px;background:#fff9e9">
+      <div class="rs-panel life-point-panel">
         <div class="rs-h2">🛒 ポイントショップ</div>
         <p class="rs-p" style="font-weight:900;font-size:17px">⭐ ${l.foodPoints||0} ポイント</p>
         <p class="rs-p">正解1問で1ポイント。ためてエサや建築素材を買おう！</p>
-        <div class="life-point-shop" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">
-          ${LF.POINT_SHOP_ITEMS.map(item=>`<div style="background:#fff;border:1px solid #d8bd85;border-radius:10px;padding:9px;display:flex;flex-direction:column;gap:5px;min-width:0">
+        <div class="life-point-shop">
+          ${LF.POINT_SHOP_ITEMS.map(item=>`<div class="life-point-item">
             <b style="font-size:15px">${item.emoji} ${esc(item.name)} ×${item.qty}</b>
             <small>${item.price}ポイント</small>
             <button type="button" class="rs-btn sm" data-point-buy="${item.id}" ${(l.foodPoints||0)<item.price?'disabled':''} style="min-height:40px">🛍️ 買う</button>
