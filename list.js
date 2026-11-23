@@ -176,15 +176,19 @@ function render() {
   root.innerHTML = `<div class="lhead">
     <div class="lt">問題の一覧（ママ用）<a href="mama.html">もどる</a></div>
     <div class="lf">${['全部'].concat(subs).map(s => `<button class="fb ${subj === s ? 'sel' : ''}" data-s="${s}">${s === '全部' ? 'ぜんぶ' : s}</button>`).join('')}</div>
-    <div class="lq"><input id="qs" type="search" placeholder="問題・こたえ・単元でさがす" value="${esc(keep).replace(/"/g, '&quot;')}"><button class="fb ${hide ? 'sel' : ''}" id="hd">こたえをかくす</button></div>
+    <div class="lq"><input id="qs" type="text" inputmode="text" enterkeyhint="search" autocomplete="off" placeholder="問題・こたえ・単元でさがす" value="${esc(keep).replace(/"/g, '&quot;')}"><button class="fb sel" id="search-go" type="button">検索</button><button class="fb" id="search-clear" type="button">消す</button><button class="fb ${hide ? 'sel' : ''}" id="hd">こたえをかくす</button></div>
     <div class="lq" style="margin-top:6px"><button class="fb ${onlyPick ? 'sel' : ''}" id="po">テスト対策だけ表示（${CONF.pick.length}）</button><span id="st">${statHtml()}</span></div>
     <div class="cnt" id="cnt">${cntText()}</div></div><div id="search-results"></div>`;
   root.querySelectorAll('.fb[data-s]').forEach(b => b.onclick = () => { subj = b.dataset.s; render(); });
   document.getElementById('hd').onclick = () => { hide = !hide; revealed.clear(); render(); };
   document.getElementById('po').onclick = () => { onlyPick = !onlyPick; render(); };
   const inp = document.getElementById('qs');
-  // 検索時は入力欄を作り直さず、IMEの変換・候補確定・カーソルを保持する。
-  inp.oninput = () => { term = inp.value.trim(); renderResults(); };
+  // iOS日本語入力対策：変換中・入力中は DOM を一切更新しない。
+  // キーボードを閉じる/検索ボタンで確定してから検索結果だけ更新する。
+  const doSearch = () => { term = inp.value.trim(); renderResults(); };
+  document.getElementById('search-go').onclick = () => { inp.blur(); doSearch(); };
+  document.getElementById('search-clear').onclick = () => { inp.value = ''; term = ''; inp.blur(); renderResults(); };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); inp.blur(); doSearch(); } });
   renderResults();
 }
 
