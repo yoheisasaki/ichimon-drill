@@ -17,7 +17,11 @@
 
   // 同行するペットは3匹まで。RPGの画面でも主人公と一緒に見える。
   const LF = root.RPGLife;
-  const followers = () => LF && RPG.ok ? `<span class="life-followers" aria-label="冒険のおとも">${LF.party(save()).map((p,i)=>`<span class="life-follow life-follow-${i}" title="${esc(p.name)}">${p.emoji}</span>`).join('')}</span>` : '';
+  const PA = root.RPGPetArt;
+  const petPicture = (id,xp,small) => PA ? PA.svg(id,xp,small) : (LF.PETS.find(p=>p.id===id)||{}).emoji || '🐾';
+  const nextStagePoint = xp => xp<10?10:xp<90?90:xp<180?180:null;
+  const stageStartPoint = xp => xp<10?0:xp<90?10:xp<180?90:180;
+  const followers = () => LF && RPG.ok ? `<span class="life-followers" aria-label="冒険のおとも">${LF.party(save()).map((p,i)=>`<span class="life-follow life-follow-${i}" title="${esc(p.name)}">${petPicture(p.id,(LF.ensure(save()).pets[p.id]||{}).xp||0,true)}</span>`).join('')}</span>` : '';
   let lifeTicker = null;
   function stopLifeTimer() { if(lifeTicker){clearInterval(lifeTicker);lifeTicker=null;if(RPG.ok)RPG.persist();} }
 
@@ -261,9 +265,10 @@
     const petCards=LF.PETS.map(p=>{
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
       return `<div class="life-pet-wrap"><button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
-        <span class="life-emoji">${owned?LF.visual(p,pet.xp):'🥚'}</span><b>${esc(p.name)}</b>
+        <span class="life-emoji">${owned?petPicture(p.id,pet.xp):petPicture(p.id,0)}</span><b>${esc(p.name)}</b>
         <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
-        <small>${owned?'成長ポイント '+pet.xp+' ／ '+petGrowthHint(pet.xp):''}</small>
+        <small>${owned?'成長ポイント '+pet.xp+'　／　次の成長まで '+(nextStagePoint(pet.xp)===null?'最終段階':'あと'+(nextStagePoint(pet.xp)-pet.xp)+'pt'):''}</small>
+        ${owned?`<span class="pet-growth-track" role="progressbar" aria-label="${esc(p.name)}の成長" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}"><span style="width:${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}%"></span></span>`:'' }
         <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
     }).join('');
     const cells=Array.from({length:36},(_,i)=>{
