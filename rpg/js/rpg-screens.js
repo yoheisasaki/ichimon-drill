@@ -291,6 +291,17 @@
           </div>`).join('')}
         </div>
       </div>
+      <div class="rs-panel life-inventory" aria-label="もちもの">
+        <div class="rs-h2">🎒 もちもの</div>
+        <div class="life-inventory-grid">
+          <div class="life-inventory-item">🍎 <span>エサ</span><b>${l.food||0}個</b></div>
+          <div class="life-inventory-item">🪵 <span>木材</span><b>${l.materials.wood||0}個</b></div>
+          <div class="life-inventory-item">🪨 <span>石</span><b>${l.materials.stone||0}個</b></div>
+          <div class="life-inventory-item">🔩 <span>鉄</span><b>${l.materials.iron||0}個</b></div>
+          <div class="life-inventory-item">💎 <span>宝石</span><b>${l.materials.crystal||0}個</b></div>
+          <div class="life-inventory-item">⭐ <span>残りポイント</span><b>${l.foodPoints||0}pt</b></div>
+        </div>
+      </div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
