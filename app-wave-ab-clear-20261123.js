@@ -431,7 +431,6 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0076': 'images/glass-water-a-b.svg',
   'ri-0078': 'images/sound-wave-count.svg',
   'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
-  'ri-0080': 'images/sound-wave-amplitude.svg',
   'ri-0081': 'images/sound-wave-two-cycles.svg',
   'ri-0082': 'images/sound-wave-grid-two.svg',
   'ri-0084': 'images/sound-wave-width-2-5.svg',
