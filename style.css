@@ -221,3 +221,13 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .kid-refresh-primary .kid-refresh-main{display:block;font-size:23px;font-weight:900;line-height:1.4}
 .kid-refresh-lead .kid-refresh-primary:active{transform:translateY(2px);box-shadow:0 3px 0 #b78016}
 @media(max-width:360px){.kid-refresh-primary .kid-refresh-first{font-size:17px}.kid-refresh-primary .kid-refresh-main{font-size:21px}}
+
+/* 勉強を最優先：10問スタートを最上段、更新は補助操作 */
+.rs-study-first{padding:12px 10px 2px;display:flex;flex-direction:column;gap:8px}
+.rs-study-first > .big{width:100%;min-height:68px;font-size:21px;margin:0;box-sizing:border-box}
+.kid-refresh-lead{padding:4px 10px 8px}
+.kid-refresh-lead .kid-refresh-primary{
+ min-height:51px;padding:8px 12px;background:#edf0f9;color:#42496c;
+ border:2px solid #c9d0e6;box-shadow:0 2px 0 #aeb8d2;border-radius:12px
+}
+.kid-refresh-primary .kid-refresh-main{font-size:16px;font-weight:800}
