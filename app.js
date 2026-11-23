@@ -388,6 +388,17 @@ function expHtml(q) {
       '<img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG" alt="結城紬の亀甲柄の絹織物の写真" loading="eager" referrerpolicy="no-referrer" style="width:100%;height:auto;border-radius:10px;background:white">' +
       '<figcaption style="font-size:12px;line-height:1.6">結城紬の織物そのもの（撮影：Moraykaita／CC BY-SA 3.0）<br><a target="_blank" rel="noopener noreferrer" href="https://commons.wikimedia.org/wiki/File:Yuki-kikko.JPG">写真を大きく見る</a></figcaption></figure></div>';
   }
+  // 九谷焼：答え合わせ後にも九谷焼そのものの写真と短い説明を見せる。
+  if (q.id === 'sha-0042' || q.id === 'sha-0337' || q.id === 'sha-0523') {
+    const filename='Clevelandart 1960.174.jpg';
+    const photoUrl='https://commons.wikimedia.org/wiki/Special:Redirect/file/'+encodeURIComponent(filename)+'?width=580';
+    const detailUrl='https://commons.wikimedia.org/wiki/File:Clevelandart_1960.174.jpg';
+    return '<div class="exp kutani-exp"><p>'+qr(t,q)+'</p>'+
+      '<figure style="margin:12px auto;max-width:390px;text-align:center">'+
+      '<img src="'+photoUrl+'" alt="九谷焼の色あざやかな絵付けの皿" loading="eager" referrerpolicy="no-referrer" style="display:block;width:100%;height:auto;max-height:310px;object-fit:contain;background:#fff;border-radius:10px">'+
+      '<figcaption style="font-size:12px;line-height:1.6">九谷焼の色絵皿（クリーブランド美術館／CC0）<br>'+
+      '<a href="'+detailUrl+'" target="_blank" rel="noopener noreferrer">写真を大きく見る</a></figcaption></figure></div>';
+  }
   if (!t && !im) return '';
   const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
   return '<div class="exp">' + (t ? qr(t, q) : '') + fig + '</div>';
