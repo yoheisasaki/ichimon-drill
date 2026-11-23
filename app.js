@@ -61,6 +61,9 @@ SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
 // 読めなかった工芸品の用語：絹織物・陶磁器・漆器の復習を出題対象に加える。
 const CRAFT_READING_FIRST_IDS = ['sha-0521', 'sha-0523', 'sha-0525', 'sha-0522', 'sha-0524', 'sha-0526', 'sha-0067', 'sha-0377', 'sha-0395'];
 CRAFT_READING_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
+ // 霞ヶ浦がどの県にあるかを確認する既存の一問一答。重複追加せず、重点範囲に戻す。
+const KASUMIGAURA_PREF_ID = 'map-0234';
+FOCUS_IDS.add(KASUMIGAURA_PREF_ID);
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
@@ -292,7 +295,10 @@ function pickStart(list, n) {
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
     .slice(0, Math.min(2, Math.max(1, Math.floor(n / 5))));
-  const chosen = pick(list.filter(q => !craftIds.has(q.id)), n - priority.length);
+  // 未回答・復習が必要なら、霞ヶ浦＝茨城県を最初の10問に1問だけ入れる。
+  const kasumi = list.find(q => q.id === KASUMIGAURA_PREF_ID);
+  const kasumiPriority = kasumi && (st(kasumi.id).w + st(kasumi.id).c === 0 || isHard(kasumi.id)) ? kasumi : null;
+  const chosen = pick(list.filter(q => !craftIds.has(q.id) && q.id !== KASUMIGAURA_PREF_ID), n - priority.length - (kasumiPriority ? 1 : 0));
   // 教科・単元が偏っていても、同じ教科が続きすぎないよう並べ直す。
   const mixed = [];
   const pending = chosen.slice();
@@ -305,6 +311,7 @@ function pickStart(list, n) {
     const pos = Math.min(i === 0 ? 2 : 7, mixed.length);
     mixed.splice(pos, 0, priority[i]);
   }
+  if (kasumiPriority) mixed.splice(Math.min(1, mixed.length), 0, kasumiPriority);
   // 工芸品以外の候補が足りない場合のみ、残りの問題で埋める。
   if (mixed.length < n) {
     const used = new Set(mixed.map(q => q.id));
