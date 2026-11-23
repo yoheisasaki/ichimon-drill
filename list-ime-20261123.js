@@ -8,6 +8,44 @@ const root = document.getElementById('list');
 let DATA = null, RAW = [], CONF = emptyConf(), subj = '全部', hide = false, term = '', onlyPick = false;
 let editing = null, draft = null, editMsg = '';
 const revealed = new Set();
+let HISTORY = null, HISTORY_ERROR = '', HISTORY_LOADING = false, HISTORY_UPDATED = '';
+function historyLabel(id) {
+  if (!HISTORY) return HISTORY_ERROR ? '履歴の取得に失敗（未回答とは判定できません）' : '履歴を読み込み中…';
+  const h = HISTORY[id];
+  if (!h || !h.n) return '未回答（記録なし）';
+  const last = h.last || {};
+  const status = last.result === 'correct' ? '最後：○ 正解' : last.result === 'unknown' ? '最後：わかんない' : '最後：× 不正解';
+  const day = String(last.at || '').slice(0, 10).replace(/-/g, '/');
+  return `解答 ${Number(h.n)}回（○${Number(h.correct || 0)}／×${Number(h.wrong || 0)}／わかんない${Number(h.unknown || 0)}）｜${status}${day ? '｜'+day : ''}`;
+}
+function updateHistoryBanner() {
+  const el = document.getElementById('history-status');
+  if (!el) return;
+  const label = HISTORY_LOADING ? '風助の履歴を取得中…'
+    : HISTORY_ERROR ? '履歴を取得できません（未回答とは判定できません）。通信・API設定を確認してください。'
+    : HISTORY ? '風助の履歴：取得済み（' + Object.keys(HISTORY).length + '問分）' + (HISTORY_UPDATED ? '　更新：' + HISTORY_UPDATED : '')
+    : '風助の履歴：未取得';
+  el.textContent = label;
+}
+async function loadHistory() {
+  if (HISTORY_LOADING) return;
+  HISTORY_LOADING = true; HISTORY_ERROR = ''; updateHistoryBanner();
+  try {
+    const url = (SEND_OVERRIDE || SEND_URL) + '?api=ichimon_history';
+    const ctl = new AbortController();
+    const timeout = setTimeout(() => ctl.abort(), 12000);
+    let response;
+    try { response = await fetch(url, { cache: 'no-store', signal: ctl.signal }); }
+    finally { clearTimeout(timeout); }
+    if (!response.ok) throw Error('HTTP ' + response.status);
+    const json = await response.json();
+    if (!json || json.ok !== true || !json.questions || typeof json.questions !== 'object') throw Error('API response');
+    HISTORY = json.questions; HISTORY_ERROR = ''; HISTORY_UPDATED = new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'});
+  } catch (e) { HISTORY = null; HISTORY_ERROR = String(e.message || e); }
+  HISTORY_LOADING = false;
+  updateHistoryBanner();
+  if (DATA) renderResults();
+}
 
 function sets() { return { pick: new Set(CONF.pick), off: new Set(CONF.off) }; }
 function match(q) {
@@ -27,7 +65,7 @@ function item(q) {
   const acc = q.type === 'input' && q.accept ? `<div class="acc">OK：${q.accept.map(esc).join(' ／ ')}</div>` : '';
   return `<li class="it${off ? ' off' : ''}" data-id="${esc(q.id)}"><div class="iq">${tags}${ruby(q.q)}</div>
     ${hid ? '<div class="tapshow">タップでこたえ</div>' : `<div class="ia">${ruby(q.a)}</div>${ch ? `<div class="ich">${ch}</div>` : ''}${acc}${q.exp ? `<div class="iexp">解説：${ruby(q.exp)}</div>` : ''}`}
-    <div class="isrc">${esc(q.src || '')}</div>
+    <div class="isrc">${esc(q.src || '')}</div><div class="isrc" style="font-weight:bold;padding:8px 0" data-history="${esc(q.id)}">${esc(historyLabel(q.id))}</div>
     <div class="ctl"><label class="pk"><input type="checkbox" data-act="pick" ${pk ? 'checked' : ''}>テスト対策</label><button class="fb offb" data-act="off" aria-pressed="${off}">${off ? '今回は出さない' : '今回出す'}</button><button class="fb" data-act="edit">編集</button><a class="fb" href="history.html?qid=${encodeURIComponent(q.id)}">解答履歴</a></div>
     ${editing === q.id ? editForm(q) : ''}</li>`;
 }
@@ -178,11 +216,13 @@ function render() {
     <div class="lf">${['全部'].concat(subs).map(s => `<button class="fb ${subj === s ? 'sel' : ''}" data-s="${s}">${s === '全部' ? 'ぜんぶ' : s}</button>`).join('')}</div>
     <div class="lq"><input id="qs" type="text" inputmode="text" enterkeyhint="search" autocomplete="off" placeholder="問題・こたえ・単元でさがす" value="${esc(keep).replace(/"/g, '&quot;')}"><button class="fb sel" id="search-go" type="button">検索</button><button class="fb" id="search-clear" type="button">消す</button><button class="fb ${hide ? 'sel' : ''}" id="hd">こたえをかくす</button></div>
     <div class="lq" style="margin-top:6px"><button class="fb ${onlyPick ? 'sel' : ''}" id="po">テスト対策だけ表示（${CONF.pick.length}）</button><span id="st">${statHtml()}</span></div>
-    <div class="cnt" id="cnt">${cntText()}</div></div><div id="search-results"></div>`;
+    <div class="cnt" id="cnt">${cntText()}</div><div class="isrc" id="history-status" role="status" style="font-weight:bold;padding:10px 0">風助の履歴：未取得</div><button type="button" class="fb" id="history-retry">履歴を再読み込み</button></div><div id="search-results"></div>`;
   root.querySelectorAll('.fb[data-s]').forEach(b => b.onclick = () => { subj = b.dataset.s; render(); });
   document.getElementById('hd').onclick = () => { hide = !hide; revealed.clear(); render(); };
   document.getElementById('po').onclick = () => { onlyPick = !onlyPick; render(); };
   const inp = document.getElementById('qs');
+  document.getElementById('history-retry').onclick = loadHistory;
+  updateHistoryBanner();
   // iOS日本語入力対策：変換中・入力中は DOM を一切更新しない。
   // キーボードを閉じる/検索ボタンで確定してから検索結果だけ更新する。
   const doSearch = () => { term = inp.value.trim(); renderResults(); };
@@ -228,5 +268,5 @@ root.addEventListener('click', e => {
 });
 
 Promise.all([fetch(PARAMS.get('data') || 'data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
-  DATA = d; RAW = d.questions; CONF = conf; DATA.questions = applyEdits(RAW, CONF); render();
+  DATA = d; RAW = d.questions; CONF = conf; DATA.questions = applyEdits(RAW, CONF); render(); loadHistory();
 }).catch(() => { root.innerHTML = '<div class="empty">よみこめませんでした</div>'; });
