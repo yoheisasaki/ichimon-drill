@@ -9,7 +9,7 @@
     correct: [[660, .07, 'square', .05], [880, .09, 'square', .05]],
     attack: [[240, .05, 'sawtooth', .05], [360, .07, 'sawtooth', .05]],
     skill: [[440, .06, 'triangle', .07], [660, .06, 'triangle', .07], [990, .10, 'triangle', .07]],
-    hit: [[160, .12, 'square', .05]],
+    hit: [], // 専用の短い風切り音で再生
     wrong: [], // 不正解の効果音は無音。視覚的なフィードバックは維持する
     decide: [[520, .05, 'triangle', .06], [780, .07, 'triangle', .06]],
     reward: [[523, .09, 'square', .05], [659, .09, 'square', .05], [784, .09, 'square', .05], [1047, .18, 'square', .05]],
@@ -17,6 +17,28 @@
     chest: [[300, .05, 'square', .05], [450, .05, 'square', .05], [600, .05, 'square', .05], [900, .16, 'triangle', .07]],
     job: [[262, .1, 'triangle', .07], [330, .1, 'triangle', .07], [392, .1, 'triangle', .07], [523, .1, 'triangle', .07], [659, .1, 'triangle', .07], [784, .3, 'triangle', .07]]
   };
+  // 敵の攻撃を受けたときだけ鳴る「ビシュッ」：短いノイズと下降する風切り音。
+  // 音量は控えめ。正誤ブザーは鳴らさない。
+  function playSoftHit() {
+    if (!ctx) return;
+    const t = ctx.currentTime + .008, duration = .16;
+    const frames = Math.max(1, Math.floor(ctx.sampleRate * duration));
+    const buffer = ctx.createBuffer(1, frames, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < frames; i++) data[i] = Math.random() * 2 - 1;
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass'; filter.Q.value = .9;
+    filter.frequency.setValueAtTime(2100, t);
+    filter.frequency.exponentialRampToValueAtTime(650, t + duration);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(.0001, t);
+    gain.gain.linearRampToValueAtTime(.025, t + .014);
+    gain.gain.exponentialRampToValueAtTime(.0001, t + duration);
+    noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    noise.start(t); noise.stop(t + duration);
+  }
   const settings = () => (RPG.save && RPG.save.settings) || {};
   // 著作物を使わない、冒険マップ専用の小さなオリジナルBGM。
   const melody = [392, 494, 587, 494, 440, 523, 659, 523, 392, 494, 587, 784, 659, 523, 494, 0];
@@ -71,6 +93,7 @@
       try {
         if (settings().vibrate && root.navigator && root.navigator.vibrate && (name === 'reward' || name === 'level' || name === 'hit')) root.navigator.vibrate(name === 'hit' ? 12 : 25);
         if (!Snd.enabled() || !ctx || !SEQ[name]) return;
+        if (name === 'hit') { playSoftHit(); return; }
         if (ctx.state === 'suspended' && ctx.resume) Promise.resolve(ctx.resume()).then(syncMusic).catch(() => {});
         let t = ctx.currentTime + 0.01;
         SEQ[name].forEach(n => {
