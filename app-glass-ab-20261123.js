@@ -695,7 +695,7 @@ async function pauseAndSaveQuiz() {
   if (!MAMA && window.RPG && RPG.cloud) {
     try {
       const result=await RPG.cloud.push(false,true);
-      shared=!!result.ready;
+      shared=!!result.ready && (result.status === '同期済み' || result.status === '初回保存完了。途中の問題はこのスマホに残っています');
       reason=result.status||'';
     } catch(e){reason='クラウドに接続できません';}
   }
@@ -744,7 +744,7 @@ function question() {
       <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
-    <button class="big plain" type="button" id="pauseSave" style="width:100%;margin:0 0 12px;min-height:48px;background:#e9f8ed;color:#174f37;border:2px solid #448568;border-radius:12px;font-size:16px;font-weight:bold">💾 ここまで保存してやめる</button>
+    <button type="button" id="pauseSave" aria-label="いまの問題の途中までを保存してやめる" style="display:block;position:relative;z-index:2;width:calc(100% - 8px);margin:4px 4px 14px;min-height:56px;background:#fff2c1;color:#533800;border:3px solid #d6a72b;border-radius:14px;font-size:17px;font-weight:900;box-shadow:0 3px 0 #bb9330">💾 途中まで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
     <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
