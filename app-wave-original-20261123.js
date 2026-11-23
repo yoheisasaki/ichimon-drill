@@ -298,6 +298,38 @@ function pick(list, n) {
 }
 // 通常の10問は苦手4・初見4・定着2を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
+// 「次の10問」は通常スタートよりも復習を軽くする。
+// 直前の問題・今日解いた問題を避け、未出題6・定着3・苦手最大1を目安にする。
+// 候補が少ないときだけ段階的に補充し、苦手の押し付けを防ぐ。
+function pickNextNormal(candidates, previousIds, n) {
+  const unique = [...new Map(candidates.map(q => [q.id, q])).values()];
+  const today = localDay();
+  const notPrevious = unique.filter(q => !previousIds.has(q.id));
+  const otherDay = notPrevious.filter(q => !String(st(q.id).t || '').startsWith(today));
+  const source = otherDay.length >= n ? otherDay : notPrevious;
+  const fresh = source.filter(q => { const x = st(q.id); return x.w + x.c === 0; });
+  const old = source.filter(q => { const x = st(q.id); return x.w + x.c > 0 && !isHard(q.id) && !(isPending(q.id) && !isDue(q.id)); });
+  const weak = source.filter(q => isHard(q.id));
+  const selected = [];
+  const used = new Set();
+  function add(list, count) {
+    for (const q of list) {
+      if (selected.length >= n || count <= 0) break;
+      if (used.has(q.id)) continue;
+      selected.push(q); used.add(q.id); count--;
+    }
+  }
+  add(pick(fresh, n), Math.ceil(n * 0.6));
+  add(pick(old, n), Math.ceil(n * 0.3));
+  add(pick(weak, n), Math.min(1, n));
+  // 補充も未出題・定着を優先。未消化の候補がある限り当日回答済みは使わない。
+  add(pick(fresh.filter(q => !used.has(q.id)), n), n);
+  add(pick(old.filter(q => !used.has(q.id)), n), n);
+  if (selected.length < n) add(pick(weak.filter(q => !used.has(q.id)), n), Math.max(0, 2 - selected.filter(q => isHard(q.id)).length));
+  if (selected.length < n) add(pick(notPrevious.filter(q => !used.has(q.id)), n), n);
+  if (selected.length < n) add(pick(unique.filter(q => !used.has(q.id)), n), n);
+  return selected.slice(0, n);
+}
 function pickStart(list, n) {
   const originalList = list;
   // 通常学習では本日すでに答えた問題を後回しにする。候補不足時のみ再利用する。
@@ -995,9 +1027,13 @@ function result() {
     const p = S.from === 'pick' ? pickPool() : S.from === 'everwrong' ? pool().filter(q => wasWrong(q.id)) : S.from === 'hard' ? pool().filter(q => isHard(q.id)) : pool();
     const done = new Set(S.queue.map(q => q.id));
     const fresh = p.filter(q => !done.has(q.id));
-    const next = S.from ? pick(fresh, ROUND) : pickStart(fresh, ROUND);
+    if (!S.from) {
+      // 「次の10問」は専用配分。誤答が多い問題を通常学習に大量投入しない。
+      start(pickNextNormal(p, done, ROUND), '');
+      return;
+    }
+    const next = pick(fresh, ROUND);
     if (next.length < ROUND) next.push(...pick(p.filter(q => !done.has(q.id) && !next.some(n => n.id === q.id)), ROUND - next.length));
-    // 候補を一巡したときだけ、その回の問題を再度使う。
     if (next.length < ROUND) next.push(...pick(p.filter(q => !next.some(n => n.id === q.id)), ROUND - next.length));
     start(next, S.from);
   };
