@@ -276,6 +276,11 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .quiz-feedback-detail .feedback-answer{margin-bottom:14px}
 .quiz-feedback-detail .exp{width:100%;max-width:100%;box-sizing:border-box;margin:12px auto}
 .quiz-feedback-detail .quiz-feedback-action{margin-top:18px;margin-bottom:25px}
+/* 答え合わせ画面でも戦闘を見せる。ゲームの進行は既存の回答処理のみ。 */
+.quiz-feedback-screen .rpg-strip{position:relative!important;bottom:auto!important;left:auto!important;right:auto!important;margin:8px auto 10px!important;width:100%!important;max-width:480px!important;box-sizing:border-box!important;z-index:auto!important}
+.quiz-feedback-screen .quiz-rpg-progress{flex-shrink:0;width:100%;box-sizing:border-box;font-weight:800}
+.quiz-feedback-screen .quiz-feedback-verdict .quiz-feedback-action{margin-top:6px}
+
 
 /* 2026-11-23 学習クイズ専用：RPGダンジョン風の背景。
    ホーム・マイワールド・ママ用・結果画面には適用しない。
