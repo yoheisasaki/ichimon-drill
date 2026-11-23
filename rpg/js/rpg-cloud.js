@@ -97,7 +97,7 @@
     timer=setTimeout(()=>{timer=null;if(ready&&!busy&&!RPG.save.active)push(false);},1500);
   }
   async function refresh(){
-    if(!getKey()||busy||RPG.save.active)return state();
+    if(!getKey()||busy)return state();
     if(timer){clearTimeout(timer);timer=null;}
     busy=true;
     try{
