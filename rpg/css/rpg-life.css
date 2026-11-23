@@ -277,3 +277,13 @@ body:has(#app.rs-worldlife-screen) {
 .life-block-chip.crystal{background:#bd9bff;border-color:#846bd7;box-shadow:4px 4px 0 #6551af}
 .life-build-hint{font-size:12px;line-height:1.65;color:#466b53;background:#e9f6ed;padding:10px;border-radius:11px}
 @media(max-width:370px){.life-build-mode .rs-btn{font-size:11px}.life-block-choice b{font-size:11px}}
+
+/* マイワールド：一人称視点の歩行ビュー */
+.life-walk-toggle{width:100%;margin:12px 0 8px;min-height:48px;background:#416d96!important;color:#fff!important;border-radius:13px;font-weight:900}
+.life-walk-view{margin:4px 0 14px}
+.life-walk-canvas{display:block;width:100%;height:auto;aspect-ratio:8/5;border:3px solid #547c77;border-radius:16px;background:#a8cfeb;touch-action:pan-y;box-shadow:0 5px 12px #20392e36}
+.life-walk-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}
+.life-walk-controls button{min-height:52px;border:2px solid #477c67;border-radius:12px;background:#e8f7ee;color:#1e4d39;font:inherit;font-size:14px;font-weight:900;touch-action:manipulation;cursor:pointer}
+.life-walk-controls button:nth-child(4){grid-column:2}
+.life-walk-controls button:active{background:#bbe3ce}
+.life-walk-position{text-align:center;font-size:13px;font-weight:800;color:#486b60;margin:9px 0}
