@@ -299,7 +299,7 @@
         <small>${owned?'Lv'+LF.level(pet.xp)+'　'+(PA&&PA.stageLabel?PA.stageLabel(p.id,pet.xp):LF.stage(pet.xp)):'累計'+p.at+'問で仲間に'}</small>
         <small>${owned?'成長ポイント '+pet.xp+'　／　次の成長まで '+(nextStagePoint(pet.xp)===null?'最終段階':'あと'+(nextStagePoint(pet.xp)-pet.xp)+'pt'):''}</small>
         ${owned?`<span class="pet-growth-track" role="progressbar" aria-label="${esc(p.name)}の成長" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}"><span style="width:${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}%"></span></span>`:'' }
-        <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
+        <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1?'disabled':''}>${!owned?'未解放':l.food<1?'エサがありません':'エサをあげる'}</button></div>`;
     }).join('');
     const zones=LF.ZONES.map(z=>{
       const unlocked=l.shards>=z.need,done=l.explored[LF.nowDay()];
@@ -328,7 +328,7 @@
           <div class="life-inventory-item">⭐ <span>残りポイント</span><b>${l.foodPoints||0}pt</b></div>
         </div>
       </div>
-      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹 <small class="pet-art-edition">図鑑イラスト版</small></div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
+      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹 <small class="pet-art-edition">図鑑イラスト版</small></div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（手持ちのエサがある分だけ何回でもあげられます）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🗺️ 秘密の探検　地図のかけら ${l.shards}枚</div><p class="rs-p">30問達成ごとに地図のかけらを獲得。探検は1日1回。連れていくペットによって探検の結果が変わるよ。</p><div class="life-zones">${zones}</div></div>
       <div class="rs-panel"><p class="rs-p">ペットの成長は翌日へ持ち越せるよ。勉強を休んでもペットは弱らないので安心してね。</p></div>
     `,{back:false});
