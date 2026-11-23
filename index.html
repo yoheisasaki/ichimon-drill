@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
-<link rel="stylesheet" href="rpg/css/rpg-life.css?v=isobuild-20261123a">
+<link rel="stylesheet" href="rpg/css/rpg-life.css?v=walk3d-20261123b">
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
 </head>
@@ -35,7 +35,7 @@
 <script src="rpg/js/rpg-fx.js"></script>
 <script src="rpg/js/rpg-strip.js"></script>
 <script src="rpg/js/rpg-ui.js?v=subject-start-fix-20261123b"></script>
-<script src="rpg/js/rpg-life.js?v=isobuild-20261123a"></script>
+<script src="rpg/js/rpg-life.js?v=walk3d-20261123b"></script>
 <script src="rpg/js/rpg-pet-art.js?v=pets-four-stages-20261123h"></script>
 <script>
   // ホーム画面アプリの更新でクラウド同期の修正も反映する。
@@ -43,9 +43,10 @@
   document.write('<script src="rpg/js/rpg-cloud.js?v=' + encodeURIComponent(cloudRefreshVersion) + '"><\/script>');
 </script>
 <script src="rpg/js/rpg-mapdata.js"></script>
+<script src="rpg/js/rpg-land-walk.js?v=walk3d-20261123b"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'pets-four-stages-20261123h';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'walk3d-20261123b';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
