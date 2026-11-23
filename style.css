@@ -193,3 +193,16 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .mama-admin-nav{display:flex;justify-content:center;gap:5px;width:100%;max-width:550px;margin-top:6px}
 .mama-admin-nav a{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:9px 3px;border-radius:10px;background:#fff;color:#87234f;border:2px solid #f3bfd3;font-size:clamp(11px,3.4vw,15px);font-weight:900;line-height:1.3;text-align:center;text-decoration:none;white-space:nowrap}
 .mama-admin-nav a:focus-visible{outline:3px solid #ffe28a;outline-offset:1px}
+
+
+/* 鳥のなかま：答え合わせ後の分類表。長文を詰めずに4段に分ける */
+.bird-explain{line-height:1.7!important;text-align:left!important}
+.bird-answer-point{font-size:16px;line-height:1.9;margin:0 0 14px;padding:10px 12px;background:#fff;border-left:4px solid #5b9b77;border-radius:6px}
+.bird-kind-title{font-weight:900;font-size:17px;margin:8px 0 10px;text-align:center}
+.bird-kind-grid{display:grid;grid-template-columns:1fr;gap:9px}
+.bird-kind{padding:11px 12px;background:#fff;border:2px solid #d9e0ea;border-radius:12px}
+.bird-kind-name{font-size:18px;font-weight:900;line-height:1.9;color:#254b70}
+.bird-kind-desc{font-size:15px;line-height:1.95;margin:2px 0}
+.bird-kind-ex{font-size:14px;font-weight:700;line-height:1.7;color:#426148;margin-top:4px}
+.bird-kind-note{margin:12px 0 2px;padding:10px;background:#f0f4ff;border-radius:9px;font-size:14px;line-height:1.9}
+.bird-kind ruby rt,.bird-answer-point ruby rt{font-size:.55em;line-height:1.2}
