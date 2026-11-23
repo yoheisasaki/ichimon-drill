@@ -216,12 +216,26 @@ async function beginKidSession(makeList, from, button) {
 }
 
 function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pending: list.filter(q => isPending(q.id) && !isDue(q.id)).length, due: list.filter(q => isDue(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
-// 初めての問題を優先。解いた問題は最後に解いた日時が古い順に回す。
+// 通常出題は、正解後の間隔を空けて新規と復習を混ぜる。
+// 直近の同一問題を繰り返さない。手動の「もう一回」はこの制限を受けない。
+function nextNormalDay(id) {
+  const x = st(id), lastDay = (x.t || '').slice(0, 10);
+  if (!lastDay || !x.c && !x.w) return '';
+  if (isPending(id)) return checkDay(x);
+  if (x.l !== 'o') return plusDays(lastDay, 1); // 間違いは翌日以降
+  const gap = x.s <= 1 ? 2 : x.s === 2 ? 4 : 7;
+  return plusDays(lastDay, gap);
+}
+function readyForNormal(id) {
+  const day = nextNormalDay(id);
+  return !day || day <= localDay();
+}
+// 通常の10問は初見4・復習4・定着確認2を目安にする。
 // 同じ10問に、できるだけ違う分野を混ぜる。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function pick(list, n) {
   // 苦手・新規・定着確認を混ぜる。復習完了の確認待ちは通常出題を控える。
-  const unique = [...new Map(list.map(q => [q.id, q])).values()];
+  const unique = [...new Map(list.filter(q => readyForNormal(q.id)).map(q => [q.id, q])).values()];
   const weak = [], fresh = [], old = [], pending = [];
   unique.forEach(q => {
     const x = st(q.id);
@@ -255,7 +269,7 @@ function pick(list, n) {
     }
     return selected;
   }
-  // 10問なら苦手6・初見3・定着1が目安。候補不足時は空き枠を融通する。
+  // 10問なら苦手4・初見4・定着2が目安。候補不足時は空き枠を融通する。
   const selected = [];
   const used = new Set();
   function take(candidates, limit, priorityIds = []) {
@@ -269,25 +283,25 @@ function pick(list, n) {
       selected.push(q); used.add(q.id);
     }
   }
-  take(weak, Math.ceil(n * 0.6));
-  take(fresh, Math.ceil(n * 0.3), ['ri-0086','sha-0504','ri-0087','sha-0505','ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_FIRST_IDS,...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
+  take(weak, Math.floor(n * 0.4));
+  take(fresh, Math.ceil(n * 0.4), ['ri-0086','sha-0504','ri-0087','sha-0505','ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_FIRST_IDS,...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
   take(old, n - selected.length);
-  // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
+  // 候補不足は他の出題可能な分類で補う。復習日が来ていない問題は出さない。
   if (selected.length < n) take(weak, n - selected.length);
   if (selected.length < n) take(fresh, n - selected.length);
   if (selected.length < n) take(old, n - selected.length);
-  if (selected.length < n) take(pending, n - selected.length);
+  // すべての候補が復習待ちなら、10問に満たなくても無理に繰り返さない。
   // 優先順位による選定は保ち、実際の出題順だけ交互にする。
   return spread(selected, n);
 }
-// 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
+// 通常の10問は苦手4・初見4・定着2を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
   // 工芸品の新規・苦手は大切だが、同じ分野が連続しないよう10問に最大2問まで。
   // ほかの教科・単元の問題と混ぜ、工芸品は3問目・8問目を目安に配置する。
   // すでに正解した問題は通常の復習選定に任せ、最初に押し付けない。
   const craftIds = new Set(CRAFT_READING_FIRST_IDS);
-  const craftPool = list.filter(q => craftIds.has(q.id));
+  const craftPool = list.filter(q => craftIds.has(q.id) && readyForNormal(q.id));
   const priority = CRAFT_READING_FIRST_IDS
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
