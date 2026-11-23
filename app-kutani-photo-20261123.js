@@ -398,6 +398,8 @@ function expHtml(q) {
 }
 // 音の波の図：答えを先に示さないものだけ問題中にも表示する。
 const QUESTION_WAVE_IMAGES = {
+  'ri-0073': 'images/glass-water-a-b.svg',
+  'ri-0076': 'images/glass-water-a-b.svg',
   'ri-0078': 'images/sound-wave-count.svg',
   'ri-0079': 'images/sound-wave-amplitude.svg',
   'ri-0080': 'images/sound-wave-amplitude.svg',
