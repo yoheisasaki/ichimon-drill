@@ -188,3 +188,14 @@ body:has(#app.rs-worldlife-screen) {
   opacity:1!important;
   filter:none!important;
 }
+
+/* ポイントショップ本体：白い商品カードと薄文字を根本から変更 */
+#app.rs-worldlife-screen .life-point-panel{background:#14264c!important;border:2px solid #e2ba63!important;color:#fff!important;padding:12px;border-radius:12px}
+#app.rs-worldlife-screen .life-point-panel .rs-h2{color:#ffe18a!important;font-size:19px;font-weight:900}
+#app.rs-worldlife-screen .life-point-panel .rs-p{color:#f4f7ff!important;opacity:1!important}
+#app.rs-worldlife-screen .life-point-shop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#app.rs-worldlife-screen .life-point-item{background:#253b65!important;border:2px solid #cda959;border-radius:12px;padding:10px 9px;display:flex;flex-direction:column;gap:7px;min-width:0;color:#fff!important}
+#app.rs-worldlife-screen .life-point-item b{font-size:16px!important;color:#fff!important;line-height:1.45}
+#app.rs-worldlife-screen .life-point-item small{font-size:14px!important;color:#ffe18a!important;font-weight:900;opacity:1!important}
+#app.rs-worldlife-screen .life-point-item .rs-btn{width:100%;min-height:43px;background:#14786e!important;color:#fff!important;border-color:#f1cb72!important;opacity:1!important;filter:none!important;margin-top:auto}
+#app.rs-worldlife-screen .life-point-item .rs-btn:disabled{background:#53617b!important;border-color:#aab5c8!important;color:#fff!important;opacity:1!important;filter:none!important}
