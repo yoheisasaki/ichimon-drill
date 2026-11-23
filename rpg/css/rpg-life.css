@@ -69,3 +69,10 @@
 .rs-visit-dot{display:flex;align-items:center;justify-content:center;min-width:0;aspect-ratio:1;background:#2a4269;border:1px solid #5679a7;border-radius:8px;color:#d9e4fa;font-size:14px;font-weight:900}
 .rs-visit-dot.got{background:#e4bc60;color:#24324c;border-color:#ffde88}
 .rs-visit-reward small{display:block;color:#d7e9f4;font-size:12px;line-height:1.5}
+
+/* マイワールドを開いた時の視覚的な揺れ・横方向のはみ出しを抑える。 */
+.rs-worldlife-screen, .rs-worldlife-screen .rs3, .rs-worldlife-screen .rs-body {min-width:0;max-width:100%;overflow-x:clip}
+.rs-worldlife-screen .life-follow {animation:none!important;transform:none!important}
+.rs-worldlife-screen .life-pet-wrap, .rs-worldlife-screen .life-pet {min-width:0;max-width:100%}
+.rs-worldlife-screen .life-pet small, .rs-worldlife-screen .life-pet b {overflow-wrap:anywhere;line-height:1.45}
+.rs-worldlife-screen .rs-body {scroll-behavior:auto;overscroll-behavior-x:none}
