@@ -146,13 +146,8 @@
   }
   // 既存の建築素材をポイントで買えるショップ。ポイントは正解1問につき1。
   const POINT_SHOP_ITEMS = [
-    {id:'wood',name:'木材',emoji:'🪵',qty:3,price:5},
-    {id:'stone',name:'石・ブロック',emoji:'🪨',qty:3,price:5},
-    {id:'iron',name:'鉄',emoji:'🔩',qty:2,price:8},
-    {id:'crystal',name:'宝石',emoji:'💎',qty:1,price:10},
     {id:'food',name:'ペットのエサ',emoji:'🍎',qty:1,price:10}
-  ];
-  function buyPointShopItem(save,id) {
+  ];  function buyPointShopItem(save,id) {
     const l=ensure(save),item=POINT_SHOP_ITEMS.find(x=>x.id===id);
     if(!l||!item)return {ok:false,msg:'商品が見つからないよ'};
     if(l.foodPoints<item.price)return {ok:false,msg:item.name+'には'+item.price+'ポイント必要だよ'};
