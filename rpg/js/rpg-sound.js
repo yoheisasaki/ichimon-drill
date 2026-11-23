@@ -10,7 +10,7 @@
     attack: [[240, .05, 'sawtooth', .05], [360, .07, 'sawtooth', .05]],
     skill: [[440, .06, 'triangle', .07], [660, .06, 'triangle', .07], [990, .10, 'triangle', .07]],
     hit: [[160, .12, 'square', .05]],
-    wrong: [[260, .09, 'square', .045], [190, .16, 'square', .045]],
+    wrong: [[392, .12, 'sine', .018]], // 不正解：短く柔らかい一音。耳障りな矩形波・下降二音を廃止
     decide: [[520, .05, 'triangle', .06], [780, .07, 'triangle', .06]],
     reward: [[523, .09, 'square', .05], [659, .09, 'square', .05], [784, .09, 'square', .05], [1047, .18, 'square', .05]],
     level: [[392, .09, 'triangle', .07], [523, .09, 'triangle', .07], [659, .09, 'triangle', .07], [784, .09, 'triangle', .07], [1047, .22, 'triangle', .07]],
