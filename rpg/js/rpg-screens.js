@@ -9,7 +9,7 @@
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const save = () => RPG.save;
-  const UI = { lifeRecipe:'pet',lifeRemove:false,lifeMode:'blocks',lifeBlock:'wood', shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
+  const UI = { lifeRecipe:'pet',lifeRemove:false,lifeMode:'blocks',lifeBlock:'wood',lifeWalk:false, shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
   const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['worldlife', 'マイワールド'], ['me', '{自分|じぶん}']];
   const ROOT_OF = { worldlife: 'worldlife', adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const PARENT = { place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'jobs', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
@@ -342,7 +342,8 @@
         <button class="rs-btn ${UI.lifeMode==='decor'&&!UI.lifeRemove?'on':''}" data-life-mode="decor">🏡 建物・かざり</button>
         <button class="rs-btn ${UI.lifeRemove?'on':''}" id="lifeRemove">${UI.lifeRemove?'✓ 回収モード':'↩️ 回収する'}</button>
       </div>
-      <div class="life-map life-map-iso" role="group" aria-label="立体的な6かける6マスの土地">${cells}</div>
+      <button class="rs-btn life-walk-toggle" id="lifeWalkToggle">${UI.lifeWalk?'🏡 建築画面にもどる':'🚶 3Dで土地を歩く'}</button>
+      ${UI.lifeWalk?'<div class="life-walk-view"><canvas class="life-walk-canvas" id="lifeWalkCanvas" aria-label="土地の中を歩く一人称視点の3D風画面"></canvas><div class="life-walk-controls"><button data-walk="left">↶ 左を向く</button><button data-walk="forward">↑ 進む</button><button data-walk="right">↷ 右を向く</button><button data-walk="back">↓ もどる</button></div><p class="life-walk-position" data-walk-position>現在地：1列・1行</p><p class="life-build-hint">建てたブロックや家にぶつかると止まるよ。左右のボタンで向きを変え、前後に移動して探検しよう。画面を横にスワイプしても向きを変えられるよ。</p></div>':'<div class="life-map life-map-iso" role="group" aria-label="立体的な6かける6マスの土地">'+cells+'</div>'}
       <div class="life-build-hint">💡 家・飾りがあるマスにはブロックを置けないよ。ブロックは上から順に回収できて、素材も戻るよ。</div>
       ${UI.lifeMode==='blocks'?'<div class="rs-h3">🧱 使うブロックを選ぼう</div><div class="life-block-palette">'+Object.entries(LF.MATERIALS).map(([id,n])=>'<button class="life-block-choice '+(UI.lifeBlock===id?'selected':'')+'" data-life-block="'+id+'"><span class="life-block-chip '+id+'"></span><b>'+n+'</b><small>あと '+(l.materials[id]||0)+'個</small></button>').join('')+'</div>':'<div class="rs-h3">🏡 建物・かざりを作る</div><div class="life-recipes">'+recipe+'</div>'}
       </div>
@@ -372,6 +373,10 @@
       UI.msg=result.msg;
       rerender();
     });
+    const walkBtn=panel.querySelector('#lifeWalkToggle');
+    if(walkBtn)walkBtn.onclick=()=>{UI.lifeWalk=!UI.lifeWalk;rerender();};
+    const walkCanvas=panel.querySelector('#lifeWalkCanvas');
+    if(walkCanvas && root.RPGLandWalk)root.RPGLandWalk.mount(walkCanvas,LF.ensure(save()));
     panel.querySelectorAll('[data-life-mode]').forEach(b=>b.onclick=()=>{UI.lifeMode=b.dataset.lifeMode;UI.lifeRemove=false;rerender();});
     panel.querySelectorAll('[data-life-block]').forEach(b=>b.onclick=()=>{UI.lifeBlock=b.dataset.lifeBlock;UI.lifeMode='blocks';UI.lifeRemove=false;rerender();});
     panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeMode='decor';UI.lifeRemove=false;rerender();});
