@@ -984,6 +984,8 @@ function record(q, ok, picked, skipped) {
   save(LS_Q, queue);
   addTodaySolved(day);
   if (!MAMA && window.RPG && RPG.lifeSync) RPG.lifeSync(stats,day,todaySolved());
+  // ママ・風助とも、正解した1問につきペットのエサ購入ポイントを1付与。
+  if (ok && window.RPG && RPG.earnFoodPoint) RPG.earnFoodPoint(row.rid);
   if (window.RPG) RPG.onAnswer(q, ok, row.rid, S);
   refreshAnsweredProgress();
 }
