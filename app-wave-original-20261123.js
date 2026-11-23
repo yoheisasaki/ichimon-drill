@@ -572,10 +572,12 @@ function showAnswerFeedback(q, ok, skipped) {
     '<div class="quiz-feedback-symbol">'+(ok ? '○' : skipped ? '？' : '×')+'</div>'+
     '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
     '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
+    (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '')+
     (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
     '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
     '</div></div>';
   document.body.appendChild(screen);
+  if (window.RPG && S.rpg && RPG.ok && RPG.mount) RPG.mount();
   screen.scrollTop = 0;
   const show = document.getElementById('quiz-show-explanation');
   show.onclick = () => {
@@ -588,10 +590,12 @@ function showAnswerFeedback(q, ok, skipped) {
       '<h2 class="quiz-feedback-detail-title">'+heading+'</h2>'+
       '<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>'+
       (explanation || '<div class="exp">答えを確認できたね！</div>')+
+      (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '')+
       (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
       '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
       '</div>';
     S.explanationViewed = true;
+    if (window.RPG && S.rpg && RPG.ok && RPG.mount) RPG.mount();
     screen.scrollTop = 0;
     const next = document.getElementById('quiz-next-question');
     next.onclick = () => {
