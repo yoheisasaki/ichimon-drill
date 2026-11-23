@@ -118,6 +118,18 @@
         UI.params = {};
         UI.msg = '';
         UI.sheet = null;
+        // iOSのホーム画面アプリでは画面の再利用時に直前のマイワールドが
+        // 重なって表示されることがある。ゲームデータを保存してから
+        // 一問一答ホームを新しく読み込み、画面の状態だけを初期化する。
+        const standalone = (root.navigator && root.navigator.standalone === true) ||
+          (root.matchMedia && root.matchMedia('(display-mode: standalone)').matches);
+        if (standalone && root.location && typeof root.location.replace === 'function') {
+          const next = new URL(root.location.href);
+          next.searchParams.set('refresh', 'home-' + Date.now());
+          next.searchParams.delete('mama');
+          root.location.replace(next.toString());
+          return;
+        }
         root.home();
       } else {
         go(id);
