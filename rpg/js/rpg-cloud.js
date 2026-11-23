@@ -15,7 +15,13 @@
   const url=()=>endpoint()+'?api=ichimon_game&key='+encodeURIComponent(getKey())+'&t='+Date.now();
   const valid=s=>s&&C.validateSave(C.migrateSave(JSON.parse(JSON.stringify(s)))).length===0;
   function snapshot(){return JSON.parse(JSON.stringify(RPG.save));}
-  function state(){return {status,connected:!!getKey(),ready,busy,version:cloudVersion,hasRemote:!!remote,localPoints:Number(RPG.save&&RPG.save.life&&RPG.save.life.foodPoints)||0,remotePoints:remote&&remote.save&&remote.save.life?Number(remote.save.life.foodPoints)||0:null};}
+  function state(){return {status,connected:!!getKey(),ready,busy,pending:pendingChange,version:cloudVersion,hasRemote:!!remote,localPoints:Number(RPG.save&&RPG.save.life&&RPG.save.life.foodPoints)||0,remotePoints:remote&&remote.save&&remote.save.life?Number(remote.save.life.foodPoints)||0:null};}
+  function notify(){try{if(RPG.cloud&&typeof RPG.cloud.onUpdate==='function')RPG.cloud.onUpdate(state());}catch(e){}}
+  // クイズ画面を開いている間は別端末の戦闘データで置き換えない。
+  // ホームにいるときは保存済みの active が残っていても安全に最新データを取得する。
+  function canPull(){return !root.__ichimonQuizRunning&&!RPG.save.quizResume;}
+  function freshLocal(){const s=RPG.save||{},l=s.life||{};return !s.quizResume&&(!s.advXp)&&(!s.firstDone)&&(!l.total)&&(!l.foodPoints)&&(!l.food)&&!(l.foodPointReceipts||[]).length&&!(s.stats&&s.stats.adventures);}
+
   function fail(msg){status=msg;ready=false;return state();}
   async function request(){
     const res=await fetch(url(),{cache:'no-cache'}),data=await res.json();
@@ -30,6 +36,7 @@
   }
   function applyCloud(x){
     if(!valid(x.save))return fail('クラウドのセーブを確認できません');
+    if(!canPull()){remote=x;status='問題を解いているため最新データの反映を保留';return state();}
     // 解答中でも保護者が明示的に選んだ場合のみ読み込めるようにする。
     // 元セーブのバックアップが書き込めなければ、端末の進行は変更しない。
     const key=C.LS_BACKUP;
@@ -45,7 +52,7 @@
     RPG.save=M.ensure(s);
     cloudVersion=x.version;syncedRev=s.rev;ready=true;remote=null;
     write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
-    status='同期済み（クラウドから読み込み済み）';pendingChange=false;return state();
+    status='同期済み（クラウドから読み込み済み）';pendingChange=false;notify();return state();
   }
   async function connect(key){
     if(key!==undefined){if(String(key).trim().length<20)return fail('共有鍵は20文字以上にしてください');write(KEY,String(key).trim());}
@@ -60,7 +67,7 @@
         // 同じ端末で同期済みで、ローカル変更が無ければ自動取得できる
         if(stored&&stored.version===x.version&&stored.rev===RPG.save.rev){syncedRev=RPG.save.rev;ready=true;remote=null;status='同期済み';return state();}
         if(stored&&stored.version<x.version&&stored.rev===RPG.save.rev){
-          if(RPG.save.active){status='別端末の新しいセーブがあります。解答中なので読み込みを保留';return state();}
+          if(!canPull()){status='別端末の新しいセーブがあります。クイズ終了後に反映';return state();}
           return applyCloud(x);
         }
         if(stored&&stored.version===x.version&&stored.rev!==RPG.save.rev){
@@ -68,10 +75,11 @@
           syncedRev=stored.rev;ready=true;remote=null;pendingChange=true;status='この端末の変更を同期中';
           onPersist();return state();
         }
-        status='クラウドにセーブあり。どちらを使うか選んでください';
+        if(!stored&&freshLocal()&&canPull())return applyCloud(x);
+        status='クラウドにセーブあり。古いデータで上書きしないため自動反映を保留';
       }else{remote=null;status='クラウドは空です。この端末を最初のセーブにできます';}
     }catch(e){status='接続できません：'+String(e.message||e);remote=null;}
-    finally{busy=false;if(ready&&pendingChange)schedulePush();}
+    finally{busy=false;if(ready&&pendingChange)schedulePush();notify();}
     return state();
   }
   async function chooseCloud(){
@@ -102,7 +110,7 @@
       write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
       status=moreChanges?'追加の変更を同期中':'同期済み';if(moreChanges)pendingChange=true;return state();
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
-    finally{busy=false;if(ready&&pendingChange)schedulePush();}
+    finally{busy=false;if(ready&&pendingChange)schedulePush();notify();}
   }
   // 保護者が明示的に選んだときだけ、この端末を共有セーブの基準にする。
   // CAS(version)で他端末の直近の更新を壊さず、クラウド旧版を端末に退避する。
@@ -162,12 +170,13 @@
         }
         return state();
       }
-      if(ready&&!changed&&!RPG.save.active)return applyCloud(x);
+      if(ready&&!changed&&canPull())return applyCloud(x);
       remote=x;
-      // 端末・クラウド両方に差分があるときは、自動上書きしない。
-      return fail(changed?'両方に変更があります。どちらを残すか選んでください':'別端末の新しいセーブがあります。解答終了後に最新を確認してください');
+      // 異なる端末の更新は勝手に上書きしない。クイズ終了後に自動再確認。
+      if(!changed&&!canPull()){status='クイズ終了後に別端末の最新データを反映';return state();}
+      return fail(changed?'両方に変更があります。どちらを残すか選んでください':'別端末の新しいセーブがあります。古い記録を上書きせず保留しています');
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
-    finally{busy=false;if(ready&&pendingChange)schedulePush();}
+    finally{busy=false;if(ready&&pendingChange)schedulePush();notify();}
   }
   function autoCheck(force=false){
     if(!getKey()||busy)return;
@@ -177,7 +186,7 @@
     void refresh();
   }
   function disconnect(){if(timer)clearTimeout(timer);timer=null;ready=false;remote=null;cloudVersion=0;syncedRev=null;write(KEY,'');write(BASE,'');status='未設定';return state();}
-  RPG.cloud={state,connect,chooseCloud,useThisDevice,push,refresh,onPersist,disconnect};
+  RPG.cloud={state,connect,chooseCloud,useThisDevice,push,refresh,onPersist,disconnect,autoCheck,onUpdate:null};
   root.addEventListener('focus',()=>autoCheck(true));
   root.document&&root.document.addEventListener('visibilitychange',()=>{if(!root.document.hidden)autoCheck(true);});
   root.addEventListener('online',()=>autoCheck(true));
