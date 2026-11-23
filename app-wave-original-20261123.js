@@ -970,7 +970,7 @@ function result() {
     const p = S.from === 'pick' ? pickPool() : S.from === 'everwrong' ? pool().filter(q => wasWrong(q.id)) : S.from === 'hard' ? pool().filter(q => isHard(q.id)) : pool();
     const done = new Set(S.queue.map(q => q.id));
     const fresh = p.filter(q => !done.has(q.id));
-    const next = pick(fresh, ROUND);
+    const next = S.from ? pick(fresh, ROUND) : pickStart(fresh, ROUND);
     if (next.length < ROUND) next.push(...pick(p.filter(q => !done.has(q.id) && !next.some(n => n.id === q.id)), ROUND - next.length));
     // 候補を一巡したときだけ、その回の問題を再度使う。
     if (next.length < ROUND) next.push(...pick(p.filter(q => !next.some(n => n.id === q.id)), ROUND - next.length));
