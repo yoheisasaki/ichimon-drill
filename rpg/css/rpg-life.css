@@ -136,3 +136,55 @@ body:has(#app.rs-worldlife-screen) {
 .life-pet-wrap .life-pet:disabled small{color:#384d65}
 .life-pet-wrap .life-feed{color:#fff!important;background:#264c79!important;border:2px solid #496e9e!important;font-weight:800;font-size:12px;opacity:1!important}
 .life-pet-wrap .life-feed:disabled{color:#293a50!important;background:#d5dce5!important;border-color:#8f9db0!important;opacity:1!important}
+
+/* 2026-11-23 マイワールド：ショップの低コントラストを修正。
+   薄いクリーム色背景と淡い文字の組み合わせを廃止。 */
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) {
+  background:#14264c!important;
+  border-color:#e2ba63!important;
+  color:#f7f5ed!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-h2,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) h2,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) h3 {
+  color:#ffe18a!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-p,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-small,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) small {
+  color:#e5eafb!important;
+  opacity:1!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-coin {
+  color:#ffe18a!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-item,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .life-recipe,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .life-material {
+  background:#213761!important;
+  border-color:#be9c52!important;
+  color:#ffffff!important;
+  opacity:1!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .rs-item b,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) .life-recipe b {
+  color:#ffffff!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) button.rs-btn,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) button.rs-big {
+  background:#19786f!important;
+  border-color:#ffe18a!important;
+  color:#ffffff!important;
+  opacity:1!important;
+  filter:none!important;
+  text-shadow:none!important;
+}
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) button.rs-btn:disabled,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) button.rs-big:disabled,
+#app.rs-worldlife-screen .rs-panel:not(.life-inventory) button.rs-btn[disabled] {
+  background:#3d4b65!important;
+  border-color:#a6b2c5!important;
+  color:#ffffff!important;
+  opacity:1!important;
+  filter:none!important;
+}
