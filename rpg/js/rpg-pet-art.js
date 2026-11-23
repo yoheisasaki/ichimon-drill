@@ -1,70 +1,17 @@
 'use strict';
-// 図鑑風ペットイラスト。成長段階・表示サイズから描画する（セーブ形式は不変）。
-(function(root){
-  const chars={
-    dragon:{a:'#ed5b36',b:'#ffc468',c:'#922d48',accent:'#ffd53f',bg:'#71242d',kind:'dragon'},
-    wolf:{a:'#8bc4f3',b:'#f4fcff',c:'#376eac',accent:'#8df2ff',bg:'#154578',kind:'wolf'},
-    slime:{a:'#55bf76',b:'#bcf2a8',c:'#287c5b',accent:'#d1fa64',bg:'#326b40',kind:'slime'},
-    mole:{a:'#ad805d',b:'#f2caa0',c:'#62443c',accent:'#ffd26d',bg:'#66503b',kind:'mole'},
-    bird:{a:'#f3be39',b:'#fff1a4',c:'#aa6b30',accent:'#9defff',bg:'#74632d',kind:'bird'},
-    fox:{a:'#b589f5',b:'#f8dcff',c:'#654d9c',accent:'#fff29c',bg:'#463574',kind:'fox'},
-    cat:{a:'#afbecf',b:'#f6fbff',c:'#5c779d',accent:'#8fefff',bg:'#3b5d84',kind:'cat'},
-    penguin:{a:'#4c94d6',b:'#fcffff',c:'#234b94',accent:'#b9f7ff',bg:'#255b82',kind:'penguin'}
-  };
-  const esc=v=>String(v).replace(/[^a-zA-Z0-9_-]/g,'');
-  function svg(id,xp,small=false){
-    const q=chars[id]||chars.cat, g=xp>=180?3:xp>=90?2:xp>=10?1:0;
-    const prefix='pet-'+esc(id), size=small?'pet-art-small':'pet-art-card';
-    const scale=[.73,.8,1,1.13][g],off=64*(1-scale);
-    const defs='<defs><linearGradient id="'+prefix+'-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+q.b+'"/><stop offset=".48" stop-color="'+q.a+'"/><stop offset="1" stop-color="'+q.c+'"/></linearGradient><radialGradient id="'+prefix+'-sky"><stop stop-color="'+q.accent+'" stop-opacity=".43"/><stop offset="1" stop-color="'+q.bg+'" stop-opacity="0"/></radialGradient><linearGradient id="'+prefix+'-glaze" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffffff" stop-opacity=".78"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs>';
-    const body='url(#'+prefix+'-body)';
-    const contour='stroke="'+q.c+'" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"';
-    const eye='<ellipse cx="49" cy="57" rx="4.8" ry="7.1" fill="#213450"/><ellipse cx="79" cy="57" rx="4.8" ry="7.1" fill="#213450"/><circle cx="51" cy="54" r="2" fill="white"/><circle cx="81" cy="54" r="2" fill="white"/><ellipse cx="37" cy="69" rx="7" ry="3" fill="#ec9caa" opacity=".65"/><ellipse cx="91" cy="69" rx="7" ry="3" fill="#ec9caa" opacity=".65"/><path d="M60 72q4 4 8 0" stroke="'+q.c+'" stroke-width="2.8" fill="none" stroke-linecap="round"/>';
-    const leg='<path d="M44 97l-3 9q-5 7 6 8h13l5-13m18-4 3 10q5 8-6 8H67l-4-13" fill="'+q.a+'" '+contour+'/>';
-    let rear='', ears='', face=eye, special='';
-    if(q.kind==='cat'||q.kind==='fox'||q.kind==='wolf'){
-      ears='<path d="M27 53L18 13Q17 6 25 11L49 28M101 53l9-40q2-8-7-3L79 28" fill="'+q.a+'" '+contour+'/><path d="M26 40l-4-21 16 15m64 6 4-21-16 15" fill="#f5b8bc"/>';
-      const tail=q.kind==='fox'?'M95 95Q145 102 123 57Q109 84 97 71':q.kind==='wolf'?'M96 100Q146 87 125 55Q116 74 99 74':'M97 98Q135 116 126 78Q121 63 112 77';
-      rear='<path d="'+tail+'" fill="'+body+'" '+contour+'/>';
-      if(q.kind==='fox')special='<path d="M42 73q22 18 44 0l-10 28H53Z" fill="'+q.b+'"/><path d="M61 22l4-10 4 10" fill="'+q.accent+'"/>';
-      if(q.kind==='wolf')special='<path d="M30 72l-12 16 21-4-8 15 24-12 9 14 11-14 22 12-9-15 22 4-13-16" fill="'+q.b+'" '+contour+'/>';
-      if(q.kind==='cat')special='<path d="M38 69l-25-3m26 10-25 4m76-11 25-3m-26 10 25 4" stroke="'+q.c+'" stroke-width="2.2" fill="none"/><path d="M61 69l3 3 3-3" fill="#e49ca2"/><path d="M49 100l15 9 15-9" fill="none" stroke="'+q.accent+'" stroke-width="4"/><circle cx="64" cy="109" r="6" fill="'+q.accent+'" stroke="'+q.c+'" stroke-width="2"/>';
-    }
-    if(q.kind==='dragon'){
-      ears='<path d="M31 35L26 8l24 20m50 7 3-27-24 20" fill="'+q.accent+'" '+contour+'/>';
-      rear='<path d="M94 92Q148 109 125 65L115 79l-10-7" fill="'+q.a+'" '+contour+'/><path d="M36 75Q-4 35 9 20l29 24m54 31q39-40 26-55L90 44" fill="'+q.a+'" '+contour+'/><path d="M28 61L9 29l21 15m70 17 18-32-21 15" fill="'+q.b+'"/>';
-      special='<path d="M55 8l9-8 9 8-9 15Z" fill="'+q.accent+'"/><path d="M41 94l-8 11 13-2m38-9 8 11-13-2" fill="'+q.accent+'"/>';
-    }
-    if(q.kind==='slime'){
-      face='<ellipse cx="49" cy="68" rx="5.2" ry="7" fill="#164a39"/><ellipse cx="79" cy="68" rx="5.2" ry="7" fill="#164a39"/><circle cx="50" cy="65" r="2" fill="white"/><circle cx="80" cy="65" r="2" fill="white"/><path d="M55 78q9 12 18 0" fill="none" stroke="#24674f" stroke-width="3"/><circle cx="39" cy="79" r="5" fill="#f7a9b0"/><circle cx="89" cy="79" r="5" fill="#f7a9b0"/>';
-      special='<path d="M61 31Q48 11 45 7Q61 8 67 30M66 29Q75 6 93 13Q85 31 66 29" fill="'+q.a+'" stroke="'+q.c+'" stroke-width="3"/><path d="M33 52q25-29 61-7" fill="none" stroke="white" opacity=".6" stroke-width="7"/>';
-    }
-    if(q.kind==='mole'){
-      ears='<circle cx="24" cy="49" r="17" fill="'+q.a+'" '+contour+'/><circle cx="104" cy="49" r="17" fill="'+q.a+'" '+contour+'/><circle cx="24" cy="49" r="10" fill="#efa9a6"/><circle cx="104" cy="49" r="10" fill="#efa9a6"/>';
-      special='<ellipse cx="64" cy="75" rx="10" ry="7" fill="#e99da2"/><path d="M24 26q40-22 80 0l6 18H18Z" fill="#d8b46c" '+contour+'/><path d="M49 22h30v17H49Z" fill="'+q.accent+'" '+contour+'/><circle cx="64" cy="30" r="8" fill="#a3ebfa"/><path d="M27 90l-18 11 26 1m66-12 18 11-26 1" fill="'+q.b+'" '+contour+'/>';
-    }
-    if(q.kind==='bird'){
-      ears='<path d="M55 32L46 5l20 16 13-19-4 31" fill="'+q.accent+'" '+contour+'/>';
-      rear='<path d="M32 73L3 48l5 39 31 7m57-21 29-25-5 39-31 7" fill="'+q.a+'" '+contour+'/>';
-      special='<path d="M58 73l6 8 6-8Z" fill="#db8944" '+contour+'/><path d="M26 67L7 55m95 12 19-12" stroke="'+q.accent+'" stroke-width="5"/>';
-    }
-    if(q.kind==='penguin'){
-      rear='<path d="M35 73L9 88l21 9m63-24 26 15-21 9" fill="'+q.c+'" '+contour+'/>';
-      special='<ellipse cx="64" cy="81" rx="27" ry="31" fill="'+q.b+'"/><path d="M57 70l7 9 7-9-7-4Z" fill="#f5b15e" '+contour+'/><path d="M37 102q27 9 54 0" fill="none" stroke="'+q.accent+'" stroke-width="10"/><path d="M93 104l10 18-14-3" fill="'+q.accent+'" '+contour+'/>';
-    }
-    let creature;
-    if(g===0){
-      creature='<path d="M64 23C99 23 112 57 107 85Q101 119 64 119Q27 119 21 85C16 57 29 23 64 23Z" fill="#fff6db" stroke="#bb9b73" stroke-width="4"/><path d="M26 83l13-11 13 10 12-9 13 9 13-10 13 11" stroke="#c5aa87" stroke-width="3" fill="none"/><ellipse cx="48" cy="53" rx="19" ry="7" transform="rotate(-30 48 53)" fill="white" opacity=".65"/>';
-    }else if(q.kind==='slime'){
-      creature='<path d="M12 95Q9 64 33 49Q53 37 64 30Q75 37 95 49Q119 64 116 95Q113 115 64 117Q15 115 12 95Z" fill="'+body+'" '+contour+'/>'+special+face;
-    }else{
-      creature=rear+leg+ears+'<ellipse cx="64" cy="74" rx="43" ry="42" fill="'+body+'" '+contour+'/><ellipse cx="64" cy="88" rx="27" ry="20" fill="'+q.b+'" opacity=".89"/><path d="M35 45q29-24 57 0" fill="none" stroke="white" stroke-opacity=".55" stroke-width="5"/>'+special+face;
-    }
-    const stars=g>=2?'<path d="M15 16l4 9 9 3-9 4-4 9-4-9-9-4 9-3z" fill="'+q.accent+'" opacity=".9"/><circle cx="115" cy="23" r="5" fill="'+q.accent+'"/>':'';
-    const crown=g===3?'<path d="M43 8l-5-12 16 8 10-14 10 14 16-8-5 12-7 11H50Z" fill="#ffdb76" stroke="#9b6b35" stroke-width="3"/><circle cx="64" cy="7" r="4" fill="#e66895"/>':'';
-    return '<svg class="pet-art '+size+'" viewBox="0 0 128 136" role="img" aria-label="'+esc(id)+'の姿" xmlns="http://www.w3.org/2000/svg">'+defs+
-      '<circle cx="64" cy="63" r="60" fill="url(#'+prefix+'-sky)"/><ellipse cx="64" cy="120" rx="47" ry="8" fill="#26364d" opacity=".19"/>'+stars+
-      '<g transform="translate('+off+' '+(14*(1-scale))+') scale('+scale+')">'+creature+crown+'</g></svg>';
+(function(root) {
+  const sprite = "data:image/webp;base64,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";
+  const coords={dragon:[0,0],wolf:[1,0],slime:[2,0],mole:[3,0],bird:[0,1],fox:[1,1],cat:[2,1],penguin:[3,1]};
+  if(root.document&&!root.document.getElementById('pet-sprite-style')) {
+    const style=root.document.createElement('style');
+    style.id='pet-sprite-style';
+    style.textContent=".pet-portrait{display:inline-block;position:relative;width:80px;height:80px;flex-shrink:0;border-radius:10px;overflow:hidden;vertical-align:middle;background-image:url("+sprite+");background-size:400% 200%;background-repeat:no-repeat}.pet-portrait.pet-mini{width:28px;height:28px;border-radius:6px}.pet-portrait.pet-egg{background-image:none;background-color:#f2eacb}.pet-portrait.pet-evolved:after{content:'✦';position:absolute;right:1px;top:-2px;font-size:18px;color:#ffd44d;text-shadow:0 1px 3px #482d5d}.pet-portrait.pet-growing{box-shadow:inset 0 0 0 2px #8ddcc6}";
+    root.document.head.appendChild(style);
+  }
+  function svg(id,xp,small){
+    const c=coords[id]||coords.cat,st=xp>=180?'pet-evolved':xp>=90?'pet-growing':xp<10?'pet-egg':'';
+    if(xp<10)return '<span class="pet-portrait '+(small?'pet-mini ':'')+'pet-egg" role="img" aria-label="たまご">🥚</span>';
+    return '<span class="pet-portrait '+(small?'pet-mini ':'')+st+'" role="img" aria-label="'+id+'のイラスト" style="background-position:'+(c[0]*100/3)+'% '+(c[1]*100)+'%"></span>';
   }
   root.RPGPetArt={svg};
 })(typeof self!=='undefined'?self:this);
