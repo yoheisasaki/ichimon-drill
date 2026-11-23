@@ -142,6 +142,23 @@
     else {if(l.party.length>=3)return {ok:false,msg:'3匹まで。先にほかの子をお休みさせてね'};l.party.push(id);}
     return {ok:true,msg:'冒険の仲間を変更しました'};
   }
+  // 既存の建築素材をポイントで買えるショップ。ポイントは正解1問につき1。
+  const POINT_SHOP_ITEMS = [
+    {id:'wood',name:'木材',emoji:'🪵',qty:3,price:5},
+    {id:'stone',name:'石・ブロック',emoji:'🪨',qty:3,price:5},
+    {id:'iron',name:'鉄',emoji:'🔩',qty:2,price:8},
+    {id:'crystal',name:'宝石',emoji:'💎',qty:1,price:10},
+    {id:'food',name:'ペットのエサ',emoji:'🍎',qty:1,price:10}
+  ];
+  function buyPointShopItem(save,id) {
+    const l=ensure(save),item=POINT_SHOP_ITEMS.find(x=>x.id===id);
+    if(!l||!item)return {ok:false,msg:'商品が見つからないよ'};
+    if(l.foodPoints<item.price)return {ok:false,msg:item.name+'には'+item.price+'ポイント必要だよ'};
+    l.foodPoints-=item.price;
+    if(item.id==='food')l.food+=item.qty;
+    else l.materials[item.id]=(Number(l.materials[item.id])||0)+item.qty;
+    return {ok:true,msg:item.emoji+' '+item.name+'を'+item.qty+'個買ったよ！ 残り'+l.foodPoints+'ポイント'};
+  }
   const FOOD_POINT_PRICE = 10;
   // 1問正解で1ポイント。不正解・スキップ・同じ解答IDの再処理は加算しない。
   function earnFoodPoint(save, receiptId) {
@@ -152,13 +169,7 @@
     l.foodPoints+=1;
     return true;
   }
-  function buyFood(save) {
-    const l=ensure(save);
-    if(!l||l.foodPoints<FOOD_POINT_PRICE)return {ok:false,msg:'エサ1個には10ポイント必要だよ'};
-    l.foodPoints-=FOOD_POINT_PRICE;
-    l.food+=1;
-    return {ok:true,msg:'🍎 エサを1個買ったよ！ 残り'+l.foodPoints+'ポイント'};
-  }
+  function buyFood(save) { return buyPointShopItem(save,'food'); }
   function feed(save,id,day){
     const l=ensure(save),d=day||nowDay();
     if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
@@ -218,7 +229,7 @@
     if(l.play.used>=MAX_PLAY_MS)l.play.done=true;
     return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyFood,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,POINT_SHOP_ITEMS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyPointShopItem,buyFood,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.visitBonus = function(day) {
       if(!root.RPG.ok)return null;
