@@ -51,7 +51,7 @@ const MAP_REVIEW_FIRST_IDS = ["map-0009","map-0001"];
 // 塾配布の第5回対策で扱われた音の基本（振動・音の高低・コップ・雷）を先にする。
 const SOUND_BASIC_FIRST_IDS = ["ri-0074","ri-0073","ri-0075","ri-0076","ri-0077","ri-0078","ri-0079","ri-0080"];
 // 波形の数やマス目の計算は削除せず発展扱いにし、通常の10問では頻度を落とす。
-const SOUND_ADVANCED_IDS = new Set(["ri-0081","ri-0082","ri-0083","ri-0084"]);
+const SOUND_ADVANCED_IDS = new Set(["ri-0081","ri-0082","ri-0083"]);
 SOUND_BASIC_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
 SOUND_ADVANCED_IDS.forEach(id => FOCUS_IDS.add(id));
 ["ri-0085"].forEach(id => FOCUS_IDS.add(id));
@@ -412,7 +412,6 @@ const EXPLANATION_IMAGES = {
   'ri-0081': { src: 'images/sound-wave-two-cycles.svg', alt: '同じ時間に2回振動する波形' },
   'ri-0082': { src: 'images/sound-wave-grid-two.svg', alt: '中央線から山までが2マスの波形' },
   'ri-0083': { src: 'images/sound-wave-change.svg', alt: '波の数を半分にして振れ幅を2倍にした波形の比較' },
-  'ri-0084': { src: 'images/sound-wave-width-2-5.svg', alt: '1つの波の幅が2.5マスの図' },
   'ri-0085': { src: 'images/sound-wave-change.svg', alt: '低くて大きい音の波形と元の波形の比較図' }
 };
 // 鳥の分類は文章の連結ではなく、種類ごとのカードで読みやすく整理する。
@@ -503,7 +502,6 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0081': 'images/sound-wave-two-cycles.svg',
   'ri-0082': 'images/sound-wave-grid-two.svg',
   'ri-0083': 'images/sound-wave-original-4-amp2.svg',
-  'ri-0084': 'images/sound-wave-width-2-5.svg',
   'ri-0092': 'images/bottle-blow-water-a-b.svg'
 };
 function waveQuestionHtml(q) {
@@ -1106,7 +1104,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=echizen-lacquerware-photo-20261123', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=remove-wave-width-20261123', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
