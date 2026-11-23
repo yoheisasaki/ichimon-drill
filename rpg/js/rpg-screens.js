@@ -239,10 +239,16 @@
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
       ${playable?'':'<p class="rs-why">今日のマイワールド、おつかれさま！ 記録はちゃんと保存してあるよ。</p>'}</div>
       <div class="rs-panel" style="border:2px solid #e2ba63;border-radius:12px;padding:12px;margin-bottom:12px;background:#fff9e9">
-        <div class="rs-h2">🍎 ペットのエサ屋さん</div>
-        <p class="rs-p" style="font-weight:800">⭐ ${l.foodPoints||0} ポイント（正解1問で1ポイント）</p>
-        <p class="rs-p">エサ1個＝10ポイント　／　今あるエサ：${l.food}個</p>
-        <button type="button" class="rs-btn" id="lifeBuyFood" ${(l.foodPoints||0)<10?'disabled':''}>🍎 10ポイントでエサを1個買う</button>
+        <div class="rs-h2">🛒 ポイントショップ</div>
+        <p class="rs-p" style="font-weight:900;font-size:17px">⭐ ${l.foodPoints||0} ポイント</p>
+        <p class="rs-p">正解1問で1ポイント。ためてエサや建築素材を買おう！</p>
+        <div class="life-point-shop" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">
+          ${LF.POINT_SHOP_ITEMS.map(item=>`<div style="background:#fff;border:1px solid #d8bd85;border-radius:10px;padding:9px;display:flex;flex-direction:column;gap:5px;min-width:0">
+            <b style="font-size:15px">${item.emoji} ${esc(item.name)} ×${item.qty}</b>
+            <small>${item.price}ポイント</small>
+            <button type="button" class="rs-btn sm" data-point-buy="${item.id}" ${(l.foodPoints||0)<item.price?'disabled':''} style="min-height:40px">🛍️ 買う</button>
+          </div>`).join('')}
+        </div>
       </div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
@@ -269,13 +275,13 @@
     panel.querySelectorAll('[data-life-pet]').forEach(b=>b.onclick=()=>run(()=>LF.setParty(save(),b.dataset.lifePet)));
     panel.querySelectorAll('[data-life-feed]').forEach(b=>b.onclick=()=>run(()=>LF.feed(save(),b.dataset.lifeFeed)));
     // 買い物はマイワールドの1日の操作制限と独立。十分なポイントがあればいつでも購入できる。
-    const foodBuy=doc.getElementById('lifeBuyFood');
-    if(foodBuy)foodBuy.onclick=()=>{
-      const result=LF.buyFood(save());
+    // お買い物はマイワールドの1日の遊び制限とは別に利用できる。
+    panel.querySelectorAll('[data-point-buy]').forEach(b=>b.onclick=()=>{
+      const result=LF.buyPointShopItem(save(),b.dataset.pointBuy);
       if(result.ok)commit();
       UI.msg=result.msg;
       rerender();
-    };
+    });
     panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
     panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
     panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
