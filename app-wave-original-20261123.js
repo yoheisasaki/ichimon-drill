@@ -655,6 +655,8 @@ function refreshAnsweredProgress() {
 }
 // ---------- 画面：最初 ----------
 function home() {
+  window.__ichimonQuizRunning = false;
+  if (!MAMA && window.RPG && RPG.cloud && RPG.cloud.autoCheck) RPG.cloud.autoCheck(true);
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   app.className = ''; if (window.RPG) RPG.unmount();
   if (!MAMA && window.RPG && RPG.dailyStudyReward) RPG.dailyStudyReward(now().slice(0, 10), todaySolved());
@@ -842,6 +844,7 @@ async function pauseAndSaveQuiz() {
     S.locked = false;
   }
   const state=snapshotQuiz();
+  window.__ichimonQuizRunning = false;
   let savedLocally = false;
   if (!MAMA && window.RPG && RPG.ok) {
     RPG.save.quizResume = state;
@@ -898,6 +901,7 @@ function reask(q) {
   S.queue.splice(at, 0, w);
 }
 function question() {
+  window.__ichimonQuizRunning = true;
   closeFeedbackScreen();
   const q = S.queue[S.idx];
   S.locked = false; S.cur = q; S.sel = -1;
@@ -1018,6 +1022,7 @@ function advance() {
 
 // ---------- 画面：おわり ----------
 function result() {
+  window.__ichimonQuizRunning = false;
   closeFeedbackScreen();
   clearPausedQuiz();
   flush();
