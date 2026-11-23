@@ -276,3 +276,74 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .quiz-feedback-detail .feedback-answer{margin-bottom:14px}
 .quiz-feedback-detail .exp{width:100%;max-width:100%;box-sizing:border-box;margin:12px auto}
 .quiz-feedback-detail .quiz-feedback-action{margin-top:18px;margin-bottom:25px}
+
+/* 2026-11-23 学習クイズ専用：RPGダンジョン風の背景。
+   ホーム・マイワールド・ママ用・結果画面には適用しない。
+   クイズ本体は .top / .card / .choices をルート直下に持つ。 */
+body:has(#app > .top):has(#app > .choices){
+  background:#0b142c!important;
+  color:#f6f2e5;
+}
+body:has(#app > .top):has(#app > .choices) #app{
+  background-color:#111e3c;
+  background-image:
+    radial-gradient(ellipse at 50% 0%,rgba(70,105,165,.27),transparent 55%),
+    repeating-linear-gradient(0deg,transparent 0 34px,rgba(218,182,99,.045) 35px 36px),
+    repeating-linear-gradient(90deg,transparent 0 54px,rgba(218,182,99,.045) 55px 56px);
+  background-attachment:scroll;
+  border-left:1px solid #304367;
+  border-right:1px solid #304367;
+  min-height:100dvh;
+  color:#f6f2e5;
+}
+#app:has(> .top):has(> .choices) .dname{color:#ffe08a!important;text-shadow:0 1px 2px #061027}
+#app:has(> .top):has(> .choices) .btn-quit{
+  background:#24375d;color:#fff8e6;border:2px solid #d5b15e;box-shadow:0 3px 0 #09152e;
+}
+#app:has(> .top):has(> .choices) .pill{
+  background:#24375d;color:#ffe08a;border:2px solid #d5b15e;box-shadow:none;
+}
+#app:has(> .top):has(> .choices) .bar{background:#07122a;border:2px solid #8d7440;height:14px}
+#app:has(> .top):has(> .choices) .bar i{background:linear-gradient(90deg,#b8862e,#ffe08a)}
+#app:has(> .top):has(> .choices) .card{
+  background:#fff8e8!important;color:#1e2c49!important;
+  border:3px solid #d9b765!important;box-shadow:inset 0 0 0 3px #fffdf5,0 5px 0 #80652f!important;
+  border-radius:18px;line-height:1.75;
+}
+#app:has(> .top):has(> .choices) .card .qt{color:#172a49!important}
+#app:has(> .top):has(> .choices) .choices{gap:12px}
+#app:has(> .top):has(> .choices) .choice{
+  background:#1c3158!important;color:#fff9ed!important;
+  border:2px solid #9eafcd!important;border-radius:14px;
+  box-shadow:0 4px 0 #081329!important;min-height:68px;
+  font-weight:800;
+}
+#app:has(> .top):has(> .choices) .choice .dot{border-color:#d3bf8c;color:#fff}
+#app:has(> .top):has(> .choices) .choice.sel{
+  background:#146b70!important;border-color:#ffda74!important;box-shadow:0 4px 0 #083838!important;
+}
+#app:has(> .top):has(> .choices) .choice.sel .dot{background:#ffe08a;border-color:#ffe08a;color:#1c3158}
+#app:has(> .top):has(> .choices) .choice.ok,
+#app:has(> .top):has(> .choices) .choice.glow{background:#185638!important;border-color:#67e2a0!important}
+#app:has(> .top):has(> .choices) .choice.ng{background:#73323b!important;border-color:#ff9999!important}
+#app:has(> .top):has(> .choices) .choice.dim{opacity:.65}
+#app:has(> .top):has(> .choices) .score,
+#app:has(> .top):has(> .choices) .skipcount{color:#e6e9f7!important}
+#app:has(> .top):has(> .choices) .next{color:#ffe08a!important}
+#app:has(> .top):has(> .choices) .skip{
+  background:#24375d;color:#f8f1e6;border:2px solid #97a9cc;
+}
+#app:has(> .top):has(> .choices) .ans{
+  background:#fff9ed;color:#162640;border:3px solid #d4b05b;
+}
+#app:has(> .top):has(> .choices) .big.go{
+  background:#117d72;color:#fff;border:2px solid #ffe08a;box-shadow:0 4px 0 #0b4441;
+}
+#app:has(> .top):has(> .choices) #pauseSave{
+  background:#293d64!important;color:#fff9e9!important;border-color:#d5b15e!important;
+}
+#app:has(> .top):has(> .choices) .card ruby rt,
+#app:has(> .top):has(> .choices) .choice ruby rt{color:inherit;opacity:.8}
+@media(prefers-reduced-motion:reduce){
+  #app:has(> .top):has(> .choices) .choice{transition:none}
+}
