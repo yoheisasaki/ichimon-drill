@@ -98,10 +98,12 @@
   };
   // ---------- 学習セッションとの接続 ----------
   function snapOf(q) { return { id: q.id, q: q.q, a: q.a, choices: q.choices, type: q.type, accept: q.accept, map: q.map, unit: q.unit, subject: q.subject, test: q.test }; }
-  RPG.beforeStart = function (list) {
+  RPG.beforeStart = function (list, allowedIds) {
     if (!RPG.ok) return { list, reviews: [], reask: 0, rpg: false };
     const a = A.begin(RPG.save, NOW());
-    const reviews = a.reviews.pending.map(p => { const w = Object.create(p.snap); w._rv = { origin: p.origin }; return w; });
+    // 今選んでいる学習範囲にないRPG復習は、消さずに次の機会まで保留する。
+    const reviews = a.reviews.pending.filter(p => !allowedIds || allowedIds.has(p.snap.id))
+      .map(p => { const w = Object.create(p.snap); w._rv = { origin: p.origin }; return w; });
     RPG.persist();
     return { list: list.slice(0, A.remainingBasics(RPG.save)), reviews, reask: a.reviews.used, rpg: true };
   };
