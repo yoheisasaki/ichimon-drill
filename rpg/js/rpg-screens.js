@@ -327,11 +327,20 @@
     panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
     panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
     const rem=doc.getElementById('lifeRemove');if(rem)rem.onclick=()=>{UI.lifeRemove=!UI.lifeRemove;rerender();};
+    // 遊べる時間が終了した保存データではタイマーを再起動しない。
+    // 以前は done=true のまま毎秒 rerender() して、iPhone で画面全体が点滅していた。
+    if (LF.playState(save()).done) return;
     lifeTicker=setInterval(()=>{
-      if(doc.hidden||UI.screen!=='worldlife'){return;}
+      if(doc.hidden||UI.screen!=='worldlife')return;
       const t=LF.spendPlay(save(),1000);
+      if(t.done){
+        stopLifeTimer();
+        commit();
+        UI.msg='今日のマイワールド、おつかれさま！ 記録はちゃんと保存したよ。';
+        rerender(); // 完了への遷移時だけ一度描き直す。再描画後はタイマーを作らない。
+        return;
+      }
       if(Math.floor(t.used)%5000===0)commit();
-      if(t.done){stopLifeTimer();commit();UI.msg='今日のマイワールド、おつかれさま！ 記録はちゃんと保存したよ。';rerender();}
     },1000);
   };
 
