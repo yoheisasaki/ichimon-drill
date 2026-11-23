@@ -586,7 +586,7 @@ function showAnswerFeedback(q, ok, skipped) {
     '<div class="quiz-feedback-symbol">'+(ok ? '○' : skipped ? '？' : '×')+'</div>'+
     '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
     '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
-    (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '')+
+    (!ok && !skipped && S.rpg ? '<div class="quiz-hit-stage" aria-label="敵から攻撃を受けた戦闘場面"><div class="quiz-hit-caption">⚔️ 敵の攻撃！</div>' + (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : '') + '<span class="quiz-hit-slash" aria-hidden="true"></span><span class="quiz-hit-impact" aria-hidden="true">ビシュッ！</span></div>' : (window.RPG && RPG.stripHtml ? RPG.stripHtml(S) : ''))+
     quizRpgFeedbackHtml()+
     '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
     '</div></div>';
