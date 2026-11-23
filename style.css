@@ -369,3 +369,11 @@ body:has(#app > .top):has(#app > .choices) #app{
 @keyframes quiz-hit-swipe{0%{opacity:0;transform:translate(55px,-40px) rotate(45deg) scaleY(.25)}35%{opacity:1}75%{opacity:1;transform:translate(-15px,24px) rotate(45deg) scaleY(1.1)}100%{opacity:0;transform:translate(-25px,36px) rotate(45deg) scaleY(1.1)}}
 @keyframes quiz-hit-word{0%{opacity:0;transform:scale(.75)}28%,62%{opacity:1;transform:scale(1.06)}100%{opacity:0;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.quiz-feedback-screen .quiz-hit-slash{animation:none;opacity:.65;transform:translate(0,0) rotate(45deg)}.quiz-feedback-screen .quiz-hit-impact{animation:none;opacity:1;transform:none}}
+
+/* 2026-11-23: 小画面の誤タップ対策。選択式の「わかんない」は問題より上に独立配置。 */
+#app:has(> .top):has(> .choices) .skipw-top{display:flex!important;align-items:center;justify-content:space-between!important;gap:8px;margin:10px 4px 18px!important;padding:10px 12px;border:2px dashed #98a5c2;border-radius:15px;background:#19284b!important;}
+#app:has(> .top):has(> .choices) .skip-location-label{color:#e7e4d8;font-size:14px;font-weight:800;line-height:1.4;}
+#app:has(> .top):has(> .choices) .skipw-top #skipc{flex:none;min-height:52px;min-width:136px;border-radius:14px;background:#3e4d69!important;color:#fff!important;border:2px solid #acb8cf!important;font-size:17px;font-weight:900;}
+#app:has(> .top):has(> .choices) #decidew{margin-top:32px!important;margin-bottom:20px!important;}
+#app:has(> .top):has(> .choices) #decide{min-height:70px!important;font-size:23px!important;width:100%!important;background:#0a7665!important;border:3px solid #f4d486!important;}
+@media(max-width:370px){#app:has(> .top):has(> .choices) .skip-location-label{font-size:12px}#app:has(> .top):has(> .choices) .skipw-top #skipc{min-width:124px;font-size:15px}}
