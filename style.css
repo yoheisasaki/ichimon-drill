@@ -252,3 +252,11 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 #app .card>.qt{width:100%!important;min-width:0!important;max-width:100%!important;flex:none!important;white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;text-align:center}
 #app .card>img,#app .card>figure{width:100%!important;max-width:100%!important;min-width:0!important;flex:none!important;height:auto;box-sizing:border-box}
 #app .card>figure img{max-width:100%;height:auto}
+
+
+/* 正解／不正解を最初に大きく表示。解説は次のタップで開く */
+.answer-feedback.feedback-first{min-height:245px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:10px;padding:25px 16px}
+.answer-feedback.feedback-first .feedback-heading{font-size:clamp(34px,10vw,48px);line-height:1.5}
+.answer-feedback.feedback-first .feedback-sub{margin-bottom:12px}
+.feedback-show-exp{background:#fff;color:#275c9f;border:3px solid #6f9bd4;box-shadow:0 4px 0 #aec5e6;font-size:21px}
+#next{scroll-margin-top:12px;scroll-margin-bottom:105px}
