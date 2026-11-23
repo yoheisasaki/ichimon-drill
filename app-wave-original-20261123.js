@@ -607,12 +607,18 @@ function home() {
     esc(filter === '全部' ? '全教科' : filter === 'ちず' ? '地図問題' : filter === 'かく' ? '書いて答える問題' : filter) +
     ((filter !== '全部' && filter !== 'ちず' && filter !== 'かく') ? (unitN ? '（' + units[filter].map(x => esc(x)).join('・') + '）' : '（全単元）') : '') +
     '<br>出題対象：' + p.length + '問</div>';
+  const pointBalance = rpgOn && window.RPGLife && RPG.save
+    ? RPGLife.ensure(RPG.save).foodPoints || 0 : 0;
+  const pointBalanceHtml = rpgOn
+    ? '<div class="home-point-balance" data-noruby aria-label="現在の買い物ポイント" style="margin:8px 10px;padding:11px 14px;border-radius:12px;border:2px solid #d6b35c;background:#fff8df;color:#5d430b;font-size:18px;font-weight:900;text-align:center">⭐ 現在のポイント：' + pointBalance + 'ポイント <span style="font-size:12px;display:block;margin-top:4px;font-weight:600">1問正解で1ポイント　｜　マイワールドで使えるよ</span></div>'
+    : '';
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
     ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${activeRangeHtml}
+    ${pointBalanceHtml}
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
@@ -629,6 +635,7 @@ function home() {
     
     <h1>一問一答</h1>
     ${activeRangeHtml}
+    ${pointBalanceHtml}
     ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
