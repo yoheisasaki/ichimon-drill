@@ -915,12 +915,12 @@ function question() {
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     ${window.RPG ? RPG.stripHtml(S) : ''}
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
-    ${isIn ? '' : '<div class="skipw skipw-top"><button class="skip" id="skipc">わかんない</button></div>'}
+    ${isIn ? '' : '<div class="skipw skipw-top"><span class="skip-location-label">こたえが わからないとき</span><button type="button" class="skip" id="skipc">？ わかんない</button></div>'}
     <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}" style="display:flex;flex-direction:column;align-items:stretch;gap:12px"><div class="qt" style="width:100%;min-width:0;max-width:100%;flex:none;white-space:normal;overflow-wrap:break-word;text-align:center">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
-    ${isIn ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">けってい</button></div>'}
+    ${isIn ? '' : '<div class="decidew" id="decidew" hidden><button class="big go" id="decide">✓ これで けってい</button></div>'}
 
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>
