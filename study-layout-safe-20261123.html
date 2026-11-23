@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=DotGothic16&display=swap">
-<link rel="stylesheet" href="style.css?v=feedback-first-20261123">
+<link rel="stylesheet" href="style.css?v=verdict-screen-20261123">
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
@@ -54,8 +54,8 @@
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'explanation-required-20261123';
-  document.write('<script src="app-explanation-required-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'verdict-screen-20261123';
+  document.write('<script src="app-verdict-screen-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 </body>
 </html>
