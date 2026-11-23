@@ -250,3 +250,11 @@ body:has(#app.rs-worldlife-screen) {
   filter:none!important;
   -webkit-text-fill-color:#ffffff!important;
 }
+
+
+/* ペット専用絵・成長ゲージ。既存の成長ポイントは変更しない。 */
+.life-emoji .pet-art{display:block;width:70px;height:74px;margin:0 auto;overflow:visible;filter:drop-shadow(0 3px 2px rgba(24,42,72,.18))}
+.life-follow .pet-art,.life-strip-pets .pet-art{display:block;width:28px;height:31px;overflow:visible}
+.pet-growth-track{display:block;width:88%;max-width:180px;height:9px;flex:none;background:#d6e1ed;border:1px solid #7d96af;border-radius:12px;overflow:hidden;margin:5px auto}
+.pet-growth-track>span{display:block;height:100%;background:linear-gradient(90deg,#3c9c85,#8be0af);border-radius:12px}
+.life-pet .life-emoji{font-size:inherit}
