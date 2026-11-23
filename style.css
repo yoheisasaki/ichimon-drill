@@ -238,3 +238,10 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
  border:2px solid #d2ad33;box-shadow:0 2px 0 #b78016;border-radius:12px
 }
 .kid-refresh-lead .kid-refresh-primary .kid-refresh-main{font-size:16px;font-weight:800}
+
+
+/* 写真や理科の図がある問題は縦に配置。横並びだとiPhoneで文字が1文字幅に縮む */
+.card.withillustration{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.card.withillustration>.qt{width:100%;min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal}
+.card.withillustration>img,.card.withillustration>figure{flex:none;width:100%;max-width:100%;margin:4px auto 6px}
+.card.withillustration>img{height:auto;object-fit:contain}
