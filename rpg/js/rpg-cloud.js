@@ -134,7 +134,10 @@
     pendingChange=true;
     if(!ready||busy)return;
     if(timer)clearTimeout(timer);
-    timer=setTimeout(()=>{timer=null;if(ready&&!busy&&!RPG.save.active)void push(false);},1500);
+    // 正解ポイントやエサ購入は冒険10問の途中でも変化するため、
+    // 冒険中もクラウドへ保存する。version付きの競合検出は維持し、
+    // ほかの端末が先に更新していた場合は上書きしない。
+    timer=setTimeout(()=>{timer=null;if(ready&&!busy)void push(false,true);},1500);
   }
   async function refresh(){
     if(!getKey()||busy)return state();
