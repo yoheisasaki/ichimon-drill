@@ -468,16 +468,17 @@ const BIRD_PHOTOS = {
 };
 // 社会・写真で見分ける問題。問題文では答えを隠し、写真は解答前に表示する。
 function socialPhotoHtml(q) {
-  if (q.subject !== '社会' || !q.photo || !q.photo.file) return '';
-  const filename = q.photo.file;
-  const fileUrl = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename);
-  const imgUrl = filename === 'Yuki-kikko.JPG' ? 'https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG' : 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580';
+  if (q.subject !== '社会' || !q.photo || (!q.photo.file && !q.photo.url)) return '';
+  const filename = q.photo.file || '';
+  const fileUrl = q.photo.sourceUrl || ('https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename));
+  const imgUrl = q.photo.url || (filename === 'Yuki-kikko.JPG' ? 'https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG' : 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580');
+  const sourceName = q.photo.sourceName || 'Wikimedia Commons';
   return '<figure style="max-width:460px;margin:10px auto 14px;text-align:center">' +
     '<img src="' + imgUrl + '" alt="問題の参考写真" loading="eager" referrerpolicy="no-referrer" ' +
     'style="display:block;max-width:100%;width:100%;max-height:275px;object-fit:contain;border-radius:12px;background:#f6f6f6" ' +
     'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">' +
     '<div style="display:none;padding:14px;font-size:13px">写真を表示できませんでした。下の「写真のページ」から写真を見てね。</div>' +
-    '<figcaption style="font-size:12px;line-height:1.7;color:#666">出典：Wikimedia Commons　' +
+    '<figcaption style="font-size:12px;line-height:1.7;color:#666">出典：' + esc(sourceName) + '　' +
     '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">写真のページ</a></figcaption></figure>';
 }
 function birdPhotoHtml(q) {
