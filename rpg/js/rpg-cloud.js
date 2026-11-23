@@ -100,6 +100,35 @@
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
     finally{busy=false;}
   }
+  // 保護者が明示的に選んだときだけ、この端末を共有セーブの基準にする。
+  // CAS(version)で他端末の直近の更新を壊さず、クラウド旧版を端末に退避する。
+  async function useThisDevice(){
+    if(!getKey()||busy)return fail('共有鍵を確認してください');
+    busy=true;status='この端末のデータを確認中';
+    try{
+      const x=await request();
+      if(x.save){
+        const old=JSON.stringify({version:x.version,save:x.save,savedAt:new Date().toISOString()});
+        const k='ichimon.rpg.cloud.previous.v1';
+        write(k,old);
+        if(read(k)!==old)return fail('以前のクラウドデータをバックアップできませんでした');
+      }
+      const local=snapshot();
+      if(!valid(local))return fail('この端末のセーブを確認できません');
+      // 進行中の戦闘や問題は端末に残すが、他端末へは引き継がない。
+      const upload={...local,active:null};
+      const result=await post(x.version,upload);
+      if(!result||!result.ok){
+        if(result&&result.error==='conflict')return fail('別の端末で更新されました。確認し直してください');
+        return fail('保存できませんでした：'+String(result&&result.error||'通信エラー'));
+      }
+      cloudVersion=result.version;syncedRev=local.rev;ready=true;remote=null;pendingChange=false;
+      write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
+      status='同期済み（この端末を基準に保存しました）';
+      return state();
+    }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
+    finally{busy=false;}
+  }
   function onPersist(){
     if(!getKey())return;
     pendingChange=true;
@@ -140,7 +169,7 @@
     void refresh();
   }
   function disconnect(){if(timer)clearTimeout(timer);timer=null;ready=false;remote=null;cloudVersion=0;syncedRev=null;write(KEY,'');write(BASE,'');status='未設定';return state();}
-  RPG.cloud={state,connect,chooseCloud,push,refresh,onPersist,disconnect};
+  RPG.cloud={state,connect,chooseCloud,useThisDevice,push,refresh,onPersist,disconnect};
   root.addEventListener('focus',()=>autoCheck(true));
   root.document&&root.document.addEventListener('visibilitychange',()=>{if(!root.document.hidden)autoCheck(true);});
   root.addEventListener('online',()=>autoCheck(true));
