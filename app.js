@@ -433,6 +433,7 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
   'ri-0081': 'images/sound-wave-two-cycles.svg',
   'ri-0082': 'images/sound-wave-grid-two.svg',
+  'ri-0083': 'images/sound-wave-original-4-amp2.svg',
   'ri-0084': 'images/sound-wave-width-2-5.svg',
   'ri-0092': 'images/bottle-blow-water-a-b.svg'
 };
@@ -610,7 +611,7 @@ function home() {
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>
+    ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${activeRangeHtml}
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
