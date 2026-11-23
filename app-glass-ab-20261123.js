@@ -747,7 +747,7 @@ function question() {
     <button class="big plain" type="button" id="pauseSave" style="width:100%;margin:0 0 12px;min-height:48px;background:#e9f8ed;color:#174f37;border:2px solid #448568;border-radius:12px;font-size:16px;font-weight:bold">💾 ここまで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
