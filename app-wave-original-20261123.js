@@ -929,7 +929,7 @@ function question() {
   document.getElementById('pauseSave').onclick = pauseAndSaveQuiz;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); }; // 問題数・冒険進行は解答時に保存済み
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => pickChoice(+b.dataset.i));
-  const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
+  const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; answer(S.sel); };
   if (isIn) setupInput(q); else document.getElementById('skipc').onclick = () => answer(-1);
   if (q.map) loadMaps().then(([md, ft]) => { const c = document.getElementById('map'); if (c && S.cur === q) renderMap(c, md, ft, q.map, { aspect: isIn ? 2.4 : 1.7 }); }).catch(() => {});
 }
@@ -951,7 +951,7 @@ function answerInput(text) {
   if (S.locked) return; S.locked = true;
   const q = S.cur, skipped = text === null, ok = !skipped && judge(q, text);
   const inp = document.getElementById('ans');
-  sfx(ok ? 'correct' : 'wrong', 60);
+  if (ok) sfx('correct', 60);
   inp.blur(); inp.readOnly = true;
   document.getElementById('submit').disabled = true;
   document.getElementById('skip').disabled = true;
@@ -987,7 +987,7 @@ function answer(i) {
   btns.forEach(b => { b.classList.remove('sel'); b.disabled = true; });
   const dw = document.getElementById('decidew'); if (dw) dw.hidden = true;
   const skipBtn = document.getElementById('skipc'); if (skipBtn) skipBtn.disabled = true;
-  sfx(ok ? 'correct' : 'wrong', 140);
+  if (ok) sfx('correct', 140);
   if (skipped) S.skips++;
   record(q, ok, picked, skipped);
   if (ok) {
