@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
-<link rel="stylesheet" href="rpg/css/rpg-life.css?v=pet-rpg-art-fix-20261123c">
+<link rel="stylesheet" href="rpg/css/rpg-life.css?v=pet-art-edition-20261123d">
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
 </head>
@@ -36,16 +36,16 @@
 <script src="rpg/js/rpg-strip.js"></script>
 <script src="rpg/js/rpg-ui.js?v=subject-start-fix-20261123b"></script>
 <script src="rpg/js/rpg-life.js?v=trial-unlimited-20261123"></script>
-<script src="rpg/js/rpg-pet-art.js?v=pet-rpg-art-fix-20261123c"></script>
+<script src="rpg/js/rpg-pet-art.js?v=pet-art-edition-20261123d"></script>
 <script>
   // ホーム画面アプリの更新でクラウド同期の修正も反映する。
-  const cloudRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'pet-rpg-art-20261123b';
+  const cloudRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'pet-art-edition-20261123d';
   document.write('<script src="rpg/js/rpg-cloud.js?v=' + encodeURIComponent(cloudRefreshVersion) + '"><\/script>');
 </script>
 <script src="rpg/js/rpg-mapdata.js"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'pet-rpg-art-fix-20261123c';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'pet-art-edition-20261123d';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
