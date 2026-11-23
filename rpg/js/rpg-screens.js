@@ -278,7 +278,7 @@
     return frame('マイワールド',`
       <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
-      ${playable?'':'<p class="rs-why">今日のマイワールド、おつかれさま！ 記録はちゃんと保存してあるよ。</p>'}</div>
+      <p class="rs-p">🧪 お試し期間中：遊ぶ時間の制限なし</p></div>
       <div class="rs-panel" style="border:2px solid #e2ba63;border-radius:12px;padding:12px;margin-bottom:12px;background:#fff9e9">
         <div class="rs-h2">🛒 ポイントショップ</div>
         <p class="rs-p" style="font-weight:900;font-size:17px">⭐ ${l.foodPoints||0} ポイント</p>
@@ -330,18 +330,8 @@
     // 遊べる時間が終了した保存データではタイマーを再起動しない。
     // 以前は done=true のまま毎秒 rerender() して、iPhone で画面全体が点滅していた。
     if (LF.playState(save()).done) return;
-    lifeTicker=setInterval(()=>{
-      if(doc.hidden||UI.screen!=='worldlife')return;
-      const t=LF.spendPlay(save(),1000);
-      if(t.done){
-        stopLifeTimer();
-        commit();
-        UI.msg='今日のマイワールド、おつかれさま！ 記録はちゃんと保存したよ。';
-        rerender(); // 完了への遷移時だけ一度描き直す。再描画後はタイマーを作らない。
-        return;
-      }
-      if(Math.floor(t.used)%5000===0)commit();
-    },1000);
+    // お試し期間は時間制限なし。画面タイマーを起動しない。
+
   };
 
   // ---------- ぼうけん（8章6章：現在地と次の目的を上段／現在地から再開／章ごとの地域マップ。お話・他の冒険・技・お願い・世界地図は詳細シートへ） ----------
