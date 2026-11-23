@@ -66,7 +66,7 @@ const SHOW_ALL = PARAMS.get('all') === '1';
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
-function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
+function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 // 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
 // 従来の記録（due/verified を持たないもの）も、最後の正解日から自動的に判定する。
@@ -586,11 +586,16 @@ function home() {
   const startHtml = continueHtml + goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
   const unitN = (units[filter] || []).length;
   const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
+  const activeRangeHtml = '<div class="kid-current-range" data-noruby style="padding:10px 14px;margin:8px 10px;background:#e8f5ff;border:2px solid #7db4e3;border-radius:12px;color:#164773;font-weight:800;line-height:1.6">📚 今の学習範囲：' +
+    esc(filter === '全部' ? '全教科' : filter === 'ちず' ? '地図問題' : filter === 'かく' ? '書いて答える問題' : filter) +
+    ((filter !== '全部' && filter !== 'ちず' && filter !== 'かく') ? (unitN ? '（' + units[filter].map(x => esc(x)).join('・') + '）' : '（全単元）') : '') +
+    '<br>出題対象：' + p.length + '問</div>';
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
     <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>
+    ${activeRangeHtml}
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
@@ -606,6 +611,7 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
+    ${activeRangeHtml}
     ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
