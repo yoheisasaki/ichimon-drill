@@ -296,7 +296,7 @@
       const owned=!!l.pets[p.id],chosen=l.party.includes(p.id),pet=l.pets[p.id];
       return `<div class="life-pet-wrap"><button class="life-pet ${chosen?'selected':''}" data-life-pet="${p.id}" ${!owned||!playable?'disabled':''} aria-pressed="${chosen}" title="${esc(p.role)}">
         <span class="life-emoji">${owned?petPicture(p.id,pet.xp):petPicture(p.id,0)}</span><b>${esc(p.name)}</b>
-        <small>${owned?'Lv'+LF.level(pet.xp)+'　'+LF.stage(pet.xp):'累計'+p.at+'問で仲間に'}</small>
+        <small>${owned?'Lv'+LF.level(pet.xp)+'　'+(PA&&PA.stageLabel?PA.stageLabel(p.id,pet.xp):LF.stage(pet.xp)):'累計'+p.at+'問で仲間に'}</small>
         <small>${owned?'成長ポイント '+pet.xp+'　／　次の成長まで '+(nextStagePoint(pet.xp)===null?'最終段階':'あと'+(nextStagePoint(pet.xp)-pet.xp)+'pt'):''}</small>
         ${owned?`<span class="pet-growth-track" role="progressbar" aria-label="${esc(p.name)}の成長" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}"><span style="width:${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}%"></span></span>`:'' }
         <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
