@@ -481,22 +481,35 @@ function birdPhotoHtml(q) {
     '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">鳥の写真を見る（Wikimedia Commons）</a></figcaption></figure>';
 }
 
-// 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
-function revealNext() { const n = document.getElementById('next'); if (n && n.scrollIntoView) n.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
-// 判定後は必ず結果を見せ、「つぎの問題へ」を押すまで進まない。
-function showAnswerFeedback(q, ok, skipped) {
-  const nx = document.getElementById('next');
-  if (!nx) return;
-  const heading = ok ? '○ せいかい！' : skipped ? '？ わかんない' : '× ざんねん！';
-  const answer = '<div class="feedback-answer"><span>正しい答え</span><strong>' + ruby(q.a) + '</strong></div>';
-  const explanation = expHtml(q);
-  nx.innerHTML = '<section class="answer-feedback ' + (ok ? 'feedback-ok' : 'feedback-ng') +
-    '" role="status" aria-live="polite"><div class="feedback-heading">' + heading + '</div>' +
-    (ok ? '<div class="feedback-sub">やったね！</div>' : '<div class="feedback-sub">答えと解説を確認しよう</div>') +
-    answer + explanation + '</section>' +
-    '<button type="button" class="big feedback-next" id="next-question">つぎの問題へ ▶</button>';
-  const nextButton = document.getElementById('next-question');
-  nextButton.onclick = () => { if (nextButton.disabled) return; nextButton.disabled = true; advance(); };
+// 判定直後は「せいかい！」などの結果だけを見せる。
+// 長い解説や写真は「解説を見る」を押すまで表示しない。
+function revealNext() {
+  const n=document.getElementById('next');
+  if(n && n.scrollIntoView) n.scrollIntoView({block:'start',behavior:'smooth'});
+}
+function showAnswerFeedback(q,ok,skipped) {
+  const nx=document.getElementById('next');
+  if(!nx)return;
+  const heading=ok?'○ せいかい！':skipped?'？ わかんない':'× ざんねん！';
+  const sub=ok?'やったね！':'答えと解説を確認しよう';
+  nx.innerHTML='<section class="answer-feedback feedback-first '+(ok?'feedback-ok':'feedback-ng')+
+    '" role="status" aria-live="polite"><div class="feedback-heading">'+heading+'</div>'+
+    '<div class="feedback-sub">'+sub+'</div>'+
+    '<button type="button" class="big feedback-show-exp" id="show-explanation">答えと解説を見る ▶</button></section>';
+  const show=document.getElementById('show-explanation');
+  show.onclick=()=>{
+    if(show.disabled)return;
+    show.disabled=true;
+    const answer='<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>';
+    const explanation=expHtml(q);
+    nx.innerHTML='<section class="answer-feedback '+(ok?'feedback-ok':'feedback-ng')+
+      '" role="status"><div class="feedback-heading">'+heading+'</div>'+
+      '<div class="feedback-sub">'+sub+'</div>'+answer+explanation+'</section>'+
+      '<button type="button" class="big feedback-next" id="next-question">つぎの問題へ ▶</button>';
+    const nextButton=document.getElementById('next-question');
+    nextButton.onclick=()=>{if(nextButton.disabled)return;nextButton.disabled=true;advance();};
+    revealNext();
+  };
   revealNext();
 }
 function mapLabel(q) {
