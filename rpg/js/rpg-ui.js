@@ -100,6 +100,12 @@
   function snapOf(q) { return { id: q.id, q: q.q, a: q.a, choices: q.choices, type: q.type, accept: q.accept, map: q.map, unit: q.unit, subject: q.subject, test: q.test }; }
   RPG.beforeStart = function (list, allowedIds) {
     if (!RPG.ok) return { list, reviews: [], reask: 0, rpg: false };
+    // 前回の10問が終わっている場合は報酬を精算し、新しい冒険を開始する。
+    // 解答に応じた経験値・所持品は既存セーブへ加算し、消去しない。
+    if (A.canSettle(RPG.save)) {
+      A.settle(RPG.save, NOW());
+      RPG.persist();
+    }
     const a = A.begin(RPG.save, NOW());
     // 今選んでいる学習範囲にないRPG復習は、消さずに次の機会まで保留する。
     const reviews = a.reviews.pending.filter(p => !allowedIds || allowedIds.has(p.snap.id))
@@ -136,6 +142,19 @@
     if (!S || !S.rpg || !RPG.ok) return null;
     if (A.canSettle(RPG.save)) { const res = A.settle(RPG.save, NOW()); RPG.persist(); return { settled: true, res }; }
     const a = RPG.save.active; return { settled: false, n: a ? a.basic.n : 0, unit: A.UNIT };
+  };
+  // 全画面の正誤表示にも冒険の進行を出す。表示のみで報酬は変更しない。
+  RPG.answerProgressHtml = function (S) {
+    if (!S || !S.rpg || !RPG.ok || !RPG.save || !RPG.save.active) return '';
+    const a = RPG.save.active;
+    const n = Math.min(A.UNIT, a.basic.n);
+    const enemy = D.ENEMIES[a.enemyId];
+    const hp = a.battle && a.battle.enemy ? Math.max(0, Math.ceil(a.battle.enemy.hp)) : null;
+    const max = a.battle && a.battle.enemy ? Math.ceil(a.battle.enemy.maxHp) : null;
+    return '<div class="quiz-rpg-progress" style="margin:14px auto;padding:12px 16px;background:#1f3157;border:2px solid #dab965;border-radius:13px;color:#fff;font-size:16px;line-height:1.65;text-align:center;max-width:460px">' +
+      '⚔️ 冒険 ' + n + ' / ' + A.UNIT + '問' +
+      (enemy ? '<div>敵：' + esc(enemy.name) + (hp !== null && max !== null ? '　HP ' + hp + ' / ' + max : '') + '</div>' : '') +
+      '</div>';
   };
   RPG.progressNote = function () { const a = RPG.ok && RPG.save.active; return a && a.basic.n > 0 && a.basic.n < A.UNIT ? { n: a.basic.n, unit: A.UNIT } : null; };
 
