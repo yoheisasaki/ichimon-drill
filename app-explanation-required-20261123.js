@@ -765,7 +765,7 @@ function start(list, from, opts) {
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
   let pre = { list, reviews: [], reask: 0, rpg: false };
-  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
+  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list, new Set(pool().map(q => q.id)));
   list = pre.list;
   if (!list.length && !pre.reviews.length) return home();
   S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), reaskedIds: new Set(), locked: false, timer: null };
