@@ -223,6 +223,17 @@ function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pe
 // 初めての問題を優先。解いた問題は最後に解いた日時が古い順に回す。
 // 同じ10問に、できるだけ違う分野を混ぜる。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+// 直前の10問を記録。次の学習回はまず別の問題を選ぶ。
+const LS_RECENT_ROUND = 'ichimon.recent-round.v1' + LS_SFX;
+function avoidPreviousRound(list) {
+  const recent = new Set(load(LS_RECENT_ROUND, []));
+  const different = list.filter(q => !recent.has(q.id));
+  // 候補がある分だけ直前の問題を避ける。足りない場合だけ再利用する。
+  return different;
+}
+function rememberRound(list) {
+  save(LS_RECENT_ROUND, [...new Set(list.map(q => q.id))]);
+}
 function pick(list, n) {
   // 苦手・新規・定着確認を混ぜる。復習完了の確認待ちは通常出題を控える。
   const unique = [...new Map(list.map(q => [q.id, q])).values()];
@@ -259,7 +270,7 @@ function pick(list, n) {
     }
     return selected;
   }
-  // 10問なら苦手6・初見3・定着1が目安。候補不足時は空き枠を融通する。
+  // 10問なら苦手4・初見4・定着2が目安。候補不足時は空き枠を融通する。
   const selected = [];
   const used = new Set();
   function take(candidates, limit, priorityIds = []) {
@@ -273,8 +284,8 @@ function pick(list, n) {
       selected.push(q); used.add(q.id);
     }
   }
-  take(weak, Math.ceil(n * 0.6));
-  take(fresh, Math.ceil(n * 0.3), ['ri-0086','sha-0504','ri-0087','sha-0505',...SOUND_BASIC_FIRST_IDS,'ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
+  take(weak, Math.floor(n * 0.4));
+  take(fresh, Math.ceil(n * 0.4), ['ri-0086','sha-0504','ri-0087','sha-0505',...SOUND_BASIC_FIRST_IDS,'ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
   take(old, n - selected.length);
   // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
   if (selected.length < n) take(weak, n - selected.length);
@@ -284,9 +295,12 @@ function pick(list, n) {
   // 優先順位による選定は保ち、実際の出題順だけ交互にする。
   return spread(selected, n);
 }
-// 通常の10問は苦手6・初見3・定着1を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
+// 通常の10問は苦手4・初見4・定着2を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
+  const originalList = list;
+  list = avoidPreviousRound(list);
+  if (list.length < n) list = list.concat(originalList.filter(q => !list.some(x => x.id === q.id)));
   // 基本優先。波形の発展4問は通常スタート4回に1回だけ、最大1問。
   // 「まちがえた問題」「復習が必要」などの専用ボタンでは制限しない。
   const soundCountKey = 'ichimon.sound.advanced.turn.v1' + LS_SFX;
@@ -807,6 +821,7 @@ function start(list, from, opts) {
   let pre = { list, reviews: [], reask: 0, rpg: false };
   if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list, new Set(pool().map(q => q.id)));
   list = pre.list;
+  if (!(opts && opts.manual) && !from) rememberRound(list);
   if (!list.length && !pre.reviews.length) return home();
   S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), reaskedIds: new Set(), locked: false, timer: null };
   question();
