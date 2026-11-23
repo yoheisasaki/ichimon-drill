@@ -75,6 +75,12 @@ h1{font-size:28px;text-align:center;margin:10px 0 4px}
 .tapnext{color:#e5584f}
 .skipw{display:flex;justify-content:center;margin-top:14px}
 .skipw .skip{min-height:48px;padding:0 28px;font-size:17px}
+/* 誤タップ対策：わかんないは問題文より上、けっていは選択肢の下。 */
+.skipw-top{justify-content:flex-end;margin:0 4px 16px;}
+.skipw-top .skip{min-height:48px;padding:0 22px;font-size:16px;opacity:.88;}
+#app:has(> .top):has(> .choices) .decidew{margin-top:26px;}
+#app:has(> .top):has(> .choices) #decide{min-height:64px;}
+
 .skipcount{text-align:center;color:#6d6b85;font-weight:800;font-size:18px;margin:4px 0 8px}
 
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 16px}
