@@ -346,7 +346,32 @@ const EXPLANATION_IMAGES = {
   'ri-0084': { src: 'images/sound-wave-change.svg', alt: '振動回数が半分になると波の横幅が2倍になる比較図' },
   'ri-0085': { src: 'images/sound-wave-change.svg', alt: '低くて大きい音の波形と元の波形の比較図' }
 };
+// 鳥の分類は文章の連結ではなく、種類ごとのカードで読みやすく整理する。
+function birdCategoryHtml(q) {
+  if(q.subject!=='理科'||q.unit!=='鳥のなかま')return null;
+  const raw=expText(q)||'';
+  const ix=raw.indexOf('　【{鳥|とり}の4つの{分|わ}け{方|かた}】');
+  const first=ix>=0?raw.slice(0,ix):raw;
+  const main=first.replace(/　+$/,'');
+  const rows=[
+    ['{漂鳥|ひょうちょう}','{夏|なつ}は{山地|さんち}、{冬|ふゆ}は{平地|へいち}へ{移動|いどう}','ウグイス・ヒヨドリ'],
+    ['{夏鳥|なつどり}','{春|はる}に{南|みなみ}から{日本|にほん}へ{来|く}る','ツバメ・カッコウ'],
+    ['{冬鳥|ふゆどり}','{秋|あき}に{北|きた}から{日本|にほん}へ{来|く}る','ツグミ・マガモ'],
+    ['{留鳥|りゅうちょう}','{一年中|いちねんじゅう}、{同|おな}じ{地域|ちいき}でくらす','スズメ']
+  ];
+  const cards=rows.map(([name,desc,examples])=>
+    '<div class="bird-kind"><div class="bird-kind-name">'+ruby(name)+'</div><div class="bird-kind-desc">'+ruby(desc)+'</div><div class="bird-kind-ex">例：'+examples+'</div></div>'
+  ).join('');
+  return '<div class="exp bird-explain">'+
+    (main?'<p class="bird-answer-point">'+ruby(main)+'</p>':'')+
+    '<div class="bird-kind-title">🐦 鳥の4つの分け方</div>'+
+    '<div class="bird-kind-grid">'+cards+'</div>'+
+    '<p class="bird-kind-note"><b>覚えるポイント</b>　漂鳥は山地と平地を移動。夏鳥は南から、冬鳥は北から日本に来る。</p>'+
+    '</div>';
+}
 function expHtml(q) {
+  const bird=birdCategoryHtml(q);
+  if(bird!==null)return bird;
   const t = expText(q);
   const im = EXPLANATION_IMAGES[q.id];
   // 結城紬の写真は「解答後の解説」にも載せる。建物や機織り機ではなく、織物そのもの。
