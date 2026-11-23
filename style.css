@@ -260,3 +260,19 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .answer-feedback.feedback-first .feedback-sub{margin-bottom:12px}
 .feedback-show-exp{background:#fff;color:#275c9f;border:3px solid #6f9bd4;box-shadow:0 4px 0 #aec5e6;font-size:21px}
 #next{scroll-margin-top:12px;scroll-margin-bottom:105px}
+
+
+/* 答え合わせ専用画面。問題や長い図があっても結果が最初に見える。 */
+.quiz-feedback-screen{position:fixed!important;inset:0!important;z-index:2147483600!important;display:block!important;overflow-y:auto!important;overscroll-behavior:contain;background:#e8f7ed;color:#174d30;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);box-sizing:border-box}
+.quiz-feedback-screen.is-incorrect{background:#fff0e7;color:#923d25}
+.quiz-feedback-inner{width:100%;max-width:520px;min-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));margin:0 auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:24px 0;box-sizing:border-box}
+.quiz-feedback-verdict{text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.quiz-feedback-symbol{font-size:clamp(72px,21vw,112px);line-height:1;font-weight:900}
+.quiz-feedback-title{font-size:clamp(36px,11vw,54px);font-weight:900;line-height:1.3;margin:0}
+.quiz-feedback-subtitle{font-size:21px;font-weight:900;margin:8px 0 22px}
+.quiz-feedback-action{display:block;width:100%;min-height:64px;border:3px solid #3868a8;border-radius:18px;background:#fff;color:#214e82;font-size:22px;font-weight:900;padding:12px;box-shadow:0 4px 0 #b0c7df;cursor:pointer}
+.quiz-feedback-detail{width:100%;padding:14px 0}
+.quiz-feedback-detail-title{text-align:center;font-size:34px;font-weight:900;margin:0 0 18px}
+.quiz-feedback-detail .feedback-answer{margin-bottom:14px}
+.quiz-feedback-detail .exp{width:100%;max-width:100%;box-sizing:border-box;margin:12px auto}
+.quiz-feedback-detail .quiz-feedback-action{margin-top:18px;margin-bottom:25px}
