@@ -44,6 +44,8 @@
     l.party = Array.isArray(l.party) ? l.party : ['dragon'];
     l.materials = l.materials || {wood:5,stone:3,iron:0,crystal:0};
     l.food=Number(l.food||0); l.fedDays=l.fedDays||{};
+    l.foodPoints=Math.max(0,Math.floor(Number(l.foodPoints)||0));
+    l.foodPointReceipts=Array.isArray(l.foodPointReceipts)?l.foodPointReceipts:[];
     l.map = l.map || [{x:2,y:2,id:'house'}];
     l.claimedDays = l.claimedDays || {};
     l.shards = Number(l.shards || 0);
@@ -140,6 +142,23 @@
     else {if(l.party.length>=3)return {ok:false,msg:'3匹まで。先にほかの子をお休みさせてね'};l.party.push(id);}
     return {ok:true,msg:'冒険の仲間を変更しました'};
   }
+  const FOOD_POINT_PRICE = 10;
+  // 1問正解で1ポイント。不正解・スキップ・同じ解答IDの再処理は加算しない。
+  function earnFoodPoint(save, receiptId) {
+    const l=ensure(save),id=String(receiptId||'');
+    if(!l||!id||l.foodPointReceipts.includes(id))return false;
+    l.foodPointReceipts.push(id);
+    if(l.foodPointReceipts.length>3000)l.foodPointReceipts.splice(0,l.foodPointReceipts.length-3000);
+    l.foodPoints+=1;
+    return true;
+  }
+  function buyFood(save) {
+    const l=ensure(save);
+    if(!l||l.foodPoints<FOOD_POINT_PRICE)return {ok:false,msg:'エサ1個には10ポイント必要だよ'};
+    l.foodPoints-=FOOD_POINT_PRICE;
+    l.food+=1;
+    return {ok:true,msg:'🍎 エサを1個買ったよ！ 残り'+l.foodPoints+'ポイント'};
+  }
   function feed(save,id,day){
     const l=ensure(save),d=day||nowDay();
     if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
@@ -199,7 +218,7 @@
     if(l.play.used>=MAX_PLAY_MS)l.play.done=true;
     return playState(save,day);
   }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyFood,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.visitBonus = function(day) {
       if(!root.RPG.ok)return null;
@@ -208,6 +227,11 @@
       return result.info;
     };
     root.RPG.visitInfo = function(){return root.RPG.ok?visitInfo(root.RPG.save):null;};
+    root.RPG.earnFoodPoint = function(receiptId) {
+      if(!root.RPG.ok)return false;
+      if(!earnFoodPoint(root.RPG.save,receiptId))return false;
+      return root.RPG.persist();
+    };
     root.RPG.lifeSync = function(stats,day,daily) {
       if(!root.RPG.ok)return;
       const total=Object.values(stats||{}).reduce((n,x)=>n+(Number(x.c)||0)+(Number(x.w)||0),0);
