@@ -916,6 +916,7 @@ function question() {
     ${window.RPG ? RPG.stripHtml(S) : ''}
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
     ${isIn ? '' : '<div class="skipw skipw-top"><span class="skip-location-label">こたえが わからないとき</span><button type="button" class="skip" id="skipc">？ わかんない</button></div>'}
+    <div class="quiz-layout-version" style="text-align:right;font-size:11px;opacity:.7;margin:0 4px 4px;color:#d6e3f4">画面配置：新しい版 B2</div>
     <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}" style="display:flex;flex-direction:column;align-items:stretch;gap:12px"><div class="qt" style="width:100%;min-width:0;max-width:100%;flex:none;white-space:normal;overflow-wrap:break-word;text-align:center">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
