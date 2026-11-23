@@ -70,6 +70,7 @@
         if(stored&&stored.version===x.version&&stored.rev===RPG.save.rev){
           // 同じ版・revisionでもポイントが違えば、実際には一致していない。
           if(JSON.stringify({...x.save,rev:0,active:null,quizResume:null})!==JSON.stringify({...RPG.save,rev:0,active:null,quizResume:null})){
+            if(state().localPoints>cloudPoints){remote=x;status='端末のポイントがクラウドより多いため保護中（端末 '+state().localPoints+'／クラウド '+cloudPoints+'）';return state();}
             if(canPull())return applyCloud(x);
             status='クラウドの内容と端末が異なります。問題終了後に確認';return state();
           }
