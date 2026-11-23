@@ -216,26 +216,22 @@ async function beginKidSession(makeList, from, button) {
 }
 
 function counts(list) { return { hard: list.filter(q => isHard(q.id)).length, pending: list.filter(q => isPending(q.id) && !isDue(q.id)).length, due: list.filter(q => isDue(q.id)).length, ok: list.filter(q => isMaster(q.id)).length, all: list.length }; }
-// 通常出題は、正解後の間隔を空けて新規と復習を混ぜる。
-// 直近の同一問題を繰り返さない。手動の「もう一回」はこの制限を受けない。
-function nextNormalDay(id) {
-  const x = st(id), lastDay = (x.t || '').slice(0, 10);
-  if (!lastDay || !x.c && !x.w) return '';
-  if (isPending(id)) return checkDay(x);
-  if (x.l !== 'o') return plusDays(lastDay, 1); // 間違いは翌日以降
-  const gap = x.s <= 1 ? 2 : x.s === 2 ? 4 : 7;
-  return plusDays(lastDay, gap);
-}
-function readyForNormal(id) {
-  const day = nextNormalDay(id);
-  return !day || day <= localDay();
-}
-// 通常の10問は初見4・復習4・定着確認2を目安にする。
-// 同じ10問に、できるだけ違う分野を混ぜる。
+// 次の学習回に復習できる。日数による出題制限は設けない。
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+// 直前の10問を記録。次の学習回はまず別の問題を選ぶ。
+const LS_RECENT_ROUND = 'ichimon.recent-round.v1' + LS_SFX;
+function avoidPreviousRound(list) {
+  const recent = new Set(load(LS_RECENT_ROUND, []));
+  const different = list.filter(q => !recent.has(q.id));
+  // 候補がある分だけ直前の問題を避ける。足りない場合だけ再利用する。
+  return different;
+}
+function rememberRound(list) {
+  save(LS_RECENT_ROUND, [...new Set(list.map(q => q.id))]);
+}
 function pick(list, n) {
   // 苦手・新規・定着確認を混ぜる。復習完了の確認待ちは通常出題を控える。
-  const unique = [...new Map(list.filter(q => readyForNormal(q.id)).map(q => [q.id, q])).values()];
+  const unique = [...new Map(list.map(q => [q.id, q])).values()];
   const weak = [], fresh = [], old = [], pending = [];
   unique.forEach(q => {
     const x = st(q.id);
@@ -297,11 +293,14 @@ function pick(list, n) {
 // 通常の10問は苦手4・初見4・定着2を目安にし、理科の直近の弱点と社会第8回を新規枠で優先。
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
+  const originalList = list;
+  list = avoidPreviousRound(list);
+  if (list.length < n) list = list.concat(originalList.filter(q => !list.some(x => x.id === q.id)));
   // 工芸品の新規・苦手は大切だが、同じ分野が連続しないよう10問に最大2問まで。
   // ほかの教科・単元の問題と混ぜ、工芸品は3問目・8問目を目安に配置する。
   // すでに正解した問題は通常の復習選定に任せ、最初に押し付けない。
   const craftIds = new Set(CRAFT_READING_FIRST_IDS);
-  const craftPool = list.filter(q => craftIds.has(q.id) && readyForNormal(q.id));
+  const craftPool = list.filter(q => craftIds.has(q.id));
   const priority = CRAFT_READING_FIRST_IDS
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
@@ -798,6 +797,7 @@ function start(list, from, opts) {
   let pre = { list, reviews: [], reask: 0, rpg: false };
   if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list, new Set(pool().map(q => q.id)));
   list = pre.list;
+  if (!(opts && opts.manual) && !from) rememberRound(list);
   if (!list.length && !pre.reviews.length) return home();
   S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), reaskedIds: new Set(), locked: false, timer: null };
   question();
