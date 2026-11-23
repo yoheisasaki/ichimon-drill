@@ -307,7 +307,7 @@
           <div class="life-inventory-item">⭐ <span>残りポイント</span><b>${l.foodPoints||0}pt</b></div>
         </div>
       </div>
-      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
+      <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹 <small class="pet-art-edition">図鑑イラスト版</small></div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
       <div class="life-map" role="group" aria-label="建築できる6かける6マスの土地">${cells}</div>
