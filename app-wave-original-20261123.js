@@ -468,7 +468,7 @@ const BIRD_PHOTOS = {
 };
 // 社会・写真で見分ける問題。問題文では答えを隠し、写真は解答前に表示する。
 function socialPhotoHtml(q) {
-  if (q.subject !== '社会' || !q.photo || (!q.photo.file && !q.photo.url)) return '';
+  if (!['社会', '理科'].includes(q.subject) || !q.photo || (!q.photo.file && !q.photo.url)) return '';
   const filename = q.photo.file || '';
   const fileUrl = q.photo.sourceUrl || ('https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(filename));
   const imgUrl = q.photo.url || (filename === 'Yuki-kikko.JPG' ? 'https://upload.wikimedia.org/wikipedia/commons/2/25/Yuki-kikko.JPG' : 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + encodeURIComponent(filename) + '?width=580');
