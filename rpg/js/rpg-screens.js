@@ -731,6 +731,7 @@
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
+      <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
       <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel rs-data">${RPG.homeHtml()}</div>`); };
   AFTER.data = function () {
@@ -762,6 +763,10 @@
       });};
       doc.getElementById('cloudFirst').onclick=()=>{if(!root.confirm('この端末の冒険をクラウドの最初のセーブにします。クラウドが空のときだけ成功します。よいですか？'))return;guard(async key=>{if(key)await cloud.connect(key);await cloud.push(true);});};
       doc.getElementById('cloudRefresh').onclick=()=>guard(()=>cloud.refresh());
+      doc.getElementById('cloudUseLocal').onclick=()=>{
+        if(!root.confirm('この端末のRPG・マイワールドの記録を3台共通の基準にします。クラウドの以前のセーブはこの端末に退避します。今使っている端末が正しいことを確認しましたか？'))return;
+        guard(async key=>{if(key)await cloud.connect(key);await cloud.useThisDevice();});
+      };
     }
     const d = app().querySelector('.rpg-bk'); if (d) d.open = true; RPG.bindHome();
   };
@@ -871,6 +876,7 @@
       <input id="cloudKey" type="password" autocomplete="off" placeholder="共有鍵を入力" style="width:100%;box-sizing:border-box;padding:12px;margin-bottom:8px">
       <div class="rs-row2"><button class="rs-btn" id="cloudConnect">クラウドを確認</button><button class="rs-btn" id="cloudGet">クラウドから読み込む</button></div>
       <div class="rs-row2"><button class="rs-btn" id="cloudFirst">この端末を初回保存</button><button class="rs-btn" id="cloudRefresh">最新を確認</button></div>
+      <div class="rs-row2"><button class="rs-btn" id="cloudUseLocal">この端末のデータを共有の基準にする</button></div>
       <p class="rs-p" id="cloudStatus" role="status"></p><small>共有設定 2026/11/23 更新版</small><small>初回保存は、最初に育てた端末で1回だけ。別端末では同じ鍵で確認して「クラウドから読み込む」を選びます。競合した場合は自動上書きしません。</small>
       </div>` : ''}<div class="rs-panel"><div class="rs-h2">ふりがな</div><p class="rs-p">漢字の上に読みがなを出します。はじめはオンです。</p>
       <div class="rs-chips"><button class="rs-chip${rbOn ? ' on' : ''}" id="rbOn" aria-pressed="${rbOn}">オン</button><button class="rs-chip${!rbOn ? ' on' : ''}" id="rbOff" aria-pressed="${!rbOn}">オフ</button></div></div>
