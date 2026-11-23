@@ -1,50 +1,35 @@
 'use strict';
+// 8匹×「赤ちゃん・成長・進化」=24枚の個別イラストを使用する。
+// XPやセーブデータには一切書き込まず、現在の値から表示だけを決める。
 (function(root){
- const atlas="data:image/webp;base64,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";
-
- const positions={dragon:[0,0],wolf:[1,0],slime:[2,0],mole:[3,0],bird:[0,1],fox:[1,1],cat:[2,1],penguin:[3,1]};
- const names={dragon:'ほのおドラゴン',wolf:'こおりオオカミ',slime:'もりスライム',mole:'こうざんモグラ',bird:'かみなりバード',fox:'ほしキツネ',cat:'ぎんいろネコ',penguin:'こおりペンギン'};
- const palette={dragon:['#ef6545','#ffd16c'],wolf:['#8abde5','#dff8ff'],slime:['#71c98b','#d4f8a1'],mole:['#a57b60','#f8ca7f'],bird:['#ffcc61','#f4e88a'],fox:['#b58ce8','#f3d3ff'],cat:['#aabccd','#b7ecff'],penguin:['#6bb5e1','#d4f8ff']};
- const css=[
- '.pet-portrait{display:inline-flex;position:relative;overflow:hidden;align-items:center;justify-content:center;width:94px;height:100px;border-radius:14px;background:#e9f2ff;vertical-align:middle}',
- '.pet-portrait.pet-mini{width:30px;height:32px;border-radius:5px}',
- '.pet-portrait .pet-scene{position:absolute;inset:0;background-image:url("'+atlas+'");background-size:400% 200%;background-repeat:no-repeat}',
- '.pet-portrait.pet-baby .pet-scene{inset:18% 18% 10%;border-radius:50%;border:3px solid #fff3d2;box-shadow:0 3px 8px #536a8a70}',
- '.pet-portrait.pet-baby{background:radial-gradient(circle,#fffdf2,#d4eaff)}',
- '.pet-portrait.pet-growing .pet-scene{inset:4% 7% 9%;border-radius:22%;box-shadow:0 2px 7px #48678a66}',
- '.pet-portrait.pet-growing{background:linear-gradient(140deg,#e9fcff,#95bbdb)}',
- '.pet-portrait.pet-evolved .pet-scene{inset:8% 5% 5%;border-radius:20%;box-shadow:0 0 0 3px #ffdf7c,0 0 10px #ffe07f}',
- '.pet-portrait.pet-evolved{background:radial-gradient(circle,#fff1bd,#7890be)}',
- '.pet-portrait .pet-stage-art{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}',
- '.pet-portrait.pet-egg{background:radial-gradient(circle,#fffcef,#eddaae);font-size:52px}',
- '.pet-portrait.pet-mini.pet-egg{font-size:22px}',
- '.pet-portrait.pet-mini .pet-scene{border-width:1px}'
- ].join('');
- const style=root.document.createElement('style');style.id='rpg-pet-stage-art';style.textContent=css;root.document.head.appendChild(style);
- const parts={
- dragon:['<path d="M13 49L1 17l29 26M70 43l29-26-12 32" fill="#fba154" stroke="#99394b" stroke-width="3"/>','<path d="M18 54L0 5l37 37M63 42l37-37-18 49" fill="#e46b4c" stroke="#903a48" stroke-width="4"/>'],
- wolf:['<path d="M16 43L10 12l25 24M65 36l25-24-6 31" fill="#dff7ff" stroke="#5487b8" stroke-width="3"/>','<path d="M9 48L1 4l33 31M66 35L99 4l-8 44" fill="#b7e8ff" stroke="#4a7cae" stroke-width="4"/>'],
- slime:['<path d="M50 31Q25 5 14 26Q35 38 50 31" fill="#9ee2a2" stroke="#398261" stroke-width="3"/>','<path d="M25 26L11 4l32 19M75 26L89 4 57 23" fill="#b1ffa0" stroke="#3a8960" stroke-width="3"/>'],
- mole:['<path d="M24 29H76l11 18H13Z" fill="#c1985b" stroke="#71503c" stroke-width="3"/>','<path d="M12 39L22 12h56l10 27" fill="#d3aa64" stroke="#694a38" stroke-width="4"/>'],
- bird:['<path d="M16 58L1 33l4 44 28-15M84 58l15-25-4 44-28-15" fill="#f8d358" stroke="#ae7a3c" stroke-width="3"/>','<path d="M16 59L0 9l37 31M84 59l16-50-37 31" fill="#ffe480" stroke="#ae7438" stroke-width="4"/>'],
- fox:['<path d="M15 45L7 11l29 27M64 38l29-27-8 34" fill="#d5a6fa" stroke="#8055ad" stroke-width="3"/>','<path d="M11 48L1 1l37 36M62 37L99 1 89 48" fill="#bb8df0" stroke="#7250aa" stroke-width="4"/>'],
- cat:['<path d="M16 44L11 14l26 24M63 38l26-24-5 30" fill="#dbe7f3" stroke="#738bab" stroke-width="3"/>','<path d="M10 46L3 4l35 32M62 36L97 4 90 46" fill="#dfecf8" stroke="#6381a6" stroke-width="4"/><path d="M26 82Q50 99 74 82" fill="none" stroke="#b4f2ff" stroke-width="6"/>'],
- penguin:['<path d="M20 56L2 76l29-9M80 56l18 20-29-9" fill="#a7eaff" stroke="#4b80b5" stroke-width="3"/>','<path d="M15 50L1 79l32-11M85 50l14 29-32-11" fill="#b7efff" stroke="#416b9e" stroke-width="4"/>']
- };
- function art(id,phase){
-   const p=palette[id],base=parts[id][phase-2];
-   const gem=phase===3?'<path d="M39 12L50 0 61 12 50 22Z" fill="'+p[1]+'" stroke="'+p[0]+'" stroke-width="2"/><path d="M10 23l4 7-4 7-4-7ZM90 23l4 7-4 7-4-7Z" fill="#fff19b"/>':'';
-   return '<svg class="pet-stage-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+base+gem+'</svg>';
- }
- function svg(id,xp,small){
-   id=positions[id]?id:'cat';
-   xp=Math.max(0,Number(xp)||0);
-   const phase=xp<10?0:xp<90?1:xp<180?2:3;
-   const cls=['egg','baby','growing','evolved'][phase];
-   const lead='<span class="pet-portrait '+(small?'pet-mini ':'')+'pet-'+cls+'" role="img" aria-label="'+names[id]+' '+(['たまご','赤ちゃん','成長','進化'][phase])+'">';
-   if(phase===0)return lead+'🥚</span>';
-   const xy=positions[id];
-   return lead+'<span class="pet-scene" style="background-position:'+(xy[0]*100/3)+'% '+(xy[1]*100)+'%"></span>'+(phase>=2?art(id,phase):'')+'</span>';
- }
- root.RPGPetArt={svg,stage:xp=>xp<10?0:xp<90?1:xp<180?2:3};
-})(typeof self!=='undefined'?self:this);
+  const offsets={dragon:[0,0],wolf:[3,0],slime:[0,1],mole:[3,1],bird:[0,2],fox:[3,2],cat:[0,3],penguin:[3,3]};
+  const names={dragon:'ほのおドラゴン',wolf:'こおりオオカミ',slime:'もりスライム',mole:'こうざんモグラ',bird:'かみなりバード',fox:'ほしキツネ',cat:'ぎんいろネコ',penguin:'こおりペンギン'};
+  const stages=['たまご','赤ちゃん','成長','進化'];
+  const stage=xp=>Number(xp)>=180?3:Number(xp)>=90?2:Number(xp)>=10?1:0;
+  // 24枚の画像は6列×4行に配置。各種3枚ずつで絵そのものが異なる。
+  const atlas=root.RPGPetStageAtlas;
+  if(root.document&&!root.document.getElementById('rpg-pet-individual-stage-style')){
+    const css=root.document.createElement('style');
+    css.id='rpg-pet-individual-stage-style';
+    const background=atlas?'background-image:url("'+atlas+'");':'';
+    css.textContent='.pet-portrait{display:inline-flex;position:relative;overflow:hidden;align-items:center;justify-content:center;width:94px;height:98px;flex-shrink:0;vertical-align:middle;border-radius:12px;background-color:#fffaf2;}' +
+      '.pet-portrait .pet-scene{position:absolute;inset:0;'+background+'background-repeat:no-repeat;background-size:600% 400%;}' +
+      '.pet-portrait.pet-mini{width:30px;height:31px;border-radius:5px;}' +
+      '.pet-portrait.pet-egg{background:radial-gradient(circle at 50% 20%,#fffcef,#ecd6a8);font-size:48px;}' +
+      '.pet-portrait.pet-mini.pet-egg{font-size:20px;}' +
+      '.pet-portrait.pet-evolved{box-shadow:0 0 0 2px #efc367,0 0 8px #f4d67c;}' +
+      '.pet-portrait.pet-growing{box-shadow:0 0 0 2px #91c9db;}';
+    root.document.head.appendChild(css);
+  }
+  function svg(id,xp,small){
+    if(!offsets[id])id='cat';
+    const step=stage(xp);
+    const cls='pet-portrait'+(small?' pet-mini':'')+([' pet-egg',' pet-baby',' pet-growing',' pet-evolved'][step]);
+    const label=names[id]+'・'+stages[step];
+    if(step===0)return '<span class="'+cls+'" role="img" aria-label="'+label+'">🥚</span>';
+    const x=offsets[id][0]+step-1,y=offsets[id][1];
+    const pos=x*20+'% '+(y*100/3)+'%';
+    return '<span class="'+cls+'" role="img" aria-label="'+label+'"><span class="pet-scene" style="background-position:'+pos+'"></span></span>';
+  }
+  root.RPGPetArt={svg,stage};
+})(typeof window!=='undefined'?window:this);
