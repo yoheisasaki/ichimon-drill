@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="rpg/css/rpg.css">
 <link rel="stylesheet" href="rpg/css/rpg-screens.css?v=refresh-button-contrast-20261121">
 <link rel="stylesheet" href="rpg/css/rpg-font.css">
-<link rel="stylesheet" href="rpg/css/rpg-life.css?v=worldlife-scroll-stable-20261123b">
+<link rel="stylesheet" href="rpg/css/rpg-life.css?v=inventory-contrast-20261123">
 <link rel="stylesheet" href="voice.css">
 <script src="voice.js"></script>
 </head>
@@ -44,7 +44,7 @@
 <script src="rpg/js/rpg-mapdata.js"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'trial-unlimited-20261123';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'inventory-contrast-20261123';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
