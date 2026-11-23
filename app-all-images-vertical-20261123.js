@@ -338,7 +338,7 @@ const EXPLANATION_IMAGES = {
   'ri-0068': { src: 'images/medaka-fins.svg', alt: 'メダカのひれ5種類の位置。むなびれ、はらびれ、せびれ、しりびれ、おびれ。合計7枚。' },
   'ri-0070': { src: 'images/pancreas-location-v2.webp', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' },
   'ri-0078': { src: 'images/sound-wave-count.svg', alt: '同じ時間に波が4個あるAと8個あるBの波形' },
-  'ri-0079': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
+  'ri-0079': { src: 'images/sound-wave-amplitude-compare-ab.svg', alt: 'AとBは4回ずつ振動し、Bの振れ幅はAの2倍である波形' },
   'ri-0080': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
   'ri-0081': { src: 'images/sound-wave-count.svg', alt: '同じ時間の波の数を比べる図' },
   'ri-0082': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までの振れ幅を示す波形' },
@@ -413,7 +413,7 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0073': 'images/glass-water-a-b.svg',
   'ri-0076': 'images/glass-water-a-b.svg',
   'ri-0078': 'images/sound-wave-count.svg',
-  'ri-0079': 'images/sound-wave-amplitude.svg',
+  'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
   'ri-0080': 'images/sound-wave-amplitude.svg',
   'ri-0081': 'images/sound-wave-count.svg',
   'ri-0082': 'images/sound-wave-amplitude.svg'
