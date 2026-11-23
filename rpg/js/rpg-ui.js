@@ -104,8 +104,15 @@
     // 今選んでいる学習範囲にないRPG復習は、消さずに次の機会まで保留する。
     const reviews = a.reviews.pending.filter(p => !allowedIds || allowedIds.has(p.snap.id))
       .map(p => { const w = Object.create(p.snap); w._rv = { origin: p.origin }; return w; });
+    const remaining = A.remainingBasics(RPG.save);
+    // 冒険の基本10問が終了し、残った復習が別教科にある場合も、
+    // 選択教科の通常学習を開始できるようにする。冒険の進行は保持する。
+    if (remaining === 0 && reviews.length === 0 && list.length > 0) {
+      RPG.persist();
+      return { list, reviews: [], reask: 0, rpg: false };
+    }
     RPG.persist();
-    return { list: list.slice(0, A.remainingBasics(RPG.save)), reviews, reask: a.reviews.used, rpg: true };
+    return { list: list.slice(0, remaining), reviews, reask: a.reviews.used, rpg: true };
   };
   RPG.onAnswer = function (q, ok, rid, S) {
     if (!S || !S.rpg || !RPG.ok) return;
