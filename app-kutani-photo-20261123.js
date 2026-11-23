@@ -521,6 +521,7 @@ function home() {
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${rpgOn ? `${ruby('{復習|ふくしゅう}')} ${c.hard}${ruby('{個|こ}')} ／ ${ruby('{覚|おぼ}')}えた ${c.ok}${ruby('{個|こ}')}<br>${ruby('{全部|ぜんぶ}')} ${c.all}${ruby('{個|こ}')}` : `${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ`}</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), pending = p.filter(q => isPending(q.id) && !isDue(q.id)), tp = pickPool();
+  const savedQuiz = pausedQuiz();
   const rangeOpen = !!window.__rangeOpen;
   const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
@@ -533,14 +534,16 @@ function home() {
   const wrongHtml = rpgOn ? `<button class="big hard rs-hardrow" id="everwrong" ${everWrong.length ? '' : 'disabled'}>${ruby('{過去|かこ}に{間違|まちが}えた{問題|もんだい}')}：${everWrong.length}${ruby('{問|もん}')}<span class="rs-chg">${ruby('{全部|ぜんぶ}の{履歴|りれき}')}</span></button>` : `<button class="big hard" id="everwrong" ${everWrong.length ? '' : 'disabled'}>過去に間違えた問題（全履歴 ${everWrong.length}問）</button>`;
   const pendingHtml = pending.length ? `<div style="font-size:13px;color:#575970;padding:5px 12px 9px">3回連続正解した問題：${pending.length}問は3日後の確認待ち（今日の復習には出ません）</div>` : '';
   const testHtml = tp.length ? (rpgOn ? `<button class="big test" id="testp">${ruby('{今回|こんかい}のテスト{対策|たいさく}')}（${tp.length}${ruby('{個|こ}')}）</button>` : `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>`) : '';
-  const startHtml = goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
+  const continueHtml = savedQuiz ? '<button class="big go" id="resume-paused">▶ 保存した問題の続きから（' + (savedQuiz.idx + 1) + '問目）</button>' : '';
+  const startHtml = continueHtml + goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
   const unitN = (units[filter] || []).length;
   const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリをさいしんにする">↻ リロード</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="まずここを押して最新版に更新する"><span class="kid-refresh-first">① まずここを押して！</span><span class="kid-refresh-main">↻ 最新版に更新</span></button></div>
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
@@ -555,7 +558,7 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
-    ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
+    ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="まずここを押して最新版に更新する"><span class="kid-refresh-first">① まずここを押して！</span><span class="kid-refresh-main">↻ 最新版に更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
@@ -598,6 +601,8 @@ function home() {
     const rx = document.getElementById('rsRangeX'); if (rx) rx.onclick = e => { e.preventDefault(); setO(false); };
     const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
   }
+  const resumeButton = document.getElementById('resume-paused');
+  if (resumeButton) resumeButton.onclick = () => restorePausedQuiz();
   document.getElementById('go').onclick = e => beginKidSession(() => pickStart(pool(), ROUND), '', e.currentTarget);
   document.getElementById('hard').onclick = e => beginKidSession(() => pick(pool().filter(q => isHard(q.id)), ROUND), 'hard', e.currentTarget);
   document.getElementById('everwrong').onclick = e => beginKidSession(() => pick(pool().filter(q => wasWrong(q.id)), ROUND), 'everwrong', e.currentTarget);
@@ -605,8 +610,104 @@ function home() {
   if (tb) tb.onclick = e => beginKidSession(() => pick(pickPool(), ROUND), 'pick', e.currentTarget);
 }
 
+// 解きかけの問題はRPGのセーブに同梱して、3台で引き継ぐ。
+// クイズの解答履歴（stats）は従来どおり別の仕組みで管理する。
+function pausedQuiz() {
+  if (!MAMA && window.RPG && RPG.ok) return RPG.save.quizResume || null;
+  return load('ichimon.quiz.paused.v1' + LS_SFX, null);
+}
+function packQuestion(q) {
+  return { id: q.id, rv: q._rv ? JSON.parse(JSON.stringify(q._rv)) : null };
+}
+function snapshotQuiz() {
+  return {
+    v: 1, from: S.from, sess: S.sess, idx: S.idx, total: S.total,
+    reask: S.reask, rpg: S.rpg, correct: S.correct, skips: S.skips,
+    queue: S.queue.map(packQuestion), wrong: S.wrong.map(q => q.id),
+    wrongIds: [...S.wrongIds], seen: [...S.seen],
+    reaskedIds: [...S.reaskedIds], lastOrigin: S.lastOrigin || null,
+    at: Date.now()
+  };
+}
+function clearPausedQuiz() {
+  if (!MAMA && window.RPG && RPG.ok) {
+    if (RPG.save.quizResume) {
+      RPG.save.quizResume = null;
+      RPG.persist();
+    }
+  } else {
+    lsSet('ichimon.quiz.paused.v1' + LS_SFX, '');
+  }
+}
+function restorePausedQuiz() {
+  const saved = pausedQuiz();
+  if (!saved || saved.v !== 1 || !Array.isArray(saved.queue) ||
+      !Number.isInteger(saved.idx) || saved.idx < 0 || saved.idx >= saved.queue.length) return false;
+  const available = new Map(DATA.questions.map(q => [q.id,q]));
+  const restored = saved.queue.map(k => {
+    const base = available.get(k.id);
+    if(!base)return null;
+    if(!k.rv)return base;
+    const item = Object.create(base);
+    item._rv = k.rv;
+    return item;
+  });
+  if(restored.some(q => !q)) { alert('保存した問題が更新されました。今回は再開できません。'); return false; }
+  S = {
+    from: saved.from || '', sess: saved.sess || (dev.slice(0,4) + '-' + Date.now().toString(36)),
+    queue: restored, idx: saved.idx, total: saved.total, reask: saved.reask || 0,
+    rpg: !!saved.rpg, correct: saved.correct || 0,
+    wrong: (saved.wrong || []).map(id => available.get(id)).filter(Boolean),
+    wrongIds: new Set(saved.wrongIds || []), skips: saved.skips || 0,
+    seen: new Set(saved.seen || []), reaskedIds: new Set(saved.reaskedIds || []),
+    lastOrigin: saved.lastOrigin || null, locked: false, timer: null
+  };
+  question();
+  return true;
+}
+async function pauseAndSaveQuiz() {
+  if (!S) return;
+  const button = document.getElementById('pauseSave');
+  if(button){button.disabled=true;button.textContent='保存中…';}
+  // 答えを表示済みの場合は次の問題から再開し、採点・報酬の二重計上を防ぐ。
+  if (S.locked) {
+    if (S.idx + 1 >= S.queue.length) { result(); return; }
+    S.idx++;
+    S.locked = false;
+  }
+  const state=snapshotQuiz();
+  let savedLocally = false;
+  if (!MAMA && window.RPG && RPG.ok) {
+    RPG.save.quizResume = state;
+    savedLocally = RPG.persist();
+  } else {
+    const key='ichimon.quiz.paused.v1' + LS_SFX;
+    try { const txt=JSON.stringify(state); localStorage.setItem(key,txt); savedLocally=localStorage.getItem(key)===txt; } catch(e){}
+  }
+  if (!savedLocally) {
+    if(button){button.disabled=false;button.textContent='ここまで保存してやめる';}
+    alert('保存できませんでした。アプリを閉じずにもう一度試してください。');
+    return;
+  }
+  let shared=false, reason='';
+  if (!MAMA && window.RPG && RPG.cloud) {
+    try {
+      const result=await RPG.cloud.push(false,true);
+      shared=!!result.ready;
+      reason=result.status||'';
+    } catch(e){reason='クラウドに接続できません';}
+  }
+  clearTimeout(S.timer);
+  app.onclick=null;
+  S=null;
+  home();
+  alert(shared
+    ? 'ここまで保存しました！ ほかの端末でも「最新を確認」してから続きから再開できます。'
+    : 'この端末に保存しました。'+(reason?'\nクラウド共有：'+reason+'\n':'\n')+'ほかの端末ではまだ再開できません。');
+}
 // ---------- 回 ----------
 function start(list, from, opts) {
+  if (pausedQuiz()) clearPausedQuiz();
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
   let pre = { list, reviews: [], reask: 0, rpg: false };
@@ -641,6 +742,7 @@ function question() {
       <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
+    <button class="big plain" type="button" id="pauseSave" style="width:100%;margin:0 0 12px;min-height:48px;background:#e9f8ed;color:#174f37;border:2px solid #448568;border-radius:12px;font-size:16px;font-weight:bold">💾 ここまで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
     <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
@@ -654,6 +756,7 @@ function question() {
     ${window.RPG ? RPG.stripHtml(S) : ''}`;
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
+  document.getElementById('pauseSave').onclick = pauseAndSaveQuiz;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); }; // 問題数・冒険進行は解答時に保存済み
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => pickChoice(+b.dataset.i));
   const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
@@ -740,6 +843,7 @@ function advance() {
 
 // ---------- 画面：おわり ----------
 function result() {
+  clearPausedQuiz();
   flush();
   app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
