@@ -167,13 +167,16 @@
     return true;
   }
   function buyFood(save) { return buyPointShopItem(save,'food'); }
-  function feed(save,id,day){
+  function feed(save,id,day,amount=1){
     const l=ensure(save),d=day||nowDay();
     if(!l.pets[id])return {ok:false,msg:'まだ仲間になっていません'};
-    // 買ったエサは1日に何度でも使える。使用数は手持ちの個数で制御する。
-    if(l.food<1)return {ok:false,msg:'エサが足りないよ。問題を10問解くと増えるよ'};
-    l.food--;l.pets[id].xp+=10;l.fedDays[id]=d;
-    return {ok:true,msg:(PETS.find(p=>p.id===id)||{}).name+'が喜んだ！ 成長ポイント＋10'};
+    // エサのまとめあげ。所持数の範囲だけ消費し、同じ回数分の成長を一括保存する。
+    if(l.food<1)return {ok:false,msg:'エサが足りないよ。ショップで買うか問題を解いて集めよう'};
+    const requested=amount==='all'?l.food:Number(amount);
+    if(!Number.isSafeInteger(requested)||requested<1)return {ok:false,msg:'エサの数を選んでね'};
+    const used=Math.min(requested,l.food);
+    l.food-=used;l.pets[id].xp+=used*10;l.fedDays[id]=d;
+    return {ok:true,msg:(PETS.find(p=>p.id===id)||{}).name+'にエサを'+used+'個あげた！ 成長ポイント＋'+(used*10)+'（残り'+l.food+'個）'};
   }
   function canPay(l,cost){return Object.entries(cost).every(([id,n])=>(l.materials[id]||0)>=n);}
   function craft(save,id,x,y){
