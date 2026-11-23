@@ -245,12 +245,13 @@ function pick(list, n) {
     else if (x.w + x.c === 0) fresh.push(q);
     else old.push(q);
   });
-  // 繰り返し間違える問題ほど上位。同程度なら最後に解いた日が古いものを優先。
+  // 苦手問題は復習から外さないが、間違い回数だけで同じ問題を押しつけない。
+  // 最終回答が古いものを優先し、回数は同じ日時のときだけ参考にする。
   weak.sort((a, b) => {
     const x = st(a.id), y = st(b.id);
     const pa = (isDue(a.id) ? 15 : 0) + x.w * 10 - x.s * 4;
     const pb = (isDue(b.id) ? 15 : 0) + y.w * 10 - y.s * 4;
-    return pb - pa || (x.t || '').localeCompare(y.t || '');
+    return (x.t || '').localeCompare(y.t || '') || pb - pa;
   });
   old.sort((a, b) => (st(a.id).t || '').localeCompare(st(b.id).t || ''));
   // 各分類内は、可能な限り異なる教科・単元を選んで偏りを防ぐ。
@@ -270,7 +271,7 @@ function pick(list, n) {
     }
     return selected;
   }
-  // 10問なら苦手4・初見4・定着2が目安。候補不足時は空き枠を融通する。
+  // 通常10問の目安は苦手2・初見5・定着3。新しい問題を十分に混ぜる。
   const selected = [];
   const used = new Set();
   function take(candidates, limit, priorityIds = []) {
@@ -284,13 +285,13 @@ function pick(list, n) {
       selected.push(q); used.add(q.id);
     }
   }
-  take(weak, Math.floor(n * 0.4));
-  take(fresh, Math.ceil(n * 0.4), ['ri-0086','sha-0504','ri-0087','sha-0505',...SOUND_BASIC_FIRST_IDS,'ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
+  take(weak, Math.floor(n * 0.2));
+  take(fresh, Math.ceil(n * 0.5), ['ri-0086','sha-0504','ri-0087','sha-0505',...SOUND_BASIC_FIRST_IDS,'ri-0088','sha-0506','ri-0089','sha-0507',...SOUND_WEAK_IDS,...SOCIAL_VIDEO_IDS]);
   take(old, n - selected.length);
   // 各カテゴリが不足した場合の補充。確認待ちは最後の最後に限る。
-  if (selected.length < n) take(weak, n - selected.length);
   if (selected.length < n) take(fresh, n - selected.length);
   if (selected.length < n) take(old, n - selected.length);
+  if (selected.length < n) take(weak, n - selected.length);
   if (selected.length < n) take(pending, n - selected.length);
   // 優先順位による選定は保ち、実際の出題順だけ交互にする。
   return spread(selected, n);
@@ -299,8 +300,15 @@ function pick(list, n) {
 // 同じ問題の連続・復習完了判定・ユーザーの教科絞り込みは既存機構を使う。
 function pickStart(list, n) {
   const originalList = list;
-  list = avoidPreviousRound(list);
-  if (list.length < n) list = list.concat(originalList.filter(q => !list.some(x => x.id === q.id)));
+  // 通常学習では本日すでに答えた問題を後回しにする。候補不足時のみ再利用する。
+  const today = localDay();
+  const notToday = list.filter(q => !String(st(q.id).t || '').startsWith(today));
+  const dayFirst = notToday.length >= n ? notToday : notToday.concat(list.filter(q => String(st(q.id).t || '').startsWith(today)));
+  list = avoidPreviousRound(dayFirst);
+  if (list.length < n) list = list.concat(dayFirst.filter(q => !list.some(x => x.id === q.id)));
+  // 候補数が多いときは本日回答済み問題を候補から除外する。
+  const eligible = list.filter(q => !String(st(q.id).t || '').startsWith(today));
+  if (eligible.length >= n) list = eligible;
   // 基本優先。波形の発展4問は通常スタート4回に1回だけ、最大1問。
   // 「まちがえた問題」「復習が必要」などの専用ボタンでは制限しない。
   const soundCountKey = 'ichimon.sound.advanced.turn.v1' + LS_SFX;
@@ -828,7 +836,8 @@ function start(list, from, opts) {
 }
 // 間違えた問題を3問あとにもう一度（1回の延長は最大5問）。ぼうけん中は冒険単位で数える
 function reask(q) {
-  // 間違えた直後の再確認は同じ問題につき1回まで。
+  // 通常スタートでは間違えた直後の再出題をしない。復習専用/手動では従来どおり。
+  if (!S.from) return;
   if (S.reask >= REASK_MAX || S.reaskedIds.has(q.id)) return;
   if (S.rpg && !RPG.queueReview(q, S)) return;
   S.reaskedIds.add(q.id);
