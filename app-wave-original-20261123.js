@@ -572,6 +572,7 @@ function showAnswerFeedback(q, ok, skipped) {
     '<div class="quiz-feedback-symbol">'+(ok ? '○' : skipped ? '？' : '×')+'</div>'+
     '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
     '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
+    (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
     '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
     '</div></div>';
   document.body.appendChild(screen);
@@ -587,6 +588,7 @@ function showAnswerFeedback(q, ok, skipped) {
       '<h2 class="quiz-feedback-detail-title">'+heading+'</h2>'+
       '<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>'+
       (explanation || '<div class="exp">答えを確認できたね！</div>')+
+      (window.RPG && RPG.answerProgressHtml ? RPG.answerProgressHtml(S) : '')+
       '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
       '</div>';
     S.explanationViewed = true;
@@ -893,6 +895,7 @@ function question() {
     </div>
     <button type="button" id="pauseSave" aria-label="いまの問題の途中までを保存してやめる" style="display:block;position:relative;z-index:2;width:calc(100% - 8px);margin:4px 4px 14px;min-height:56px;background:#fff2c1;color:#533800;border:3px solid #d6a72b;border-radius:14px;font-size:17px;font-weight:900;box-shadow:0 3px 0 #bb9330">💾 途中まで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
+    ${window.RPG ? RPG.stripHtml(S) : ''}
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
     <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}" style="display:flex;flex-direction:column;align-items:stretch;gap:12px"><div class="qt" style="width:100%;min-width:0;max-width:100%;flex:none;white-space:normal;overflow-wrap:break-word;text-align:center">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
@@ -902,7 +905,7 @@ function question() {
     ${isIn ? '' : '<div class="skipw"><button class="skip" id="skipc">わかんない</button></div>'}
     <div class="next" id="next"></div>
     <div class="score">せいかい ${S.correct}こ</div>
-    ${window.RPG ? RPG.stripHtml(S) : ''}`;
+    `;
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
   document.getElementById('pauseSave').onclick = pauseAndSaveQuiz;
