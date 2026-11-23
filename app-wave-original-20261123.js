@@ -69,7 +69,7 @@ const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
-function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
+function qs() { return DATA.questions.filter(q => q.test === current.id && q.id !== 'ri-0084' && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 // 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
@@ -1104,7 +1104,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=remove-wave-width-20261123', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=remove-wave-width-20261123b', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
