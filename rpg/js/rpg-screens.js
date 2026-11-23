@@ -9,7 +9,7 @@
   const NOW = () => (root.__RPG_NOW ? root.__RPG_NOW() : Date.now());
   const reduceMotion = () => { try { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const save = () => RPG.save;
-  const UI = { lifeRecipe:'pet',lifeRemove:false, shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
+  const UI = { lifeRecipe:'pet',lifeRemove:false,lifeMode:'blocks',lifeBlock:'wood', shopAll: false, screen: 'home', params: {}, eq: null, slot: 'weapon', shopTab: 'weapon', confirm: null, tier: 'base', sel: null, tactic: null, look: null, name: '', codexTab: 'enemy', msg: '' };
   const TABS = [['home', 'ホーム'], ['adv', '{冒険|ぼうけん}'], ['town', '{街|まち}'], ['worldlife', 'マイワールド'], ['me', '{自分|じぶん}']];
   const ROOT_OF = { worldlife: 'worldlife', adv: 'adv', town: 'town', me: 'me', place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'town', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
   const PARENT = { place: 'town', equip: 'me', shop: 'town', forge: 'town', jobs: 'town', jobdetail: 'jobs', loadout: 'adv', look: 'me', codex: 'me', ach: 'town', data: 'me' };
@@ -250,6 +250,36 @@
 
 
   // ---------- マイワールド（ペット8種類、最大3匹同行、建築と探検） ----------
+  // 斜め上から見た立体的な6×6の土地。各タイルはタップ可能。
+  // ブロックは高さ方向へ積み重ねられ、手前のマスが奥のマスより前に描画される。
+  function lifeIsoMap(l,playable){
+    const dx=30,dy=15,h=17,ox=240,oy=78;
+    const palette={wood:['#dba669','#b47b46','#916039'],stone:['#c2cbd4','#889ba9','#6f8291'],iron:['#a5d8dc','#679ea9','#477c87'],crystal:['#bd9bff','#846bd7','#6551af']};
+    const poly=(p,fill,stroke='#0002')=>'<polygon points="'+p.map(t=>t.join(',')).join(' ')+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.1"/>';
+    let svg='<svg class="life-iso-svg" viewBox="0 0 480 345" role="img" aria-label="斜め上から見た6かける6マスのブロック建築。マスをタップして積み上げる"><defs><linearGradient id="life-sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#cceffb"/><stop offset="1" stop-color="#f6f8d4"/></linearGradient></defs><rect width="480" height="345" rx="20" fill="url(#life-sky)"/><ellipse cx="240" cy="255" rx="200" ry="65" fill="#6c9d67" opacity=".25"/>';
+    for(let d=0;d<=10;d++)for(let y=0;y<6;y++){
+      const x=d-y;if(x<0||x>=6)continue;
+      const cx=ox+(x-y)*dx,cy=oy+(x+y)*dy;
+      const top=[[cx,cy],[cx+dx,cy+dy],[cx,cy+2*dy],[cx-dx,cy+dy]];
+      const left=[[cx-dx,cy+dy],[cx,cy+2*dy],[cx,cy+2*dy+11],[cx-dx,cy+dy+11]];
+      const right=[[cx,cy+2*dy],[cx+dx,cy+dy],[cx+dx,cy+dy+11],[cx,cy+2*dy+11]];
+      const existing=l.map.find(t=>t.x===x&&t.y===y),stack=(l.blocks||[]).filter(b=>b.x===x&&b.y===y).sort((a,b)=>a.z-b.z);
+      const c=(x+y)%2?'#8ac672':'#9ad57e';
+      svg+='<g class="life-iso-tile" data-life-x="'+x+'" data-life-y="'+y+'" tabindex="'+(playable?'0':'-1')+'" role="button" aria-label="'+(x+1)+'列'+(y+1)+'行、'+(existing?'建物あり':stack.length+'段のブロック')+'">';
+      svg+=poly(left,'#608e59')+poly(right,'#53844e')+poly(top,c,'#6ca95e');
+      for(const b of stack){
+        const col=palette[b.id]||palette.wood,level=b.z+1;
+        const t=cy-h*level;
+        svg+=poly([[cx-dx,t+dy],[cx,t+2*dy],[cx,t+2*dy+h],[cx-dx,t+dy+h]],col[2]);
+        svg+=poly([[cx,t+2*dy],[cx+dx,t+dy],[cx+dx,t+dy+h],[cx,t+2*dy+h]],col[1]);
+        svg+=poly([[cx,t],[cx+dx,t+dy],[cx,t+2*dy],[cx-dx,t+dy]],col[0],'#ffffff66');
+      }
+      if(existing){const r=LF.RECIPES.find(a=>a.id===existing.id);svg+='<text x="'+cx+'" y="'+(cy+dy+5)+'" text-anchor="middle" font-size="29" paint-order="stroke" stroke="#fff" stroke-width="2">'+(r?r.emoji:'🏠')+'</text>';}
+      svg+='<path d="M'+cx+' '+cy+'l'+dx+' '+dy+' -'+dx+' '+dy+' -'+dx+' -'+dy+'z" fill="transparent" stroke="none"/>';
+      svg+='</g>';
+    }
+    return svg+'</svg>';
+  }
   const lifeMaterials = l => Object.entries(LF.MATERIALS).map(([id,nm])=>`<span class="life-material">${nm} <b>${l.materials[id]||0}</b></span>`).join('');
   const lifeCost = cost => Object.entries(cost).map(([id,n])=>LF.MATERIALS[id]+'×'+n).join('・');
   VIEWS.worldlife = function () {
@@ -271,10 +301,7 @@
         ${owned?`<span class="pet-growth-track" role="progressbar" aria-label="${esc(p.name)}の成長" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}"><span style="width:${nextStagePoint(pet.xp)===null?100:Math.floor(100*(pet.xp-stageStartPoint(pet.xp))/(nextStagePoint(pet.xp)-stageStartPoint(pet.xp)))}%"></span></span>`:'' }
         <small>${owned?(chosen?'✓ 同行中': 'タップで同行'):'🔒 未解放'}</small></button><button class="rs-btn sm life-feed" data-life-feed="${p.id}" ${!owned||!playable||l.food<1||l.fedDays[p.id]===LF.nowDay()?'disabled':''}>${l.fedDays[p.id]===LF.nowDay()?'エサをあげた':'エサをあげる'}</button></div>`;
     }).join('');
-    const cells=Array.from({length:36},(_,i)=>{
-      const x=i%6,y=Math.floor(i/6),item=l.map.find(t=>t.x===x&&t.y===y),r=item&&LF.RECIPES.find(a=>a.id===item.id);
-      return `<button class="life-cell ${item?'occupied':''}" data-life-x="${x}" data-life-y="${y}" ${!playable?'disabled':''} aria-label="${r?esc(r.name):'空き地'}・${x+1}列${y+1}行">${r?r.emoji:'·'}</button>`;
-    }).join('');
+    const cells=lifeIsoMap(l,playable);
     const recipe=LF.RECIPES.map(r=>`<button class="life-recipe ${UI.lifeRecipe===r.id&&!UI.lifeRemove?'selected':''}" data-life-recipe="${r.id}" ${!playable?'disabled':''}><span>${r.emoji}</span><b>${esc(r.name)}</b><small>${lifeCost(r.cost)}</small></button>`).join('');
     const zones=LF.ZONES.map(z=>{
       const unlocked=l.shards>=z.need,done=l.explored[LF.nowDay()];
@@ -308,11 +335,17 @@
         </div>
       </div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹 <small class="pet-art-edition">図鑑イラスト版</small></div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><p class="rs-p">エサ1個で成長＋10ポイント（1匹につき1日1回）。同行して問題を解いても育つので、エサの回数は目安だよ。</p><div class="life-pets">${petCards}</div></div>
-      <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
-      <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
-      <div class="life-map" role="group" aria-label="建築できる6かける6マスの土地">${cells}</div>
-      <div class="rs-h3">クラフト台</div><div class="life-recipes">${recipe}</div>
-      <button class="rs-btn ${UI.lifeRemove?'on':''}" id="lifeRemove" ${!playable?'disabled':''}>${UI.lifeRemove?'✓ 片付けるモード':'片付ける'}</button></div>
+      <div class="rs-panel life-build-panel"><div class="rs-h2">🏡 じぶんの土地・ブロック建築</div><div class="life-materials">${lifeMaterials(l)}</div>
+      <p class="rs-p">好きなマスをタップして、ブロックを1段ずつ積もう！ 最大4段。屋根や壁、庭も自由にデザインできるよ。</p>
+      <div class="life-build-mode">
+        <button class="rs-btn ${UI.lifeMode==='blocks'&&!UI.lifeRemove?'on':''}" data-life-mode="blocks">🧱 ブロックを積む</button>
+        <button class="rs-btn ${UI.lifeMode==='decor'&&!UI.lifeRemove?'on':''}" data-life-mode="decor">🏡 建物・かざり</button>
+        <button class="rs-btn ${UI.lifeRemove?'on':''}" id="lifeRemove">${UI.lifeRemove?'✓ 回収モード':'↩️ 回収する'}</button>
+      </div>
+      <div class="life-map life-map-iso" role="group" aria-label="立体的な6かける6マスの土地">${cells}</div>
+      <div class="life-build-hint">💡 家・飾りがあるマスにはブロックを置けないよ。ブロックは上から順に回収できて、素材も戻るよ。</div>
+      ${UI.lifeMode==='blocks'?'<div class="rs-h3">🧱 使うブロックを選ぼう</div><div class="life-block-palette">'+Object.entries(LF.MATERIALS).map(([id,n])=>'<button class="life-block-choice '+(UI.lifeBlock===id?'selected':'')+'" data-life-block="'+id+'"><span class="life-block-chip '+id+'"></span><b>'+n+'</b><small>あと '+(l.materials[id]||0)+'個</small></button>').join('')+'</div>':'<div class="rs-h3">🏡 建物・かざりを作る</div><div class="life-recipes">'+recipe+'</div>'}
+      </div>
       <div class="rs-panel"><div class="rs-h2">🗺️ 秘密の探検　地図のかけら ${l.shards}枚</div><p class="rs-p">30問達成ごとに地図のかけらを獲得。探検は1日1回。連れていくペットによって見つかる素材が変わるよ。</p><div class="life-zones">${zones}</div></div>
       <div class="rs-panel"><p class="rs-p">進化や建築は翌日へ持ち越せるよ。勉強を休んでもペットは弱らないので安心してね。</p></div>
     `,{back:false});
@@ -339,8 +372,21 @@
       UI.msg=result.msg;
       rerender();
     });
-    panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
-    panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
+    panel.querySelectorAll('[data-life-mode]').forEach(b=>b.onclick=()=>{UI.lifeMode=b.dataset.lifeMode;UI.lifeRemove=false;rerender();});
+    panel.querySelectorAll('[data-life-block]').forEach(b=>b.onclick=()=>{UI.lifeBlock=b.dataset.lifeBlock;UI.lifeMode='blocks';UI.lifeRemove=false;rerender();});
+    panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeMode='decor';UI.lifeRemove=false;rerender();});
+    const tapTile=b=>run(()=>{
+      const x=+b.dataset.lifeX,y=+b.dataset.lifeY;
+      if(UI.lifeRemove){
+        if((LF.ensure(save()).blocks||[]).some(t=>t.x===x&&t.y===y))return LF.takeBlock(save(),x,y);
+        return LF.remove(save(),x,y);
+      }
+      return UI.lifeMode==='blocks'?LF.placeBlock(save(),UI.lifeBlock,x,y):LF.craft(save(),UI.lifeRecipe,x,y);
+    });
+    panel.querySelectorAll('[data-life-x]').forEach(b=>{
+      b.onclick=()=>tapTile(b);
+      b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tapTile(b);}};
+    });
     panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
     const rem=doc.getElementById('lifeRemove');if(rem)rem.onclick=()=>{UI.lifeRemove=!UI.lifeRemove;rerender();};
     // 遊べる時間が終了した保存データではタイマーを再起動しない。
