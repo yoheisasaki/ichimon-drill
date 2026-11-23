@@ -245,3 +245,10 @@ body.mama-mode .mama-permanent-header strong{font-size:18px}
 .card.withillustration>.qt{width:100%;min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal}
 .card.withillustration>img,.card.withillustration>figure{flex:none;width:100%;max-width:100%;margin:4px auto 6px}
 .card.withillustration>img{height:auto;object-fit:contain}
+
+
+/* 画像付きだけでなくすべての問題カードを縦配置。図の横で文字が1文字幅にならない */
+#app .card{flex-direction:column!important;align-items:stretch!important;gap:12px}
+#app .card>.qt{width:100%!important;min-width:0!important;max-width:100%!important;flex:none!important;white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;text-align:center}
+#app .card>img,#app .card>figure{width:100%!important;max-width:100%!important;min-width:0!important;flex:none!important;height:auto;box-sizing:border-box}
+#app .card>figure img{max-width:100%;height:auto}
