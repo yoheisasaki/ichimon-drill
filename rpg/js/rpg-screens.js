@@ -238,6 +238,12 @@
       <div class="rs-panel life-welcome"><b>🏡 ペットと暮らすマイワールド</b>
       <p>勉強で素材を集めて、好きな場所に建てよう！ 成長したペットを最大3匹、RPGの冒険に連れていけるよ。</p>
       ${playable?'':'<p class="rs-why">今日のマイワールド、おつかれさま！ 記録はちゃんと保存してあるよ。</p>'}</div>
+      <div class="rs-panel" style="border:2px solid #e2ba63;border-radius:12px;padding:12px;margin-bottom:12px;background:#fff9e9">
+        <div class="rs-h2">🍎 ペットのエサ屋さん</div>
+        <p class="rs-p" style="font-weight:800">⭐ ${l.foodPoints||0} ポイント（正解1問で1ポイント）</p>
+        <p class="rs-p">エサ1個＝10ポイント　／　今あるエサ：${l.food}個</p>
+        <button type="button" class="rs-btn" id="lifeBuyFood" ${(l.foodPoints||0)<10?'disabled':''}>🍎 10ポイントでエサを1個買う</button>
+      </div>
       <div class="rs-panel"><div class="rs-h2">🐾 ペットのおうち　${Object.keys(l.pets).length}/8匹</div><p class="rs-p">冒険のおとも：${l.party.length}/3匹。選ぶと主人公についてくるよ。エサ ${l.food}個（10問ごとに1個）</p><div class="life-pets">${petCards}</div></div>
       <div class="rs-panel"><div class="rs-h2">🏡 じぶんの土地</div><div class="life-materials">${lifeMaterials(l)}</div>
       <p class="rs-p">作るものを選んで、空いているマスをタップ！ 「片付ける」では素材が半分戻るよ。</p>
@@ -262,6 +268,14 @@
     };
     panel.querySelectorAll('[data-life-pet]').forEach(b=>b.onclick=()=>run(()=>LF.setParty(save(),b.dataset.lifePet)));
     panel.querySelectorAll('[data-life-feed]').forEach(b=>b.onclick=()=>run(()=>LF.feed(save(),b.dataset.lifeFeed)));
+    // 買い物はマイワールドの1日の操作制限と独立。十分なポイントがあればいつでも購入できる。
+    const foodBuy=doc.getElementById('lifeBuyFood');
+    if(foodBuy)foodBuy.onclick=()=>{
+      const result=LF.buyFood(save());
+      if(result.ok)commit();
+      UI.msg=result.msg;
+      rerender();
+    };
     panel.querySelectorAll('[data-life-recipe]').forEach(b=>b.onclick=()=>{UI.lifeRecipe=b.dataset.lifeRecipe;UI.lifeRemove=false;rerender();});
     panel.querySelectorAll('[data-life-x]').forEach(b=>b.onclick=()=>run(()=>UI.lifeRemove?LF.remove(save(),+b.dataset.lifeX,+b.dataset.lifeY):LF.craft(save(),UI.lifeRecipe,+b.dataset.lifeX,+b.dataset.lifeY)));
     panel.querySelectorAll('[data-life-zone]').forEach(b=>b.onclick=()=>run(()=>LF.explore(save(),b.dataset.lifeZone)));
