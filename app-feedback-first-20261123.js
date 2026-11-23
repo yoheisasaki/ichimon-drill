@@ -488,6 +488,8 @@ function revealNext() {
   if(n && n.scrollIntoView) n.scrollIntoView({block:'start',behavior:'smooth'});
 }
 function showAnswerFeedback(q,ok,skipped) {
+  // 解説を開くまで次の問題への進行を禁止する（正解・不正解・スキップ共通）。
+  S.explanationViewed = false;
   const nx=document.getElementById('next');
   if(!nx)return;
   const heading=ok?'○ せいかい！':skipped?'？ わかんない':'× ざんねん！';
@@ -502,6 +504,7 @@ function showAnswerFeedback(q,ok,skipped) {
     show.disabled=true;
     const answer='<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>';
     const explanation=expHtml(q);
+    S.explanationViewed = true;
     nx.innerHTML='<section class="answer-feedback '+(ok?'feedback-ok':'feedback-ng')+
       '" role="status"><div class="feedback-heading">'+heading+'</div>'+
       '<div class="feedback-sub">'+sub+'</div>'+answer+explanation+'</section>'+
@@ -880,6 +883,9 @@ function answer(i) {
   showAnswerFeedback(q, ok, skipped);
 }
 function advance() {
+  // 解説を確認するまでは、別の操作から呼ばれても次へ進めない。
+  if (!S || !S.explanationViewed) return;
+  S.explanationViewed = false;
   clearTimeout(S.timer); app.onclick = null;
   S.idx++;
   if (S.idx >= S.queue.length) return result();
