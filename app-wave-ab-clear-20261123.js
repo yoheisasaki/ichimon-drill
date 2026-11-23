@@ -340,10 +340,10 @@ const EXPLANATION_IMAGES = {
   'ri-0078': { src: 'images/sound-wave-count.svg', alt: '同じ時間に波が4個あるAと8個あるBの波形' },
   'ri-0079': { src: 'images/sound-wave-amplitude-compare-ab.svg', alt: 'AとBは4回ずつ振動し、Bの振れ幅はAの2倍である波形' },
   'ri-0080': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
-  'ri-0081': { src: 'images/sound-wave-count.svg', alt: '同じ時間の波の数を比べる図' },
-  'ri-0082': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までの振れ幅を示す波形' },
+  'ri-0081': { src: 'images/sound-wave-two-cycles.svg', alt: '同じ時間に2回振動する波形' },
+  'ri-0082': { src: 'images/sound-wave-grid-two.svg', alt: '中央線から山までが2マスの波形' },
   'ri-0083': { src: 'images/sound-wave-change.svg', alt: '波の数を半分にして振れ幅を2倍にした波形の比較' },
-  'ri-0084': { src: 'images/sound-wave-change.svg', alt: '振動回数が半分になると波の横幅が2倍になる比較図' },
+  'ri-0084': { src: 'images/sound-wave-width-2-5.svg', alt: '1つの波の幅が2.5マスの図' },
   'ri-0085': { src: 'images/sound-wave-change.svg', alt: '低くて大きい音の波形と元の波形の比較図' }
 };
 // 鳥の分類は文章の連結ではなく、種類ごとのカードで読みやすく整理する。
@@ -432,8 +432,10 @@ const QUESTION_WAVE_IMAGES = {
   'ri-0078': 'images/sound-wave-count.svg',
   'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
   'ri-0080': 'images/sound-wave-amplitude.svg',
-  'ri-0081': 'images/sound-wave-count.svg',
-  'ri-0082': 'images/sound-wave-amplitude.svg'
+  'ri-0081': 'images/sound-wave-two-cycles.svg',
+  'ri-0082': 'images/sound-wave-grid-two.svg',
+  'ri-0084': 'images/sound-wave-width-2-5.svg',
+  'ri-0092': 'images/bottle-blow-water-a-b.svg'
 };
 function waveQuestionHtml(q) {
   const src = QUESTION_WAVE_IMAGES[q.id];
