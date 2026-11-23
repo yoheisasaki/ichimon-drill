@@ -210,25 +210,14 @@
     l.explored[d]=id;
     return {ok:true,msg:z.name+'を探検！ '+Object.entries(loot).map(([k,n])=>MATERIALS[k]+'×'+n).join('・')+' を発見！'};
   }
+  // お試し期間：マイワールドの利用時間制限を停止。
+  // 保存済みの done:true も無視し、記録は書き換えない。再開時に元の仕様へ戻せる。
   function playState(save,day) {
-    const l=ensure(save),d=day||nowDay();
-    if(l.play.day!==d)l.play={day:d,used:0,done:false};
-    // 旧版で5分が過ぎた保存データにも、新しい「キリの良いところで終了」を適用する。
-    return {used:l.play.used,done:!!l.play.done,softReached:l.play.used>=SOFT_PLAY_MS,max:MAX_PLAY_MS};
+    const l=ensure(save);
+    return {used:(l.play&&l.play.used)||0,done:false,softReached:false,max:null,unlimited:true};
   }
-  function finishPlay(save,day) {
-    const l=ensure(save),state=playState(save,day);
-    if(state.done||!state.softReached)return false;
-    l.play.done=true;
-    return true;
-  }
-  function spendPlay(save,ms,day){
-    const l=ensure(save),p=playState(save,day);
-    if(p.done)return p;
-    l.play.used=Math.min(MAX_PLAY_MS,p.used+Math.max(0,Math.min(2000,Number(ms)||0)));
-    if(l.play.used>=MAX_PLAY_MS)l.play.done=true;
-    return playState(save,day);
-  }
+  function finishPlay(save,day) { return false; }
+  function spendPlay(save,ms,day) { return playState(save,day); }
   root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,POINT_SHOP_ITEMS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyPointShopItem,buyFood,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.visitBonus = function(day) {
