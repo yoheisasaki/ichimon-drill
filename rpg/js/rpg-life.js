@@ -47,6 +47,8 @@
     l.foodPoints=Math.max(0,Math.floor(Number(l.foodPoints)||0));
     l.foodPointReceipts=Array.isArray(l.foodPointReceipts)?l.foodPointReceipts:[];
     l.map = l.map || [{x:2,y:2,id:'house'}];
+    // ブロック建築は旧マップとは別に保存。既存の家・ペット・ポイントに影響しない。
+    l.blocks = Array.isArray(l.blocks) ? l.blocks.filter(b=>b && Number.isInteger(b.x) && Number.isInteger(b.y) && Number.isInteger(b.z) && b.x>=0 && b.x<6 && b.y>=0 && b.y<6 && b.z>=0 && b.z<4 && ['wood','stone','iron','crystal'].includes(b.id)).slice(0,144) : [];
     l.claimedDays = l.claimedDays || {};
     l.shards = Number(l.shards || 0);
     l.explored = l.explored || {};
@@ -196,6 +198,28 @@
     if(r)for(const [k,n]of Object.entries(r.cost))l.materials[k]=(l.materials[k]||0)+Math.floor(n/2);
     return {ok:true,msg:'片付けたよ（素材が少し戻った）'};
   }
+  // 2.5Dクラフト：空きマスへ同じ座標で4段まで積み上げ。1個につき素材1個。
+  // 下から順に置き、上から順に回収して浮いたブロックを作らない。
+  function placeBlock(save,id,x,y){
+    const l=ensure(save);
+    if(!['wood','stone','iron','crystal'].includes(id))return {ok:false,msg:'ブロックの種類を選んでね'};
+    if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||x>=6||y<0||y>=6)return {ok:false,msg:'土地の中を選んでね'};
+    if(l.map.some(t=>t.x===x&&t.y===y))return {ok:false,msg:'建物がある場所には積めないよ'};
+    const stack=l.blocks.filter(t=>t.x===x&&t.y===y);
+    if(stack.length>=4)return {ok:false,msg:'ここは4段まで。別の場所にも建ててみよう'};
+    if((l.materials[id]||0)<1)return {ok:false,msg:MATERIALS[id]+'が足りないよ。ショップや探検で集めよう'};
+    l.materials[id]--;
+    l.blocks.push({x,y,z:stack.length,id});
+    return {ok:true,msg:MATERIALS[id]+'のブロックを'+(stack.length+1)+'段目に積んだ！'};
+  }
+  function takeBlock(save,x,y){
+    const l=ensure(save),stack=l.blocks.filter(t=>t.x===x&&t.y===y);
+    if(!stack.length)return {ok:false,msg:'ここにブロックはないよ'};
+    const top=stack.reduce((a,b)=>a.z>b.z?a:b),i=l.blocks.indexOf(top);
+    l.blocks.splice(i,1);
+    l.materials[top.id]=(l.materials[top.id]||0)+1;
+    return {ok:true,msg:'いちばん上のブロックを回収！ '+MATERIALS[top.id]+'×1が戻った'};
+  }
   function explore(save,id,day){
     const l=ensure(save),z=ZONES.find(x=>x.id===id),d=day||nowDay();
     if(!z)return {ok:false,msg:'場所が見つからない'};
@@ -218,7 +242,7 @@
   }
   function finishPlay(save,day) { return false; }
   function spendPlay(save,ms,day) { return playState(save,day); }
-  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,POINT_SHOP_ITEMS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyPointShopItem,buyFood,feed,craft,remove,explore,playState,finishPlay,spendPlay,nowDay};
+  root.RPGLife={PETS,RECIPES,ZONES,MATERIALS,VISIT_REWARDS,FOOD_POINT_PRICE,POINT_SHOP_ITEMS,ensure,sync,visit,visitInfo,party,setParty,stage,visual,level,earnFoodPoint,buyPointShopItem,buyFood,feed,craft,remove,placeBlock,takeBlock,explore,playState,finishPlay,spendPlay,nowDay};
   if(root.RPG) {
     root.RPG.visitBonus = function(day) {
       if(!root.RPG.ok)return null;
