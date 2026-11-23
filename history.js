@@ -1,79 +1,57 @@
 'use strict';
-const KEY='ichimon.history.mama.v1';
 const $=id=>document.getElementById(id);
-const escapeHtml=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const plain=s=>String(s??'').replace(/\{([^|{}]+)\|([^{}]+)\}/g,'$1');
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const params=new URLSearchParams(location.search);
-let qs=[],byId=new Map(),rows=[],subject='全部',term='',missOnly=false,device='';
-function csvRows(s){
-  s=s.replace(/^\ufeff/,'');const sep=s.slice(0,200).includes('\t')?'\t':',';
-  let result=[],row=[],cur='',quoted=false;
-  for(let i=0;i<s.length;i++){const c=s[i];if(quoted){if(c==='"'&&s[i+1]==='"'){cur+='"';i++;}else if(c==='"')quoted=false;else cur+=c;}
-  else if(c==='"')quoted=true;else if(c===sep){row.push(cur);cur='';}
-  else if(c==='\n'||c==='\r'){if(c==='\r'&&s[i+1]==='\n')i++;row.push(cur);if(row.some(v=>v.trim()))result.push(row);row=[];cur='';}
-  else cur+=c;}
-  if(cur||row.length){row.push(cur);result.push(row);}return result;
+let questions=[], history=null, subject='全部', term='', errorsOnly=false;
+const API='https://script.google.com/macros/s/AKfycbwR6PPGrKn5HL1yJ8-xc_sjV-kaEDY2dv0jD_e7XyRSjQUd2E_2_Pq-rGE6tWxHRj3QFg/exec?api=ichimon_history';
+function matches(q) {
+  return (subject==='全部'||q.subject===subject) && (!term||[q.q,q.a,q.unit,q.id].some(v=>plain(v).toLowerCase().includes(term))) &&
+    (!errorsOnly || (history?.[q.id]?.wrong||0)+(history?.[q.id]?.unknown||0)>0);
 }
-function parseLog(text){
- const all=csvRows(text);if(!all.length)throw Error('空のCSVです');
- const hdr=all[0].map(x=>x.trim());
- const col=name=>hdr.indexOf(name);
- const id=col('問題ID'),date=col('日時'),ok=col('正誤'),pick=col('選んだ答え'),rid=col('rid'),dev=col('端末');
- if([id,date,ok].some(i=>i<0))throw Error('「一問一答_記録」のCSVを選んでください（問題ID・日時・正誤の列が必要です）');
- const seen=new Set(),result=[];
- for(const a of all.slice(1)){
-  const qid=(a[id]||'').trim(),t=(a[date]||'').trim();if(!qid||!t)continue;
-  const unique=rid>=0&&a[rid]?a[rid]:qid+'@'+t+'@'+(a[pick]||'');
-  if(seen.has(unique))continue;seen.add(unique);
-  const value=(a[ok]||'').trim();
-  result.push({device:dev>=0?(a[dev]||'').trim():'',qid,t,ok:value==='○'||value==='◯'||value==='true'||value==='TRUE'||value==='1',pick:pick>=0?(a[pick]||''):'',skip:(a[col('わかんない')]||'')==='1'});
- }
- if(!result.length)throw Error('回答記録が見つかりませんでした');return result;
+function render() {
+  const data=questions.filter(matches);
+  const hasHistory=history!==null;
+  $('summary').textContent='該当 '+data.length+'問 ／ 全'+questions.length+'問'+(hasHistory?'（履歴取得済み）':'');
+  $('results').innerHTML=data.map(q=>{
+    const h=history?.[q.id], ar=(h?.attempts||[]).slice().reverse();
+    const label=!hasHistory?'履歴未取得':h&&h.n ? '解答 '+h.n+'回　○'+h.correct+'　×'+h.wrong+'　わかんない'+h.unknown : '未回答（記録なし）';
+    const last=h?.last, status=last ? (last.result==='correct'?'○ 正解':last.result==='unknown'?'わかんない':'× 不正解') : '';
+    const detail=ar.map(a=>'<div class="attempt">'+esc(String(a[0]).slice(0,16).replace('T','　'))+'　'+(a[1]==='c'?'○ 正解':a[1]==='u'?'わかんない':'× 不正解')+'</div>').join('');
+    return '<details class="item"'+(params.get('qid')===q.id?' open':'')+'><summary><div class="question">'+esc(plain(q.q))+'</div><div class="counts"><span>'+esc(label)+'</span></div><div class="meta">'+esc(q.subject+' / '+q.id)+(last?'　最後：'+esc(String(last.at).slice(0,10)+' '+status):'')+'</div></summary><div class="detail">'+(detail||'<div class="empty">解答の記録はありません。</div>')+'</div></details>';
+  }).join('')||'<div class="empty">条件に合う問題はありません。</div>';
 }
-function render(){
- const stats=new Map();
- const filteredRows=rows.filter(r=>!device||r.device===device);
- for(const r of filteredRows){if(!stats.has(r.qid))stats.set(r.qid,[]);stats.get(r.qid).push(r);}
- const vals=qs.filter(q=>(subject==='全部'||q.subject===subject)&&(!term||[q.q,q.unit,q.id].some(x=>plain(x).toLowerCase().includes(term)))&&(!missOnly||(stats.get(q.id)||[]).some(x=>!x.ok))).sort((a,b)=>{
-  let ar=stats.get(a.id)||[],br=stats.get(b.id)||[];
-  return ((br.at(-1)?.t)||'').localeCompare((ar.at(-1)?.t)||'');
- });
- $('summary').textContent='履歴データ '+filteredRows.length+'回分 / 条件に合う問題 '+vals.length+'問（解答なしの問題も表示）';
- const openId=params.get('qid');
- $('results').innerHTML=vals.map(q=>{
-  const ar=(stats.get(q.id)||[]).slice().sort((a,b)=>b.t.localeCompare(a.t));
-  const correct=ar.filter(x=>x.ok).length,wrong=ar.length-correct;
-  let days=new Map();for(const r of ar){let day=r.t.slice(0,10);if(!days.has(day))days.set(day,[]);days.get(day).push(r);}
-  const details=Array.from(days).map(([day,ds])=>'<div class="day"><strong>'+escapeHtml(day)+'：'+ds.length+'回（<span class="good">○'+ds.filter(x=>x.ok).length+'</span> / <span class="bad">×'+ds.filter(x=>!x.ok).length+'</span>）</strong>'+
-   ds.map(x=>'<div class="attempt">'+escapeHtml(x.t.slice(11,16))+'　'+(x.ok?'<span class="good">○ 正解</span>':'<span class="bad">× 不正解</span>')+'　選択：'+escapeHtml(x.pick||'記録なし')+'</div>').join('')+'</div>').join('');
-  return '<details class="item"'+(openId===q.id?' open':'')+'><summary><div class="question">'+escapeHtml(plain(q.q))+'</div><div class="counts"><span>解答 '+ar.length+'回</span><span class="good">○ '+correct+'回</span><span class="bad">× '+wrong+'回</span></div><div class="meta">'+escapeHtml(q.subject+' / '+q.id)+'</div></summary><div class="detail">'+(details||'<div class="empty">まだこの問題の回答記録はありません。</div>')+'</div></details>';
- }).join('')||'<div class="empty">条件に合う問題がありません。</div>';
-}
-function updateDevices(){
- const devices=[...new Set(rows.map(r=>r.device).filter(Boolean))].sort();
- const selected=localStorage.getItem('ichimon.history.device.v1')||'';
- if(!device){device=selected&&devices.includes(selected)?selected:(devices.length===1?devices[0]:'');}
- $('device').innerHTML='<option value="">すべての端末</option>'+devices.map((d,i)=>'<option value="'+escapeHtml(d)+'">端末 '+(i+1)+'（'+escapeHtml(d.slice(0,6))+'…）</option>').join('');
- $('device').value=device;
+async function loadHistory(){
+  $('status').textContent='全端末の解答履歴を取得中…';
+  $('reload').disabled=true;
+  try{
+    const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),15000);
+    let response;
+    try{response=await fetch(API+'&t='+Date.now(),{cache:'no-store',signal:ctrl.signal});}
+    finally{clearTimeout(timer);}
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const data=await response.json();
+    if(data.ok!==true||!data.questions)throw Error('APIの応答が正しくありません');
+    history=data.questions;
+    $('status').textContent='取得済み：全端末の記録 '+Number(data.total||0)+'回分（'+Object.keys(history).length+'問）';
+  }catch(e){
+    history=null;
+    $('status').textContent='履歴を取得できませんでした。未回答とは判定できません。再読み込みしてください。';
+  }finally{$('reload').disabled=false;render();}
 }
 async function init(){
- try{
-  const d=await fetch('data/questions.json',{cache:'no-cache'}).then(r=>r.json());
-  qs=d.questions.filter(q=>q.test===(d.tests.find(t=>t.current)||d.tests[0]).id);
-  const raw=localStorage.getItem(KEY);if(raw){rows=JSON.parse(raw);$('status').textContent='前回読み込んだ記録：'+rows.length+'回分';} updateDevices();
-  const qid=params.get('qid');if(qid){const q=qs.find(x=>x.id===qid);if(q){subject=q.subject;term=q.id;$('subject').value=subject;$('search').value=term;}}
-  render();
- }catch(e){$('status').textContent='読み込みエラー：'+e.message;}
+  try{
+    const data=await fetch('data/questions.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('questions');return r.json()});
+    questions=data.questions;
+    const qid=params.get('qid'), q=questions.find(x=>x.id===qid);
+    if(q){subject=q.subject;term=q.id;$('subject').value=subject;$('search').value=term;}
+    render();loadHistory();
+  }catch(e){$('status').textContent='問題データを読み込めませんでした';}
 }
-$('file').addEventListener('change',async e=>{
- const f=e.target.files?.[0];if(!f)return;
- try{
-  rows=parseLog(await f.text());localStorage.setItem(KEY,JSON.stringify(rows));
-  $('status').textContent=rows.length+'回分の履歴を読み込みました（'+f.name+'）';updateDevices();render();
- }catch(err){$('status').textContent='読み込めませんでした：'+err.message;}
-});
-$('device').onchange=e=>{device=e.target.value;localStorage.setItem('ichimon.history.device.v1',device);render();};
-$('subject').onchange=e=>{subject=e.target.value;render();};
-$('search').oninput=e=>{term=e.target.value.trim().toLowerCase();render();};
-$('missOnly').onchange=e=>{missOnly=e.target.checked;render();};
+$('subject').onchange=e=>{subject=e.target.value;render()};
+$('onlyWrong').onchange=e=>{errorsOnly=e.target.checked;render()};
+$('go').onclick=()=>{const input=$('search');input.blur();term=input.value.trim().toLowerCase();render()};
+$('clear').onclick=()=>{$('search').value='';term='';render()};
+$('search').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229){e.preventDefault();$('go').click();}});
+$('reload').onclick=loadHistory;
 init();
