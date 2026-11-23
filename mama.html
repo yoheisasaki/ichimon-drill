@@ -102,14 +102,14 @@ body.mama-mode #mama-refresh{flex:none;display:inline-flex;align-items:center;ju
 <script src="rpg/js/rpg-sprites.js"></script>
 <script src="rpg/js/rpg-fx.js"></script>
 <script src="rpg/js/rpg-strip.js"></script>
-<script src="rpg/js/rpg-ui.js?v=mama-menu-20261123"></script>
+<script src="rpg/js/rpg-ui.js?v=wrong-muted-20261123"></script>
 <script src="rpg/js/rpg-life.js?v=feed-bulk-20261123"></script>
 <script src="rpg/js/rpg-pet-stages-data.js?v=pets-unique-20261123j"></script>
 <script src="rpg/js/rpg-pet-art.js?v=pet-newborn-types-20261123k"></script>
 <script src="rpg/js/rpg-mapdata.js"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'gentle-wrong-20261123';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'wrong-muted-20261123';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
@@ -119,7 +119,7 @@ body.mama-mode #mama-refresh{flex:none;display:inline-flex;align-items:center;ju
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'home-shop-balance-20261123';
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'wrong-muted-20261123';
   document.write('<script src="app-wave-original-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 <script>
