@@ -86,6 +86,8 @@
     // 端末上の途中経過はそのまま保存し、クラウドには確定済みの進行だけ送る。
     // 他端末で途中の問題を引き継ぐことはしない。
     const local=snapshot(),base=first?0:cloudVersion;
+    // この送信に含まれる変更はここで確保。通信中に発生した新しい変更だけを次回送信する。
+    pendingChange=false;
     const hadActive=!!local.active;
     // 冒険途中の問題・戦闘は端末専用。一方、獲得ポイントや所持品は途中でも確定して共有する。
     const upload=hadActive?{...local,active:null,quizResume:null}:local;
@@ -96,7 +98,7 @@
         return fail('保存失敗：'+String(x&&x.error||'通信エラー'));
       }
       const moreChanges=RPG.save.rev!==local.rev||pendingChange;
-      cloudVersion=x.version;syncedRev=local.rev;ready=true;remote=null;pendingChange=false;
+      cloudVersion=x.version;syncedRev=local.rev;ready=true;remote=null;
       write(BASE,JSON.stringify({version:cloudVersion,rev:syncedRev}));
       status=moreChanges?'追加の変更を同期中':'同期済み';if(moreChanges)pendingChange=true;return state();
     }catch(e){return fail('通信に失敗しました。端末のデータは残っています');}
