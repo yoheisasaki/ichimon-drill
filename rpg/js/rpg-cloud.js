@@ -69,8 +69,8 @@
     if(!getKey()||!remote)return fail('先にクラウドを確認してください');
     return applyCloud(remote);
   }
-  async function push(first){
-    if(!getKey()||busy||(!first&&RPG.save.active))return fail('解答が終わってから同期してください');
+  async function push(first, allowPaused){
+    if(!getKey()||busy||(!first&&!allowPaused&&RPG.save.active))return fail('解答が終わってから同期してください');
     if(!first&&!ready)return fail('先に同期の初期設定をしてください');
     busy=true;status='保存中';
     // 初回保存だけ、解答途中の端末でも可能にする。
