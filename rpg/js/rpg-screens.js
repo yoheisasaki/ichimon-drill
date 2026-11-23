@@ -192,7 +192,7 @@
   function render() {
     stopLifeTimer();
     const A = app(); if (!RPG.ok && !save()) { root.home(); return; }
-    RPG.unmount && RPG.unmount(); A.className = 'rs-app';
+    RPG.unmount && RPG.unmount(); A.className = UI.screen === 'worldlife' ? 'rs-app rs-worldlife-screen' : 'rs-app';
     const f = VIEWS[UI.screen] || VIEWS.me; A.innerHTML = f(UI.params);
     const back = doc.getElementById('rsBack');
     if (back) back.onclick = () => { if (UI.params && UI.params.from === 'result') return root.home(); if (UI.params && UI.params.back) return go(UI.params.back); const p = PARENT[UI.screen]; if (p === 'place') go('place', { id: (UI.params && UI.params.place) || 'guild' }); else go(p || 'me'); };
