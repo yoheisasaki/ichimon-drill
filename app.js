@@ -61,15 +61,12 @@ SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
 // 読めなかった工芸品の用語：絹織物・陶磁器・漆器の復習を出題対象に加える。
 const CRAFT_READING_FIRST_IDS = ['sha-0521', 'sha-0523', 'sha-0525', 'sha-0522', 'sha-0524', 'sha-0526', 'sha-0067', 'sha-0377', 'sha-0395'];
 CRAFT_READING_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
- // 霞ヶ浦がどの県にあるかを確認する既存の一問一答。重複追加せず、重点範囲に戻す。
-const KASUMIGAURA_PREF_ID = 'map-0234';
-FOCUS_IDS.add(KASUMIGAURA_PREF_ID);
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 function qs() { return DATA.questions.filter(q => q.test === current.id && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
-function pickPool() { const ids = new Set(CONF.pick); return qs().filter(q => ids.has(q.id)); } // 今回のテスト対策
+function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 // 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
 // 従来の記録（due/verified を持たないもの）も、最後の正解日から自動的に判定する。
@@ -295,10 +292,7 @@ function pickStart(list, n) {
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
     .slice(0, Math.min(2, Math.max(1, Math.floor(n / 5))));
-  // 未回答・復習が必要なら、霞ヶ浦＝茨城県を最初の10問に1問だけ入れる。
-  const kasumi = list.find(q => q.id === KASUMIGAURA_PREF_ID);
-  const kasumiPriority = kasumi && (st(kasumi.id).w + st(kasumi.id).c === 0 || isHard(kasumi.id)) ? kasumi : null;
-  const chosen = pick(list.filter(q => !craftIds.has(q.id) && q.id !== KASUMIGAURA_PREF_ID), n - priority.length - (kasumiPriority ? 1 : 0));
+  const chosen = pick(list.filter(q => !craftIds.has(q.id)), n - priority.length);
   // 教科・単元が偏っていても、同じ教科が続きすぎないよう並べ直す。
   const mixed = [];
   const pending = chosen.slice();
@@ -311,7 +305,6 @@ function pickStart(list, n) {
     const pos = Math.min(i === 0 ? 2 : 7, mixed.length);
     mixed.splice(pos, 0, priority[i]);
   }
-  if (kasumiPriority) mixed.splice(Math.min(1, mixed.length), 0, kasumiPriority);
   // 工芸品以外の候補が足りない場合のみ、残りの問題で埋める。
   if (mixed.length < n) {
     const used = new Set(mixed.map(q => q.id));
@@ -345,12 +338,12 @@ const EXPLANATION_IMAGES = {
   'ri-0068': { src: 'images/medaka-fins.svg', alt: 'メダカのひれ5種類の位置。むなびれ、はらびれ、せびれ、しりびれ、おびれ。合計7枚。' },
   'ri-0070': { src: 'images/pancreas-location-v2.webp', alt: '胃の後ろ側にあるすい臓と、すい液を送る十二指腸の位置図。' },
   'ri-0078': { src: 'images/sound-wave-count.svg', alt: '同じ時間に波が4個あるAと8個あるBの波形' },
-  'ri-0079': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
+  'ri-0079': { src: 'images/sound-wave-amplitude-compare-ab.svg', alt: 'AとBは4回ずつ振動し、Bの振れ幅はAの2倍である波形' },
   'ri-0080': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までが振れ幅であることを示す波形' },
-  'ri-0081': { src: 'images/sound-wave-count.svg', alt: '同じ時間の波の数を比べる図' },
-  'ri-0082': { src: 'images/sound-wave-amplitude.svg', alt: '中央線から山の頂上までの振れ幅を示す波形' },
+  'ri-0081': { src: 'images/sound-wave-two-cycles.svg', alt: '同じ時間に2回振動する波形' },
+  'ri-0082': { src: 'images/sound-wave-grid-two.svg', alt: '中央線から山までが2マスの波形' },
   'ri-0083': { src: 'images/sound-wave-change.svg', alt: '波の数を半分にして振れ幅を2倍にした波形の比較' },
-  'ri-0084': { src: 'images/sound-wave-change.svg', alt: '振動回数が半分になると波の横幅が2倍になる比較図' },
+  'ri-0084': { src: 'images/sound-wave-width-2-5.svg', alt: '1つの波の幅が2.5マスの図' },
   'ri-0085': { src: 'images/sound-wave-change.svg', alt: '低くて大きい音の波形と元の波形の比較図' }
 };
 // 鳥の分類は文章の連結ではなく、種類ごとのカードで読みやすく整理する。
@@ -381,6 +374,35 @@ function expHtml(q) {
   if(bird!==null)return bird;
   const t = expText(q);
   const im = EXPLANATION_IMAGES[q.id];
+  // 音の問題：正解・不正解のあとに「高さ」と「大きさ」を毎回見比べられる。
+  // 同じ時間に並ぶ波の数は音の高さ、中央線から山・谷までの振れ幅は音の大きさ。
+  const soundGuide = q.subject === '理科' && ['音の高さ', '音の大きさ', '波形の読み方'].includes(q.unit) && q.id !== 'ri-0073'
+    ? '<section class="sound-wave-guide" aria-label="音の波形の見方" style="margin-top:12px;padding:12px;background:#f4faff;border:2px solid #9dc6e7;border-radius:14px;line-height:1.6;color:#1d3653">' +
+      '<strong style="display:block;font-size:19px;margin-bottom:8px">図を見ながら音をくらべよう</strong>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">① 音の高さ ＝ <mark style="background:#bceaff;border-radius:4px;padding:1px 4px"><b>横に並ぶ波の数</b></mark></strong>' +
+        '<img src="images/sound-wave-count.svg?v=guide-diagram-2" loading="eager" alt="Aは同じ時間に波が4個、Bは8個の波形。Bのほうが音が高い" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：4個 → <mark style="background:#bceaff;padding:1px 4px"><b>低い音</b></mark><br>図のB：8個 → <mark style="background:#bceaff;padding:1px 4px"><b>高い音</b></mark></p>' +
+        '<p style="margin:6px 0"><b><u>同じ時間</u></b>なら、<mark style="background:#bceaff"><b>波が多いほど高い音</b></mark>。山から次の山までの横幅がせまくなるよ。</p>' +
+      '</div>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">② 音の大きさ ＝ <mark style="background:#ffe69a;border-radius:4px;padding:1px 4px"><b>縦の振れ幅（ふれはば）</b></mark></strong>' +
+        '<img src="images/sound-wave-amplitude-compare-ab.svg?v=guide-diagram-2" loading="eager" alt="同じ波の数でAは振れ幅1、Bは振れ幅2。縦の大きさだけが違う" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0;font-weight:bold">図のA：振れ幅1 → <mark style="background:#ffe69a;padding:1px 4px"><b>小さい音</b></mark><br>図のB：振れ幅2 → <mark style="background:#ffe69a;padding:1px 4px"><b>大きい音</b></mark></p>' +
+        '<p style="margin:6px 0">オレンジの印を見てね。<b><u>中央の線から山のてっぺんまで</u></b>が振れ幅。<mark style="background:#ffe69a"><b>振れ幅が大きいほど大きい音</b></mark>。波の数が同じなら音の高さは変わらないよ。</p>' +
+      '</div>' +
+      '<div style="background:white;padding:10px;border-radius:12px;margin-bottom:12px">' +
+        '<strong style="font-size:17px">③ 振れ幅はどこ？</strong>' +
+        '<img src="images/sound-wave-amplitude.svg?v=guide-diagram-2" loading="eager" alt="中央線から山までを示す矢印。山から谷まで全部ではない" style="display:block;width:100%;height:auto;margin:8px auto">' +
+        '<p style="margin:6px 0">中央線から山までが1つの振れ幅。山から谷まで全部の長さは、振れ幅の<b>2倍</b>になるよ。</p>' +
+      '</div>' +
+      '<div style="background:#fff2cb;padding:10px;border-radius:12px">' +
+        '<strong style="font-size:17px">④ 波形をかくとき</strong>' +
+        '<img src="images/sound-wave-change.svg?v=guide-diagram-2" loading="eager" alt="波が4個で振れ幅2マスの波を、波が2個で振れ幅4マスに変えた図" style="display:block;width:100%;height:auto;margin:8px auto;background:white;border-radius:8px">' +
+        '<p style="margin:6px 0">上の波：4個・振れ幅2マス。下の波：2個・振れ幅4マス。<b>波の数が半分→音は低くなる／振れ幅が2倍→音は大きくなる。</b></p>' +
+      '</div>' +
+      '<p style="margin:10px 2px 0;font-weight:900;text-align:center"><span style="display:block;background:#bceaff;border-radius:7px;padding:5px">横の波の数 → 音の高さ</span><span style="display:block;background:#ffe69a;border-radius:7px;padding:5px;margin-top:6px">縦の振れ幅 → 音の大きさ</span></p>' +
+    '</section>' : '';
   // 結城紬の写真は「解答後の解説」にも載せる。建物や機織り機ではなく、織物そのもの。
   if (q.id === 'sha-0067') {
     return '<div class="exp"><b>結城紬（ゆうきつむぎ）</b>は、茨城県の結城市などで作られる伝統的な絹織物だよ。<br>写真は結城紬の亀甲柄（きっこうがら）の布だよ。' +
@@ -399,17 +421,20 @@ function expHtml(q) {
       '<figcaption style="font-size:12px;line-height:1.6">九谷焼の色絵皿（クリーブランド美術館／CC0）<br>'+
       '<a href="'+detailUrl+'" target="_blank" rel="noopener noreferrer">写真を大きく見る</a></figcaption></figure></div>';
   }
-  if (!t && !im) return '';
+  if (!t && !im && !soundGuide) return '';
   const fig = im ? '<figure style="margin:12px 0 4px"><img src="' + im.src + '?v=20261120-1" alt="' + im.alt + '" loading="eager" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto;border-radius:12px;background:#fff"><figcaption style="text-align:center;font-size:13px;color:#555;margin-top:5px">図で位置を確認してみよう</figcaption></figure>' : '';
-  return '<div class="exp">' + (t ? qr(t, q) : '') + fig + '</div>';
+  return '<div class="exp">' + (t ? qr(t, q) : '') + fig + soundGuide + '</div>';
 }
 // 音の波の図：答えを先に示さないものだけ問題中にも表示する。
 const QUESTION_WAVE_IMAGES = {
+  'ri-0073': 'images/glass-water-a-b.svg',
+  'ri-0076': 'images/glass-water-a-b.svg',
   'ri-0078': 'images/sound-wave-count.svg',
-  'ri-0079': 'images/sound-wave-amplitude.svg',
-  'ri-0080': 'images/sound-wave-amplitude.svg',
-  'ri-0081': 'images/sound-wave-count.svg',
-  'ri-0082': 'images/sound-wave-amplitude.svg'
+  'ri-0079': 'images/sound-wave-amplitude-compare-ab.svg',
+  'ri-0081': 'images/sound-wave-two-cycles.svg',
+  'ri-0082': 'images/sound-wave-grid-two.svg',
+  'ri-0084': 'images/sound-wave-width-2-5.svg',
+  'ri-0092': 'images/bottle-blow-water-a-b.svg'
 };
 function waveQuestionHtml(q) {
   const src = QUESTION_WAVE_IMAGES[q.id];
@@ -456,23 +481,55 @@ function birdPhotoHtml(q) {
     '<a href="' + fileUrl + '" target="_blank" rel="noopener noreferrer">鳥の写真を見る（Wikimedia Commons）</a></figcaption></figure>';
 }
 
-// 解説・「つぎへ」が出たら、画面下の冒険帯の上に見えるところまでスクロールする（#next の scroll-margin-bottom が帯の高さを避ける）
-function revealNext() { const n = document.getElementById('next'); if (n && n.scrollIntoView) n.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
-// 判定後は必ず結果を見せ、「つぎの問題へ」を押すまで進まない。
+// 答え合わせは画面下への追記ではなく、全画面で結果から先に見せる。
+function closeFeedbackScreen() {
+  const old = document.getElementById('quiz-feedback-screen');
+  if (old) old.remove();
+}
 function showAnswerFeedback(q, ok, skipped) {
-  const nx = document.getElementById('next');
-  if (!nx) return;
+  if (!S) return;
+  S.explanationViewed = false;
+  closeFeedbackScreen();
   const heading = ok ? '○ せいかい！' : skipped ? '？ わかんない' : '× ざんねん！';
-  const answer = '<div class="feedback-answer"><span>正しい答え</span><strong>' + ruby(q.a) + '</strong></div>';
-  const explanation = expHtml(q);
-  nx.innerHTML = '<section class="answer-feedback ' + (ok ? 'feedback-ok' : 'feedback-ng') +
-    '" role="status" aria-live="polite"><div class="feedback-heading">' + heading + '</div>' +
-    (ok ? '<div class="feedback-sub">やったね！</div>' : '<div class="feedback-sub">答えと解説を確認しよう</div>') +
-    answer + explanation + '</section>' +
-    '<button type="button" class="big feedback-next" id="next-question">つぎの問題へ ▶</button>';
-  const nextButton = document.getElementById('next-question');
-  nextButton.onclick = () => { if (nextButton.disabled) return; nextButton.disabled = true; advance(); };
-  revealNext();
+  const subtitle = ok ? 'やったね！' : '答えと解説を確認しよう';
+  const screen = document.createElement('section');
+  screen.id = 'quiz-feedback-screen';
+  screen.className = 'quiz-feedback-screen ' + (ok ? 'is-correct' : 'is-incorrect');
+  screen.setAttribute('role', 'dialog');
+  screen.setAttribute('aria-modal', 'true');
+  screen.setAttribute('aria-label', ok ? 'せいかい' : skipped ? 'わかんない' : 'ざんねん');
+  screen.innerHTML = '<div class="quiz-feedback-inner" id="quiz-feedback-inner">'+
+    '<div class="quiz-feedback-verdict" id="quiz-feedback-verdict">'+
+    '<div class="quiz-feedback-symbol">'+(ok ? '○' : skipped ? '？' : '×')+'</div>'+
+    '<h2 class="quiz-feedback-title">'+heading+'</h2>'+
+    '<p class="quiz-feedback-subtitle">'+subtitle+'</p>'+
+    '<button type="button" class="quiz-feedback-action" id="quiz-show-explanation">答えと解説を見る ▶</button>'+
+    '</div></div>';
+  document.body.appendChild(screen);
+  screen.scrollTop = 0;
+  const show = document.getElementById('quiz-show-explanation');
+  show.onclick = () => {
+    if (show.disabled) return;
+    show.disabled = true;
+    const detail = document.getElementById('quiz-feedback-inner');
+    if (!detail) return;
+    const explanation = expHtml(q);
+    detail.innerHTML = '<div class="quiz-feedback-detail">'+
+      '<h2 class="quiz-feedback-detail-title">'+heading+'</h2>'+
+      '<div class="feedback-answer"><span>正しい答え</span><strong>'+ruby(q.a)+'</strong></div>'+
+      (explanation || '<div class="exp">答えを確認できたね！</div>')+
+      '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
+      '</div>';
+    S.explanationViewed = true;
+    screen.scrollTop = 0;
+    const next = document.getElementById('quiz-next-question');
+    next.onclick = () => {
+      if (next.disabled || !S || !S.explanationViewed) return;
+      next.disabled = true;
+      closeFeedbackScreen();
+      advance();
+    };
+  };
 }
 function mapLabel(q) {
   const m = q.map; if (!m) return '';
@@ -528,6 +585,7 @@ function home() {
     return `<button class="subj ${cls} ${filter === key ? 'sel' : ''}" data-f="${key}">${label}<small>${rpgOn ? `${ruby('{復習|ふくしゅう}')} ${c.hard}${ruby('{個|こ}')} ／ ${ruby('{覚|おぼ}')}えた ${c.ok}${ruby('{個|こ}')}<br>${ruby('{全部|ぜんぶ}')} ${c.all}${ruby('{個|こ}')}` : `${ruby('{復習|ふくしゅう}')} ${c.hard}こ ／ おぼえた ${c.ok}こ<br>ぜんぶ ${c.all}こ`}</small></button>`;
   };
   const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), pending = p.filter(q => isPending(q.id) && !isDue(q.id)), tp = pickPool();
+  const savedQuiz = pausedQuiz();
   const rangeOpen = !!window.__rangeOpen;
   const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
@@ -540,21 +598,28 @@ function home() {
   const wrongHtml = rpgOn ? `<button class="big hard rs-hardrow" id="everwrong" ${everWrong.length ? '' : 'disabled'}>${ruby('{過去|かこ}に{間違|まちが}えた{問題|もんだい}')}：${everWrong.length}${ruby('{問|もん}')}<span class="rs-chg">${ruby('{全部|ぜんぶ}の{履歴|りれき}')}</span></button>` : `<button class="big hard" id="everwrong" ${everWrong.length ? '' : 'disabled'}>過去に間違えた問題（全履歴 ${everWrong.length}問）</button>`;
   const pendingHtml = pending.length ? `<div style="font-size:13px;color:#575970;padding:5px 12px 9px">3回連続正解した問題：${pending.length}問は3日後の確認待ち（今日の復習には出ません）</div>` : '';
   const testHtml = tp.length ? (rpgOn ? `<button class="big test" id="testp">${ruby('{今回|こんかい}のテスト{対策|たいさく}')}（${tp.length}${ruby('{個|こ}')}）</button>` : `<button class="big test" id="testp">今回のテスト対策（${tp.length}こ）</button>`) : '';
-  const startHtml = goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
+  const continueHtml = savedQuiz ? '<button class="big go" id="resume-paused">▶ 保存した問題の続きから（' + (savedQuiz.idx + 1) + '問目）</button>' : '';
+  const startHtml = continueHtml + goHtml + testHtml + hardHtml + pendingHtml + wrongHtml;
   const unitN = (units[filter] || []).length;
   const rangeName = (filter === '全部' ? ruby('{全部|ぜんぶ}') : esc(filter)) + (unitN ? `（${unitN}${ruby('{単元|たんげん}')}）` : '');
+  const activeRangeHtml = '<div class="kid-current-range" data-noruby style="padding:10px 14px;margin:8px 10px;background:#e8f5ff;border:2px solid #7db4e3;border-radius:12px;color:#164773;font-weight:800;line-height:1.6">📚 今の学習範囲：' +
+    esc(filter === '全部' ? '全教科' : filter === 'ちず' ? '地図問題' : filter === 'かく' ? '書いて答える問題' : filter) +
+    ((filter !== '全部' && filter !== 'ちず' && filter !== 'かく') ? (unitN ? '（' + units[filter].map(x => esc(x)).join('・') + '）' : '（全単元）') : '') +
+    '<br>出題対象：' + p.length + '問</div>';
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
-    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button type="button" class="kid-refresh-btn" id="kid-refresh" aria-label="アプリをさいしんにする">↻ リロード</button><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
+    <div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>
+    ${activeRangeHtml}
+    <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
     ${RPG.homeTop()}
     <div class="rs-daily-count" style="text-align:center;padding:8px 12px;font-weight:bold;font-size:16px;color:#49416e" data-noruby>📘 きょう解いた問題：${todaySolved()}問</div>
     ${!MAMA && RPG.studyMilestones ? (() => { const m = RPG.studyMilestones(stats); return `<div class="rs-daily-count" style="text-align:center;padding:7px 12px;font-weight:bold;color:#49416e" data-noruby>🏆 累計 ${m.total}問 ／ 次のごほうび ${m.next}問まで あと${m.next-m.total}問（100問ごと）</div>`; })() : ''}
     ${!MAMA ? (() => { const n = todaySolved(),done=n>=30; return `<section class="rs-30reward ${done ? "done" : ""}" aria-label="今日の30問チャレンジ" data-noruby><div class="rs-30reward-head"><strong>${done ? "🎉 30問達成！" : "🎁 今日の30問チャレンジ"}</strong><span>${Math.min(n,30)}/30問</span></div><div class="rs-30reward-track" role="progressbar" aria-label="今日の30問" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(n,30)}"><span style="width:${Math.min(100,Math.max(0,n/30*100))}%"></span></div><p>${done ? "ごほうびをゲット！ 宝箱は下の「未開封の宝箱」から開けられるよ。" : "30問解くと 🎁 宝箱 ＋ 🗺️ 地図のかけら ＋ 🧱 建築素材 がもらえるよ！"}</p>${done ? "<small>地図のかけらと素材はマイワールドに追加済み！</small>" : `<small>ごほうびまで、あと${30-n}問！</small>`}</section>`; })() : ""}
     ${!MAMA && RPG.visitInfo ? (() => { const v=RPG.visitInfo(); if(!v)return ''; const r=v.lastReward,idx=(v.total-1)%7,slots=v.rewards.map((x,i)=>`<span class="rs-visit-dot ${i<=idx?'got':''}" title="${i+1}回目：${x.name}">${i<=idx?'✓':i+1}</span>`).join(''); return `<section class="rs-visit-reward" data-noruby aria-label="訪問ボーナス"><div class="rs-visit-title"><strong>🎁 冒険のごほうび</strong><b>${v.total?((v.total-1)%7+1):0}/7回</b></div><p>${r&&r.day===now().slice(0,10)?'今日のプレゼント：'+r.emoji+' '+r.name+' をゲット！':'アプリを開くと1日1回プレゼント！'}</p><div class="rs-visit-steps" aria-label="7回訪問の進み具合">${slots}</div><small>${v.total%7===0?'🎉 7回目の特別な宝箱をゲット！ 宝箱から開けよう！':'あと'+(7-v.total%7)+'回の訪問で 🎁 特別な宝箱！'}　休んでも進み具合はそのまま。</small></section>`; })() : ''}
     ${RPG.homeBonus()}
-    ${goHtml}${testHtml}
+    ${continueHtml}${goHtml}${testHtml}
     <div class="rs-pair"><details class="rs-range"${rangeOpen ? ' open' : ''}><summary class="rs-rangerow">${ruby('{範囲|はんい}')}：<b>${rangeName}</b><span class="rs-chg">${ruby('{変更|へんこう}')}</span></summary>
       <div class="rs-sheetbg" id="rsRangeBg"><div class="rs-sheet" role="dialog" aria-modal="true" aria-label="学習範囲の変更"><div class="rs-sheet-h"><b>${ruby('{学習範囲|がくしゅうはんい}の{変更|へんこう}')}</b><button class="rs-sheet-x" id="rsRangeX">とじる</button></div><div class="rs-sheet-b">${subjectsHtml}</div></div></div></details>
       ${hardHtml}${pendingHtml}${wrongHtml}</div>
@@ -562,7 +627,8 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
-    ${MAMA ? '' : '<div class="kid-refresh-row"><button type="button" class="kid-refresh-btn" id="kid-refresh">↻ 更新</button></div>'}
+    ${activeRangeHtml}
+    ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
     ${MAMA ? '<div class="mama"><b>ママ用</b>（風助の記録とは別）<a href="list.html">問題の一覧を見る</a>　<a href="history.html">風助の解答履歴を見る</a><button type="button" class="big test" id="mama-rpg-retry" style="margin-top:12px">🎮 冒険を起動する</button><div id="mama-rpg-status" style="font-size:13px;margin-top:8px">冒険の状態：' + (window.RPG ? (RPG.ok ? '起動中' : '準備できていません（' + (RPG.err || '原因確認中') + '）') : '読み込みができていません') + '</div></div>' : ''}
     <div class="sub">${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}</div>
     ${window.RPG ? RPG.homeTop() : ''}
@@ -605,6 +671,8 @@ function home() {
     const rx = document.getElementById('rsRangeX'); if (rx) rx.onclick = e => { e.preventDefault(); setO(false); };
     const bg = document.getElementById('rsRangeBg'); if (bg) bg.onclick = e => { if (e.target === bg) setO(false); };
   }
+  const resumeButton = document.getElementById('resume-paused');
+  if (resumeButton) resumeButton.onclick = () => restorePausedQuiz();
   document.getElementById('go').onclick = e => beginKidSession(() => pickStart(pool(), ROUND), '', e.currentTarget);
   document.getElementById('hard').onclick = e => beginKidSession(() => pick(pool().filter(q => isHard(q.id)), ROUND), 'hard', e.currentTarget);
   document.getElementById('everwrong').onclick = e => beginKidSession(() => pick(pool().filter(q => wasWrong(q.id)), ROUND), 'everwrong', e.currentTarget);
@@ -612,12 +680,108 @@ function home() {
   if (tb) tb.onclick = e => beginKidSession(() => pick(pickPool(), ROUND), 'pick', e.currentTarget);
 }
 
+// 解きかけの問題はRPGのセーブに同梱して、3台で引き継ぐ。
+// クイズの解答履歴（stats）は従来どおり別の仕組みで管理する。
+function pausedQuiz() {
+  if (!MAMA && window.RPG && RPG.ok) return RPG.save.quizResume || null;
+  return load('ichimon.quiz.paused.v1' + LS_SFX, null);
+}
+function packQuestion(q) {
+  return { id: q.id, rv: q._rv ? JSON.parse(JSON.stringify(q._rv)) : null };
+}
+function snapshotQuiz() {
+  return {
+    v: 1, from: S.from, sess: S.sess, idx: S.idx, total: S.total,
+    reask: S.reask, rpg: S.rpg, correct: S.correct, skips: S.skips,
+    queue: S.queue.map(packQuestion), wrong: S.wrong.map(q => q.id),
+    wrongIds: [...S.wrongIds], seen: [...S.seen],
+    reaskedIds: [...S.reaskedIds], lastOrigin: S.lastOrigin || null,
+    at: Date.now()
+  };
+}
+function clearPausedQuiz() {
+  if (!MAMA && window.RPG && RPG.ok) {
+    if (RPG.save.quizResume) {
+      RPG.save.quizResume = null;
+      RPG.persist();
+    }
+  } else {
+    lsSet('ichimon.quiz.paused.v1' + LS_SFX, '');
+  }
+}
+function restorePausedQuiz() {
+  const saved = pausedQuiz();
+  if (!saved || saved.v !== 1 || !Array.isArray(saved.queue) ||
+      !Number.isInteger(saved.idx) || saved.idx < 0 || saved.idx >= saved.queue.length) return false;
+  const available = new Map(DATA.questions.map(q => [q.id,q]));
+  const restored = saved.queue.map(k => {
+    const base = available.get(k.id);
+    if(!base)return null;
+    if(!k.rv)return base;
+    const item = Object.create(base);
+    item._rv = k.rv;
+    return item;
+  });
+  if(restored.some(q => !q)) { alert('保存した問題が更新されました。今回は再開できません。'); return false; }
+  S = {
+    from: saved.from || '', sess: saved.sess || (dev.slice(0,4) + '-' + Date.now().toString(36)),
+    queue: restored, idx: saved.idx, total: saved.total, reask: saved.reask || 0,
+    rpg: !!saved.rpg, correct: saved.correct || 0,
+    wrong: (saved.wrong || []).map(id => available.get(id)).filter(Boolean),
+    wrongIds: new Set(saved.wrongIds || []), skips: saved.skips || 0,
+    seen: new Set(saved.seen || []), reaskedIds: new Set(saved.reaskedIds || []),
+    lastOrigin: saved.lastOrigin || null, locked: false, timer: null
+  };
+  question();
+  return true;
+}
+async function pauseAndSaveQuiz() {
+  if (!S) return;
+  const button = document.getElementById('pauseSave');
+  if(button){button.disabled=true;button.textContent='保存中…';}
+  // 答えを表示済みの場合は次の問題から再開し、採点・報酬の二重計上を防ぐ。
+  if (S.locked) {
+    if (S.idx + 1 >= S.queue.length) { result(); return; }
+    S.idx++;
+    S.locked = false;
+  }
+  const state=snapshotQuiz();
+  let savedLocally = false;
+  if (!MAMA && window.RPG && RPG.ok) {
+    RPG.save.quizResume = state;
+    savedLocally = RPG.persist();
+  } else {
+    const key='ichimon.quiz.paused.v1' + LS_SFX;
+    try { const txt=JSON.stringify(state); localStorage.setItem(key,txt); savedLocally=localStorage.getItem(key)===txt; } catch(e){}
+  }
+  if (!savedLocally) {
+    if(button){button.disabled=false;button.textContent='ここまで保存してやめる';}
+    alert('保存できませんでした。アプリを閉じずにもう一度試してください。');
+    return;
+  }
+  let shared=false, reason='';
+  if (!MAMA && window.RPG && RPG.cloud) {
+    try {
+      const result=await RPG.cloud.push(false,true);
+      shared=!!result.ready && result.status === '同期済み';
+      reason=result.status||'';
+    } catch(e){reason='クラウドに接続できません';}
+  }
+  clearTimeout(S.timer);
+  app.onclick=null;
+  S=null;
+  home();
+  alert(shared
+    ? 'ここまで保存しました！ ほかの端末でも「最新を確認」してから続きから再開できます。'
+    : 'この端末に保存しました。'+(reason?'\nクラウド共有：'+reason+'\n':'\n')+'ほかの端末ではまだ再開できません。');
+}
 // ---------- 回 ----------
 function start(list, from, opts) {
+  if (pausedQuiz()) clearPausedQuiz();
   if (window.RPG && RPG.sound) RPG.sound.setScene(false);
   // opts.manual：手動の「まちがえたのだけ もう1回」。ぼうけん（RPG）には影響しない
   let pre = { list, reviews: [], reask: 0, rpg: false };
-  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list);
+  if (!(opts && opts.manual) && window.RPG) pre = RPG.beforeStart(list, new Set(pool().map(q => q.id)));
   list = pre.list;
   if (!list.length && !pre.reviews.length) return home();
   S = { from: from || '', sess: dev.slice(0, 4) + '-' + Date.now().toString(36), queue: pre.reviews.concat(list), idx: 0, total: list.length, reask: pre.reask, rpg: pre.rpg, correct: 0, wrong: [], wrongIds: new Set(pre.reviews.map(r => r.id)), skips: 0, seen: new Set(), reaskedIds: new Set(), locked: false, timer: null };
@@ -636,6 +800,7 @@ function reask(q) {
   S.queue.splice(at, 0, w);
 }
 function question() {
+  closeFeedbackScreen();
   const q = S.queue[S.idx];
   S.locked = false; S.cur = q; S.sel = -1;
   const isIn = q.type === 'input';
@@ -648,9 +813,10 @@ function question() {
       <div class="dname">${ruby(q.subject)}<br>${q.subject === '社会' ? (q.map ? '地図問題' : '') : qr(q.unit || '', q)}</div>
       <div class="pill">${S.idx + 1} / ${S.queue.length}</div>
     </div>
+    <button type="button" id="pauseSave" aria-label="いまの問題の途中までを保存してやめる" style="display:block;position:relative;z-index:2;width:calc(100% - 8px);margin:4px 4px 14px;min-height:56px;background:#fff2c1;color:#533800;border:3px solid #d6a72b;border-radius:14px;font-size:17px;font-weight:900;box-shadow:0 3px 0 #bb9330">💾 途中まで保存してやめる</button>
     <div class="bar"><i style="width:${(S.idx / S.queue.length) * 100}%"></i></div>
     <div id="answered-progress" aria-live="polite" style="text-align:center;background:#edf6ff;border:2px solid #b9d7f6;border-radius:12px;padding:7px 8px;color:#244777;font-size:15px;font-weight:800;margin-bottom:12px">${answeredProgressHtml()}</div>
-    <div class="card${q.map ? ' withmap' : ''}"><div class="qt">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
+    <div class="card${q.map ? ' withmap' : ''}${waveQuestionHtml(q) || birdPhotoHtml(q) || socialPhotoHtml(q) ? ' withillustration' : ''}" style="display:flex;flex-direction:column;align-items:stretch;gap:12px"><div class="qt" style="width:100%;min-width:0;max-width:100%;flex:none;white-space:normal;overflow-wrap:break-word;text-align:center">${qr(q.q, q)}</div>${waveQuestionHtml(q)}${birdPhotoHtml(q)}${socialPhotoHtml(q)}</div>
     ${q.map ? '<div class="map' + (isIn ? ' small' : '') + '" id="map"></div>' : ''}
     ${isIn ? `<div class="inbox"><input id="ans" class="ans" type="text" inputmode="text" lang="ja" placeholder="ひらがなで かいてね" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done"><button class="big go" id="submit" disabled>こたえる</button><button class="skip" id="skip">わかんない</button></div>` : ''}
     <div class="choices">${opts.map((o, i) => `<button class="choice" data-i="${i}"><span class="dot"></span><span>${qr(o, q)}</span></button>`).join('')}</div>
@@ -661,6 +827,7 @@ function question() {
     ${window.RPG ? RPG.stripHtml(S) : ''}`;
   app.className = S.rpg ? 'inq' : '';
   if (window.RPG) RPG.mount();
+  document.getElementById('pauseSave').onclick = pauseAndSaveQuiz;
   document.getElementById('quit').onclick = () => { clearTimeout(S.timer); app.onclick = null; flush(); home(); }; // 問題数・冒険進行は解答時に保存済み
   app.querySelectorAll('.choice').forEach(b => b.onclick = () => pickChoice(+b.dataset.i));
   const dec = document.getElementById('decide'); if (dec) dec.onclick = () => { if (S.locked || S.sel < 0) return; sfx('decide'); answer(S.sel); };
@@ -739,6 +906,9 @@ function answer(i) {
   showAnswerFeedback(q, ok, skipped);
 }
 function advance() {
+  // 解説を確認するまでは、別の操作から呼ばれても次へ進めない。
+  if (!S || !S.explanationViewed) return;
+  S.explanationViewed = false;
   clearTimeout(S.timer); app.onclick = null;
   S.idx++;
   if (S.idx >= S.queue.length) return result();
@@ -747,6 +917,8 @@ function advance() {
 
 // ---------- 画面：おわり ----------
 function result() {
+  closeFeedbackScreen();
+  clearPausedQuiz();
   flush();
   app.className = ''; if (window.RPG) RPG.unmount();
   const right = S.total - S.wrong.length;
@@ -848,7 +1020,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=sound-audit-20261123', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
