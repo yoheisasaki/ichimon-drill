@@ -289,7 +289,9 @@
     try { const c = root.document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); SP.POSES.S.forEach(pose => SP.drawHeroLayered(g, { job: si.job, costume: si.costume, weaponId: si.weaponId, use: 'strip', pose, x: 32, groundY: 60 })); } catch (e) {}
   }
   RPG.mount = function () {
-    const box = root.document.querySelector('.rpg-strip'); if (!box) return;
+    // 正誤の全画面が開いていれば、その中の戦闘帯へ canvas を移す。
+    // 背後の問題画面を先に選ぶと攻撃アニメが覆い隠される。
+    const box = root.document.querySelector('#quiz-feedback-screen .rpg-strip') || root.document.querySelector('.rpg-strip'); if (!box) return;
     if (!cv) { cv = root.document.createElement('canvas'); ctx = null; }
     box.appendChild(cv);
     const bs = root.getComputedStyle(box), inner = box.clientWidth - (parseFloat(bs.paddingLeft) || 0) - (parseFloat(bs.paddingRight) || 0), w = Math.ceil(Math.max(100, inner) / SCALE), h = 22;
