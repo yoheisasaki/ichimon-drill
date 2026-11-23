@@ -102,8 +102,27 @@
   RPG.navHtml = function (active) {
     return `<nav class="rs-nav" aria-label="メニュー">${TABS.map(([id, nm]) => `<button class="rs-tab${id === active ? ' on' : ''}" data-tab="${id}"${id === active ? ' aria-current="page"' : ''}>${rb(nm)}</button>`).join('')}</nav>`;
   };
+  // iPhoneの画面切替直後に同じタップが次の画面へ伝わる現象を防ぐ。
+  let navLockUntil = 0;
   function bindNav() {
-    app().querySelectorAll('.rs-tab').forEach(b => b.onclick = () => { const id = b.dataset.tab; if (id === 'home') { root.home(); } else go(id); });
+    app().querySelectorAll('.rs-tab').forEach(b => b.onclick = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const id = b.dataset.tab;
+      if (Date.now() < navLockUntil) return;
+      // 切替後に残る二重タップ・遅延クリックを次画面に通さない。
+      navLockUntil = Date.now() + 850;
+      if (id === 'home') {
+        stopLifeTimer();
+        UI.screen = 'home';
+        UI.params = {};
+        UI.msg = '';
+        UI.sheet = null;
+        root.home();
+      } else {
+        go(id);
+      }
+    });
   }
   const bindGo = el => el.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go, b.dataset.p ? JSON.parse(b.dataset.p) : {}));
 
@@ -179,6 +198,8 @@
     return `<div class="rs rs3${opt.split ? ' split' : ''}" id="rsRoot"><header class="rs-head">${back ? '<button class="rs-back" id="rsBack" aria-label="もどる">‹ もどる</button>' : '<span class="rs-back sp"></span>'}<h1 class="rs-title">${title}</h1>${opt.right || '<span class="rs-back sp"></span>'}</header>${UI.msg ? `<div class="rs-msg" role="status">${esc(UI.msg)}</div>` : ''}<main class="rs-body" id="rsBody">${noticeBox()}${body}</main>${foot}</div>`;
   }
   function go(name, params) {
+    // ホームを表示した直後のゴーストタップでマイワールドへ戻さない。
+    if (name === 'worldlife' && Date.now() < navLockUntil && UI.screen === 'home') return;
     stopLifeTimer();
     UI.screen = name; UI.params = params || {}; UI.msg = ''; UI.sheet = null;
     if (RPG.sound) RPG.sound.setScene(name === 'adv');
