@@ -38,6 +38,10 @@
   }
   function applyCloud(x){
     if(!valid(x.save))return fail('クラウドのセーブを確認できません');
+    // 端末の方が多い場合は購入等の違いがあり得る。自動でポイントを失わせない。
+    if(state().localPoints>Number(x.save.life&&x.save.life.foodPoints||0)){
+      remote=x;status='端末 '+state().localPoints+'ポイント／クラウド '+cloudPoints+'ポイント。減少する自動取込を保留';return state();
+    }
     if(!canPull()){remote=x;status='問題を解いているため最新データの反映を保留';return state();}
     // 解答中でも保護者が明示的に選んだ場合のみ読み込めるようにする。
     // 元セーブのバックアップが書き込めなければ、端末の進行は変更しない。
