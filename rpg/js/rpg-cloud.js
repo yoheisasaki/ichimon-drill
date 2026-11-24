@@ -81,11 +81,20 @@
           return applyCloud(x);
         }
         if(stored&&stored.version===x.version&&stored.rev!==RPG.save.rev){
-          // 最後のクラウド版が変わっていなければ、この端末の変更を安全に送れる。
+          // ローカルに変更があるが、クラウドの残高が大きいなら
+          // ローカル4ポイントを勝手に送信して5ポイントを消さない。
+          if(cloudPoints>state().localPoints){
+            status='クラウドの方が新しいポイントを持っています。安全のため自動上書きを保留';
+            return state();
+          }
+          // この端末だけで進行した記録があればクラウドをCASで更新する。
           syncedRev=stored.rev;ready=true;remote=null;pendingChange=true;status='この端末の変更を同期中';
           onPersist();return state();
         }
         if(!stored&&freshLocal()&&canPull())return applyCloud(x);
+        // 旧版では同期済みと記録していても、残高やrevが一致しない場合がある。
+        // 明らかにクラウドが新しい場合は、端末をバックアップした上で取り込む。
+        if(stored&&stored.version<x.version&&state().localPoints<cloudPoints&&canPull()&&!pendingChange)return applyCloud(x);
         status='クラウドにセーブあり。古いデータで上書きしないため自動反映を保留';
       }else{remote=null;status='クラウドは空です。この端末を最初のセーブにできます';}
     }catch(e){status='接続できません：'+String(e.message||e);remote=null;}
@@ -165,6 +174,8 @@
   }
   async function refresh(){
     if(!getKey()||busy)return state();
+    // 前回の通信が保留/競合でready=falseでも、最新取得を再試行できる。
+    if(!ready)return connect();
     if(timer){clearTimeout(timer);timer=null;}
     busy=true;
     try{
@@ -176,7 +187,9 @@
       if(x.version===cloudVersion){
         if(changed){status='この端末の変更を同期中';}
         else if(cloudPoints!==state().localPoints){
-          remote=x;return fail('クラウド '+cloudPoints+'ポイント／この端末 '+state().localPoints+'ポイント。数字が一致しないため同期保留');
+          remote=x;
+          if(cloudPoints>state().localPoints&&canPull())return applyCloud(x);
+          return fail('クラウド '+cloudPoints+'ポイント／この端末 '+state().localPoints+'ポイント。安全のため同期保留');
         }else {status='同期済み（両方 '+cloudPoints+'ポイント）';ready=true;}
         if(changed){
           busy=false;
