@@ -302,6 +302,15 @@ function pick(list, n) {
 // 「次の10問」は通常スタートよりも復習を軽くする。
 // 直前の問題・今日解いた問題を避け、未出題6・定着3・苦手最大1を目安にする。
 // 候補が少ないときだけ段階的に補充し、苦手の押し付けを防ぐ。
+// 県名暗記：社会を選んだ場合は最大5問、全教科では最大2問を新規優先枠にする。
+function prefecturePriority(candidates, n) {
+  const socialOnly = candidates.length > 0 && candidates.every(q => q.subject === '社会');
+  const limit = Math.ceil(n * (socialOnly ? 0.5 : 0.2));
+  const high = ['pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-20','pref-20261124-35','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
+  return candidates.filter(q => q.prefExplain && st(q.id).w + st(q.id).c === 0)
+    .sort((a,b) => (high.includes(a.id)?high.indexOf(a.id):999)-(high.includes(b.id)?high.indexOf(b.id):999))
+    .slice(0,limit);
+}
 function pickNextNormal(candidates, previousIds, n) {
   const unique = [...new Map(candidates.map(q => [q.id, q])).values()];
   const today = localDay();
@@ -320,7 +329,8 @@ function pickNextNormal(candidates, previousIds, n) {
       selected.push(q); used.add(q.id); count--;
     }
   }
-  add(pick(fresh, n), Math.ceil(n * 0.6));
+  add(prefecturePriority(source, n), Math.ceil(n * 0.6));
+  add(pick(fresh.filter(q => !used.has(q.id)), n), Math.max(0, Math.ceil(n * 0.6) - selected.length));
   add(pick(old, n), Math.ceil(n * 0.3));
   add(pick(weak, n), Math.min(1, n));
   // 補充も未出題・定着を優先。未消化の候補がある限り当日回答済みは使わない。
@@ -360,7 +370,9 @@ function pickStart(list, n) {
     .map(id => craftPool.find(q => q.id === id))
     .filter(q => q && (st(q.id).w + st(q.id).c === 0 || isHard(q.id)))
     .slice(0, Math.min(2, Math.max(1, Math.floor(n / 5))));
-  const chosen = pick(basic.filter(q => !craftIds.has(q.id)), Math.max(0, normalCount - priority.length));
+  const prefPriority = prefecturePriority(basic.filter(q => !priority.some(p => p.id === q.id)), n).slice(0, Math.max(0, normalCount - priority.length));
+  const reserved = new Set(prefPriority.map(q => q.id));
+  const chosen = prefPriority.concat(pick(basic.filter(q => !craftIds.has(q.id) && !reserved.has(q.id)), Math.max(0, normalCount - priority.length - prefPriority.length)));
   // 発展は多くても1問。未出題を優先し、あれば復習も残す。
   if (allowAdvanced) chosen.push(...pick(advanced, 1));
   // 教科・単元が偏っていても、同じ教科が続きすぎないよう並べ直す。
