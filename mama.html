@@ -119,7 +119,7 @@ body.mama-mode #mama-refresh{flex:none;display:inline-flex;align-items:center;ju
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = 'vocabulary-20261125b-' + (new URLSearchParams(location.search).get('refresh') || 'default');
+  const refreshVersion = 'vocabulary-20261125c-' + (new URLSearchParams(location.search).get('refresh') || 'default');
   document.write('<script src="app-wave-original-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 <script>
