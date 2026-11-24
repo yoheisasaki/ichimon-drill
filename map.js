@@ -32,7 +32,7 @@
     var pts = []; (mapq && mapq.mark ? [byName[mapq.mark]] : []).forEach(function (f) { if (f) pts = pts.concat(geomPts(pr, f)); });
     if (opts.all) pts = [];
     var v = view(mapData, pts, hl, aspect, 1.6);
-    if (opts.all) v = [0, 0, mapData.viewBox[2], mapData.viewBox[3]];
+    if (opts.all || opts.overview) v = [0, 0, mapData.viewBox[2], mapData.viewBox[3]];
     container.innerHTML = '';
     var svg = el('svg', { viewBox: v.join(' '), width: '100%', style: 'display:block;border-radius:16px;background:#dff0fb', role: 'img', 'aria-label': '地図' });
     el('rect', { x: v[0] - 1000, y: v[1] - 1000, width: v[2] + 2000, height: v[3] + 2000, fill: '#dff0fb' }, svg);
