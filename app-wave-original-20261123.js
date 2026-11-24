@@ -3,7 +3,7 @@
 const MAMA = PARAMS.get('mama') === '1' || /mama\.html$/.test(location.pathname); // ママモード：送信せず、保存キーも別名
 const NOSEND = PARAMS.get('nosend') === '1' || MAMA;
 const ROUND = 10, MASTER = 3, REASK_GAP = 3, REASK_MAX = 5, BATCH = 200;
-const SUBJECTS = ['国語', '算数', '理科', '社会'];
+const SUBJECTS = ['国語', '算数', '理科', '社会', '国語・語彙'];
 const LS_SFX = MAMA ? '.mama' : '';
 const LS_DAILY = 'ichimon.daily.v1' + LS_SFX;
 const LS_STATS = 'ichimon.stats.v1' + LS_SFX, LS_Q = 'ichimon.queue.v1' + LS_SFX, LS_DEV = 'ichimon.dev.v1' + LS_SFX, LS_SEL = 'ichimon.sel.v1' + LS_SFX;
@@ -71,7 +71,7 @@ function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subj
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 ["map-0241","pref-20261124-02","pref-20261124-03","pref-20261124-04","pref-20261124-05","pref-20261124-06","pref-20261124-07","pref-20261124-08","pref-20261124-09","pref-20261124-10","pref-20261124-11","pref-20261124-12","map-0078","pref-20261124-14","pref-20261124-15","pref-20261124-16","pref-20261124-17","map-0234","sha-0208","pref-20261124-20","pref-20261124-21","pref-20261124-22","map-0240","pref-20261124-24","pref-20261124-25","pref-20261124-26","sha-0313","pref-20261124-28","pref-20261124-29","pref-20261124-30","pref-20261124-31","sha-0317","pref-20261124-33","sha-0202","pref-20261124-35","pref-20261124-36","pref-20261124-37","pref-20261124-38","pref-20261124-39","pref-20261124-40"].forEach(id => FOCUS_IDS.add(id));
 FOCUS_IDS.add('map-0233');
-function qs() { return DATA.questions.filter(q => q.test === current.id && q.id !== 'ri-0084' && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
+function qs() { return DATA.questions.filter(q => (q.subject === '国語・語彙' || q.test === current.id) && q.id !== 'ri-0084' && !OFF.has(q.id) && (q.subject === '国語・語彙' || SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 // 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
@@ -312,7 +312,17 @@ function prefecturePriority(candidates, n) {
     .sort((a,b) => (high.includes(a.id)?high.indexOf(a.id):999)-(high.includes(b.id)?high.indexOf(b.id):999))
     .slice(0,limit);
 }
+function pickVocabulary(list, n) {
+  const fresh = list.filter(q => !st(q.id).c && !st(q.id).w);
+  const review = list.filter(q => st(q.id).c || st(q.id).w).sort((a,b) => Number(isHard(b.id))-Number(isHard(a.id)) || (st(a.id).t||'').localeCompare(st(b.id).t||''));
+  const chosen = review.slice(0, Math.min(3, Math.max(0,n-fresh.length), review.length));
+  if (fresh.length && review.length && chosen.length < 3) chosen.push(...review.slice(chosen.length, Math.min(3,review.length)));
+  chosen.push(...fresh.slice(0,n-chosen.length));
+  chosen.push(...review.filter(q=>!chosen.includes(q)).slice(0,n-chosen.length));
+  return shuffle(chosen).slice(0,n);
+}
 function pickNextNormal(candidates, previousIds, n) {
+  if (filter === '国語・語彙') return pickVocabulary(candidates, n);
   const unique = [...new Map(candidates.map(q => [q.id, q])).values()];
   const today = localDay();
   const notPrevious = unique.filter(q => !previousIds.has(q.id));
@@ -343,6 +353,7 @@ function pickNextNormal(candidates, previousIds, n) {
   return selected.slice(0, n);
 }
 function pickStart(list, n) {
+  if (filter === '国語・語彙') return pickVocabulary(list, n);
   const originalList = list;
   // 通常学習では本日すでに答えた問題を後回しにする。候補不足時のみ再利用する。
   const today = localDay();
@@ -401,7 +412,7 @@ function pickStart(list, n) {
 
 function pool() {
   const sel = (units[filter] || []);
-  return qs().filter(q => filter === '全部' || (filter === 'ちず' ? !!q.map : filter === 'かく' ? q.type === 'input' : q.subject === filter && (!sel.length || sel.includes(groupOf(q)))));
+  return qs().filter(q => (filter === '全部' && q.subject !== '国語・語彙') || (filter === 'ちず' ? !!q.map : filter === 'かく' ? q.type === 'input' : q.subject === filter && (!sel.length || sel.includes(groupOf(q)))));
 }
 // 地図は地図問題が初めて出るときに1回だけ読む
 let mapsP = null;
@@ -706,7 +717,7 @@ function home() {
   const p = pool(), hard = p.filter(q => isHard(q.id)), everWrong = p.filter(q => wasWrong(q.id)), pending = p.filter(q => isPending(q.id) && !isDue(q.id)), tp = pickPool();
   const savedQuiz = pausedQuiz();
   const rangeOpen = !!window.__rangeOpen;
-  const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all, 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
+  const subjectsHtml = `<div class="subjects">${card(rpgOn ? ruby('{全部|ぜんぶ}') : 'ぜんぶ', all.filter(q => q.subject !== '国語・語彙'), 'all', '全部')}${subs.map(s => card(s, all.filter(q => q.subject === s), '', s)).join('')}${all.some(q => q.map) ? card(rpgOn ? ruby('{地図|ちず}') : 'ちず', all.filter(q => q.map), '', 'ちず') : ''}${all.some(q => q.type === 'input') ? card(rpgOn ? ruby('{書|か}いて{答|こた}える') : 'かいて こたえる', all.filter(q => q.type === 'input'), '', 'かく') : ''}</div>
     ${gs.length ? `<div class="chips"><button class="chip ${units[filter].length ? '' : 'sel'}" data-g="">${rpgOn ? ruby('{全部|ぜんぶ}まぜる') : 'ぜんぶまぜる'}<small>${all.filter(q => q.subject === filter).length}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>${gs.map(g => { const l = all.filter(q => q.subject === filter && groupOf(q) === g), c = counts(l); return `<button class="chip ${units[filter].includes(g) ? 'sel' : ''}" data-g="${esc(g)}">${ruby(GROUP_RUBY[g] || g)}<small>${ruby('{復習|ふくしゅう}')} ${c.hard} ／ ${c.all}${rpgOn ? ruby('{個|こ}') : 'こ'}</small></button>`; }).join('')}</div>` : ''}`;
   const goLabel = `スタート（${Math.min(ROUND, p.length)}${rpgOn ? ruby('{問|もん}') : 'もん'}）`;
   const hardLabel = `${ruby('{復習|ふくしゅう}が{必要|ひつよう}なところ')}（${hard.length}${rpgOn ? ruby('{個|こ}') : 'こ'}）`;
@@ -1160,7 +1171,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=prefecture-review-20261124', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=vocabulary-20261125', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
