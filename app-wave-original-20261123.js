@@ -70,6 +70,7 @@ const SHOW_ALL = PARAMS.get('all') === '1';
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 ["map-0241","pref-20261124-02","pref-20261124-03","pref-20261124-04","pref-20261124-05","pref-20261124-06","pref-20261124-07","pref-20261124-08","pref-20261124-09","pref-20261124-10","pref-20261124-11","pref-20261124-12","map-0078","pref-20261124-14","pref-20261124-15","pref-20261124-16","pref-20261124-17","map-0234","sha-0208","pref-20261124-20","pref-20261124-21","pref-20261124-22","map-0240","pref-20261124-24","pref-20261124-25","pref-20261124-26","sha-0313","pref-20261124-28","pref-20261124-29","pref-20261124-30","pref-20261124-31","sha-0317","pref-20261124-33","sha-0202","pref-20261124-35","pref-20261124-36","pref-20261124-37","pref-20261124-38","pref-20261124-39","pref-20261124-40"].forEach(id => FOCUS_IDS.add(id));
+FOCUS_IDS.add('map-0233');
 function qs() { return DATA.questions.filter(q => q.test === current.id && q.id !== 'ri-0084' && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
@@ -306,8 +307,8 @@ function pick(list, n) {
 function prefecturePriority(candidates, n) {
   const socialOnly = candidates.length > 0 && candidates.every(q => q.subject === '社会');
   const limit = Math.ceil(n * (socialOnly ? 0.5 : 0.2));
-  const high = ['sha-0329','pref-20261124-35','pref-20261124-20','pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
-  return candidates.filter(q => (q.prefExplain && st(q.id).w + st(q.id).c === 0) || (['sha-0329','pref-20261124-35','pref-20261124-20'].includes(q.id) && !isMaster(q.id) && !(isPending(q.id) && !isDue(q.id))))
+  const high = ['sha-0329','pref-20261124-35','pref-20261124-20','map-0233','pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
+  return candidates.filter(q => (q.prefExplain && st(q.id).w + st(q.id).c === 0) || (['sha-0329','pref-20261124-35','pref-20261124-20','map-0233'].includes(q.id) && !isMaster(q.id) && !(isPending(q.id) && !isDue(q.id))))
     .sort((a,b) => (high.includes(a.id)?high.indexOf(a.id):999)-(high.includes(b.id)?high.indexOf(b.id):999))
     .slice(0,limit);
 }
