@@ -69,6 +69,7 @@ const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
+["map-0241","pref-20261124-02","pref-20261124-03","pref-20261124-04","pref-20261124-05","pref-20261124-06","pref-20261124-07","pref-20261124-08","pref-20261124-09","pref-20261124-10","pref-20261124-11","pref-20261124-12","map-0078","pref-20261124-14","pref-20261124-15","pref-20261124-16","pref-20261124-17","map-0234","sha-0208","pref-20261124-20","pref-20261124-21","pref-20261124-22","map-0240","pref-20261124-24","pref-20261124-25","pref-20261124-26","sha-0313","pref-20261124-28","pref-20261124-29","pref-20261124-30","pref-20261124-31","sha-0317","pref-20261124-33","sha-0202","pref-20261124-35","pref-20261124-36","pref-20261124-37","pref-20261124-38","pref-20261124-39","pref-20261124-40"].forEach(id => FOCUS_IDS.add(id));
 function qs() { return DATA.questions.filter(q => q.test === current.id && q.id !== 'ri-0084' && !OFF.has(q.id) && (SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
@@ -608,6 +609,20 @@ function showAnswerFeedback(q, ok, skipped) {
       quizRpgFeedbackHtml()+
       '<button type="button" class="quiz-feedback-action" id="quiz-next-question">つぎの問題へ ▶</button>'+
       '</div>';
+    if (q.prefExplain) {
+      const mapBox = document.createElement('div');
+      mapBox.style.cssText = 'background:white;border-radius:12px;padding:10px;margin:12px 0;color:#222;text-align:center';
+      const label = document.createElement('strong');
+      label.textContent = q.prefExplain + 'の位置（関東・中部の地図）';
+      mapBox.appendChild(label);
+      const drawing = document.createElement('div');
+      mapBox.appendChild(drawing);
+      detail.querySelector('.quiz-feedback-detail').insertBefore(mapBox, detail.querySelector('#quiz-next-question'));
+      loadMaps().then(([md,ft]) => {
+        if (!mapBox.isConnected) return;
+        renderMap(drawing, md, ft, {hl:q.prefExplain}, {aspect:1.7, overview:true});
+      }).catch(() => {drawing.textContent='地図を読み込めませんでした。';});
+    }
     S.explanationViewed = true;
     if (window.RPG && S.rpg && RPG.ok && RPG.mount) RPG.mount();
     screen.scrollTop = 0;
@@ -1132,7 +1147,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=remove-wave-width-20261123b', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=prefecture-review-20261124', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
