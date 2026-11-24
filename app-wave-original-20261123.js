@@ -306,8 +306,8 @@ function pick(list, n) {
 function prefecturePriority(candidates, n) {
   const socialOnly = candidates.length > 0 && candidates.every(q => q.subject === '社会');
   const limit = Math.ceil(n * (socialOnly ? 0.5 : 0.2));
-  const high = ['pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-20','pref-20261124-35','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
-  return candidates.filter(q => q.prefExplain && st(q.id).w + st(q.id).c === 0)
+  const high = ['sha-0329','pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-20','pref-20261124-35','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
+  return candidates.filter(q => (q.prefExplain && st(q.id).w + st(q.id).c === 0) || (q.id === 'sha-0329' && !isMaster(q.id) && !(isPending(q.id) && !isDue(q.id))))
     .sort((a,b) => (high.includes(a.id)?high.indexOf(a.id):999)-(high.includes(b.id)?high.indexOf(b.id):999))
     .slice(0,limit);
 }
