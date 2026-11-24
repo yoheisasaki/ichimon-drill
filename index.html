@@ -40,14 +40,14 @@
 <script src="rpg/js/rpg-pet-art.js?v=pet-newborn-types-20261123k"></script>
 <script>
   // ホーム画面アプリの更新でクラウド同期の修正も反映する。
-  const cloudRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'point-compare-top-20261124c';
+  const cloudRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'auto-pull-cloud-20261124d';
   document.write('<script src="rpg/js/rpg-cloud.js?v=' + encodeURIComponent(cloudRefreshVersion) + '"><\/script>');
 </script>
 <script src="rpg/js/rpg-mapdata.js"></script>
 <script src="rpg/js/rpg-land-walk.js?v=walk3d-20261123b"></script>
 <script>
   // アプリの更新ボタンはRPG画面・音声コードも同時に最新版へ切り替える。
-  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'point-compare-top-20261124c';
+  const rpgRefreshVersion = new URLSearchParams(location.search).get('refresh') || 'auto-pull-cloud-20261124d';
   document.write('<script src="rpg/js/rpg-screens.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
   document.write('<script src="rpg/js/rpg-sound.js?v=' + encodeURIComponent(rpgRefreshVersion) + '"><\/script>');
 </script>
@@ -57,7 +57,7 @@
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'point-compare-top-20261124c';
+  const refreshVersion = new URLSearchParams(location.search).get('refresh') || 'auto-pull-cloud-20261124d';
   document.write('<script src="app-wave-original-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 </body>
