@@ -225,6 +225,7 @@
     if (name === 'look') { UI.look = { outfit: save().look.outfit || null }; UI.name = save().name || ''; }
     if (name === 'jobs') UI.tier = (params && params.tier) || UI.tier;
     UI.confirm = null; render(); if (name !== 'worldlife' && root.scrollTo) root.scrollTo(0, 0);
+    if ((name==='settings'||name==='data'||name==='worldlife')&&RPG.cloud&&RPG.cloud.autoCheck) RPG.cloud.autoCheck(true);
   }
   function render() {
     stopLifeTimer();
@@ -246,10 +247,12 @@
     render(); const b2 = doc.getElementById('rsBody'), sc2 = doc.querySelector('#rsBody .rs-scroll'); if (b2) b2.scrollTop = y1; if (sc2) sc2.scrollTop = y2;
   };
 
-  if (RPG.cloud) RPG.cloud.onUpdate = function () {
-    // クラウドからポイントが反映されたらマイワールド/同期画面だけ静かに再描画。
-    // 学習中の問題画面と解答ボタンには触れない。
-    if ((UI.screen === 'worldlife'||UI.screen === 'data') && doc.getElementById('rsRoot')) rerender();
+  if (RPG.cloud) RPG.cloud.onUpdate = function (q) {
+    // 設定のポイント表示はDOMだけ更新。画面を再描画して問い合わせを連鎖させない。
+    const b=doc.getElementById('cloudBalance'),st=doc.getElementById('cloudStatus');
+    if(b)b.textContent='この端末：'+q.localPoints+'ポイント ／ クラウド：'+(q.cloudPoints==null?'未確認':q.cloudPoints)+'ポイント'+(q.cloudPoints!=null&&q.cloudPoints!==q.localPoints?' ⚠️ 不一致':'');
+    if(st)st.textContent=q.status;
+    if(UI.screen==='worldlife'&&doc.getElementById('rsRoot'))rerender();
   };
 
   const VIEWS = {}, AFTER = {};
@@ -768,7 +771,7 @@
       const input=doc.getElementById('cloudKey'),statusEl=doc.getElementById('cloudStatus');
       const show=st=>{const q=st||cloud.state();if(statusEl)statusEl.textContent=q.status;const b=doc.getElementById('cloudBalance');if(b){const n=Number(q.localPoints);b.textContent='この端末：'+(Number.isFinite(n)?n:'―')+'ポイント ／ クラウド：'+(q.cloudPoints==null?'未確認':q.cloudPoints)+'ポイント'+(q.cloudPoints!=null&&q.cloudPoints!==n?' ⚠️ 不一致':'');}};
       show();
-      if(cloud.state().connected && cloud.autoCheck) cloud.autoCheck(true);
+      // 接続確認は設定画面への遷移時に一度だけ実施。再描画時に通信を連鎖させない。
       const guard=async fn=>{const key=input.value.trim(); if(key && key.length<20){show({status:'共有鍵は20文字以上にしてください'});return;}try{show({status:'通信中…'});await fn(key);show();}catch(e){show({status:'処理できませんでした。端末のセーブは残っています'});}};
       doc.getElementById('cloudConnect').onclick=()=>guard(key=>cloud.connect(key||undefined));
       doc.getElementById('cloudGet').onclick=()=>{if(!root.confirm('クラウドのセーブに切り替えます。このiPadで解きかけの問題も置き換わります。現在のRPGデータをバックアップしてから読み込みます。よいですか？'))return;guard(async key=>{
