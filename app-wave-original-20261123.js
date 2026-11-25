@@ -324,6 +324,12 @@ function pickVocabulary(list, n) {
   chosen.push(...review.filter(q=>!chosen.includes(q)).slice(0,n-chosen.length));
   return shuffle(chosen).slice(0,n);
 }
+const BIRD_FIRST_IDS = ["ri-0061","ri-0062","ri-0064","ri-0063","ri-bird-20261126-05","ri-bird-20261126-06","ri-bird-20261126-07","ri-bird-20261126-08","ri-bird-20261126-09"];
+function birdPriority(candidates,n) {
+  const byId = new Map(candidates.map(q=>[q.id,q]));
+  const today=localDay();
+  return BIRD_FIRST_IDS.map(id=>byId.get(id)).filter(q=>q && !String(st(q.id).t||'').startsWith(today)).slice(0,n);
+}
 function pickNextNormal(candidates, previousIds, n) {
   if (filter === '国語・語彙') return pickVocabulary(candidates, n);
   const unique = [...new Map(candidates.map(q => [q.id, q])).values()];
@@ -343,6 +349,7 @@ function pickNextNormal(candidates, previousIds, n) {
       selected.push(q); used.add(q.id); count--;
     }
   }
+  add(birdPriority(notPrevious,n),n);
   add(prefecturePriority(source, n), Math.ceil(n * 0.6));
   add(pick(fresh.filter(q => !used.has(q.id)), n), Math.max(0, Math.ceil(n * 0.6) - selected.length));
   add(pick(old, n), Math.ceil(n * 0.3));
@@ -410,7 +417,9 @@ function pickStart(list, n) {
       mixed.push(q);
     }
   }
-  return mixed.slice(0, n);
+  const birds=birdPriority(originalList.filter(q=>!new Set(load(LS_RECENT_ROUND,[])).has(q.id)),n);
+  const birdIds=new Set(birds.map(q=>q.id));
+  return birds.concat(mixed.filter(q=>!birdIds.has(q.id)),pick(originalList.filter(q=>!birdIds.has(q.id)&&!mixed.some(m=>m.id===q.id)),n)).slice(0,n);
 }
 
 function pool() {
@@ -539,6 +548,9 @@ function waveQuestionHtml(q) {
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
 const BIRD_PHOTOS = {
+  'カッコウ': 'Common cuckoo (Cuculus canorus) bird.jpg',
+  'マガン': 'Greater white-fronted goose (Anser albifrons).jpg',
+  'ウソ': 'Pyrrhula pyrrhula griseiventris.JPG',
   'ヒヨドリ': 'Hypsipetes amaurotis.jpg',
   'ツグミ': 'Dusky Thrush (Turdus eunomus) (24142348640).jpg',
   'マガモ': 'Mallard (Anas platyrhynchos).jpg',
@@ -1174,7 +1186,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=vocabulary-20261125c', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=birds-20261126', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
