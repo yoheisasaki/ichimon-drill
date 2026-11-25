@@ -324,7 +324,7 @@ function pickVocabulary(list, n) {
   chosen.push(...review.filter(q=>!chosen.includes(q)).slice(0,n-chosen.length));
   return shuffle(chosen).slice(0,n);
 }
-const BIRD_FIRST_IDS = ["ri-0061","ri-0062","ri-0064","ri-0063","ri-bird-20261126-05","ri-bird-20261126-06","ri-bird-20261126-07","ri-bird-20261126-08","ri-bird-20261126-09"];
+const BIRD_FIRST_IDS = ["ri-0061","ri-0062","ri-0064","ri-0063","ri-bird-20261126-05","ri-bird-20261126-06","ri-bird-20261126-07","ri-bird-20261126-08","ri-bird-20261126-09","ri-bird-20261126-10","ri-bird-20261126-11","ri-bird-20261126-12","ri-bird-20261126-13","ri-bird-20261126-14","ri-bird-20261126-15","ri-bird-20261126-16","ri-bird-20261126-17","ri-bird-20261126-18","ri-bird-20261126-19"];
 function birdPriority(candidates,n) {
   const byId = new Map(candidates.map(q=>[q.id,q]));
   const today=localDay();
@@ -548,6 +548,16 @@ function waveQuestionHtml(q) {
 // 鳥の見た目を知るための参考写真。分類を写真から当てさせる問題にはしない。
 // Wikimedia Commonsの各写真ページから撮影者と利用条件を確認できる。
 const BIRD_PHOTOS = {
+  "オオルリ": "Cyanoptila cyanomelana.jpg",
+  "キビタキ": "Ficedula narcissina.jpg",
+  "オオヨシキリ": "Acrocephalus orientalis.jpg",
+  "オオハクチョウ": "Cygnus cygnus.jpg",
+  "マナヅル": "Grus vipio.jpg",
+  "ヒバリ": "Alauda arvensis.jpg",
+  "スズメ": "Passer montanus.jpg",
+  "キジバト": "Streptopelia orientalis.jpg",
+  "ハシブトガラス": "Corvus macrorhynchos.jpg",
+  "ライチョウ": "Lagopus muta japonica.jpg",
   'カッコウ': 'Common cuckoo (Cuculus canorus) bird.jpg',
   'マガン': 'Greater white-fronted goose (Anser albifrons).jpg',
   'ウソ': 'Pyrrhula pyrrhula griseiventris.JPG',
@@ -1186,7 +1196,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=birds-20261126', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=birds19-20261126', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
