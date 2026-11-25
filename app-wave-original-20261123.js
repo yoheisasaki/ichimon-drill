@@ -308,9 +308,12 @@ function prefecturePriority(candidates, n) {
   const socialOnly = candidates.length > 0 && candidates.every(q => q.subject === '社会');
   const limit = Math.ceil(n * (socialOnly ? 0.5 : 0.2));
   const high = ['sha-0329','pref-20261124-35','pref-20261124-20','map-0233','pref-20261124-30','pref-20261124-08','pref-20261124-11','pref-20261124-24','pref-20261124-14','sha-0313','map-0234','sha-0208'];
-  return candidates.filter(q => (q.prefExplain && st(q.id).w + st(q.id).c === 0) || (['sha-0329','pref-20261124-35','pref-20261124-20','map-0233'].includes(q.id) && !isMaster(q.id) && !(isPending(q.id) && !isDue(q.id))))
+  const emblem = q => q.id.startsWith('sha-emblem-20261125-');
+  const eligible = candidates.filter(q => emblem(q) && (st(q.id).w + st(q.id).c === 0 || (isHard(q.id) && !(isPending(q.id) && !isDue(q.id))))).sort((a,b) => Number(st(a.id).w + st(a.id).c > 0) - Number(st(b.id).w + st(b.id).c > 0) || (st(a.id).t || '').localeCompare(st(b.id).t || ''));
+  const emblemFirst = eligible.slice(0, Math.min(limit, socialOnly ? 3 : 1));
+  return emblemFirst.concat(candidates.filter(q => !emblem(q)).filter(q => (q.prefExplain && st(q.id).w + st(q.id).c === 0) || (['sha-0329','pref-20261124-35','pref-20261124-20','map-0233'].includes(q.id) && !isMaster(q.id) && !(isPending(q.id) && !isDue(q.id))))
     .sort((a,b) => (high.includes(a.id)?high.indexOf(a.id):999)-(high.includes(b.id)?high.indexOf(b.id):999))
-    .slice(0,limit);
+    .slice(0,Math.max(0,limit-emblemFirst.length)));
 }
 function pickVocabulary(list, n) {
   const fresh = list.filter(q => !st(q.id).c && !st(q.id).w);
