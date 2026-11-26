@@ -325,10 +325,12 @@ function pickVocabulary(list, n) {
   return shuffle(chosen).slice(0,n);
 }
 const BIRD_FIRST_IDS = ["ri-0061","ri-0062","ri-0064","ri-0063","ri-bird-20261126-05","ri-bird-20261126-06","ri-bird-20261126-07","ri-bird-20261126-08","ri-bird-20261126-09","ri-bird-20261126-10","ri-bird-20261126-11","ri-bird-20261126-12","ri-bird-20261126-13","ri-bird-20261126-14","ri-bird-20261126-15","ri-bird-20261126-16","ri-bird-20261126-17","ri-bird-20261126-18","ri-bird-20261126-19"];
+const DEVELOPMENT_FIRST_IDS = ["ri-0053","ri-0066","ri-dev-20261126-hawk","ri-0054","ri-0067","ri-0055","ri-0056","ri-0068","ri-dev-20261126-fin","ri-0057","ri-0069","ri-0058","ri-0070","ri-0059","ri-0071","ri-dev-20261126-rainbow","ri-0060","ri-0072","ri-0076","ri-0085","ri-dev-20261126-lightning","ri-0075","ri-dev-20261126-triangle"];
+DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).forEach(id=>FOCUS_IDS.add(id));
 function birdPriority(candidates,n) {
   const byId = new Map(candidates.map(q=>[q.id,q]));
   const today=localDay();
-  return BIRD_FIRST_IDS.map(id=>byId.get(id)).filter(q=>q && !String(st(q.id).t||'').startsWith(today)).slice(0,n);
+  return DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).map(id=>byId.get(id)).filter(q=>q && !String(st(q.id).t||'').startsWith(today)).slice(0,n);
 }
 function pickNextNormal(candidates, previousIds, n) {
   if (filter === '国語・語彙') return pickVocabulary(candidates, n);
@@ -1196,7 +1198,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=birds19-20261126', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=development-20261126', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
   DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
