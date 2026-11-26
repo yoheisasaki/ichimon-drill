@@ -57,7 +57,7 @@
 <script>
   // 更新ボタンで付けたrefresh値を、app.jsのURLにも反映してキャッシュを回避する。
   // このスクリプトは既存のRPGや学習記録の保存場所には触れない。
-  const refreshVersion = 'birds19-20261126-' + (new URLSearchParams(location.search).get('refresh') || 'default');
+  const refreshVersion = 'development-20261126-' + (new URLSearchParams(location.search).get('refresh') || 'default');
   document.write('<script src="app-wave-original-20261123.js?v=' + encodeURIComponent(refreshVersion) + '"><\/script>');
 </script>
 </body>
