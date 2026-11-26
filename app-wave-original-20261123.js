@@ -65,6 +65,26 @@ SOCIAL_VIDEO_IDS.forEach(id => FOCUS_IDS.add(id));
 // 読めなかった工芸品の用語：絹織物・陶磁器・漆器の復習を出題対象に加える。
 const CRAFT_READING_FIRST_IDS = ['sha-0521', 'sha-0523', 'sha-0525', 'sha-0522', 'sha-0524', 'sha-0526', 'sha-0067', 'sha-0377', 'sha-0395'];
 CRAFT_READING_FIRST_IDS.forEach(id => FOCUS_IDS.add(id));
+// 11/28 マンスリー社会・最終確認。既存IDを再利用し、履歴・ポイントを保持。
+const FINAL_SOCIAL_IDS = ["pref-20261124-05","sha-0424","sha-0420","sha-0410","sha-0313","sha-0317","sha-0329","pref-20261124-33","pref-20261124-20","sha-0202","pref-20261124-35","map-0238","sha-0053","sha-0051","sha-0527","sha-0510","sha-0366","sha-0056","sha-0054","sha-0055","sha-0521","sha-0523","sha-0522","sha-0528","sha-0036","sha-0052","map-0001","map-0002","map-0003","map-0004","map-0005","map-0006","map-0007","map-0008","map-0009","map-0010","map-0011","sha-0101","sha-0105","sha-0106","sha-0108","sha-0109","sha-0110","sha-0103","map-0030","map-0032","map-0015","map-0014","map-0023","map-0043","map-0048","map-0039","map-0064","sha-0311","sha-0063","sha-0064"];
+FINAL_SOCIAL_IDS.forEach(id => FOCUS_IDS.add(id));
+function finalSocialPriority(candidates, n) {
+  const today = localDay();
+  const byId = new Map(candidates.map(q => [q.id,q]));
+  return FINAL_SOCIAL_IDS.map(id => byId.get(id)).filter(q => q && !String(st(q.id).t || '').startsWith(today)).slice(0,n);
+}
+function finalSocialRound(candidates, n, previousIds) {
+  if (filter !== '社会') return null;
+  const available = candidates.filter(q => !previousIds.has(q.id));
+  const first = finalSocialPriority(available,n);
+  if (!first.length) return null;
+  const used = new Set(first.map(q=>q.id));
+  const today = localDay();
+  const remaining = available.filter(q=>!used.has(q.id));
+  const fresh = remaining.filter(q=>!String(st(q.id).t||'').startsWith(today));
+  const fill = fresh.concat(remaining.filter(q=>String(st(q.id).t||'').startsWith(today)));
+  return first.concat(fill, candidates.filter(q=>previousIds.has(q.id))).slice(0,n);
+}
 const SHOW_ALL = PARAMS.get('all') === '1';
 // 息子用の社会・理科の画面：まだ習っていない漢字（1〜3年の外）に、表示するときふりがなを足す（kanji-ruby.js。国語・ママ用は対象外）
 function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && !!window.KanjiRuby; }
@@ -333,6 +353,8 @@ function birdPriority(candidates,n) {
   return DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).map(id=>byId.get(id)).filter(q=>q && !String(st(q.id).t||'').startsWith(today)).slice(0,n);
 }
 function pickNextNormal(candidates, previousIds, n) {
+  const finalSocial = finalSocialRound(candidates,n,previousIds);
+  if (finalSocial) return finalSocial;
   if (filter === '国語・語彙') return pickVocabulary(candidates, n);
   const unique = [...new Map(candidates.map(q => [q.id, q])).values()];
   const today = localDay();
@@ -365,6 +387,8 @@ function pickNextNormal(candidates, previousIds, n) {
   return selected.slice(0, n);
 }
 function pickStart(list, n) {
+  const finalSocial = finalSocialRound(list,n,new Set(load(LS_RECENT_ROUND,[])));
+  if (finalSocial) return finalSocial;
   if (filter === '国語・語彙') return pickVocabulary(list, n);
   const originalList = list;
   // 通常学習では本日すでに答えた問題を後回しにする。候補不足時のみ再利用する。
