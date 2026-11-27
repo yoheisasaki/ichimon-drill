@@ -460,6 +460,24 @@
     const mb = card.querySelector('#rwChestMore'); if (!mb) return;
     mb.onclick = () => { const v = C.chestView(c.result, RPG.save.job); if (RPG.openSheet) RPG.openSheet(rb('{宝箱|たからばこ}の{中身|なかみ}'), chestSheetHtml(v), 'rwchest'); };
   }
+  // 報酬確認は app の外に置く。同期やホームの再描画で消えない。
+  function chestReceipt(c) {
+    const doc = root.document, old = doc.getElementById('chestReceipt');
+    if (old) old.remove();
+    const overlay = doc.createElement('div');
+    overlay.id = 'chestReceipt';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(8,15,35,.82);display:flex;align-items:center;justify-content:center;padding:16px;';
+    overlay.innerHTML = '<section role="dialog" aria-modal="true" aria-label="宝箱の報酬" style="background:#fff;color:#17243a;border-radius:18px;padding:22px;width:min(100%,420px);max-height:85vh;overflow:auto;box-sizing:border-box;text-align:center"><h2 style="margin:0 0 14px;color:#17243a">🎁 '+rb('{宝箱|たからばこ}を{開|あ}けています')+'</h2><div id="chestReceiptBody" role="status" style="font-size:20px;text-align:left"></div><button type="button" id="chestReceiptOK" disabled style="margin-top:18px;padding:12px 24px;font-size:18px;border-radius:12px;background:#2457a7;color:white;border:0;width:100%">受け取る</button></section>';
+    doc.body.appendChild(overlay);
+    const ok = overlay.querySelector('#chestReceiptOK');
+    ok.onclick = () => { overlay.remove(); };
+    return () => {
+      const v = C.chestView(c.result, RPG.save && RPG.save.job);
+      overlay.querySelector('h2').innerHTML = '✨ '+rb('{報酬|ほうしゅう}ゲット！');
+      overlay.querySelector('#chestReceiptBody').innerHTML = chestSheetHtml(v);
+      ok.disabled = false; ok.focus();
+    };
+  }
   // card 内の開封ボタンを動かす。保存（付与と opened を同時）が成功してから演出する。onDone(chest) は結果表示後
   function bindChestCard(card, onDone) {
     if (!card) return;
@@ -473,10 +491,13 @@
       if (!RPG.ok) { msg.textContent = 'いま保存できないので開けられません。'; ob.disabled = false; return; }
       const r = C.openChestPersist(RPG.save, RPG.store, id, NOW());
       if (!r.ok) { RPG.err = r.err === 'stale' ? 'stale' : RPG.err; msg.textContent = '保存できなかったので開けていません。もう一度試してね。'; ob.disabled = false; return; }
+      const showReceipt = chestReceipt(r.chest);
+      if (RPG.cloud && RPG.cloud.onPersist) RPG.cloud.onPersist();
       const rare = !!(r.chest.result && r.chest.result.kind === 'rare'), calm = reduceMotion(), dur = rare ? 640 : 560;
       let done = false;
       const fin = () => {   // 保存はすでに済んでいる。ここは表示だけ（演出の完了を加算条件にしない）
         if (done) return; done = true;
+        showReceipt();
         const v = C.chestView(r.chest.result, RPG.save.job);
         if (lead && v.primary) { lead.className = 'rw-lead rw-gi'; lead.innerHTML = giftIcon(v.primary, 48); }
         ln.innerHTML = chestContentHtml(r.chest); ln.hidden = false; ob.remove();
@@ -485,16 +506,22 @@
         snd('chest'); onDone && onDone(r.chest); revealChestLine(card);
       };
       if (calm || !cc) { fin(); return; }
+      setTimeout(fin, dur + 100);
       const t0 = performance.now(); const tick = now => { const p = (now - t0) / dur; if (p >= 1) { fin(); return; } drawChestCv(cc, p > 0.45, p); requestAnimationFrame(tick); }; requestAnimationFrame(tick);
     };
   }
   // ホームの小さい入口：開けていない箱があるときだけ。複数あっても1個ずつ
   RPG.homeChestHtml = function () {
     if (!RPG.ok) return '';
-    const list = C.sealedChests(RPG.save); if (!list.length) return '';
-    return `<details class="rs-chestbox" id="rsChestBox"><summary>${rb('受け取った{宝箱|たからばこ}')}（${list.length}）</summary><div id="rsChestSlot">${chestCardHtml(list[0])}</div></details>`;
+    const list = C.sealedChests(RPG.save);
+    const opened = (RPG.save.chests || []).filter(c => c.status === 'opened' && c.result).slice(-20).reverse();
+    const history = opened.length ? '<details class="rs-chestbox"><summary>宝箱の獲得履歴（最近20件）</summary>'+opened.map((c,i)=>'<button type="button" class="rw-open" data-chest-history="'+i+'">'+chestContentHtml(c)+'</button>').join('')+'</details>' : '';
+    if (!list.length) return history;
+    return `<details class="rs-chestbox" id="rsChestBox"><summary>${rb('受け取った{宝箱|たからばこ}')}（${list.length}）</summary><div id="rsChestSlot">${chestCardHtml(list[0])}</div></details>${history}`;
   };
   RPG.bindHomeChests = function () {
+    const opened = (RPG.save.chests || []).filter(c => c.status === 'opened' && c.result).slice(-20).reverse();
+    root.document.querySelectorAll('[data-chest-history]').forEach(b => b.onclick = () => { const c = opened[Number(b.dataset.chestHistory)]; if(c) chestReceipt(c)(); });
     const box = root.document.getElementById('rsChestBox'); if (!box) return;
     const slot = box.querySelector('#rsChestSlot');
     const bind = () => bindChestCard(slot.querySelector('#rwDrop'), () => {
