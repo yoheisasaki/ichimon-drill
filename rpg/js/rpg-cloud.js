@@ -19,7 +19,7 @@
   function notify(){try{if(RPG.cloud&&typeof RPG.cloud.onUpdate==='function')RPG.cloud.onUpdate(state());}catch(e){}}
   // クイズ画面を開いている間は別端末の戦闘データで置き換えない。
   // ホームにいるときは保存済みの active が残っていても安全に最新データを取得する。
-  function canPull(){return !root.__ichimonQuizRunning&&!RPG.save.quizResume;}
+  function canPull(){return !root.__ichimonQuizRunning&&!RPG.save.quizResume&&!root.document.getElementById('chestReceipt');}
   function freshLocal(){const s=RPG.save||{},l=s.life||{};return !s.quizResume&&(!s.advXp)&&(!s.firstDone)&&(!l.total)&&(!l.foodPoints)&&(!l.food)&&!(l.foodPointReceipts||[]).length&&!(s.stats&&s.stats.adventures);}
 
   function fail(msg){status=msg;ready=false;return state();}
