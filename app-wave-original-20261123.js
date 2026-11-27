@@ -350,7 +350,9 @@ DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).forEach(id=>FOCUS_IDS.add(id));
 function birdPriority(candidates,n) {
   const byId = new Map(candidates.map(q=>[q.id,q]));
   const today=localDay();
-  return DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).map(id=>byId.get(id)).filter(q=>q && !String(st(q.id).t||'').startsWith(today)).slice(0,n);
+  const soundReview = ["ri-0088","ri-0090"].map(id=>byId.get(id)).filter(q=>q && (!String(st(q.id).t||"").startsWith(today) || st(q.id).l === "x"));
+  const soundIds = new Set(soundReview.map(q=>q.id));
+  return soundReview.concat(DEVELOPMENT_FIRST_IDS.concat(BIRD_FIRST_IDS).map(id=>byId.get(id)).filter(q=>q && !soundIds.has(q.id) && !String(st(q.id).t||"").startsWith(today))).slice(0,n);
 }
 function pickNextNormal(candidates, previousIds, n) {
   const finalSocial = finalSocialRound(candidates,n,previousIds);
