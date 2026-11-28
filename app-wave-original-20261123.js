@@ -91,7 +91,7 @@ function KanjiRubyOn(q) { return !MAMA && q && (q.subject === '社会' || q.subj
 function qr(s, q) { return !MAMA && q && (q.subject === '社会' || q.subject === '理科') && window.KanjiRuby ? KanjiRuby.render(s) : ruby(s); }
 ["map-0241","pref-20261124-02","pref-20261124-03","pref-20261124-04","pref-20261124-05","pref-20261124-06","pref-20261124-07","pref-20261124-08","pref-20261124-09","pref-20261124-10","pref-20261124-11","pref-20261124-12","map-0078","pref-20261124-14","pref-20261124-15","pref-20261124-16","pref-20261124-17","map-0234","sha-0208","pref-20261124-20","pref-20261124-21","pref-20261124-22","map-0240","pref-20261124-24","pref-20261124-25","pref-20261124-26","sha-0313","pref-20261124-28","pref-20261124-29","pref-20261124-30","pref-20261124-31","sha-0317","pref-20261124-33","sha-0202","pref-20261124-35","pref-20261124-36","pref-20261124-37","pref-20261124-38","pref-20261124-39","pref-20261124-40"].forEach(id => FOCUS_IDS.add(id));
 FOCUS_IDS.add('map-0233');
-function qs() { return DATA.questions.filter(q => (q.subject === '国語・語彙' || q.test === current.id) && q.id !== 'ri-0084' && !OFF.has(q.id) && (q.subject === '国語・語彙' || SHOW_ALL || FOCUS_IDS.has(q.id))); } // off（今回は出さない）は対象から外す
+function qs() { return DATA.questions.filter(q => (q.subject === '国語・語彙' || q.test === current.id) && q.id !== 'ri-0084' && !OFF.has(q.id) ); } // off（今回は出さない）は対象から外す
 function pickPool() { const ids = new Set(CONF.pick); return pool().filter(q => ids.has(q.id)); } // 今回のテスト対策
 function st(id) { return stats[id] || { w: 0, c: 0, s: 0, l: '', t: '' }; }
 // 間違えた問題は連続3回正解した3日後にもう一度。日付は端末のローカル日付。
@@ -795,10 +795,12 @@ function home() {
     ? '<div class="home-point-balance" data-noruby aria-label="現在の買い物ポイント" style="margin:8px 10px;padding:11px 14px;border-radius:12px;border:2px solid #d6b35c;background:#fff8df;color:#5d430b;font-size:18px;font-weight:900;text-align:center">⭐ 現在のポイント：' + pointBalance + 'ポイント <span style="font-size:12px;display:block;margin-top:4px;font-weight:600">1問正解で1ポイント　｜　マイワールドで使えるよ</span></div>'
     : '';
   const testName = `${esc(current.name)}${current.date ? '（' + esc(current.date.slice(5).replace('-', '/')) + '）' : ''}`;
+  const testSelect = `<label data-noruby style="display:block;margin:8px 12px;font-weight:bold">テストを選ぶ <select id="test-select" style="width:100%;font-size:16px;padding:8px">${DATA.tests.filter(t=>t.id !== 'vocab').map(t=>`<option value="${esc(t.id)}" ${t.id===current.id?'selected':''}>${esc(t.name)}${t.date?'（'+esc(t.date.slice(5).replace('-','/'))+'）':''}</option>`).join('')}</select></label>`;
   app.innerHTML = rpgOn ? `
     <div class="rs rs3 rs-homewrap" id="rsRoot" data-rb><main class="rs-body rs-homebody" id="rsBody">
     
     ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
+    ${testSelect}
     ${activeRangeHtml}
     ${pointBalanceHtml}
     <div class="rs-topbar"><span class="rs-testname">${testName}</span><button class="rs-rangebtn" id="rsRangeBtn">${ruby('{範囲|はんい}を{変|か}える')}</button></div>
@@ -816,6 +818,7 @@ function home() {
     </main><footer class="rs-foot">${RPG.navHtml('home')}</footer></div>` : `
     
     <h1>一問一答</h1>
+    ${testSelect}
     ${activeRangeHtml}
     ${pointBalanceHtml}
     ${MAMA ? '' : '<div class="kid-refresh-lead"><button type="button" class="kid-refresh-btn kid-refresh-primary" id="kid-refresh" aria-label="最新版に更新する"><span class="kid-refresh-main">↻ アプリを更新</span></button></div>'}
@@ -844,6 +847,7 @@ function home() {
       }
     };
   }
+  { const sel = document.getElementById('test-select'); if(sel) sel.onchange = () => { const next = DATA.tests.find(t=>t.id===sel.value); if(!next)return; current=next; filter='全部'; units={}; saveSel(); lsSet('ichimon.test.v1'+LS_SFX,next.id); home(); }; }
   { const refresh = document.getElementById('kid-refresh'); if (refresh) refresh.onclick = refreshKidApp; }
   if (window.RPG) { RPG.bindHome(); RPG.bindHomeTop(); }
   if (!MAMA) void syncKidHistory();
@@ -863,6 +867,7 @@ function home() {
   }
   const resumeButton = document.getElementById('resume-paused');
   if (resumeButton) resumeButton.onclick = () => restorePausedQuiz();
+  document.getElementById('go').disabled = !p.length;
   document.getElementById('go').onclick = e => beginKidSession(() => pickStart(pool(), ROUND), '', e.currentTarget);
   document.getElementById('hard').onclick = e => beginKidSession(() => pick(pool().filter(q => isHard(q.id)), ROUND), 'hard', e.currentTarget);
   document.getElementById('everwrong').onclick = e => beginKidSession(() => pick(pool().filter(q => wasWrong(q.id)), ROUND), 'everwrong', e.currentTarget);
@@ -1224,8 +1229,8 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // ---------- 起動 ----------
 // questions.json と ママの設定を読む。設定は読めなくても（5秒で）あきらめて前回の写しで動く
-Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=vocabulary-20261128', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
+Promise.all([fetch(PARAMS.get('data') || 'data/questions.json?v=test-archive-20261128', { cache: 'no-cache' }).then(r => r.json()), loadConf()]).then(([d, conf]) => {
   CONF = conf; OFF = new Set(conf.off);
-  DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.current) || d.tests[0];
+  DATA = d; DATA.questions = applyEdits(d.questions, conf); current = d.tests.find(t => t.id === lsGet('ichimon.test.v1'+LS_SFX) && t.id !== 'vocab') || d.tests.find(t => t.current) || d.tests[0];
   home(); flush();
 }).catch(() => { app.innerHTML = '<div class="empty">もんだいを よみこめませんでした。<br>ネットを つないで もう一度ひらいてね。</div>'; });
